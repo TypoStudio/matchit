@@ -445,6 +445,11 @@ select {
   }
 }
 
+/* 가장자리 블럭의 선택/힌트 테두리가 잘리지 않도록 여유 */
+.app-board {
+  padding: 10px;
+}
+
 /* 모바일: 게임하기 화면을 전체로 채우고 페이지 스크롤 잠금 */
 @media (max-width: 1023px) {
   .app-main {
