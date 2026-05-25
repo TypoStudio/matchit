@@ -85,7 +85,7 @@ const shareUrl = ref('');
 const lastSolved = ref<LessonItem | null>(null);
 const targetIndex = ref(0);
 const showHint = ref(false);
-const activeMobilePanel = ref<MobilePanel>('game');
+const activeMobilePanel = ref<MobilePanel>('packs');
 const showExitConfirm = ref(false);
 
 const activePack = computed(() => packs.value.find((pack) => pack.id === selectedPackId.value));
@@ -1122,13 +1122,100 @@ async function createShareImage() {
 
 watch(selectedPackId, (id) => localStorage.setItem('matchit-selected-pack-id', id));
 watch(selectedLevel, (level) => localStorage.setItem('matchit-selected-level', String(level)));
-watch(score, (s) => localStorage.setItem('matchit-score', String(s)));
-onMounted(() => {
+
+// 게임 상태/블럭 저장 → 새로고침 시 진행 중이던 게임 복원
+const SAVE_KEY = 'matchit-save';
+function saveGame() {
+  if (!board.value.length) return;
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      gameKind: gameKind.value,
+      mode: mode.value,
+      solveMode: solveMode.value,
+      packId: selectedPackId.value,
+      level: selectedLevel.value,
+      cols: cols.value,
+      rows: rows.value,
+      board: board.value.map((b) => ({ token: b.token, value: b.value, lessonId: b.lessonId, label: b.label, color: b.color })),
+      lessonItems: lessonItems.value,
+      score: score.value,
+      combo: combo.value,
+      moves: moves.value,
+      passes: passes.value,
+      targetIndex: targetIndex.value,
+      gameOver: gameOver.value,
+      collectTargetId: collectTargetItem.value?.id ?? null,
+    }));
+  } catch {
+    /* 저장 용량 초과 등은 무시 */
+  }
+}
+
+interface SavedGame {
+  gameKind: GameKind; mode: GameMode; solveMode: SolveMode;
+  packId: string; level: number; cols?: number; rows?: number;
+  board: Array<{ token: string; value?: number; lessonId: string; label: string; color: string }>;
+  lessonItems: LessonItem[];
+  score: number; combo: number; moves: number; passes: number;
+  targetIndex: number; gameOver: boolean; collectTargetId: string | null;
+}
+
+function readSave(): SavedGame | null {
+  try {
+    return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
+  } catch {
+    return null;
+  }
+}
+
+function restoreFromSave(s: SavedGame) {
+  gameKind.value = s.gameKind;
+  mode.value = s.mode;
+  solveMode.value = s.solveMode;
+  selectedPackId.value = s.packId;
+  selectedLevel.value = s.level;
+  if (s.cols) cols.value = s.cols;
+  if (s.rows) rows.value = s.rows;
+  lessonItems.value = s.lessonItems || [];
+  board.value = (s.board || []).map((b) => ({
+    id: blockId(),
+    token: b.token,
+    value: b.value,
+    lessonId: b.lessonId,
+    label: b.label,
+    color: b.color,
+  }));
+  score.value = s.score || 0;
+  combo.value = s.combo || 1;
+  moves.value = s.moves ?? 25;
+  passes.value = s.passes || 0;
+  targetIndex.value = s.targetIndex || 0;
+  gameOver.value = !!s.gameOver;
+  collectTargetItem.value = lessonItems.value.find((it) => it.id === s.collectTargetId) || null;
+}
+
+onMounted(async () => {
   selectedPackId.value = localStorage.getItem('matchit-selected-pack-id') || '';
   selectedLevel.value = Number(localStorage.getItem('matchit-selected-level') || 1);
-  score.value = Number(localStorage.getItem('matchit-score') || 0);
-  if (gameKind.value === 'numbers') resetGame();
-  void loadPacks();
+  const savedPanel = localStorage.getItem('matchit-panel');
+  const save = readSave();
+  const canResume = !!(save && Array.isArray(save.board) && save.board.length && savedPanel === 'game');
+
+  await loadPacks();
+
+  if (canResume && save) {
+    // 게임 중이었으면 저장된 보드/상태로 복원하고 게임 화면으로
+    restoreFromSave(save);
+    activeMobilePanel.value = 'game';
+  } else {
+    // 평소엔 설정(학습팩) 화면으로
+    activeMobilePanel.value = savedPanel === 'score' ? 'score' : 'packs';
+  }
+
+  // 복원 이후부터 상태 저장 시작 (loadPacks의 새 보드가 저장을 덮어쓰지 않도록)
+  watch(board, saveGame, { deep: true });
+  watch([score, combo, moves, passes, targetIndex, gameOver, collectTargetItem, gameKind, solveMode, mode], saveGame);
+  watch(activeMobilePanel, (panel) => localStorage.setItem('matchit-panel', panel));
 });
 </script>
 

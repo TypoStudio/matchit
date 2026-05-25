@@ -27,25 +27,46 @@ npm run build
 
 ## 데이터팩 스키마
 
+데이터는 **마스터 파일 + 레벨별 파일** 두 단계로 구성됩니다.
+
+### 1. 마스터 파일 `public/data/lesson-packs.json`
+
+각 팩의 메타데이터와 사용 가능한 **레벨 목록**만 담습니다 (문항은 포함하지 않음).
+
 ```json
-{
-  "packs": [
-    {
-      "id": "science-core",
-      "title": "과학 기초",
-      "accent": "#14b8a6",
-      "items": [
-        {
-          "id": "water",
-          "label": "물",
-          "prompt": "H2O 만들기",
-          "tokens": ["H", "H", "O"],
-          "hint": "수소 2개와 산소 1개"
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "id": "science-core",
+    "title": "화학식",
+    "accent": "#14b8a6",
+    "levels": [1, 2, 3, 4, 5]
+  }
+]
 ```
 
-원격 JSON을 쓸 때는 정적 파일 URL이 CORS를 허용해야 합니다.
+### 2. 레벨 파일 `public/data/packs/{pack-id}/{level}.json`
+
+해당 팩·레벨의 문항(`LessonItem`) 배열입니다. 레벨이 올라갈수록 난이도가 높아집니다.
+
+```json
+[
+  {
+    "id": "water",
+    "label": "물",
+    "prompt": "물 만들기",
+    "tokens": ["H", "H", "O"],
+    "hint": "H2O — 수소 2개와 산소 1개"
+  }
+]
+```
+
+| 필드 | 설명 |
+| --- | --- |
+| `id` | 팩 안에서 고유한 식별자 (ascii kebab-case) |
+| `label` | 문항 이름 (예: `물`) |
+| `prompt` | 화면에 보여줄 문제 (예: `물 만들기`) |
+| `tokens` | 정답을 이루는 블럭 토큰 배열 (예: `["H","H","O"]`) |
+| `hint` | 힌트 |
+
+- 화면의 **JSON URL** 입력으로 마스터 파일을 원격 주소로 교체할 수 있습니다. 원격 JSON은 정적 파일 URL이 CORS를 허용해야 합니다.
+- 한 레벨 파일은 100문항 규모이며, 새 팩·레벨 추가 방법은 `AGENT_GUIDE.md`를 참고하세요.
