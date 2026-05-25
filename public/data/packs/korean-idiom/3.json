@@ -60,16 +60,16 @@
     "hint": "犬猿之間"
   },
   {
-    "id": "gyeolchawosa",
-    "label": "결자보은",
-    "prompt": "맺은 자가 은혜를 갚음",
+    "id": "gyohaksangjang",
+    "label": "교학상장",
+    "prompt": "가르치고 배우면서 서로 성장함",
     "tokens": [
-      "결",
-      "초",
-      "심",
-      "지"
+      "교",
+      "학",
+      "상",
+      "장"
     ],
-    "hint": "結草心志"
+    "hint": "敎學相長"
   },
   {
     "id": "gyeongcheonwiji",
@@ -168,16 +168,16 @@
     "hint": "口蜜腹劍"
   },
   {
-    "id": "guseupisaeng",
-    "label": "구사일생환",
-    "prompt": "낡은 것을 버리고 새것을 받아들임",
+    "id": "dagimangyang",
+    "label": "다기망양",
+    "prompt": "갈림길이 많아 양을 잃음, 방침이 많아 도리어 갈 바를 모름",
     "tokens": [
-      "송",
-      "구",
-      "영",
-      "신"
+      "다",
+      "기",
+      "망",
+      "양"
     ],
-    "hint": "送舊迎新"
+    "hint": "多岐亡羊"
   },
   {
     "id": "gusangyumun",
@@ -468,15 +468,16 @@
     "hint": "得隴望蜀"
   },
   {
-    "id": "deungyongmun",
-    "label": "등용문",
-    "prompt": "출세의 관문을 통과함",
+    "id": "jumagansan",
+    "label": "주마간산",
+    "prompt": "달리는 말 위에서 산을 봄, 자세히 살피지 못하고 대충 봄",
     "tokens": [
-      "등",
-      "용",
-      "문"
+      "주",
+      "마",
+      "간",
+      "산"
     ],
-    "hint": "登龍門"
+    "hint": "走馬看山"
   },
   {
     "id": "manggugjisin",
@@ -539,14 +540,16 @@
     "hint": "名不虛傳"
   },
   {
-    "id": "mosunjihaeng",
-    "label": "모순",
-    "prompt": "말이나 행동의 앞뒤가 서로 맞지 않음",
+    "id": "jipijigi",
+    "label": "지피지기",
+    "prompt": "상대를 알고 나를 앎",
     "tokens": [
-      "모",
-      "순"
+      "지",
+      "피",
+      "지",
+      "기"
     ],
-    "hint": "矛盾"
+    "hint": "知彼知己"
   },
   {
     "id": "mokbulinginyeon",
@@ -574,7 +577,7 @@
   },
   {
     "id": "munilhuijip",
-    "label": "문일지십백",
+    "label": "박학다식",
     "prompt": "지식이 넓고 막힘이 없음",
     "tokens": [
       "박",
@@ -645,15 +648,16 @@
     "hint": "百年佳約"
   },
   {
-    "id": "byeokojusang",
-    "label": "벽창우",
-    "prompt": "고집이 세고 우둔한 사람",
+    "id": "myeongyakgwanhwa",
+    "label": "명약관화",
+    "prompt": "불을 보듯 분명하고 뻔함",
     "tokens": [
-      "벽",
-      "창",
-      "우"
+      "명",
+      "약",
+      "관",
+      "화"
     ],
-    "hint": "碧昌牛"
+    "hint": "明若觀火"
   },
   {
     "id": "byeonhwamucheuk",
@@ -1040,14 +1044,16 @@
     "hint": "安分知足"
   },
   {
-    "id": "anseowiseong",
-    "label": "안서",
-    "prompt": "편지나 소식을 전하는 기러기",
+    "id": "daeuimyeongbun",
+    "label": "대의명분",
+    "prompt": "마땅히 지켜야 할 도리와 명분",
     "tokens": [
-      "안",
-      "서"
+      "대",
+      "의",
+      "명",
+      "분"
     ],
-    "hint": "雁書"
+    "hint": "大義名分"
   },
   {
     "id": "yangttugujang",

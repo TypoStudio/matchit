@@ -48,14 +48,16 @@
     "hint": "甘言利說"
   },
   {
-    "id": "gandbulhwa",
-    "label": "강안",
+    "id": "huanmuchi",
+    "label": "후안무치",
     "prompt": "낯가죽이 두꺼워 부끄러움을 모름",
     "tokens": [
-      "강",
-      "안"
+      "후",
+      "안",
+      "무",
+      "치"
     ],
-    "hint": "强顔"
+    "hint": "厚顔無恥"
   },
   {
     "id": "gangnopseongam",
@@ -166,14 +168,16 @@
     "hint": "鼓腹之聲"
   },
   {
-    "id": "godaegwangmun",
-    "label": "고희",
-    "prompt": "예로부터 드문 나이, 일흔 살",
+    "id": "hoyeonjigi",
+    "label": "호연지기",
+    "prompt": "하늘과 땅 사이에 가득 찬 넓고 큰 기운",
     "tokens": [
-      "고",
-      "희"
+      "호",
+      "연",
+      "지",
+      "기"
     ],
-    "hint": "古稀"
+    "hint": "浩然之氣"
   },
   {
     "id": "gokjeonsahwa",
@@ -536,18 +540,16 @@
     "hint": "獨不將軍"
   },
   {
-    "id": "donggajigeop",
-    "label": "동가식서가숙",
-    "prompt": "일정한 거처 없이 떠돌아다니며 지냄",
+    "id": "pajukjise",
+    "label": "파죽지세",
+    "prompt": "대나무를 쪼개는 기세, 거침없이 물리치며 나아감",
     "tokens": [
-      "동",
-      "가",
-      "식",
-      "서",
-      "가",
-      "숙"
+      "파",
+      "죽",
+      "지",
+      "세"
     ],
-    "hint": "東家食西家宿"
+    "hint": "破竹之勢"
   },
   {
     "id": "dongbyeongmosa",
@@ -862,27 +864,28 @@
     "hint": "四分五裂"
   },
   {
-    "id": "sajadusin",
-    "label": "사자후",
-    "prompt": "크게 열변을 토함",
+    "id": "mansijitan",
+    "label": "만시지탄",
+    "prompt": "때늦은 탄식, 시기가 늦어 기회를 놓친 한탄",
     "tokens": [
-      "사",
-      "자",
-      "후"
+      "만",
+      "시",
+      "지",
+      "탄"
     ],
-    "hint": "獅子吼"
+    "hint": "晩時之歎"
   },
   {
-    "id": "samgomansok",
-    "label": "삼순구식고",
-    "prompt": "지위가 낮은 자가 윗자리에 무리하게 오름",
+    "id": "ilhwakcheongeum",
+    "label": "일확천금",
+    "prompt": "단번에 천금을 움켜쥠, 힘들이지 않고 한꺼번에 큰 재물을 얻음",
     "tokens": [
-      "분",
-      "수",
-      "지",
-      "외"
+      "일",
+      "확",
+      "천",
+      "금"
     ],
-    "hint": "分數之外"
+    "hint": "一攫千金"
   },
   {
     "id": "sangsanmusang",
@@ -1030,7 +1033,7 @@
   },
   {
     "id": "sinsangmulbeol",
-    "label": "신상필벌엄",
+    "label": "상벌분명",
     "prompt": "상과 벌을 분명히 함",
     "tokens": [
       "상",
@@ -1113,14 +1116,16 @@
     "hint": "言中有骨"
   },
   {
-    "id": "yeokrinjicho",
-    "label": "역린",
-    "prompt": "임금의 노여움",
+    "id": "hogahowi",
+    "label": "호가호위",
+    "prompt": "여우가 호랑이의 위세를 빌림, 남의 권세를 빌려 위세를 부림",
     "tokens": [
-      "역",
-      "린"
+      "호",
+      "가",
+      "호",
+      "위"
     ],
-    "hint": "逆鱗"
+    "hint": "狐假虎威"
   },
   {
     "id": "yeonjamosae",
@@ -1159,16 +1164,16 @@
     "hint": "烏飛梨落"
   },
   {
-    "id": "ohaprangja",
-    "label": "오리무중운",
-    "prompt": "구름과 안개가 짙어 방향을 잃음",
+    "id": "jungeonbueon",
+    "label": "중언부언",
+    "prompt": "이미 한 말을 자꾸 되풀이함",
     "tokens": [
-      "운",
-      "무",
-      "지",
-      "중"
+      "중",
+      "언",
+      "부",
+      "언"
     ],
-    "hint": "雲霧之中"
+    "hint": "重言復言"
   },
   {
     "id": "ongnyusugok",

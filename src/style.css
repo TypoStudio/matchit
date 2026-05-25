@@ -60,6 +60,9 @@ select {
   color: #fff;
   isolation: isolate;
   box-shadow: 0 14px 28px rgba(17, 24, 39, 0.16);
+  touch-action: none; /* 모바일에서 드래그(스왑) 시 스크롤 방지 */
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .block-face::before,

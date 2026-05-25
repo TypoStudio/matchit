@@ -24,17 +24,16 @@
     "hint": "街談巷說"
   },
   {
-    "id": "gajeongmaengeo",
-    "label": "가정맹어호",
-    "prompt": "가혹한 정치는 호랑이보다 무서움",
+    "id": "gwonbulsimnyeon",
+    "label": "권불십년",
+    "prompt": "권세는 십 년을 가지 못함, 권력의 무상함",
     "tokens": [
-      "가",
-      "정",
-      "맹",
-      "어",
-      "호"
+      "권",
+      "불",
+      "십",
+      "년"
     ],
-    "hint": "苛政猛於虎"
+    "hint": "權不十年"
   },
   {
     "id": "gangukbongchu",
@@ -193,14 +192,16 @@
     "hint": "鯨戰蝦死"
   },
   {
-    "id": "gyerugyeolsu",
-    "label": "계륵",
-    "prompt": "버리기는 아깝고 쓸모는 별로 없는 것",
+    "id": "gyeongsejemin",
+    "label": "경세제민",
+    "prompt": "세상을 다스리고 백성을 구제함",
     "tokens": [
-      "계",
-      "륵"
+      "경",
+      "세",
+      "제",
+      "민"
     ],
-    "hint": "鷄肋"
+    "hint": "經世濟民"
   },
   {
     "id": "gomahomil",
@@ -227,16 +228,16 @@
     "hint": "孤雲野鶴"
   },
   {
-    "id": "gokdolsahyeong",
-    "label": "곡학아세사",
-    "prompt": "바른 학문을 굽혀 세상에 영합함",
+    "id": "jagangbulsik",
+    "label": "자강불식",
+    "prompt": "스스로 힘써 쉬지 않고 노력함",
     "tokens": [
-      "어",
-      "용",
-      "학",
-      "자"
+      "자",
+      "강",
+      "불",
+      "식"
     ],
-    "hint": "御用學者"
+    "hint": "自强不息"
   },
   {
     "id": "gwajeolyusin",
@@ -251,14 +252,16 @@
     "hint": "胯下之辱"
   },
   {
-    "id": "gwallrojihwa",
-    "label": "관규",
-    "prompt": "대롱으로 하늘을 봄, 좁은 식견",
+    "id": "gwanhonsangje",
+    "label": "관혼상제",
+    "prompt": "관례·혼례·상례·제례의 네 가지 예법",
     "tokens": [
       "관",
-      "규"
+      "혼",
+      "상",
+      "제"
     ],
-    "hint": "管窺"
+    "hint": "冠婚喪祭"
   },
   {
     "id": "gyodogyeolmok",
@@ -274,7 +277,7 @@
   },
   {
     "id": "guseunghyeong",
-    "label": "구밀복검사",
+    "label": "소리장도",
     "prompt": "겉으로는 웃으나 속으로는 칼을 품음",
     "tokens": [
       "소",
@@ -562,7 +565,7 @@
   },
   {
     "id": "doharudasi",
-    "label": "도청도설성",
+    "label": "가담항어",
     "prompt": "길에서 듣고 길에서 옮기는 헛된 말",
     "tokens": [
       "가",
@@ -717,15 +720,16 @@
     "hint": "門前雀羅"
   },
   {
-    "id": "mihbongjihaeng",
-    "label": "미봉책",
-    "prompt": "임시변통으로 잘못을 덮어 꾸미는 계책",
+    "id": "geoanjemi",
+    "label": "거안제미",
+    "prompt": "밥상을 눈썹 높이로 받듦, 남편을 깍듯이 공경함",
     "tokens": [
-      "미",
-      "봉",
-      "책"
+      "거",
+      "안",
+      "제",
+      "미"
     ],
-    "hint": "彌縫策"
+    "hint": "擧案齊眉"
   },
   {
     "id": "bakgwanyoyak",
@@ -740,14 +744,16 @@
     "hint": "博覽强記"
   },
   {
-    "id": "balhogjeong",
-    "label": "발호",
-    "prompt": "제멋대로 권세를 부리며 함부로 날뜀",
+    "id": "hojeopjimong",
+    "label": "호접지몽",
+    "prompt": "나비가 된 꿈, 물아의 구별을 잊은 경지",
     "tokens": [
-      "발",
-      "호"
+      "호",
+      "접",
+      "지",
+      "몽"
     ],
-    "hint": "跋扈"
+    "hint": "胡蝶之夢"
   },
   {
     "id": "baekgyeolbulgul",
@@ -762,15 +768,16 @@
     "hint": "白駒過隙"
   },
   {
-    "id": "baekanunsim",
-    "label": "백안시",
-    "prompt": "남을 업신여기거나 무시하는 태도로 봄",
+    "id": "honjeongsinseong",
+    "label": "혼정신성",
+    "prompt": "저녁엔 잠자리를 보고 아침엔 안부를 살핌, 부모를 잘 섬김",
     "tokens": [
-      "백",
-      "안",
-      "시"
+      "혼",
+      "정",
+      "신",
+      "성"
     ],
-    "hint": "白眼視"
+    "hint": "昏定晨省"
   },
   {
     "id": "byeongiphaengno",
@@ -977,14 +984,16 @@
     "hint": "盛衰之理"
   },
   {
-    "id": "sehanjido",
-    "label": "세군",
-    "prompt": "남에게 시집보낼 만한 사위, 좋은 사위",
+    "id": "gyeontojijaeng",
+    "label": "견토지쟁",
+    "prompt": "개와 토끼의 다툼, 엉뚱한 제삼자가 이득을 봄",
     "tokens": [
-      "세",
-      "군"
+      "견",
+      "토",
+      "지",
+      "쟁"
     ],
-    "hint": "細君"
+    "hint": "犬兔之爭"
   },
   {
     "id": "sohwajigwang",
@@ -1047,15 +1056,16 @@
     "hint": "蠅營狗苟"
   },
   {
-    "id": "siljihyeongmun",
-    "label": "시오설",
-    "prompt": "혀가 남아 있는지 봄, 말솜씨만 있으면 됨",
+    "id": "hoejajeongri",
+    "label": "회자정리",
+    "prompt": "만난 자는 반드시 헤어지게 됨",
     "tokens": [
-      "시",
-      "오",
-      "설"
+      "회",
+      "자",
+      "정",
+      "리"
     ],
-    "hint": "視吾舌"
+    "hint": "會者定離"
   },
   {
     "id": "sinsangmunbeol",

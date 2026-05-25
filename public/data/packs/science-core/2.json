@@ -800,7 +800,7 @@
   {
     "id": "chlorine-dioxide",
     "label": "이산화염소",
-    "prompt": "ClO2-m 만들기",
+    "prompt": "ClO2 만들기",
     "tokens": [
       "Cl",
       "O",

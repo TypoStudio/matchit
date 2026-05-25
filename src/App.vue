@@ -9,7 +9,8 @@ const packBoardSizes: Record<string, { cols: number; rows: number }> = {
   'english-grammar': { cols: 5, rows: 5 },
   'math-formula': { cols: 5, rows: 5 },
 };
-const localPackUrl = '/data/lesson-packs.json';
+const baseUrl = import.meta.env.BASE_URL;
+const localPackUrl = `${baseUrl}data/lesson-packs.json`;
 const palette = ['#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef'];
 
 const themes: Array<{ id: ThemeName; label: string }> = [
@@ -66,6 +67,7 @@ const score = ref(0);
 const best = ref(Number(localStorage.getItem('matchit-best') || 0));
 const combo = ref(1);
 const moves = ref(25);
+const passes = ref(0);
 const gameOver = ref(false);
 const message = ref('목표 블럭을 순서대로 누르세요.');
 const loading = ref(false);
@@ -76,6 +78,7 @@ const hintIndexes = ref<number[]>([]);
 // 숫자 모드: 사라지는 블럭이 합쳐지는 칸으로 모이는 인라인 트랜스폼 (index -> style)
 const gatherStyles = ref<Map<number, Record<string, string>>>(new Map());
 const draggedIndex = ref<number | null>(null);
+const dragGhost = ref<{ token: string; color: string; x: number; y: number; size: number } | null>(null);
 const motionPhase = ref<'idle' | 'swap' | 'fall'>('idle');
 const error = ref('');
 const shareUrl = ref('');
@@ -292,6 +295,29 @@ function scatterTokens(brd: Block[], item: LessonItem) {
   });
 }
 
+// 순서대로(단일) 모드: 목표가 항상 풀 수 있도록 보장.
+// 보드에 글자가 다 있는 식을 우선 목표로, 없으면 새 목표를 고르고 답 글자를 위에서 떨어뜨린다.
+function ensureSequenceTargetOnBoard() {
+  if (gameKind.value !== 'lesson' || solveMode.value !== 'sequence' || mode.value !== 'single') return;
+  const items = lessonItems.value;
+  if (!items.length) return;
+  const present = items.filter(canFormFromBoard);
+  if (present.length) {
+    targetIndex.value = items.indexOf(present[Math.floor(Math.random() * present.length)]);
+    return;
+  }
+  const chosen = items[Math.floor(Math.random() * items.length)];
+  targetIndex.value = items.indexOf(chosen);
+  const positions = shuffle(Array.from({ length: rows.value * cols.value }, (_, i) => i));
+  const next = [...board.value];
+  chosen.tokens.forEach((token, k) => {
+    const block = makeBlock(chosen, token);
+    block.dropFrom = rows.value;
+    next[positions[k]] = block;
+  });
+  board.value = next;
+}
+
 function buildCollectBoard(): Block[] {
   const items = lessonItems.value;
   const target = collectTargetItem.value;
@@ -371,6 +397,7 @@ function resetGame(keepScore = false) {
   motionPhase.value = 'idle';
   combo.value = 1;
   moves.value = 25;
+  passes.value = 0;
   gameOver.value = false;
   shareUrl.value = '';
   lastSolved.value = null;
@@ -389,13 +416,15 @@ function resetGame(keepScore = false) {
   } else {
     message.value = '목표 블럭을 순서대로 누르세요.';
   }
+  // 초기 목표를 랜덤으로 고르고 보드에 답이 있도록 보장
+  ensureSequenceTargetOnBoard();
 }
 
 async function loadLevel(packId: string, level: number) {
   loading.value = true;
   error.value = '';
   try {
-    const response = await fetch(`/data/packs/${packId}/${level}.json`, { cache: 'no-store' });
+    const response = await fetch(`${baseUrl}data/packs/${packId}/${level}.json`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const items = (await response.json()) as LessonItem[];
     if (!items.length) throw new Error('수준에 항목이 없습니다.');
@@ -431,10 +460,6 @@ async function loadPacks(url = remoteUrl.value) {
   }
 }
 
-function sameSequence(blocks: Block[], item: LessonItem) {
-  if (blocks.length !== item.tokens.length) return false;
-  return blocks.every((block, index) => block.token === item.tokens[index]);
-}
 
 function scoreMatch(item: LessonItem, length: number) {
   const gained = length * 120 * combo.value;
@@ -447,6 +472,7 @@ function scoreMatch(item: LessonItem, length: number) {
     targetIndex.value = Math.floor(Math.random() * lessonItems.value.length);
   }
   showHint.value = false;
+  hintIndexes.value = [];
   message.value = `${item.label} 해결 +${gained}`;
 }
 
@@ -504,66 +530,58 @@ async function resolveMatch(item: LessonItem, indexes: number[]) {
   motionPhase.value = 'fall';
   applyGravity(indexes);
   moves.value -= 1;
-  await sleep(1000);
-  motionPhase.value = 'idle';
-  isResolving.value = false;
-
   if (mode.value === 'single' && !solvedItems.value.includes(item.id)) {
     solvedItems.value.push(item.id);
   }
+  // 다음 목표를 랜덤 선택하고 보드에 답이 있도록 보장 (없으면 답 글자가 떨어짐)
+  ensureSequenceTargetOnBoard();
+  await sleep(1000);
+  motionPhase.value = 'idle';
+  isResolving.value = false;
 }
 
 function clearSelection() {
   selectedIndexes.value = [];
 }
 
+function tokenCounts(tokens: string[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const token of tokens) counts.set(token, (counts.get(token) || 0) + 1);
+  return counts;
+}
+// 선택한 글자들이 정답 글자 구성의 일부인지 (개수 초과 없이)
+function isSubset(selected: string[], answer: string[]) {
+  const need = tokenCounts(answer);
+  const have = tokenCounts(selected);
+  for (const [token, count] of have) {
+    if (count > (need.get(token) || 0)) return false;
+  }
+  return true;
+}
+
 async function handleSequenceClick(index: number) {
   if (isResolving.value) return;
 
+  // 자유롭게 여러 블럭 선택 (다시 누르면 해제). 정답 개수+구성이 맞으면 자동 완성
+  const existing = selectedIndexes.value.indexOf(index);
+  if (existing >= 0) {
+    selectedIndexes.value = selectedIndexes.value.filter((_, i) => i !== existing);
+    return;
+  }
+  selectedIndexes.value.push(index);
+  const tokens = selectedBlocks.value.map((block) => block.token);
+
   if (mode.value === 'endless') {
-    const existing = selectedIndexes.value.indexOf(index);
-    if (existing >= 0) {
-      selectedIndexes.value = selectedIndexes.value.slice(0, existing);
-      return;
-    }
-    selectedIndexes.value.push(index);
-    const blocks = selectedBlocks.value;
-
-    const matchedItem = lessonItems.value.find(item => sameSequence(blocks, item));
-
-    if (matchedItem) {
-      const solvedIndexes = [...selectedIndexes.value];
-      await resolveMatch(matchedItem, solvedIndexes);
-    } else if (blocks.length > 0) {
-      const isPrefixOfAny = lessonItems.value.some(item => {
-        if (blocks.length > item.tokens.length) return false;
-        return blocks.every((block, blockIndex) => block.token === item.tokens[blockIndex]);
-      });
-      if (!isPrefixOfAny) {
-        combo.value = 1;
-        message.value = '일치하는 항목이 없습니다.';
-      }
-    }
+    const matchedItem = lessonItems.value.find(
+      (item) => item.tokens.length === tokens.length && isSubset(tokens, item.tokens),
+    );
+    if (matchedItem) await resolveMatch(matchedItem, [...selectedIndexes.value]);
     return;
   }
 
   if (!target.value) return;
-  const existing = selectedIndexes.value.indexOf(index);
-  if (existing >= 0) {
-    selectedIndexes.value = selectedIndexes.value.slice(0, existing);
-    return;
-  }
-  selectedIndexes.value.push(index);
-  const blocks = selectedBlocks.value;
-  const prefixOk = blocks.every((block, blockIndex) => block.token === target.value?.tokens[blockIndex]);
-  if (!prefixOk) {
-    combo.value = 1;
-    message.value = '순서가 달라요. 목표식을 다시 보세요.';
-    return;
-  }
-  if (sameSequence(blocks, target.value)) {
-    const solvedIndexes = [...selectedIndexes.value];
-    await resolveMatch(target.value, solvedIndexes);
+  if (tokens.length === target.value.tokens.length && isSubset(tokens, target.value.tokens)) {
+    await resolveMatch(target.value, [...selectedIndexes.value]);
   }
 }
 
@@ -768,6 +786,7 @@ async function numberSwap(a: number, b: number) {
 
 async function trySwap(a: number, b: number) {
   if (a === b) return;
+  hintIndexes.value = [];
   if (gameKind.value === 'numbers') {
     await numberSwap(a, b);
     return;
@@ -811,17 +830,61 @@ async function handleCollectClick(index: number) {
 
 const swapEnabled = computed(() => gameKind.value === 'numbers' || solveMode.value === 'collect');
 
-function handleDragStart(index: number) {
-  if (!swapEnabled.value || isResolving.value) return;
-  if (gameKind.value === 'numbers' && gameOver.value) return;
-  draggedIndex.value = index;
+// 포인터 기반 입력 (마우스 + 모바일 터치 모두 동작). 탭=선택, 드래그=교환.
+let pointerStartIndex: number | null = null;
+let pointerStartX = 0;
+let pointerStartY = 0;
+let pointerStartSize = 48;
+let pointerMoved = false;
+
+function onPointerMove(event: PointerEvent) {
+  if (pointerStartIndex === null) return;
+  if (Math.abs(event.clientX - pointerStartX) > 8 || Math.abs(event.clientY - pointerStartY) > 8) {
+    pointerMoved = true;
+  }
+  if (pointerMoved && swapEnabled.value) {
+    draggedIndex.value = pointerStartIndex;
+    const block = board.value[pointerStartIndex];
+    if (block) {
+      dragGhost.value = { token: block.token, color: block.color, x: event.clientX, y: event.clientY, size: pointerStartSize };
+    }
+  }
 }
 
-function handleDrop(index: number) {
-  if (!swapEnabled.value || draggedIndex.value === null) return;
-  const from = draggedIndex.value;
+function onPointerUp(event: PointerEvent) {
+  window.removeEventListener('pointermove', onPointerMove);
+  window.removeEventListener('pointerup', onPointerUp);
+  const from = pointerStartIndex;
+  pointerStartIndex = null;
   draggedIndex.value = null;
-  void trySwap(from, index);
+  dragGhost.value = null;
+  if (from === null) return;
+
+  if (pointerMoved && swapEnabled.value) {
+    const el = (document.elementFromPoint(event.clientX, event.clientY) as HTMLElement | null)?.closest('[data-cell]') as HTMLElement | null;
+    const to = el ? Number(el.dataset.cell) : -1;
+    if (to >= 0 && to !== from) {
+      void trySwap(from, to);
+    } else {
+      swapFirstIndex.value = null;
+      selectedIndexes.value = [];
+    }
+    return;
+  }
+  // 움직이지 않았으면 탭으로 처리
+  handleBlockClick(from);
+}
+
+function onBlockPointerDown(index: number, event: PointerEvent) {
+  if (isResolving.value) return;
+  if (gameKind.value === 'numbers' && gameOver.value) return;
+  pointerStartIndex = index;
+  pointerStartX = event.clientX;
+  pointerStartY = event.clientY;
+  pointerStartSize = (event.currentTarget as HTMLElement).getBoundingClientRect().width;
+  pointerMoved = false;
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
 }
 
 function setSolveMode(nextMode: SolveMode) {
@@ -894,9 +957,30 @@ function toggleHint() {
   if (!hint.length) message.value = '표시할 조합이 없어요.';
 }
 
+// 모르면 다음 문제로 넘어가기 (학습 한 문제씩 모드)
+const canPass = computed(() => gameKind.value === 'lesson' && mode.value === 'single');
+function passCurrent() {
+  if (!canPass.value || isResolving.value) return;
+  passes.value += 1;
+  selectedIndexes.value = [];
+  swapFirstIndex.value = null;
+  hintIndexes.value = [];
+  if (solveMode.value === 'collect') {
+    const next = chooseNextCollectTarget();
+    if (next) {
+      collectTargetItem.value = next;
+    } else {
+      pickCollectItem();
+      board.value = buildCollectBoard();
+    }
+  } else {
+    ensureSequenceTargetOnBoard();
+  }
+  message.value = '패스 — 다음 문제!';
+}
+
 function handleBlockClick(index: number) {
   if (isResolving.value) return;
-  hintIndexes.value = [];
   if (gameKind.value === 'numbers' && gameOver.value) return;
   if (swapEnabled.value) {
     void handleCollectClick(index);
@@ -1233,14 +1317,24 @@ onMounted(() => {
                 <p class="mt-2 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
                 <p class="mt-2 text-xl font-black">{{ goalPrompt }}</p>
               </div>
-              <button
-                class="h-10 shrink-0 rounded-md border px-3 text-sm font-black"
-                :class="hintIndexes.length ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
-                type="button"
-                @click="toggleHint"
-              >
-                힌트
-              </button>
+              <div class="flex shrink-0 gap-2">
+                <button
+                  class="h-10 rounded-md border px-3 text-sm font-black"
+                  :class="hintIndexes.length ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
+                  type="button"
+                  @click="toggleHint"
+                >
+                  힌트
+                </button>
+                <button
+                  v-if="canPass"
+                  class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel)] px-3 text-sm font-black"
+                  type="button"
+                  @click="passCurrent"
+                >
+                  패스 →
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1284,13 +1378,9 @@ onMounted(() => {
               ]"
               :style="[{ backgroundColor: block.color, '--block-color': block.color, '--drop': block.dropFrom ?? 1 }, gatherStyles.get(index)]"
               type="button"
+              :data-cell="index"
               :disabled="isResolving"
-              :draggable="swapEnabled && !isResolving"
-              @click="handleBlockClick(index)"
-              @dragstart="handleDragStart(index)"
-              @dragover.prevent
-              @drop.prevent="handleDrop(index)"
-              @dragend="draggedIndex = null"
+              @pointerdown="onBlockPointerDown(index, $event)"
             >
               <span class="block-label grid h-full place-items-center text-xl font-black sm:text-2xl">
                 {{ block.token }}
@@ -1333,6 +1423,10 @@ onMounted(() => {
               <dt class="text-xs font-bold uppercase text-[var(--muted)]">{{ gameKind === 'numbers' ? '최고 숫자' : 'Moves' }}</dt>
               <dd class="mt-1 text-3xl font-black">{{ gameKind === 'numbers' ? formatValue(maxValue) : moves }}</dd>
             </div>
+            <div v-if="canPass" class="rounded-md bg-[var(--panel-strong)] p-3">
+              <dt class="text-xs font-bold uppercase text-[var(--muted)]">패스</dt>
+              <dd class="mt-1 text-3xl font-black">{{ passes }}</dd>
+            </div>
           </dl>
 
           <button class="mt-4 h-12 w-full rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="createShareImage">
@@ -1363,6 +1457,20 @@ onMounted(() => {
           </div>
         </aside>
       </section>
+    </div>
+
+    <div
+      v-if="dragGhost"
+      class="pointer-events-none fixed z-50"
+      :style="{ left: `${dragGhost.x}px`, top: `${dragGhost.y}px`, width: `${dragGhost.size}px`, height: `${dragGhost.size}px`, transform: 'translate(-50%, -50%)' }"
+    >
+      <div
+        class="block-face grid h-full w-full place-items-center text-xl font-black opacity-90 shadow-2xl"
+        :class="`block-style-${blockStyle}`"
+        :style="{ backgroundColor: dragGhost.color, '--block-color': dragGhost.color }"
+      >
+        {{ dragGhost.token }}
+      </div>
     </div>
 
     <div
