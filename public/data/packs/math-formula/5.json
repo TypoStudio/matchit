@@ -1,0 +1,1256 @@
+[
+  {
+    "id": "schrodinger-equation",
+    "label": "슈뢰딩거 방정식",
+    "prompt": "시간 의존 슈뢰딩거 방정식",
+    "tokens": [
+      "iℏ ∂Ψ/∂t",
+      "=",
+      "ĤΨ"
+    ],
+    "hint": "양자역학 기본"
+  },
+  {
+    "id": "navier-stokes",
+    "label": "나비에-스토크스",
+    "prompt": "점성 유체의 운동방정식",
+    "tokens": [
+      "ρ(∂v/∂t+v·∇v)",
+      "=",
+      "-∇p",
+      "+",
+      "μ∇²v",
+      "+",
+      "f"
+    ],
+    "hint": "밀레니엄 문제"
+  },
+  {
+    "id": "maxwell-gauss-e",
+    "label": "가우스 법칙 (전기)",
+    "prompt": "전기장 가우스 법칙",
+    "tokens": [
+      "∇·E",
+      "=",
+      "ρ",
+      "/",
+      "ε₀"
+    ],
+    "hint": "맥스웰 방정식"
+  },
+  {
+    "id": "maxwell-gauss-b",
+    "label": "가우스 법칙 (자기)",
+    "prompt": "자기장 가우스 법칙",
+    "tokens": [
+      "∇·B",
+      "=",
+      "0"
+    ],
+    "hint": "자기홀극 없음"
+  },
+  {
+    "id": "maxwell-faraday",
+    "label": "패러데이 법칙",
+    "prompt": "전자기 유도 법칙",
+    "tokens": [
+      "∇×E",
+      "=",
+      "-∂B/∂t"
+    ],
+    "hint": "맥스웰 방정식"
+  },
+  {
+    "id": "maxwell-ampere",
+    "label": "앙페르-맥스웰 법칙",
+    "prompt": "앙페르-맥스웰 법칙",
+    "tokens": [
+      "∇×B",
+      "=",
+      "μ₀J",
+      "+",
+      "μ₀ε₀∂E/∂t"
+    ],
+    "hint": "변위전류 포함"
+  },
+  {
+    "id": "einstein-field",
+    "label": "아인슈타인 장방정식",
+    "prompt": "일반상대성 장방정식",
+    "tokens": [
+      "Gμν",
+      "+",
+      "Λgμν",
+      "=",
+      "8πG/c⁴",
+      "Tμν"
+    ],
+    "hint": "시공간과 물질"
+  },
+  {
+    "id": "mass-energy",
+    "label": "질량-에너지 등가",
+    "prompt": "질량-에너지 등가식",
+    "tokens": [
+      "E",
+      "=",
+      "m",
+      "c²"
+    ],
+    "hint": "특수상대성"
+  },
+  {
+    "id": "relativistic-energy",
+    "label": "상대론적 에너지",
+    "prompt": "에너지-운동량 관계",
+    "tokens": [
+      "E²",
+      "=",
+      "(pc)²",
+      "+",
+      "(mc²)²"
+    ],
+    "hint": "전체 에너지"
+  },
+  {
+    "id": "lorentz-factor",
+    "label": "로런츠 인자",
+    "prompt": "로런츠 인자 공식",
+    "tokens": [
+      "γ",
+      "=",
+      "1",
+      "/",
+      "√(1-v²/c²)"
+    ],
+    "hint": "시간 팽창"
+  },
+  {
+    "id": "heisenberg-uncertainty",
+    "label": "불확정성 원리",
+    "prompt": "하이젠베르크 불확정성",
+    "tokens": [
+      "Δx",
+      "Δp",
+      "≥",
+      "ℏ",
+      "/",
+      "2"
+    ],
+    "hint": "위치-운동량"
+  },
+  {
+    "id": "planck-energy",
+    "label": "플랑크 에너지",
+    "prompt": "광자의 에너지",
+    "tokens": [
+      "E",
+      "=",
+      "h",
+      "f"
+    ],
+    "hint": "플랑크 상수 h"
+  },
+  {
+    "id": "de-broglie",
+    "label": "드브로이 파장",
+    "prompt": "물질파 파장",
+    "tokens": [
+      "λ",
+      "=",
+      "h",
+      "/",
+      "p"
+    ],
+    "hint": "운동량 p"
+  },
+  {
+    "id": "boltzmann-entropy",
+    "label": "볼츠만 엔트로피",
+    "prompt": "통계역학 엔트로피",
+    "tokens": [
+      "S",
+      "=",
+      "k",
+      "ln W"
+    ],
+    "hint": "미시상태 수 W"
+  },
+  {
+    "id": "partition-function",
+    "label": "분배함수",
+    "prompt": "정준앙상블 분배함수",
+    "tokens": [
+      "Z",
+      "=",
+      "Σ",
+      "e^(-Eᵢ/kT)"
+    ],
+    "hint": "통계역학"
+  },
+  {
+    "id": "boltzmann-distribution",
+    "label": "볼츠만 분포",
+    "prompt": "볼츠만 분포 확률",
+    "tokens": [
+      "pᵢ",
+      "=",
+      "e^(-Eᵢ/kT)",
+      "/",
+      "Z"
+    ],
+    "hint": "에너지 준위 확률"
+  },
+  {
+    "id": "wave-equation",
+    "label": "파동방정식",
+    "prompt": "고전 파동방정식",
+    "tokens": [
+      "∂²u/∂t²",
+      "=",
+      "c²",
+      "∇²u"
+    ],
+    "hint": "전파속도 c"
+  },
+  {
+    "id": "heat-equation",
+    "label": "열방정식",
+    "prompt": "열 전도 방정식",
+    "tokens": [
+      "∂u/∂t",
+      "=",
+      "α",
+      "∇²u"
+    ],
+    "hint": "확산계수 α"
+  },
+  {
+    "id": "laplace-equation",
+    "label": "라플라스 방정식",
+    "prompt": "라플라스 방정식",
+    "tokens": [
+      "∇²u",
+      "=",
+      "0"
+    ],
+    "hint": "조화함수"
+  },
+  {
+    "id": "poisson-equation",
+    "label": "푸아송 방정식",
+    "prompt": "푸아송 방정식",
+    "tokens": [
+      "∇²φ",
+      "=",
+      "ρ"
+    ],
+    "hint": "전위 방정식"
+  },
+  {
+    "id": "black-scholes",
+    "label": "블랙-숄즈 방정식",
+    "prompt": "옵션 가격 PDE",
+    "tokens": [
+      "∂V/∂t",
+      "+",
+      "1/2σ²S²∂²V/∂S²+rS∂V/∂S",
+      "-",
+      "rV",
+      "=",
+      "0"
+    ],
+    "hint": "금융수학"
+  },
+  {
+    "id": "riemann-zeta",
+    "label": "리만 제타함수",
+    "prompt": "리만 제타함수 정의",
+    "tokens": [
+      "ζ(s)",
+      "=",
+      "Σ",
+      "1",
+      "/",
+      "nˢ"
+    ],
+    "hint": "Re(s) > 1"
+  },
+  {
+    "id": "euler-product",
+    "label": "오일러 곱",
+    "prompt": "제타함수의 오일러 곱",
+    "tokens": [
+      "ζ(s)",
+      "=",
+      "Π",
+      "1/(1-p⁻ˢ)"
+    ],
+    "hint": "소수에 대한 곱"
+  },
+  {
+    "id": "prime-number-theorem",
+    "label": "소수정리",
+    "prompt": "소수 계량함수의 점근",
+    "tokens": [
+      "π(x)",
+      "~",
+      "x",
+      "/",
+      "ln x"
+    ],
+    "hint": "소수 분포"
+  },
+  {
+    "id": "euler-totient",
+    "label": "오일러 피 함수",
+    "prompt": "곱셈적 오일러 피 함수",
+    "tokens": [
+      "φ(n)",
+      "=",
+      "n",
+      "Π",
+      "(1-1/p)"
+    ],
+    "hint": "소인수 p"
+  },
+  {
+    "id": "eulers-theorem-number",
+    "label": "오일러 정리 (정수론)",
+    "prompt": "오일러의 정리",
+    "tokens": [
+      "a^φ(n)",
+      "≡",
+      "1",
+      "(mod n)"
+    ],
+    "hint": "서로소 a"
+  },
+  {
+    "id": "fermat-little",
+    "label": "페르마 소정리",
+    "prompt": "페르마의 소정리",
+    "tokens": [
+      "aᵖ",
+      "≡",
+      "a",
+      "(mod p)"
+    ],
+    "hint": "소수 p"
+  },
+  {
+    "id": "wilson-theorem",
+    "label": "윌슨 정리",
+    "prompt": "윌슨의 정리",
+    "tokens": [
+      "(p-1)!",
+      "≡",
+      "-1",
+      "(mod p)"
+    ],
+    "hint": "소수 판정"
+  },
+  {
+    "id": "euler-characteristic",
+    "label": "오일러 지표",
+    "prompt": "다면체의 오일러 공식",
+    "tokens": [
+      "V",
+      "-",
+      "E",
+      "+",
+      "F",
+      "=",
+      "2"
+    ],
+    "hint": "꼭짓점-모서리+면"
+  },
+  {
+    "id": "gauss-bonnet",
+    "label": "가우스-보네 정리",
+    "prompt": "가우스-보네 정리",
+    "tokens": [
+      "∫∫K dA",
+      "+",
+      "∮κ_g ds",
+      "=",
+      "2πχ"
+    ],
+    "hint": "곡률과 오일러 지표"
+  },
+  {
+    "id": "stokes-general",
+    "label": "일반 스토크스 정리",
+    "prompt": "미분형식 스토크스 정리",
+    "tokens": [
+      "∫_∂Ω ω",
+      "=",
+      "∫_Ω",
+      "dω"
+    ],
+    "hint": "경계와 외미분"
+  },
+  {
+    "id": "ito-lemma",
+    "label": "이토 보조정리",
+    "prompt": "이토의 보조정리",
+    "tokens": [
+      "df",
+      "=",
+      "(∂f/∂t+1/2σ²∂²f/∂x²)dt",
+      "+",
+      "σ∂f/∂x dW"
+    ],
+    "hint": "확률미적분"
+  },
+  {
+    "id": "geometric-brownian",
+    "label": "기하 브라운 운동",
+    "prompt": "기하 브라운 운동 SDE",
+    "tokens": [
+      "dS",
+      "=",
+      "μS dt",
+      "+",
+      "σS dW"
+    ],
+    "hint": "주가 모형"
+  },
+  {
+    "id": "fokker-planck",
+    "label": "포커-플랑크 방정식",
+    "prompt": "확률밀도의 시간발전",
+    "tokens": [
+      "∂p/∂t",
+      "=",
+      "-∂(μp)/∂x",
+      "+",
+      "1/2∂²(σ²p)/∂x²"
+    ],
+    "hint": "확산 과정"
+  },
+  {
+    "id": "kolmogorov-axiom",
+    "label": "콜모고로프 공리",
+    "prompt": "확률의 정규화 공리",
+    "tokens": [
+      "P(Ω)",
+      "=",
+      "1"
+    ],
+    "hint": "전체 표본공간"
+  },
+  {
+    "id": "fluctuation-dissipation",
+    "label": "요동-소산 정리",
+    "prompt": "아인슈타인 관계식",
+    "tokens": [
+      "D",
+      "=",
+      "μ",
+      "k",
+      "T"
+    ],
+    "hint": "확산-이동도 관계"
+  },
+  {
+    "id": "dirac-equation",
+    "label": "디랙 방정식",
+    "prompt": "상대론적 양자역학 방정식",
+    "tokens": [
+      "(iγᵘ∂ᵤ-m)",
+      "ψ",
+      "=",
+      "0"
+    ],
+    "hint": "스핀 1/2 입자"
+  },
+  {
+    "id": "klein-gordon",
+    "label": "클라인-고든 방정식",
+    "prompt": "상대론적 스칼라장 방정식",
+    "tokens": [
+      "(□+m²)",
+      "φ",
+      "=",
+      "0"
+    ],
+    "hint": "달랑베르시안"
+  },
+  {
+    "id": "hamilton-equations",
+    "label": "해밀턴 방정식",
+    "prompt": "정준 운동방정식",
+    "tokens": [
+      "q̇",
+      "=",
+      "∂H/∂p",
+      ",",
+      "ṗ=-∂H/∂q"
+    ],
+    "hint": "해밀턴 역학"
+  },
+  {
+    "id": "lagrangian-mechanics",
+    "label": "라그랑지언",
+    "prompt": "라그랑지언 정의",
+    "tokens": [
+      "L",
+      "=",
+      "T",
+      "-",
+      "V"
+    ],
+    "hint": "운동에너지 빼기 위치에너지"
+  },
+  {
+    "id": "poisson-bracket",
+    "label": "푸아송 괄호",
+    "prompt": "정준 푸아송 괄호",
+    "tokens": [
+      "{f,g}",
+      "=",
+      "∂f/∂q ∂g/∂p",
+      "-",
+      "∂f/∂p ∂g/∂q"
+    ],
+    "hint": "고전역학 구조"
+  },
+  {
+    "id": "commutator-position-momentum",
+    "label": "정준교환관계",
+    "prompt": "위치-운동량 교환자",
+    "tokens": [
+      "[x,p]",
+      "=",
+      "i",
+      "ℏ"
+    ],
+    "hint": "양자화 조건"
+  },
+  {
+    "id": "expectation-quantum",
+    "label": "기댓값 (양자)",
+    "prompt": "양자역학 기댓값",
+    "tokens": [
+      "⟨A⟩",
+      "=",
+      "⟨ψ|Â|ψ⟩"
+    ],
+    "hint": "연산자의 평균"
+  },
+  {
+    "id": "born-rule",
+    "label": "보른 규칙",
+    "prompt": "측정 확률 (보른 규칙)",
+    "tokens": [
+      "P",
+      "=",
+      "|⟨φ|ψ⟩|²"
+    ],
+    "hint": "진폭 제곱"
+  },
+  {
+    "id": "fine-structure",
+    "label": "미세구조상수",
+    "prompt": "미세구조상수 정의",
+    "tokens": [
+      "α",
+      "=",
+      "e²",
+      "/",
+      "(4πε₀ℏc)"
+    ],
+    "hint": "약 1/137"
+  },
+  {
+    "id": "spectral-theorem",
+    "label": "스펙트럼 분해",
+    "prompt": "대칭행렬의 스펙트럼 분해",
+    "tokens": [
+      "A",
+      "=",
+      "Q",
+      "Λ",
+      "Qᵀ"
+    ],
+    "hint": "직교 대각화"
+  },
+  {
+    "id": "svd",
+    "label": "특이값 분해",
+    "prompt": "특이값 분해",
+    "tokens": [
+      "A",
+      "=",
+      "U",
+      "Σ",
+      "Vᵀ"
+    ],
+    "hint": "직교-대각-직교"
+  },
+  {
+    "id": "lu-decomposition",
+    "label": "LU 분해",
+    "prompt": "행렬의 LU 분해",
+    "tokens": [
+      "A",
+      "=",
+      "L",
+      "U"
+    ],
+    "hint": "하삼각·상삼각"
+  },
+  {
+    "id": "qr-decomposition",
+    "label": "QR 분해",
+    "prompt": "행렬의 QR 분해",
+    "tokens": [
+      "A",
+      "=",
+      "Q",
+      "R"
+    ],
+    "hint": "직교·상삼각"
+  },
+  {
+    "id": "cayley-hamilton",
+    "label": "케일리-해밀턴",
+    "prompt": "케일리-해밀턴 정리",
+    "tokens": [
+      "p(A)",
+      "=",
+      "0"
+    ],
+    "hint": "특성다항식에 대입"
+  },
+  {
+    "id": "fundamental-theorem-algebra",
+    "label": "대수학의 기본정리",
+    "prompt": "n차 다항식의 근의 수",
+    "tokens": [
+      "n차 다항식",
+      "은",
+      "n개의 복소근"
+    ],
+    "hint": "중복도 포함"
+  },
+  {
+    "id": "binet-fibonacci",
+    "label": "비네 공식",
+    "prompt": "피보나치 일반항 (비네)",
+    "tokens": [
+      "Fₙ",
+      "=",
+      "(φⁿ-ψⁿ)",
+      "/",
+      "√5"
+    ],
+    "hint": "황금비 φ"
+  },
+  {
+    "id": "golden-ratio",
+    "label": "황금비",
+    "prompt": "황금비의 값",
+    "tokens": [
+      "φ",
+      "=",
+      "(1+√5)",
+      "/",
+      "2"
+    ],
+    "hint": "약 1.618"
+  },
+  {
+    "id": "catalan-number",
+    "label": "카탈란 수",
+    "prompt": "n번째 카탈란 수",
+    "tokens": [
+      "Cₙ",
+      "=",
+      "1/(n+1)",
+      "₂ₙCₙ"
+    ],
+    "hint": "조합론 수열"
+  },
+  {
+    "id": "vandermonde-identity",
+    "label": "방데르몽드 항등식",
+    "prompt": "방데르몽드 합성곱",
+    "tokens": [
+      "Σ C(m,k)C(n,p-k)",
+      "=",
+      "C(m+n,p)"
+    ],
+    "hint": "조합 항등식"
+  },
+  {
+    "id": "inclusion-exclusion-3",
+    "label": "포함배제 (3개)",
+    "prompt": "세 집합의 포함배제",
+    "tokens": [
+      "|A∪B∪C|",
+      "=",
+      "Σ|A|",
+      "-",
+      "Σ|A∩B|",
+      "+",
+      "|A∩B∩C|"
+    ],
+    "hint": "교집합 보정"
+  },
+  {
+    "id": "burnside-lemma",
+    "label": "번사이드 보조정리",
+    "prompt": "궤도의 수 (번사이드)",
+    "tokens": [
+      "|X/G|",
+      "=",
+      "1/|G|",
+      "Σ",
+      "|Fix(g)|"
+    ],
+    "hint": "군 작용"
+  },
+  {
+    "id": "lagrange-theorem-group",
+    "label": "라그랑주 정리 (군)",
+    "prompt": "부분군의 위수",
+    "tokens": [
+      "|H|",
+      "이",
+      "|G|",
+      "를",
+      "나눈다"
+    ],
+    "hint": "위수의 약수"
+  },
+  {
+    "id": "orbit-stabilizer",
+    "label": "궤도-안정자 정리",
+    "prompt": "궤도-안정자 정리",
+    "tokens": [
+      "|G|",
+      "=",
+      "|Orb(x)|",
+      "|Stab(x)|"
+    ],
+    "hint": "군 작용"
+  },
+  {
+    "id": "chinese-remainder",
+    "label": "중국인의 나머지 정리",
+    "prompt": "CRT 동형사상",
+    "tokens": [
+      "Z/mn",
+      "≅",
+      "Z/m",
+      "×",
+      "Z/n"
+    ],
+    "hint": "서로소 m, n"
+  },
+  {
+    "id": "rsa-encryption",
+    "label": "RSA 암호화",
+    "prompt": "RSA 암호문 생성",
+    "tokens": [
+      "c",
+      "=",
+      "mᵉ",
+      "mod n"
+    ],
+    "hint": "공개키 (e, n)"
+  },
+  {
+    "id": "rsa-decryption",
+    "label": "RSA 복호화",
+    "prompt": "RSA 평문 복원",
+    "tokens": [
+      "m",
+      "=",
+      "cᵈ",
+      "mod n"
+    ],
+    "hint": "개인키 d"
+  },
+  {
+    "id": "discrete-fourier",
+    "label": "이산 푸리에 변환",
+    "prompt": "이산 푸리에 변환",
+    "tokens": [
+      "Xₖ",
+      "=",
+      "Σ",
+      "xₙ",
+      "e^(-2πikn/N)"
+    ],
+    "hint": "N점 DFT"
+  },
+  {
+    "id": "z-transform",
+    "label": "Z 변환",
+    "prompt": "Z 변환 정의",
+    "tokens": [
+      "X(z)",
+      "=",
+      "Σ",
+      "x[n]",
+      "z⁻ⁿ"
+    ],
+    "hint": "이산신호 변환"
+  },
+  {
+    "id": "nyquist-rate",
+    "label": "나이퀴스트 율",
+    "prompt": "표본화 정리 조건",
+    "tokens": [
+      "fₛ",
+      ">",
+      "2",
+      "f_max"
+    ],
+    "hint": "최대 주파수의 두 배"
+  },
+  {
+    "id": "shannon-capacity",
+    "label": "섀넌 용량",
+    "prompt": "채널 용량 공식",
+    "tokens": [
+      "C",
+      "=",
+      "B",
+      "log₂(1+S/N)"
+    ],
+    "hint": "대역폭 B, SNR"
+  },
+  {
+    "id": "bellman-equation",
+    "label": "벨만 방정식",
+    "prompt": "최적 가치함수 방정식",
+    "tokens": [
+      "V(s)",
+      "=",
+      "max",
+      "[R+γV(s')]"
+    ],
+    "hint": "동적계획법"
+  },
+  {
+    "id": "bayes-update-posterior",
+    "label": "베이즈 갱신",
+    "prompt": "사후분포 비례식",
+    "tokens": [
+      "p(θ|x)",
+      "∝",
+      "p(x|θ)",
+      "p(θ)"
+    ],
+    "hint": "우도 × 사전"
+  },
+  {
+    "id": "fisher-information",
+    "label": "피셔 정보량",
+    "prompt": "피셔 정보량 정의",
+    "tokens": [
+      "I(θ)",
+      "=",
+      "E[(∂ln L/∂θ)²]"
+    ],
+    "hint": "추정 정밀도"
+  },
+  {
+    "id": "cramer-rao",
+    "label": "크라메르-라오 하한",
+    "prompt": "분산의 하한",
+    "tokens": [
+      "Var(θ̂)",
+      "≥",
+      "1",
+      "/",
+      "I(θ)"
+    ],
+    "hint": "불편추정량 한계"
+  },
+  {
+    "id": "maximum-likelihood",
+    "label": "최대우도 추정",
+    "prompt": "최대우도 추정 조건",
+    "tokens": [
+      "∂ln L/∂θ",
+      "=",
+      "0"
+    ],
+    "hint": "로그우도 미분"
+  },
+  {
+    "id": "markov-chain-stationary",
+    "label": "정상분포",
+    "prompt": "마르코프 연쇄 정상분포",
+    "tokens": [
+      "π",
+      "P",
+      "=",
+      "π"
+    ],
+    "hint": "전이행렬 P"
+  },
+  {
+    "id": "detailed-balance",
+    "label": "상세균형",
+    "prompt": "상세균형 조건",
+    "tokens": [
+      "πᵢ Pᵢⱼ",
+      "=",
+      "πⱼ Pⱼᵢ"
+    ],
+    "hint": "가역 마르코프 연쇄"
+  },
+  {
+    "id": "noether-theorem",
+    "label": "뇌터 정리",
+    "prompt": "대칭과 보존량",
+    "tokens": [
+      "대칭",
+      "⟹",
+      "보존량"
+    ],
+    "hint": "연속 대칭"
+  },
+  {
+    "id": "geodesic-equation",
+    "label": "측지선 방정식",
+    "prompt": "측지선 방정식",
+    "tokens": [
+      "d²xᵘ/dτ²",
+      "+",
+      "Γᵘαβ dxᵅ/dτ dxᵝ/dτ",
+      "=",
+      "0"
+    ],
+    "hint": "곡선 시공간"
+  },
+  {
+    "id": "metric-line-element",
+    "label": "선소",
+    "prompt": "리만 다양체의 선소",
+    "tokens": [
+      "ds²",
+      "=",
+      "gμν",
+      "dxᵘ dxᵛ"
+    ],
+    "hint": "계량텐서 g"
+  },
+  {
+    "id": "minkowski-metric",
+    "label": "민코프스키 선소",
+    "prompt": "특수상대성 선소",
+    "tokens": [
+      "ds²",
+      "=",
+      "-c²dt²",
+      "+",
+      "dx²+dy²+dz²"
+    ],
+    "hint": "평탄 시공간"
+  },
+  {
+    "id": "schwarzschild-radius",
+    "label": "슈바르츠실트 반지름",
+    "prompt": "사건의 지평선 반지름",
+    "tokens": [
+      "rₛ",
+      "=",
+      "2GM",
+      "/",
+      "c²"
+    ],
+    "hint": "블랙홀"
+  },
+  {
+    "id": "hawking-temperature",
+    "label": "호킹 온도",
+    "prompt": "블랙홀의 호킹 온도",
+    "tokens": [
+      "T",
+      "=",
+      "ℏc³",
+      "/",
+      "(8πGMk)"
+    ],
+    "hint": "블랙홀 복사"
+  },
+  {
+    "id": "friedmann-equation",
+    "label": "프리드만 방정식",
+    "prompt": "우주 팽창 방정식",
+    "tokens": [
+      "(ȧ/a)²",
+      "=",
+      "8πG/3 ρ",
+      "-",
+      "k/a²"
+    ],
+    "hint": "우주론"
+  },
+  {
+    "id": "hubble-law",
+    "label": "허블 법칙",
+    "prompt": "은하 후퇴속도",
+    "tokens": [
+      "v",
+      "=",
+      "H₀",
+      "d"
+    ],
+    "hint": "허블 상수 H₀"
+  },
+  {
+    "id": "stefan-boltzmann",
+    "label": "슈테판-볼츠만 법칙",
+    "prompt": "흑체 복사 법칙",
+    "tokens": [
+      "j",
+      "=",
+      "σ",
+      "T⁴"
+    ],
+    "hint": "절대온도 4제곱"
+  },
+  {
+    "id": "planck-radiation",
+    "label": "플랑크 복사 법칙",
+    "prompt": "흑체 복사 스펙트럼",
+    "tokens": [
+      "B(ν)",
+      "=",
+      "2hν³/c²",
+      "1/(e^(hν/kT)-1)"
+    ],
+    "hint": "양자 복사"
+  },
+  {
+    "id": "wien-displacement",
+    "label": "빈 변위 법칙",
+    "prompt": "최대 복사 파장",
+    "tokens": [
+      "λ_max",
+      "T",
+      "=",
+      "b"
+    ],
+    "hint": "빈 상수 b"
+  },
+  {
+    "id": "ideal-gas",
+    "label": "이상기체 상태방정식",
+    "prompt": "이상기체 법칙",
+    "tokens": [
+      "P",
+      "V",
+      "=",
+      "n",
+      "R",
+      "T"
+    ],
+    "hint": "기체상수 R"
+  },
+  {
+    "id": "carnot-efficiency",
+    "label": "카르노 효율",
+    "prompt": "카르노 기관의 효율",
+    "tokens": [
+      "η",
+      "=",
+      "1",
+      "-",
+      "T_c/T_h"
+    ],
+    "hint": "온도 비"
+  },
+  {
+    "id": "gibbs-free-energy",
+    "label": "깁스 자유에너지",
+    "prompt": "깁스 자유에너지",
+    "tokens": [
+      "G",
+      "=",
+      "H",
+      "-",
+      "T",
+      "S"
+    ],
+    "hint": "엔탈피와 엔트로피"
+  },
+  {
+    "id": "clausius-clapeyron",
+    "label": "클라우지우스-클라페롱",
+    "prompt": "상전이 곡선 기울기",
+    "tokens": [
+      "dP/dT",
+      "=",
+      "L",
+      "/",
+      "(TΔV)"
+    ],
+    "hint": "잠열 L"
+  },
+  {
+    "id": "lorentz-force",
+    "label": "로런츠 힘",
+    "prompt": "전자기력 공식",
+    "tokens": [
+      "F",
+      "=",
+      "q",
+      "(E+v×B)"
+    ],
+    "hint": "전하 q"
+  },
+  {
+    "id": "coulomb-law",
+    "label": "쿨롱 법칙",
+    "prompt": "두 전하 사이 힘",
+    "tokens": [
+      "F",
+      "=",
+      "k",
+      "q₁q₂",
+      "/",
+      "r²"
+    ],
+    "hint": "거리 제곱 반비례"
+  },
+  {
+    "id": "newton-gravitation",
+    "label": "만유인력 법칙",
+    "prompt": "두 질량 사이 중력",
+    "tokens": [
+      "F",
+      "=",
+      "G",
+      "m₁m₂",
+      "/",
+      "r²"
+    ],
+    "hint": "거리 제곱 반비례"
+  },
+  {
+    "id": "biot-savart",
+    "label": "비오-사바르 법칙",
+    "prompt": "전류 요소의 자기장",
+    "tokens": [
+      "dB",
+      "=",
+      "μ₀/4π",
+      "I dl×r̂",
+      "/",
+      "r²"
+    ],
+    "hint": "자기장 생성"
+  },
+  {
+    "id": "poynting-vector",
+    "label": "포인팅 벡터",
+    "prompt": "전자기 에너지 흐름",
+    "tokens": [
+      "S",
+      "=",
+      "1/μ₀",
+      "E×B"
+    ],
+    "hint": "에너지 다발"
+  },
+  {
+    "id": "continuity-equation",
+    "label": "연속방정식",
+    "prompt": "전하 보존 연속방정식",
+    "tokens": [
+      "∂ρ/∂t",
+      "+",
+      "∇·J",
+      "=",
+      "0"
+    ],
+    "hint": "전하 보존"
+  },
+  {
+    "id": "navier-stokes-incompressible",
+    "label": "비압축 연속방정식",
+    "prompt": "비압축 유체 조건",
+    "tokens": [
+      "∇·v",
+      "=",
+      "0"
+    ],
+    "hint": "발산이 0"
+  },
+  {
+    "id": "bernoulli-equation",
+    "label": "베르누이 방정식",
+    "prompt": "유체의 베르누이 방정식",
+    "tokens": [
+      "P",
+      "+",
+      "1/2ρv²",
+      "+",
+      "ρgh",
+      "=",
+      "const"
+    ],
+    "hint": "에너지 보존"
+  },
+  {
+    "id": "reynolds-number",
+    "label": "레이놀즈 수",
+    "prompt": "레이놀즈 수 정의",
+    "tokens": [
+      "Re",
+      "=",
+      "ρvL",
+      "/",
+      "μ"
+    ],
+    "hint": "관성/점성 비"
+  },
+  {
+    "id": "logistic-map",
+    "label": "로지스틱 사상",
+    "prompt": "로지스틱 사상 점화식",
+    "tokens": [
+      "xₙ₊₁",
+      "=",
+      "r",
+      "xₙ",
+      "(1-xₙ)"
+    ],
+    "hint": "카오스 모형"
+  },
+  {
+    "id": "mandelbrot-iteration",
+    "label": "만델브로 반복",
+    "prompt": "만델브로 집합 점화식",
+    "tokens": [
+      "zₙ₊₁",
+      "=",
+      "zₙ²",
+      "+",
+      "c"
+    ],
+    "hint": "복소 반복"
+  },
+  {
+    "id": "green-function-helmholtz",
+    "label": "헬름홀츠 방정식",
+    "prompt": "정상파 헬름홀츠 방정식",
+    "tokens": [
+      "∇²ψ",
+      "+",
+      "k²ψ",
+      "=",
+      "0"
+    ],
+    "hint": "파수 k"
+  }
+]

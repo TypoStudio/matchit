@@ -1,0 +1,1081 @@
+[
+  {
+    "id": "present-perfect",
+    "label": "현재완료",
+    "prompt": "현재완료 구조",
+    "tokens": [
+      "have",
+      "p.p."
+    ],
+    "hint": "경험, 계속, 완료, 결과"
+  },
+  {
+    "id": "passive",
+    "label": "수동태",
+    "prompt": "수동태 구조",
+    "tokens": [
+      "be",
+      "p.p."
+    ],
+    "hint": "주어가 동작을 당함"
+  },
+  {
+    "id": "to-infinitive",
+    "label": "to부정사",
+    "prompt": "목적 표현",
+    "tokens": [
+      "to",
+      "V"
+    ],
+    "hint": "명사, 형용사, 부사 역할"
+  },
+  {
+    "id": "present-continuous",
+    "label": "현재진행",
+    "prompt": "현재진행 구조",
+    "tokens": [
+      "be",
+      "~ing"
+    ],
+    "hint": "지금 하고 있는 일"
+  },
+  {
+    "id": "past-perfect",
+    "label": "과거완료",
+    "prompt": "과거완료 구조",
+    "tokens": [
+      "had",
+      "p.p."
+    ],
+    "hint": "과거의 어떤 시점보다 더 이전"
+  },
+  {
+    "id": "future-simple",
+    "label": "단순미래",
+    "prompt": "단순미래 구조",
+    "tokens": [
+      "will",
+      "V"
+    ],
+    "hint": "미래의 일"
+  },
+  {
+    "id": "gerund",
+    "label": "동명사",
+    "prompt": "동명사 형태",
+    "tokens": [
+      "V",
+      "~ing"
+    ],
+    "hint": "동사를 명사처럼"
+  },
+  {
+    "id": "comparative",
+    "label": "비교급",
+    "prompt": "비교급 형태",
+    "tokens": [
+      "~er",
+      "than"
+    ],
+    "hint": "두 대상을 비교"
+  },
+  {
+    "id": "superlative",
+    "label": "최상급",
+    "prompt": "최상급 형태",
+    "tokens": [
+      "the",
+      "~est"
+    ],
+    "hint": "셋 이상 중 최고"
+  },
+  {
+    "id": "first-conditional",
+    "label": "가정법 1형식",
+    "prompt": "가정법 1형식 구조",
+    "tokens": [
+      "If",
+      "present",
+      "will",
+      "V"
+    ],
+    "hint": "미래의 가능한 상황"
+  },
+  {
+    "id": "second-conditional",
+    "label": "가정법 2형식",
+    "prompt": "가정법 2형식 구조",
+    "tokens": [
+      "If",
+      "past",
+      "would",
+      "V"
+    ],
+    "hint": "현재의 불가능한 상황"
+  },
+  {
+    "id": "reported-speech",
+    "label": "화법 전환",
+    "prompt": "간접화법으로 전환",
+    "tokens": [
+      "S",
+      "said",
+      "that"
+    ],
+    "hint": "다른 사람의 말을 전달"
+  },
+  {
+    "id": "relative-pronoun",
+    "label": "관계대명사",
+    "prompt": "관계대명사 예시",
+    "tokens": [
+      "who",
+      "which",
+      "that"
+    ],
+    "hint": "두 문장을 연결"
+  },
+  {
+    "id": "phrasal-verb",
+    "label": "구동사",
+    "prompt": "구동사 예시",
+    "tokens": [
+      "look",
+      "up",
+      "to"
+    ],
+    "hint": "동사 + 부사/전치사"
+  },
+  {
+    "id": "present-simple",
+    "label": "단순현재",
+    "prompt": "단순현재 구조",
+    "tokens": [
+      "S",
+      "V",
+      "(s/es)"
+    ],
+    "hint": "습관, 일반적 사실"
+  },
+  {
+    "id": "past-simple",
+    "label": "단순과거",
+    "prompt": "단순과거 구조",
+    "tokens": [
+      "S",
+      "V",
+      "~ed"
+    ],
+    "hint": "과거에 끝난 일"
+  },
+  {
+    "id": "be-verb-present",
+    "label": "be동사 현재",
+    "prompt": "be동사 현재형",
+    "tokens": [
+      "am",
+      "is",
+      "are"
+    ],
+    "hint": "주어에 따라 변함"
+  },
+  {
+    "id": "be-verb-past",
+    "label": "be동사 과거",
+    "prompt": "be동사 과거형",
+    "tokens": [
+      "was",
+      "were"
+    ],
+    "hint": "과거의 상태"
+  },
+  {
+    "id": "there-is-are",
+    "label": "there is/are",
+    "prompt": "존재 표현",
+    "tokens": [
+      "there",
+      "is",
+      "are"
+    ],
+    "hint": "~이 있다"
+  },
+  {
+    "id": "negative-present",
+    "label": "현재 부정문",
+    "prompt": "일반동사 현재 부정",
+    "tokens": [
+      "do",
+      "not",
+      "V"
+    ],
+    "hint": "~하지 않는다"
+  },
+  {
+    "id": "negative-past",
+    "label": "과거 부정문",
+    "prompt": "일반동사 과거 부정",
+    "tokens": [
+      "did",
+      "not",
+      "V"
+    ],
+    "hint": "~하지 않았다"
+  },
+  {
+    "id": "question-present",
+    "label": "현재 의문문",
+    "prompt": "일반동사 현재 의문",
+    "tokens": [
+      "Do",
+      "S",
+      "V"
+    ],
+    "hint": "~하나요?"
+  },
+  {
+    "id": "question-past",
+    "label": "과거 의문문",
+    "prompt": "일반동사 과거 의문",
+    "tokens": [
+      "Did",
+      "S",
+      "V"
+    ],
+    "hint": "~했나요?"
+  },
+  {
+    "id": "be-going-to",
+    "label": "be going to",
+    "prompt": "예정/계획된 미래",
+    "tokens": [
+      "be",
+      "going",
+      "to",
+      "V"
+    ],
+    "hint": "~할 예정이다"
+  },
+  {
+    "id": "can-ability",
+    "label": "can 능력",
+    "prompt": "능력 표현",
+    "tokens": [
+      "can",
+      "V"
+    ],
+    "hint": "~할 수 있다"
+  },
+  {
+    "id": "cannot",
+    "label": "cannot",
+    "prompt": "능력 부정",
+    "tokens": [
+      "cannot",
+      "V"
+    ],
+    "hint": "~할 수 없다"
+  },
+  {
+    "id": "have-to",
+    "label": "have to",
+    "prompt": "의무 표현",
+    "tokens": [
+      "have",
+      "to",
+      "V"
+    ],
+    "hint": "~해야 한다"
+  },
+  {
+    "id": "would-like-to",
+    "label": "would like to",
+    "prompt": "정중한 희망",
+    "tokens": [
+      "would",
+      "like",
+      "to",
+      "V"
+    ],
+    "hint": "~하고 싶다"
+  },
+  {
+    "id": "imperative",
+    "label": "명령문",
+    "prompt": "명령문 구조",
+    "tokens": [
+      "V",
+      "object"
+    ],
+    "hint": "동사원형으로 시작"
+  },
+  {
+    "id": "do-not-imperative",
+    "label": "부정 명령문",
+    "prompt": "부정 명령문 구조",
+    "tokens": [
+      "Do",
+      "not",
+      "V"
+    ],
+    "hint": "~하지 마라"
+  },
+  {
+    "id": "lets",
+    "label": "let's",
+    "prompt": "제안 표현",
+    "tokens": [
+      "let's",
+      "V"
+    ],
+    "hint": "~하자"
+  },
+  {
+    "id": "plural-noun",
+    "label": "복수 명사",
+    "prompt": "복수 명사 형태",
+    "tokens": [
+      "noun",
+      "~s/es"
+    ],
+    "hint": "둘 이상"
+  },
+  {
+    "id": "possessive-s",
+    "label": "소유격",
+    "prompt": "소유격 표현",
+    "tokens": [
+      "noun",
+      "'s"
+    ],
+    "hint": "~의"
+  },
+  {
+    "id": "a-an-article",
+    "label": "부정관사",
+    "prompt": "부정관사 a/an",
+    "tokens": [
+      "a",
+      "an"
+    ],
+    "hint": "하나의"
+  },
+  {
+    "id": "the-article",
+    "label": "정관사",
+    "prompt": "정관사 the",
+    "tokens": [
+      "the",
+      "noun"
+    ],
+    "hint": "특정한 것"
+  },
+  {
+    "id": "demonstrative",
+    "label": "지시대명사",
+    "prompt": "지시대명사",
+    "tokens": [
+      "this",
+      "that",
+      "these"
+    ],
+    "hint": "이것, 저것"
+  },
+  {
+    "id": "subject-pronoun",
+    "label": "주격 인칭대명사",
+    "prompt": "주격 대명사",
+    "tokens": [
+      "I",
+      "you",
+      "he"
+    ],
+    "hint": "문장의 주어"
+  },
+  {
+    "id": "object-pronoun",
+    "label": "목적격 인칭대명사",
+    "prompt": "목적격 대명사",
+    "tokens": [
+      "me",
+      "you",
+      "him"
+    ],
+    "hint": "동사의 목적어"
+  },
+  {
+    "id": "possessive-pronoun",
+    "label": "소유대명사",
+    "prompt": "소유대명사",
+    "tokens": [
+      "mine",
+      "yours",
+      "his"
+    ],
+    "hint": "~의 것"
+  },
+  {
+    "id": "how-many",
+    "label": "how many",
+    "prompt": "셀 수 있는 수량 질문",
+    "tokens": [
+      "How",
+      "many",
+      "noun"
+    ],
+    "hint": "몇 개?"
+  },
+  {
+    "id": "how-much",
+    "label": "how much",
+    "prompt": "셀 수 없는 양 질문",
+    "tokens": [
+      "How",
+      "much",
+      "noun"
+    ],
+    "hint": "얼마?"
+  },
+  {
+    "id": "preposition-place",
+    "label": "장소 전치사",
+    "prompt": "장소 전치사",
+    "tokens": [
+      "in",
+      "on",
+      "at"
+    ],
+    "hint": "~안에, 위에"
+  },
+  {
+    "id": "preposition-time",
+    "label": "시간 전치사",
+    "prompt": "시간 전치사",
+    "tokens": [
+      "in",
+      "on",
+      "at"
+    ],
+    "hint": "~에 (시간)"
+  },
+  {
+    "id": "and-conjunction",
+    "label": "등위접속사 and",
+    "prompt": "연결 접속사",
+    "tokens": [
+      "A",
+      "and",
+      "B"
+    ],
+    "hint": "그리고"
+  },
+  {
+    "id": "but-conjunction",
+    "label": "등위접속사 but",
+    "prompt": "대조 접속사",
+    "tokens": [
+      "A",
+      "but",
+      "B"
+    ],
+    "hint": "그러나"
+  },
+  {
+    "id": "or-conjunction",
+    "label": "등위접속사 or",
+    "prompt": "선택 접속사",
+    "tokens": [
+      "A",
+      "or",
+      "B"
+    ],
+    "hint": "또는"
+  },
+  {
+    "id": "because-clause",
+    "label": "because 절",
+    "prompt": "이유 표현",
+    "tokens": [
+      "because",
+      "S",
+      "V"
+    ],
+    "hint": "~때문에"
+  },
+  {
+    "id": "when-clause",
+    "label": "when 절",
+    "prompt": "시간 표현",
+    "tokens": [
+      "when",
+      "S",
+      "V"
+    ],
+    "hint": "~할 때"
+  },
+  {
+    "id": "if-clause-basic",
+    "label": "if 절 기초",
+    "prompt": "조건 표현",
+    "tokens": [
+      "if",
+      "S",
+      "V"
+    ],
+    "hint": "만약 ~라면"
+  },
+  {
+    "id": "frequency-adverb",
+    "label": "빈도부사",
+    "prompt": "빈도부사 위치",
+    "tokens": [
+      "always",
+      "usually",
+      "often"
+    ],
+    "hint": "얼마나 자주"
+  },
+  {
+    "id": "adjective-order",
+    "label": "형용사",
+    "prompt": "형용사 + 명사",
+    "tokens": [
+      "adjective",
+      "noun"
+    ],
+    "hint": "명사를 수식"
+  },
+  {
+    "id": "adverb-ly",
+    "label": "부사",
+    "prompt": "부사 형태",
+    "tokens": [
+      "adjective",
+      "~ly"
+    ],
+    "hint": "동사를 수식"
+  },
+  {
+    "id": "how-question",
+    "label": "how 의문문",
+    "prompt": "방법/상태 질문",
+    "tokens": [
+      "How",
+      "be",
+      "S"
+    ],
+    "hint": "어떻게"
+  },
+  {
+    "id": "what-question",
+    "label": "what 의문문",
+    "prompt": "무엇 질문",
+    "tokens": [
+      "What",
+      "be",
+      "S"
+    ],
+    "hint": "무엇"
+  },
+  {
+    "id": "where-question",
+    "label": "where 의문문",
+    "prompt": "장소 질문",
+    "tokens": [
+      "Where",
+      "be",
+      "S"
+    ],
+    "hint": "어디"
+  },
+  {
+    "id": "who-question",
+    "label": "who 의문문",
+    "prompt": "사람 질문",
+    "tokens": [
+      "Who",
+      "be",
+      "S"
+    ],
+    "hint": "누구"
+  },
+  {
+    "id": "when-question",
+    "label": "when 의문문",
+    "prompt": "시간 질문",
+    "tokens": [
+      "When",
+      "be",
+      "S"
+    ],
+    "hint": "언제"
+  },
+  {
+    "id": "why-question",
+    "label": "why 의문문",
+    "prompt": "이유 질문",
+    "tokens": [
+      "Why",
+      "be",
+      "S"
+    ],
+    "hint": "왜"
+  },
+  {
+    "id": "which-question",
+    "label": "which 의문문",
+    "prompt": "선택 질문",
+    "tokens": [
+      "Which",
+      "noun"
+    ],
+    "hint": "어느 것"
+  },
+  {
+    "id": "whose-question",
+    "label": "whose 의문문",
+    "prompt": "소유 질문",
+    "tokens": [
+      "Whose",
+      "noun"
+    ],
+    "hint": "누구의"
+  },
+  {
+    "id": "present-perfect-experience",
+    "label": "현재완료 경험",
+    "prompt": "경험 용법",
+    "tokens": [
+      "have",
+      "ever",
+      "p.p."
+    ],
+    "hint": "~한 적이 있다"
+  },
+  {
+    "id": "present-perfect-just",
+    "label": "현재완료 완료",
+    "prompt": "just 완료 용법",
+    "tokens": [
+      "have",
+      "just",
+      "p.p."
+    ],
+    "hint": "막 ~했다"
+  },
+  {
+    "id": "present-perfect-already",
+    "label": "현재완료 already",
+    "prompt": "already 용법",
+    "tokens": [
+      "have",
+      "already",
+      "p.p."
+    ],
+    "hint": "이미 ~했다"
+  },
+  {
+    "id": "present-perfect-yet",
+    "label": "현재완료 yet",
+    "prompt": "yet 용법",
+    "tokens": [
+      "have",
+      "not",
+      "p.p.",
+      "yet"
+    ],
+    "hint": "아직 ~하지 않았다"
+  },
+  {
+    "id": "present-perfect-since",
+    "label": "현재완료 since",
+    "prompt": "since 계속 용법",
+    "tokens": [
+      "have",
+      "p.p.",
+      "since"
+    ],
+    "hint": "~이래로"
+  },
+  {
+    "id": "present-perfect-for",
+    "label": "현재완료 for",
+    "prompt": "for 계속 용법",
+    "tokens": [
+      "have",
+      "p.p.",
+      "for"
+    ],
+    "hint": "~동안"
+  },
+  {
+    "id": "comparative-more",
+    "label": "비교급 more",
+    "prompt": "긴 형용사 비교급",
+    "tokens": [
+      "more",
+      "adjective",
+      "than"
+    ],
+    "hint": "더 ~한"
+  },
+  {
+    "id": "superlative-most",
+    "label": "최상급 most",
+    "prompt": "긴 형용사 최상급",
+    "tokens": [
+      "the",
+      "most",
+      "adjective"
+    ],
+    "hint": "가장 ~한"
+  },
+  {
+    "id": "as-as",
+    "label": "as ~ as",
+    "prompt": "동등 비교",
+    "tokens": [
+      "as",
+      "adjective",
+      "as"
+    ],
+    "hint": "~만큼 ~한"
+  },
+  {
+    "id": "not-as-as",
+    "label": "not as ~ as",
+    "prompt": "동등 비교 부정",
+    "tokens": [
+      "not",
+      "as",
+      "adjective",
+      "as"
+    ],
+    "hint": "~만큼 ~하지 않은"
+  },
+  {
+    "id": "too-to",
+    "label": "too ~ to",
+    "prompt": "너무 ~해서 ~할 수 없다",
+    "tokens": [
+      "too",
+      "adjective",
+      "to",
+      "V"
+    ],
+    "hint": "너무 ~해서"
+  },
+  {
+    "id": "enough-to",
+    "label": "enough to",
+    "prompt": "~할 만큼 충분히",
+    "tokens": [
+      "adjective",
+      "enough",
+      "to",
+      "V"
+    ],
+    "hint": "~할 만큼"
+  },
+  {
+    "id": "so-that",
+    "label": "so that",
+    "prompt": "~하기 위해",
+    "tokens": [
+      "so",
+      "that",
+      "S",
+      "V"
+    ],
+    "hint": "목적/결과"
+  },
+  {
+    "id": "want-to",
+    "label": "want to",
+    "prompt": "원하다",
+    "tokens": [
+      "want",
+      "to",
+      "V"
+    ],
+    "hint": "~하기를 원하다"
+  },
+  {
+    "id": "like-to",
+    "label": "like to",
+    "prompt": "좋아하다",
+    "tokens": [
+      "like",
+      "to",
+      "V"
+    ],
+    "hint": "~하기를 좋아하다"
+  },
+  {
+    "id": "need-to",
+    "label": "need to",
+    "prompt": "필요하다",
+    "tokens": [
+      "need",
+      "to",
+      "V"
+    ],
+    "hint": "~할 필요가 있다"
+  },
+  {
+    "id": "start-to",
+    "label": "start to",
+    "prompt": "시작하다",
+    "tokens": [
+      "start",
+      "to",
+      "V"
+    ],
+    "hint": "~하기 시작하다"
+  },
+  {
+    "id": "decide-to",
+    "label": "decide to",
+    "prompt": "결정하다",
+    "tokens": [
+      "decide",
+      "to",
+      "V"
+    ],
+    "hint": "~하기로 결정하다"
+  },
+  {
+    "id": "enjoy-ing",
+    "label": "enjoy ~ing",
+    "prompt": "즐기다",
+    "tokens": [
+      "enjoy",
+      "~ing"
+    ],
+    "hint": "~하기를 즐기다"
+  },
+  {
+    "id": "finish-ing",
+    "label": "finish ~ing",
+    "prompt": "끝내다",
+    "tokens": [
+      "finish",
+      "~ing"
+    ],
+    "hint": "~하기를 끝내다"
+  },
+  {
+    "id": "keep-ing",
+    "label": "keep ~ing",
+    "prompt": "계속하다",
+    "tokens": [
+      "keep",
+      "~ing"
+    ],
+    "hint": "계속 ~하다"
+  },
+  {
+    "id": "stop-ing",
+    "label": "stop ~ing",
+    "prompt": "멈추다",
+    "tokens": [
+      "stop",
+      "~ing"
+    ],
+    "hint": "~하기를 멈추다"
+  },
+  {
+    "id": "go-ing",
+    "label": "go ~ing",
+    "prompt": "~하러 가다",
+    "tokens": [
+      "go",
+      "~ing"
+    ],
+    "hint": "go shopping 등"
+  },
+  {
+    "id": "be-good-at",
+    "label": "be good at",
+    "prompt": "~을 잘하다",
+    "tokens": [
+      "be",
+      "good",
+      "at",
+      "~ing"
+    ],
+    "hint": "잘하는 것"
+  },
+  {
+    "id": "be-interested-in",
+    "label": "be interested in",
+    "prompt": "~에 관심 있다",
+    "tokens": [
+      "be",
+      "interested",
+      "in",
+      "~ing"
+    ],
+    "hint": "관심사"
+  },
+  {
+    "id": "look-forward-to",
+    "label": "look forward to",
+    "prompt": "~을 고대하다",
+    "tokens": [
+      "look",
+      "forward",
+      "to",
+      "~ing"
+    ],
+    "hint": "기대하다"
+  },
+  {
+    "id": "there-was-were",
+    "label": "there was/were",
+    "prompt": "과거 존재 표현",
+    "tokens": [
+      "there",
+      "was",
+      "were"
+    ],
+    "hint": "~이 있었다"
+  },
+  {
+    "id": "some-any",
+    "label": "some / any",
+    "prompt": "some과 any",
+    "tokens": [
+      "some",
+      "any"
+    ],
+    "hint": "긍정/부정·의문"
+  },
+  {
+    "id": "much-many",
+    "label": "much / many",
+    "prompt": "수량 형용사",
+    "tokens": [
+      "much",
+      "many"
+    ],
+    "hint": "셀 수 없음/있음"
+  },
+  {
+    "id": "a-few-a-little",
+    "label": "a few / a little",
+    "prompt": "약간의",
+    "tokens": [
+      "a",
+      "few",
+      "little"
+    ],
+    "hint": "조금 있는"
+  },
+  {
+    "id": "a-lot-of",
+    "label": "a lot of",
+    "prompt": "많은",
+    "tokens": [
+      "a",
+      "lot",
+      "of"
+    ],
+    "hint": "많은 양/수"
+  },
+  {
+    "id": "and-then",
+    "label": "and then",
+    "prompt": "그러고 나서",
+    "tokens": [
+      "and",
+      "then"
+    ],
+    "hint": "순서 표현"
+  },
+  {
+    "id": "one-of-the",
+    "label": "one of the",
+    "prompt": "~중 하나",
+    "tokens": [
+      "one",
+      "of",
+      "the"
+    ],
+    "hint": "복수 명사 앞"
+  },
+  {
+    "id": "between-and",
+    "label": "between A and B",
+    "prompt": "A와 B 사이",
+    "tokens": [
+      "between",
+      "and"
+    ],
+    "hint": "두 대상 사이"
+  },
+  {
+    "id": "both-and",
+    "label": "both A and B",
+    "prompt": "A와 B 둘 다",
+    "tokens": [
+      "both",
+      "and"
+    ],
+    "hint": "양쪽 모두"
+  },
+  {
+    "id": "either-or",
+    "label": "either A or B",
+    "prompt": "A 또는 B",
+    "tokens": [
+      "either",
+      "or"
+    ],
+    "hint": "둘 중 하나"
+  },
+  {
+    "id": "neither-nor",
+    "label": "neither A nor B",
+    "prompt": "A도 B도 아닌",
+    "tokens": [
+      "neither",
+      "nor"
+    ],
+    "hint": "둘 다 아닌"
+  },
+  {
+    "id": "not-only-but-also",
+    "label": "not only A but also B",
+    "prompt": "A뿐만 아니라 B도",
+    "tokens": [
+      "not",
+      "only",
+      "but",
+      "also"
+    ],
+    "hint": "~뿐만 아니라"
+  },
+  {
+    "id": "used-to",
+    "label": "used to",
+    "prompt": "과거의 습관",
+    "tokens": [
+      "used",
+      "to",
+      "V"
+    ],
+    "hint": "~하곤 했다"
+  },
+  {
+    "id": "would-rather",
+    "label": "would rather",
+    "prompt": "차라리 ~하겠다",
+    "tokens": [
+      "would",
+      "rather",
+      "V"
+    ],
+    "hint": "선호 표현"
+  }
+]

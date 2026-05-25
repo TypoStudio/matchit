@@ -1,0 +1,50 @@
+[
+  {
+    "id": "science-core",
+    "title": "화학식",
+    "accent": "#14b8a6",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "korean-idiom",
+    "title": "사자성어",
+    "accent": "#f97316",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "math-formula",
+    "title": "수학 공식",
+    "accent": "#6366f1",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "english-grammar",
+    "title": "영문법",
+    "accent": "#e11d48",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  }
+]

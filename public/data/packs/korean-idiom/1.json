@@ -1,0 +1,1203 @@
+[
+  {
+    "id": "ilseokijo",
+    "label": "일석이조",
+    "prompt": "한 가지 일을 해서 두 가지 이득을 봄",
+    "tokens": [
+      "일",
+      "석",
+      "이",
+      "조"
+    ],
+    "hint": "一石二鳥"
+  },
+  {
+    "id": "dadaikseon",
+    "label": "다다익선",
+    "prompt": "많으면 많을수록 더욱 좋음",
+    "tokens": [
+      "다",
+      "다",
+      "익",
+      "선"
+    ],
+    "hint": "多多益善"
+  },
+  {
+    "id": "yubimuhwan",
+    "label": "유비무환",
+    "prompt": "미리 준비하면 우환을 당하지 아니함",
+    "tokens": [
+      "유",
+      "비",
+      "무",
+      "환"
+    ],
+    "hint": "有備無患"
+  },
+  {
+    "id": "ingwa-eungbo",
+    "label": "인과응보",
+    "prompt": "모든 일의 결과는 원인에 따라 나타남",
+    "tokens": [
+      "인",
+      "과",
+      "응",
+      "보"
+    ],
+    "hint": "因果應報"
+  },
+  {
+    "id": "gaegwacheonseon",
+    "label": "개과천선",
+    "prompt": "잘못을 고쳐 착하게 됨",
+    "tokens": [
+      "개",
+      "과",
+      "천",
+      "선"
+    ],
+    "hint": "改過遷善"
+  },
+  {
+    "id": "jaksimsamil",
+    "label": "작심삼일",
+    "prompt": "결심이 사흘을 가지 못함",
+    "tokens": [
+      "작",
+      "심",
+      "삼",
+      "일"
+    ],
+    "hint": "作心三日"
+  },
+  {
+    "id": "gwonseonjingak",
+    "label": "권선징악",
+    "prompt": "선을 권하고 악을 징계함",
+    "tokens": [
+      "권",
+      "선",
+      "징",
+      "악"
+    ],
+    "hint": "勸善懲惡"
+  },
+  {
+    "id": "gyeoljjahaeji",
+    "label": "결자해지",
+    "prompt": "일을 저지른 사람이 그 일을 해결함",
+    "tokens": [
+      "결",
+      "자",
+      "해",
+      "지"
+    ],
+    "hint": "結者解之"
+  },
+  {
+    "id": "gojingamnae",
+    "label": "고진감래",
+    "prompt": "고생 끝에 낙이 옴",
+    "tokens": [
+      "고",
+      "진",
+      "감",
+      "래"
+    ],
+    "hint": "苦盡甘來"
+  },
+  {
+    "id": "saeongjima",
+    "label": "새옹지마",
+    "prompt": "인생의 길흉화복은 예측할 수 없음",
+    "tokens": [
+      "새",
+      "옹",
+      "지",
+      "마"
+    ],
+    "hint": "塞翁之馬"
+  },
+  {
+    "id": "jeonhwawibok",
+    "label": "전화위복",
+    "prompt": "화가 바뀌어 오히려 복이 됨",
+    "tokens": [
+      "전",
+      "화",
+      "위",
+      "복"
+    ],
+    "hint": "轉禍爲福"
+  },
+  {
+    "id": "gyeonmulsaengsim",
+    "label": "견물생심",
+    "prompt": "물건을 보면 욕심이 생김",
+    "tokens": [
+      "견",
+      "물",
+      "생",
+      "심"
+    ],
+    "hint": "見物生心"
+  },
+  {
+    "id": "samgochorye",
+    "label": "삼고초려",
+    "prompt": "인재를 정성껏 맞이함",
+    "tokens": [
+      "삼",
+      "고",
+      "초",
+      "려"
+    ],
+    "hint": "三顧草廬"
+  },
+  {
+    "id": "gyeonggeomangdong",
+    "label": "경거망동",
+    "prompt": "가볍고 망령된 행동",
+    "tokens": [
+      "경",
+      "거",
+      "망",
+      "동"
+    ],
+    "hint": "輕擧妄動"
+  },
+  {
+    "id": "iyeolchiyeol",
+    "label": "이열치열",
+    "prompt": "열은 열로써 다스림",
+    "tokens": [
+      "이",
+      "열",
+      "치",
+      "열"
+    ],
+    "hint": "以熱治熱"
+  },
+  {
+    "id": "samansamsa",
+    "label": "삼삼오오",
+    "prompt": "서너 사람씩 떼를 지어 다니는 모양",
+    "tokens": [
+      "삼",
+      "삼",
+      "오",
+      "오"
+    ],
+    "hint": "三三五五"
+  },
+  {
+    "id": "iposampyeon",
+    "label": "일거양득",
+    "prompt": "한 가지 일로 두 가지 이익을 얻음",
+    "tokens": [
+      "일",
+      "거",
+      "양",
+      "득"
+    ],
+    "hint": "一擧兩得"
+  },
+  {
+    "id": "iliirim",
+    "label": "일일삼성",
+    "prompt": "하루에 세 번 자신을 반성함",
+    "tokens": [
+      "일",
+      "일",
+      "삼",
+      "성"
+    ],
+    "hint": "一日三省"
+  },
+  {
+    "id": "donggamutdap",
+    "label": "동문서답",
+    "prompt": "묻는 말에 엉뚱한 대답을 함",
+    "tokens": [
+      "동",
+      "문",
+      "서",
+      "답"
+    ],
+    "hint": "東問西答"
+  },
+  {
+    "id": "wirobyeoljang",
+    "label": "우왕좌왕",
+    "prompt": "이리저리 왔다 갔다 하며 갈팡질팡함",
+    "tokens": [
+      "우",
+      "왕",
+      "좌",
+      "왕"
+    ],
+    "hint": "右往左往"
+  },
+  {
+    "id": "gosajiseong",
+    "label": "구사일생",
+    "prompt": "여러 차례 죽을 고비를 넘기고 살아남",
+    "tokens": [
+      "구",
+      "사",
+      "일",
+      "생"
+    ],
+    "hint": "九死一生"
+  },
+  {
+    "id": "geumsigeumsi",
+    "label": "금시초문",
+    "prompt": "이제야 비로소 처음 들음",
+    "tokens": [
+      "금",
+      "시",
+      "초",
+      "문"
+    ],
+    "hint": "今時初聞"
+  },
+  {
+    "id": "namnyeonosso",
+    "label": "남녀노소",
+    "prompt": "남자와 여자, 늙은이와 젊은이 모든 사람",
+    "tokens": [
+      "남",
+      "녀",
+      "노",
+      "소"
+    ],
+    "hint": "男女老少"
+  },
+  {
+    "id": "dongseonambuk",
+    "label": "동서남북",
+    "prompt": "동쪽 서쪽 남쪽 북쪽, 모든 방향",
+    "tokens": [
+      "동",
+      "서",
+      "남",
+      "북"
+    ],
+    "hint": "東西南北"
+  },
+  {
+    "id": "chunhachudong",
+    "label": "춘하추동",
+    "prompt": "봄 여름 가을 겨울 네 계절",
+    "tokens": [
+      "춘",
+      "하",
+      "추",
+      "동"
+    ],
+    "hint": "春夏秋冬"
+  },
+  {
+    "id": "sasipalsi",
+    "label": "사방팔방",
+    "prompt": "여러 방향과 모든 방면",
+    "tokens": [
+      "사",
+      "방",
+      "팔",
+      "방"
+    ],
+    "hint": "四方八方"
+  },
+  {
+    "id": "sipjungpalgu",
+    "label": "십중팔구",
+    "prompt": "열 가운데 여덟이나 아홉, 거의 대부분",
+    "tokens": [
+      "십",
+      "중",
+      "팔",
+      "구"
+    ],
+    "hint": "十中八九"
+  },
+  {
+    "id": "iksisamsa",
+    "label": "일사천리",
+    "prompt": "일이 거침없이 빨리 진행됨",
+    "tokens": [
+      "일",
+      "사",
+      "천",
+      "리"
+    ],
+    "hint": "一瀉千里"
+  },
+  {
+    "id": "joryeomosan",
+    "label": "조삼모사",
+    "prompt": "눈앞의 차이만 알고 결과가 같음을 모름",
+    "tokens": [
+      "조",
+      "삼",
+      "모",
+      "사"
+    ],
+    "hint": "朝三暮四"
+  },
+  {
+    "id": "uijaeoltae",
+    "label": "유유상종",
+    "prompt": "같은 무리끼리 서로 사귐",
+    "tokens": [
+      "유",
+      "유",
+      "상",
+      "종"
+    ],
+    "hint": "類類相從"
+  },
+  {
+    "id": "danosimyeon",
+    "label": "대동소이",
+    "prompt": "큰 차이 없이 거의 비슷함",
+    "tokens": [
+      "대",
+      "동",
+      "소",
+      "이"
+    ],
+    "hint": "大同小異"
+  },
+  {
+    "id": "garyeomujang",
+    "label": "가가호호",
+    "prompt": "한 집 한 집, 모든 집",
+    "tokens": [
+      "가",
+      "가",
+      "호",
+      "호"
+    ],
+    "hint": "家家戶戶"
+  },
+  {
+    "id": "majimakhae",
+    "label": "마이동풍",
+    "prompt": "남의 의견을 귀담아듣지 않고 흘려버림",
+    "tokens": [
+      "마",
+      "이",
+      "동",
+      "풍"
+    ],
+    "hint": "馬耳東風"
+  },
+  {
+    "id": "yongdusami",
+    "label": "용두사미",
+    "prompt": "시작은 좋았으나 끝이 좋지 않음",
+    "tokens": [
+      "용",
+      "두",
+      "사",
+      "미"
+    ],
+    "hint": "龍頭蛇尾"
+  },
+  {
+    "id": "sasipchadap",
+    "label": "사필귀정",
+    "prompt": "모든 일은 반드시 바른길로 돌아감",
+    "tokens": [
+      "사",
+      "필",
+      "귀",
+      "정"
+    ],
+    "hint": "事必歸正"
+  },
+  {
+    "id": "geumsangcheomhwa",
+    "label": "금상첨화",
+    "prompt": "좋은 일에 좋은 일이 더하여짐",
+    "tokens": [
+      "금",
+      "상",
+      "첨",
+      "화"
+    ],
+    "hint": "錦上添花"
+  },
+  {
+    "id": "gwayubulgeup",
+    "label": "과유불급",
+    "prompt": "정도를 지나침은 미치지 못함과 같음",
+    "tokens": [
+      "과",
+      "유",
+      "불",
+      "급"
+    ],
+    "hint": "過猶不及"
+  },
+  {
+    "id": "eobulseongseol",
+    "label": "어불성설",
+    "prompt": "말이 이치에 맞지 않음",
+    "tokens": [
+      "어",
+      "불",
+      "성",
+      "설"
+    ],
+    "hint": "語不成說"
+  },
+  {
+    "id": "solseonsubeom",
+    "label": "솔선수범",
+    "prompt": "남보다 앞장서서 모범을 보임",
+    "tokens": [
+      "솔",
+      "선",
+      "수",
+      "범"
+    ],
+    "hint": "率先垂範"
+  },
+  {
+    "id": "daegimanseong",
+    "label": "대기만성",
+    "prompt": "큰 인물은 늦게 이루어짐",
+    "tokens": [
+      "대",
+      "기",
+      "만",
+      "성"
+    ],
+    "hint": "大器晩成"
+  },
+  {
+    "id": "simsasukgo",
+    "label": "심사숙고",
+    "prompt": "신중하게 여러 번 생각함",
+    "tokens": [
+      "심",
+      "사",
+      "숙",
+      "고"
+    ],
+    "hint": "深思熟考"
+  },
+  {
+    "id": "yeokjisaji",
+    "label": "역지사지",
+    "prompt": "처지를 바꾸어 생각함",
+    "tokens": [
+      "역",
+      "지",
+      "사",
+      "지"
+    ],
+    "hint": "易地思之"
+  },
+  {
+    "id": "maksangmakha",
+    "label": "막상막하",
+    "prompt": "서로 우열을 가리기 힘듦",
+    "tokens": [
+      "막",
+      "상",
+      "막",
+      "하"
+    ],
+    "hint": "莫上莫下"
+  },
+  {
+    "id": "ajeoninsu",
+    "label": "아전인수",
+    "prompt": "자기에게만 이롭게 함",
+    "tokens": [
+      "아",
+      "전",
+      "인",
+      "수"
+    ],
+    "hint": "我田引水"
+  },
+  {
+    "id": "ilmokyoyeon",
+    "label": "일목요연",
+    "prompt": "한눈에 알아볼 수 있을 만큼 분명함",
+    "tokens": [
+      "일",
+      "목",
+      "요",
+      "연"
+    ],
+    "hint": "一目瞭然"
+  },
+  {
+    "id": "jajangneungneung",
+    "label": "자초지종",
+    "prompt": "처음부터 끝까지의 과정",
+    "tokens": [
+      "자",
+      "초",
+      "지",
+      "종"
+    ],
+    "hint": "自初至終"
+  },
+  {
+    "id": "cheonganmanhong",
+    "label": "천만다행",
+    "prompt": "아주 다행함",
+    "tokens": [
+      "천",
+      "만",
+      "다",
+      "행"
+    ],
+    "hint": "千萬多幸"
+  },
+  {
+    "id": "isimjeonsim",
+    "label": "이심전심",
+    "prompt": "마음에서 마음으로 뜻이 통함",
+    "tokens": [
+      "이",
+      "심",
+      "전",
+      "심"
+    ],
+    "hint": "以心傳心"
+  },
+  {
+    "id": "samwiilche",
+    "label": "삼위일체",
+    "prompt": "세 가지가 하나로 통합됨",
+    "tokens": [
+      "삼",
+      "위",
+      "일",
+      "체"
+    ],
+    "hint": "三位一體"
+  },
+  {
+    "id": "saseongiga",
+    "label": "사면초가",
+    "prompt": "사방이 적으로 둘러싸여 고립된 처지",
+    "tokens": [
+      "사",
+      "면",
+      "초",
+      "가"
+    ],
+    "hint": "四面楚歌"
+  },
+  {
+    "id": "baekjeonbaekseung",
+    "label": "백전백승",
+    "prompt": "싸울 때마다 다 이김",
+    "tokens": [
+      "백",
+      "전",
+      "백",
+      "승"
+    ],
+    "hint": "百戰百勝"
+  },
+  {
+    "id": "iljangildan",
+    "label": "일장일단",
+    "prompt": "장점도 있고 단점도 있음",
+    "tokens": [
+      "일",
+      "장",
+      "일",
+      "단"
+    ],
+    "hint": "一長一短"
+  },
+  {
+    "id": "ilseokisam",
+    "label": "일취월장",
+    "prompt": "날마다 달마다 자라거나 발전함",
+    "tokens": [
+      "일",
+      "취",
+      "월",
+      "장"
+    ],
+    "hint": "日就月將"
+  },
+  {
+    "id": "cheolturmise",
+    "label": "천차만별",
+    "prompt": "여러 가지 사물이 모두 차이가 있음",
+    "tokens": [
+      "천",
+      "차",
+      "만",
+      "별"
+    ],
+    "hint": "千差萬別"
+  },
+  {
+    "id": "manjangiltong",
+    "label": "만장일치",
+    "prompt": "모든 사람의 의견이 같음",
+    "tokens": [
+      "만",
+      "장",
+      "일",
+      "치"
+    ],
+    "hint": "滿場一致"
+  },
+  {
+    "id": "samchunjihan",
+    "label": "산전수전",
+    "prompt": "세상의 온갖 어려움을 다 겪음",
+    "tokens": [
+      "산",
+      "전",
+      "수",
+      "전"
+    ],
+    "hint": "山戰水戰"
+  },
+  {
+    "id": "sasipdaehyeong",
+    "label": "사방천지",
+    "prompt": "온 세상, 모든 곳",
+    "tokens": [
+      "사",
+      "방",
+      "천",
+      "지"
+    ],
+    "hint": "四方天地"
+  },
+  {
+    "id": "ililyeohaeng",
+    "label": "일일여삼추",
+    "prompt": "하루가 삼 년처럼 매우 길게 느껴짐",
+    "tokens": [
+      "일",
+      "일",
+      "여",
+      "삼",
+      "추"
+    ],
+    "hint": "一日如三秋"
+  },
+  {
+    "id": "geosadaesa",
+    "label": "거두절미",
+    "prompt": "앞뒤를 생략하고 요점만 말함",
+    "tokens": [
+      "거",
+      "두",
+      "절",
+      "미"
+    ],
+    "hint": "去頭截尾"
+  },
+  {
+    "id": "manguodam",
+    "label": "고진감래락",
+    "prompt": "괴로움이 다하면 즐거움이 옴",
+    "tokens": [
+      "흥",
+      "진",
+      "비",
+      "래"
+    ],
+    "hint": "興盡悲來"
+  },
+  {
+    "id": "dandojikip",
+    "label": "단도직입",
+    "prompt": "거두절미하고 바로 본론으로 들어감",
+    "tokens": [
+      "단",
+      "도",
+      "직",
+      "입"
+    ],
+    "hint": "單刀直入"
+  },
+  {
+    "id": "joryangmosa",
+    "label": "조변석개",
+    "prompt": "계획이나 결정을 자주 바꿈",
+    "tokens": [
+      "조",
+      "변",
+      "석",
+      "개"
+    ],
+    "hint": "朝變夕改"
+  },
+  {
+    "id": "anhabmuin",
+    "label": "안하무인",
+    "prompt": "교만하여 다른 사람을 업신여김",
+    "tokens": [
+      "안",
+      "하",
+      "무",
+      "인"
+    ],
+    "hint": "眼下無人"
+  },
+  {
+    "id": "jajaakcheok",
+    "label": "자포자기",
+    "prompt": "절망하여 자신을 돌보지 않음",
+    "tokens": [
+      "자",
+      "포",
+      "자",
+      "기"
+    ],
+    "hint": "自暴自棄"
+  },
+  {
+    "id": "gohaengoldok",
+    "label": "고립무원",
+    "prompt": "고립되어 도움을 받을 데가 없음",
+    "tokens": [
+      "고",
+      "립",
+      "무",
+      "원"
+    ],
+    "hint": "孤立無援"
+  },
+  {
+    "id": "dongseonggugok",
+    "label": "동고동락",
+    "prompt": "괴로움과 즐거움을 함께함",
+    "tokens": [
+      "동",
+      "고",
+      "동",
+      "락"
+    ],
+    "hint": "同苦同樂"
+  },
+  {
+    "id": "cheonjichaii",
+    "label": "천지차이",
+    "prompt": "하늘과 땅처럼 엄청난 차이",
+    "tokens": [
+      "천",
+      "지",
+      "차",
+      "이"
+    ],
+    "hint": "天地差異"
+  },
+  {
+    "id": "baekbalbaekjung",
+    "label": "백발백중",
+    "prompt": "쏘는 족족 다 맞음",
+    "tokens": [
+      "백",
+      "발",
+      "백",
+      "중"
+    ],
+    "hint": "百發百中"
+  },
+  {
+    "id": "ilmangtaji",
+    "label": "일망타진",
+    "prompt": "한꺼번에 모조리 잡음",
+    "tokens": [
+      "일",
+      "망",
+      "타",
+      "진"
+    ],
+    "hint": "一網打盡"
+  },
+  {
+    "id": "mansindangu",
+    "label": "만신창이",
+    "prompt": "온몸이 상처투성이가 됨",
+    "tokens": [
+      "만",
+      "신",
+      "창",
+      "이"
+    ],
+    "hint": "滿身瘡痍"
+  },
+  {
+    "id": "munjeonseongsi",
+    "label": "문전성시",
+    "prompt": "찾아오는 사람이 많아 문 앞이 시장을 이룸",
+    "tokens": [
+      "문",
+      "전",
+      "성",
+      "시"
+    ],
+    "hint": "門前成市"
+  },
+  {
+    "id": "geumjicokga",
+    "label": "금지옥엽",
+    "prompt": "귀한 자손을 이르는 말",
+    "tokens": [
+      "금",
+      "지",
+      "옥",
+      "엽"
+    ],
+    "hint": "金枝玉葉"
+  },
+  {
+    "id": "darangsangbu",
+    "label": "다재다능",
+    "prompt": "재주와 능력이 여러 가지로 많음",
+    "tokens": [
+      "다",
+      "재",
+      "다",
+      "능"
+    ],
+    "hint": "多才多能"
+  },
+  {
+    "id": "irongbiang",
+    "label": "이구동성",
+    "prompt": "여러 사람의 말이 한결같음",
+    "tokens": [
+      "이",
+      "구",
+      "동",
+      "성"
+    ],
+    "hint": "異口同聲"
+  },
+  {
+    "id": "gakjaedosaeng",
+    "label": "각양각색",
+    "prompt": "여러 가지 모양과 빛깔",
+    "tokens": [
+      "각",
+      "양",
+      "각",
+      "색"
+    ],
+    "hint": "各樣各色"
+  },
+  {
+    "id": "samogaeseon",
+    "label": "사통팔달",
+    "prompt": "길이 사방으로 통함",
+    "tokens": [
+      "사",
+      "통",
+      "팔",
+      "달"
+    ],
+    "hint": "四通八達"
+  },
+  {
+    "id": "danjeongseonggwi",
+    "label": "대대손손",
+    "prompt": "대를 이어 자손이 계속됨",
+    "tokens": [
+      "대",
+      "대",
+      "손",
+      "손"
+    ],
+    "hint": "代代孫孫"
+  },
+  {
+    "id": "joajilmosa",
+    "label": "조출모입",
+    "prompt": "아침 일찍 나가 저녁 늦게 돌아옴",
+    "tokens": [
+      "조",
+      "출",
+      "모",
+      "입"
+    ],
+    "hint": "朝出暮入"
+  },
+  {
+    "id": "namseonbukma",
+    "label": "남선북마",
+    "prompt": "분주하게 여기저기 돌아다님",
+    "tokens": [
+      "남",
+      "선",
+      "북",
+      "마"
+    ],
+    "hint": "南船北馬"
+  },
+  {
+    "id": "uihocheomil",
+    "label": "우후죽순",
+    "prompt": "어떤 일이 한때에 많이 생겨남",
+    "tokens": [
+      "우",
+      "후",
+      "죽",
+      "순"
+    ],
+    "hint": "雨後竹筍"
+  },
+  {
+    "id": "munmubyeongjin",
+    "label": "문무겸비",
+    "prompt": "학문과 무예를 두루 갖춤",
+    "tokens": [
+      "문",
+      "무",
+      "겸",
+      "비"
+    ],
+    "hint": "文武兼備"
+  },
+  {
+    "id": "baekmyeonseosaeng",
+    "label": "백면서생",
+    "prompt": "세상 물정에 어두운 사람",
+    "tokens": [
+      "백",
+      "면",
+      "서",
+      "생"
+    ],
+    "hint": "白面書生"
+  },
+  {
+    "id": "geumeuihwanhyang",
+    "label": "금의환향",
+    "prompt": "출세하여 고향으로 돌아옴",
+    "tokens": [
+      "금",
+      "의",
+      "환",
+      "향"
+    ],
+    "hint": "錦衣還鄕"
+  },
+  {
+    "id": "ilpyeondansim",
+    "label": "일편단심",
+    "prompt": "한 조각 붉은 마음, 변치 않는 충성",
+    "tokens": [
+      "일",
+      "편",
+      "단",
+      "심"
+    ],
+    "hint": "一片丹心"
+  },
+  {
+    "id": "isigjuhaeng",
+    "label": "이실직고",
+    "prompt": "사실 그대로 고함",
+    "tokens": [
+      "이",
+      "실",
+      "직",
+      "고"
+    ],
+    "hint": "以實直告"
+  },
+  {
+    "id": "saljinseongin",
+    "label": "살신성인",
+    "prompt": "자기 몸을 희생하여 인을 이룸",
+    "tokens": [
+      "살",
+      "신",
+      "성",
+      "인"
+    ],
+    "hint": "殺身成仁"
+  },
+  {
+    "id": "samsemyeongi",
+    "label": "선견지명",
+    "prompt": "앞일을 미리 내다보는 지혜",
+    "tokens": [
+      "선",
+      "견",
+      "지",
+      "명"
+    ],
+    "hint": "先見之明"
+  },
+  {
+    "id": "donggajeonse",
+    "label": "동가홍상",
+    "prompt": "같은 값이면 다홍치마, 같으면 좋은 것을 택함",
+    "tokens": [
+      "동",
+      "가",
+      "홍",
+      "상"
+    ],
+    "hint": "同價紅裳"
+  },
+  {
+    "id": "cheonjasamsim",
+    "label": "천진난만",
+    "prompt": "꾸밈없이 순진함",
+    "tokens": [
+      "천",
+      "진",
+      "난",
+      "만"
+    ],
+    "hint": "天眞爛漫"
+  },
+  {
+    "id": "baeksubaeknyeon",
+    "label": "백년대계",
+    "prompt": "먼 앞날까지 내다본 큰 계획",
+    "tokens": [
+      "백",
+      "년",
+      "대",
+      "계"
+    ],
+    "hint": "百年大計"
+  },
+  {
+    "id": "manggugbosin",
+    "label": "망극지은",
+    "prompt": "끝없이 큰 은혜",
+    "tokens": [
+      "망",
+      "극",
+      "지",
+      "은"
+    ],
+    "hint": "罔極之恩"
+  },
+  {
+    "id": "munildapsam",
+    "label": "문일지십",
+    "prompt": "하나를 들으면 열을 앎",
+    "tokens": [
+      "문",
+      "일",
+      "지",
+      "십"
+    ],
+    "hint": "聞一知十"
+  },
+  {
+    "id": "geumseokjimun",
+    "label": "금석지교",
+    "prompt": "쇠와 돌처럼 굳고 변함없는 사귐",
+    "tokens": [
+      "금",
+      "석",
+      "지",
+      "교"
+    ],
+    "hint": "金石之交"
+  },
+  {
+    "id": "darangchunhae",
+    "label": "다정다감",
+    "prompt": "정이 많고 감정이 풍부함",
+    "tokens": [
+      "다",
+      "정",
+      "다",
+      "감"
+    ],
+    "hint": "多情多感"
+  },
+  {
+    "id": "ihagataeng",
+    "label": "이왕지사",
+    "prompt": "이미 지나간 일",
+    "tokens": [
+      "이",
+      "왕",
+      "지",
+      "사"
+    ],
+    "hint": "已往之事"
+  },
+  {
+    "id": "samosamak",
+    "label": "삼순구식",
+    "prompt": "몹시 가난하여 끼니를 잇지 못함",
+    "tokens": [
+      "삼",
+      "순",
+      "구",
+      "식"
+    ],
+    "hint": "三旬九食"
+  },
+  {
+    "id": "donggangichul",
+    "label": "동분서주",
+    "prompt": "사방으로 이리저리 바삐 돌아다님",
+    "tokens": [
+      "동",
+      "분",
+      "서",
+      "주"
+    ],
+    "hint": "東奔西走"
+  },
+  {
+    "id": "ujongjwajong",
+    "label": "우왕좌왕재차",
+    "prompt": "이리저리 갈팡질팡함",
+    "tokens": [
+      "좌",
+      "고",
+      "우",
+      "면"
+    ],
+    "hint": "左顧右眄"
+  },
+  {
+    "id": "cheonganmangaek",
+    "label": "천객만래",
+    "prompt": "많은 손님이 끊임없이 찾아옴",
+    "tokens": [
+      "천",
+      "객",
+      "만",
+      "래"
+    ],
+    "hint": "千客萬來"
+  },
+  {
+    "id": "baekgobullae",
+    "label": "백고천난",
+    "prompt": "온갖 어려움과 고생",
+    "tokens": [
+      "백",
+      "고",
+      "천",
+      "난"
+    ],
+    "hint": "百苦千難"
+  }
+]

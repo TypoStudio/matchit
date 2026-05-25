@@ -1,0 +1,1171 @@
+[
+  {
+    "id": "cleft-all-that",
+    "label": "all ~ that 분열문",
+    "prompt": "All ~ is 강조",
+    "tokens": [
+      "All",
+      "S",
+      "V",
+      "is"
+    ],
+    "hint": "오직 ~뿐"
+  },
+  {
+    "id": "cleft-the-reason",
+    "label": "the reason 분열문",
+    "prompt": "The reason ~ is that",
+    "tokens": [
+      "The",
+      "reason",
+      "is",
+      "that"
+    ],
+    "hint": "이유 강조"
+  },
+  {
+    "id": "cleft-the-place",
+    "label": "the place 분열문",
+    "prompt": "The place where ~ is",
+    "tokens": [
+      "The",
+      "place",
+      "where",
+      "is"
+    ],
+    "hint": "장소 강조"
+  },
+  {
+    "id": "fronting",
+    "label": "전치 강조",
+    "prompt": "목적어/보어 문두 이동",
+    "tokens": [
+      "Object",
+      "S",
+      "V"
+    ],
+    "hint": "강조를 위한 어순"
+  },
+  {
+    "id": "object-fronting-inversion",
+    "label": "목적어 도치",
+    "prompt": "목적어 문두 + 도치",
+    "tokens": [
+      "Such",
+      "be",
+      "S"
+    ],
+    "hint": "강조 도치"
+  },
+  {
+    "id": "so-adjective-inversion",
+    "label": "so + 형용사 도치",
+    "prompt": "So ~ that 도치",
+    "tokens": [
+      "So",
+      "adjective",
+      "be",
+      "S",
+      "that"
+    ],
+    "hint": "강조 도치"
+  },
+  {
+    "id": "such-inversion",
+    "label": "such 도치",
+    "prompt": "Such be 도치",
+    "tokens": [
+      "Such",
+      "be",
+      "S"
+    ],
+    "hint": "강조 도치"
+  },
+  {
+    "id": "many-a-inversion",
+    "label": "many a 도치",
+    "prompt": "Many a + 단수명사",
+    "tokens": [
+      "Many",
+      "a",
+      "noun",
+      "V"
+    ],
+    "hint": "문어체"
+  },
+  {
+    "id": "there-existential-inversion",
+    "label": "유도부사 there 도치",
+    "prompt": "There + 동사 + 주어",
+    "tokens": [
+      "There",
+      "V",
+      "S"
+    ],
+    "hint": "존재 도치"
+  },
+  {
+    "id": "locative-inversion",
+    "label": "장소 부사구 도치",
+    "prompt": "Here/장소 + 동사 + 주어",
+    "tokens": [
+      "Here",
+      "comes",
+      "S"
+    ],
+    "hint": "장소 도치"
+  },
+  {
+    "id": "exclamatory-how",
+    "label": "감탄문 How",
+    "prompt": "How + 형용사 + 주어 + 동사",
+    "tokens": [
+      "How",
+      "adjective",
+      "S",
+      "V"
+    ],
+    "hint": "감탄"
+  },
+  {
+    "id": "exclamatory-what",
+    "label": "감탄문 What",
+    "prompt": "What + (a) + 명사",
+    "tokens": [
+      "What",
+      "a",
+      "noun",
+      "S",
+      "V"
+    ],
+    "hint": "감탄"
+  },
+  {
+    "id": "subjunctive-lest",
+    "label": "lest 가정법",
+    "prompt": "~하지 않도록",
+    "tokens": [
+      "lest",
+      "S",
+      "(should)",
+      "V"
+    ],
+    "hint": "동사원형"
+  },
+  {
+    "id": "subjunctive-for-fear",
+    "label": "for fear that",
+    "prompt": "~할까 봐",
+    "tokens": [
+      "for",
+      "fear",
+      "that",
+      "S",
+      "should"
+    ],
+    "hint": "걱정"
+  },
+  {
+    "id": "subjunctive-be-it",
+    "label": "be it 양보",
+    "prompt": "Be it ~ or",
+    "tokens": [
+      "Be",
+      "it",
+      "X",
+      "or",
+      "Y"
+    ],
+    "hint": "~이든 아니든"
+  },
+  {
+    "id": "subjunctive-come-what-may",
+    "label": "come what may",
+    "prompt": "무슨 일이 있어도",
+    "tokens": [
+      "Come",
+      "what",
+      "may"
+    ],
+    "hint": "관용 가정법"
+  },
+  {
+    "id": "subjunctive-god-save",
+    "label": "God save",
+    "prompt": "기원의 가정법",
+    "tokens": [
+      "God",
+      "save",
+      "the",
+      "queen"
+    ],
+    "hint": "동사원형 기원"
+  },
+  {
+    "id": "inverted-conditional-omission",
+    "label": "if 생략 도치 종합",
+    "prompt": "Had/Were/Should 도치",
+    "tokens": [
+      "Had",
+      "S",
+      "p.p.",
+      "S",
+      "would",
+      "have",
+      "p.p."
+    ],
+    "hint": "조건절 도치"
+  },
+  {
+    "id": "mixed-conditional-reverse",
+    "label": "역혼합가정법",
+    "prompt": "현재 가정 + 과거 결과",
+    "tokens": [
+      "If",
+      "S",
+      "past",
+      "S",
+      "would",
+      "have",
+      "p.p."
+    ],
+    "hint": "현재가 과거에 영향"
+  },
+  {
+    "id": "implied-conditional",
+    "label": "함축 조건",
+    "prompt": "otherwise 등 함축",
+    "tokens": [
+      "otherwise",
+      "S",
+      "would",
+      "V"
+    ],
+    "hint": "조건 함축"
+  },
+  {
+    "id": "conditional-but-that",
+    "label": "but that",
+    "prompt": "~이 아니었다면",
+    "tokens": [
+      "but",
+      "that",
+      "S",
+      "V"
+    ],
+    "hint": "조건 부정"
+  },
+  {
+    "id": "past-future-perfect",
+    "label": "과거에서 본 미래완료",
+    "prompt": "would have p.p.",
+    "tokens": [
+      "would",
+      "have",
+      "p.p."
+    ],
+    "hint": "시제 일치"
+  },
+  {
+    "id": "past-future",
+    "label": "과거에서 본 미래",
+    "prompt": "would V",
+    "tokens": [
+      "would",
+      "V"
+    ],
+    "hint": "시제 일치"
+  },
+  {
+    "id": "double-passive",
+    "label": "이중 수동태",
+    "prompt": "5형식 수동태",
+    "tokens": [
+      "be",
+      "p.p.",
+      "to",
+      "V"
+    ],
+    "hint": "목적격보어 수동"
+  },
+  {
+    "id": "passive-of-perception",
+    "label": "지각동사 수동 종합",
+    "prompt": "be heard to V",
+    "tokens": [
+      "be",
+      "heard",
+      "to",
+      "V"
+    ],
+    "hint": "to부정사 전환"
+  },
+  {
+    "id": "passive-with-prepositions",
+    "label": "구동사 수동태",
+    "prompt": "be looked after 등",
+    "tokens": [
+      "be",
+      "p.p.",
+      "preposition"
+    ],
+    "hint": "전치사 유지"
+  },
+  {
+    "id": "passive-reporting-it",
+    "label": "보고 수동 (It)",
+    "prompt": "It is said that",
+    "tokens": [
+      "It",
+      "is",
+      "said",
+      "that"
+    ],
+    "hint": "전언 수동"
+  },
+  {
+    "id": "passive-reporting-subject",
+    "label": "보고 수동 (주어)",
+    "prompt": "S is said to V",
+    "tokens": [
+      "S",
+      "is",
+      "said",
+      "to",
+      "V"
+    ],
+    "hint": "전언 수동"
+  },
+  {
+    "id": "gerund-after-preposition",
+    "label": "전치사 + 동명사",
+    "prompt": "전치사 뒤 동명사",
+    "tokens": [
+      "preposition",
+      "~ing"
+    ],
+    "hint": "동명사 필수"
+  },
+  {
+    "id": "gerund-possessive-subject",
+    "label": "동명사 소유격 주어",
+    "prompt": "소유격 + 동명사",
+    "tokens": [
+      "'s",
+      "~ing"
+    ],
+    "hint": "의미상 주어"
+  },
+  {
+    "id": "regret-to-vs-ing",
+    "label": "regret to/~ing",
+    "prompt": "의미 차이",
+    "tokens": [
+      "regret",
+      "to",
+      "V"
+    ],
+    "hint": "to=알림, ~ing=후회"
+  },
+  {
+    "id": "remember-to-vs-ing",
+    "label": "remember to/~ing",
+    "prompt": "의미 차이",
+    "tokens": [
+      "remember",
+      "to",
+      "V"
+    ],
+    "hint": "to=미래, ~ing=과거"
+  },
+  {
+    "id": "forget-to-vs-ing",
+    "label": "forget to/~ing",
+    "prompt": "의미 차이",
+    "tokens": [
+      "forget",
+      "to",
+      "V"
+    ],
+    "hint": "to=미래, ~ing=과거"
+  },
+  {
+    "id": "stop-to-vs-ing",
+    "label": "stop to/~ing",
+    "prompt": "의미 차이",
+    "tokens": [
+      "stop",
+      "to",
+      "V"
+    ],
+    "hint": "to=목적, ~ing=중단"
+  },
+  {
+    "id": "try-to-vs-ing",
+    "label": "try to/~ing",
+    "prompt": "의미 차이",
+    "tokens": [
+      "try",
+      "to",
+      "V"
+    ],
+    "hint": "to=노력, ~ing=시도"
+  },
+  {
+    "id": "need-ing-passive",
+    "label": "need ~ing (수동)",
+    "prompt": "~될 필요가 있다",
+    "tokens": [
+      "need",
+      "~ing"
+    ],
+    "hint": "수동 의미 동명사"
+  },
+  {
+    "id": "want-ing-passive",
+    "label": "want ~ing (수동)",
+    "prompt": "~할 필요가 있다",
+    "tokens": [
+      "want",
+      "~ing"
+    ],
+    "hint": "수동 의미 동명사"
+  },
+  {
+    "id": "worth-ing",
+    "label": "worth ~ing",
+    "prompt": "~할 가치가 있다",
+    "tokens": [
+      "worth",
+      "~ing"
+    ],
+    "hint": "능동형 수동의미"
+  },
+  {
+    "id": "busy-ing",
+    "label": "busy ~ing",
+    "prompt": "~하느라 바쁘다",
+    "tokens": [
+      "busy",
+      "~ing"
+    ],
+    "hint": "관용"
+  },
+  {
+    "id": "have-difficulty-ing",
+    "label": "have difficulty ~ing",
+    "prompt": "~하는 데 어려움",
+    "tokens": [
+      "have",
+      "difficulty",
+      "~ing"
+    ],
+    "hint": "관용"
+  },
+  {
+    "id": "spend-time-ing",
+    "label": "spend time ~ing",
+    "prompt": "~하는 데 시간 쓰다",
+    "tokens": [
+      "spend",
+      "time",
+      "~ing"
+    ],
+    "hint": "관용"
+  },
+  {
+    "id": "feel-like-ing",
+    "label": "feel like ~ing",
+    "prompt": "~하고 싶다",
+    "tokens": [
+      "feel",
+      "like",
+      "~ing"
+    ],
+    "hint": "관용"
+  },
+  {
+    "id": "it-no-use-ing",
+    "label": "it's no use ~ing",
+    "prompt": "~해도 소용없다",
+    "tokens": [
+      "It",
+      "is",
+      "no",
+      "use",
+      "~ing"
+    ],
+    "hint": "관용"
+  },
+  {
+    "id": "on-ing",
+    "label": "on ~ing",
+    "prompt": "~하자마자",
+    "tokens": [
+      "on",
+      "~ing"
+    ],
+    "hint": "관용"
+  },
+  {
+    "id": "in-ing",
+    "label": "in ~ing",
+    "prompt": "~하는 데 있어",
+    "tokens": [
+      "in",
+      "~ing"
+    ],
+    "hint": "관용"
+  },
+  {
+    "id": "far-from-ing",
+    "label": "far from ~ing",
+    "prompt": "결코 ~아닌",
+    "tokens": [
+      "far",
+      "from",
+      "~ing"
+    ],
+    "hint": "강한 부정"
+  },
+  {
+    "id": "correlative-comparative",
+    "label": "배수 비교",
+    "prompt": "배수사 + as ~ as",
+    "tokens": [
+      "twice",
+      "as",
+      "as"
+    ],
+    "hint": "~의 두 배"
+  },
+  {
+    "id": "multiple-times-than",
+    "label": "배수 + 비교급",
+    "prompt": "배수 + 비교급 than",
+    "tokens": [
+      "three",
+      "times",
+      "~er",
+      "than"
+    ],
+    "hint": "~배 더"
+  },
+  {
+    "id": "the-same-as",
+    "label": "the same as",
+    "prompt": "~와 같은",
+    "tokens": [
+      "the",
+      "same",
+      "as"
+    ],
+    "hint": "동일"
+  },
+  {
+    "id": "superlative-comparative",
+    "label": "비교급 최상급 표현",
+    "prompt": "as ~ as any",
+    "tokens": [
+      "as",
+      "adjective",
+      "as",
+      "any"
+    ],
+    "hint": "최상급 의미"
+  },
+  {
+    "id": "negative-superlative",
+    "label": "부정 + 비교급 최상급",
+    "prompt": "no ~ er than",
+    "tokens": [
+      "no",
+      "other",
+      "~er",
+      "than"
+    ],
+    "hint": "최상급 의미"
+  },
+  {
+    "id": "nothing-comparative",
+    "label": "nothing + 비교급",
+    "prompt": "nothing is more",
+    "tokens": [
+      "nothing",
+      "is",
+      "more",
+      "than"
+    ],
+    "hint": "최상급 의미"
+  },
+  {
+    "id": "would-that",
+    "label": "would that",
+    "prompt": "~라면 좋을 텐데",
+    "tokens": [
+      "Would",
+      "that",
+      "S",
+      "past"
+    ],
+    "hint": "문어체 소망"
+  },
+  {
+    "id": "oh-that",
+    "label": "oh that",
+    "prompt": "~라면",
+    "tokens": [
+      "Oh",
+      "that",
+      "S",
+      "would"
+    ],
+    "hint": "문어체 소망"
+  },
+  {
+    "id": "subjunctive-it-time-high",
+    "label": "it is high time",
+    "prompt": "~할 때가 한참 지났다",
+    "tokens": [
+      "It",
+      "is",
+      "high",
+      "time",
+      "S",
+      "past"
+    ],
+    "hint": "가정법 과거"
+  },
+  {
+    "id": "whether-or-not",
+    "label": "whether ~ or not",
+    "prompt": "~이든 아니든",
+    "tokens": [
+      "whether",
+      "or",
+      "not"
+    ],
+    "hint": "양보"
+  },
+  {
+    "id": "no-matter-how",
+    "label": "no matter how",
+    "prompt": "아무리 ~해도",
+    "tokens": [
+      "no",
+      "matter",
+      "how",
+      "adjective"
+    ],
+    "hint": "양보"
+  },
+  {
+    "id": "no-matter-what",
+    "label": "no matter what",
+    "prompt": "무엇을 ~해도",
+    "tokens": [
+      "no",
+      "matter",
+      "what",
+      "S",
+      "V"
+    ],
+    "hint": "양보"
+  },
+  {
+    "id": "as-concessive",
+    "label": "as 양보",
+    "prompt": "형용사 + as + 주어 + 동사",
+    "tokens": [
+      "adjective",
+      "as",
+      "S",
+      "V"
+    ],
+    "hint": "~이지만 (도치)"
+  },
+  {
+    "id": "granting-that",
+    "label": "granting that",
+    "prompt": "~을 인정하더라도",
+    "tokens": [
+      "granting",
+      "that",
+      "S",
+      "V"
+    ],
+    "hint": "양보"
+  },
+  {
+    "id": "whilst-clause",
+    "label": "whilst",
+    "prompt": "~하는 동안 (문어)",
+    "tokens": [
+      "whilst",
+      "S",
+      "V"
+    ],
+    "hint": "동시/대조"
+  },
+  {
+    "id": "insofar-as",
+    "label": "in so far as",
+    "prompt": "~하는 한",
+    "tokens": [
+      "in",
+      "so",
+      "far",
+      "as",
+      "S",
+      "V"
+    ],
+    "hint": "범위 조건"
+  },
+  {
+    "id": "to-the-extent-that",
+    "label": "to the extent that",
+    "prompt": "~하는 정도까지",
+    "tokens": [
+      "to",
+      "the",
+      "extent",
+      "that"
+    ],
+    "hint": "범위"
+  },
+  {
+    "id": "given-that",
+    "label": "given that",
+    "prompt": "~을 고려하면",
+    "tokens": [
+      "given",
+      "that",
+      "S",
+      "V"
+    ],
+    "hint": "전제"
+  },
+  {
+    "id": "seeing-that",
+    "label": "seeing that",
+    "prompt": "~인 것을 보니",
+    "tokens": [
+      "seeing",
+      "that",
+      "S",
+      "V"
+    ],
+    "hint": "이유"
+  },
+  {
+    "id": "now-that",
+    "label": "now that",
+    "prompt": "~이니까",
+    "tokens": [
+      "now",
+      "that",
+      "S",
+      "V"
+    ],
+    "hint": "이유"
+  },
+  {
+    "id": "in-that",
+    "label": "in that",
+    "prompt": "~라는 점에서",
+    "tokens": [
+      "in",
+      "that",
+      "S",
+      "V"
+    ],
+    "hint": "이유/측면"
+  },
+  {
+    "id": "but-for-without",
+    "label": "but for / without",
+    "prompt": "~이 없었다면",
+    "tokens": [
+      "But",
+      "for",
+      "noun",
+      "S",
+      "would",
+      "have",
+      "p.p."
+    ],
+    "hint": "가정법"
+  },
+  {
+    "id": "had-it-not-been-for",
+    "label": "had it not been for",
+    "prompt": "~이 없었더라면",
+    "tokens": [
+      "Had",
+      "it",
+      "not",
+      "been",
+      "for",
+      "noun"
+    ],
+    "hint": "도치 가정"
+  },
+  {
+    "id": "were-it-not-for",
+    "label": "were it not for",
+    "prompt": "~이 없다면",
+    "tokens": [
+      "Were",
+      "it",
+      "not",
+      "for",
+      "noun"
+    ],
+    "hint": "도치 가정"
+  },
+  {
+    "id": "if-it-were-not-for",
+    "label": "if it were not for",
+    "prompt": "~이 없다면",
+    "tokens": [
+      "If",
+      "it",
+      "were",
+      "not",
+      "for",
+      "noun"
+    ],
+    "hint": "가정법 과거"
+  },
+  {
+    "id": "if-it-had-not-been-for",
+    "label": "if it had not been for",
+    "prompt": "~이 없었더라면",
+    "tokens": [
+      "If",
+      "it",
+      "had",
+      "not",
+      "been",
+      "for"
+    ],
+    "hint": "가정법 과거완료"
+  },
+  {
+    "id": "relative-as",
+    "label": "유사관계대명사 as",
+    "prompt": "such ~ as",
+    "tokens": [
+      "such",
+      "as",
+      "S",
+      "V"
+    ],
+    "hint": "~같은"
+  },
+  {
+    "id": "relative-than",
+    "label": "유사관계대명사 than",
+    "prompt": "비교급 + than",
+    "tokens": [
+      "~er",
+      "than",
+      "V"
+    ],
+    "hint": "주격 관계"
+  },
+  {
+    "id": "relative-but",
+    "label": "유사관계대명사 but",
+    "prompt": "no ~ but",
+    "tokens": [
+      "no",
+      "one",
+      "but",
+      "V"
+    ],
+    "hint": "that ~ not"
+  },
+  {
+    "id": "compound-relative-whichever",
+    "label": "whichever",
+    "prompt": "어느 것이든",
+    "tokens": [
+      "whichever",
+      "S",
+      "V"
+    ],
+    "hint": "복합관계사"
+  },
+  {
+    "id": "compound-relative-whomever",
+    "label": "whomever",
+    "prompt": "누구든 (목적)",
+    "tokens": [
+      "whomever",
+      "S",
+      "V"
+    ],
+    "hint": "복합관계사"
+  },
+  {
+    "id": "double-relative",
+    "label": "이중 한정 관계절",
+    "prompt": "두 개의 관계절",
+    "tokens": [
+      "noun",
+      "that",
+      "V",
+      "which",
+      "V"
+    ],
+    "hint": "연속 수식"
+  },
+  {
+    "id": "relative-continuative-which",
+    "label": "관계대명사 계속 which",
+    "prompt": "앞 문장 전체 수식",
+    "tokens": [
+      "clause",
+      "which",
+      "V"
+    ],
+    "hint": "추가 설명"
+  },
+  {
+    "id": "participle-perfect-passive",
+    "label": "완료수동 분사구문",
+    "prompt": "Having been p.p.",
+    "tokens": [
+      "Having",
+      "been",
+      "p.p.",
+      "S",
+      "V"
+    ],
+    "hint": "~된 후에"
+  },
+  {
+    "id": "absolute-with-pp",
+    "label": "with + 명사 + p.p.",
+    "prompt": "부대상황 수동",
+    "tokens": [
+      "with",
+      "noun",
+      "p.p."
+    ],
+    "hint": "~된 채로"
+  },
+  {
+    "id": "absolute-with-adjective",
+    "label": "with + 명사 + 형용사",
+    "prompt": "부대상황 형용사",
+    "tokens": [
+      "with",
+      "noun",
+      "adjective"
+    ],
+    "hint": "~한 채로"
+  },
+  {
+    "id": "absolute-this-being",
+    "label": "this being so",
+    "prompt": "사정이 이러하므로",
+    "tokens": [
+      "this",
+      "being",
+      "so"
+    ],
+    "hint": "독립분사"
+  },
+  {
+    "id": "absolute-such-being",
+    "label": "such being the case",
+    "prompt": "사정이 그러하므로",
+    "tokens": [
+      "such",
+      "being",
+      "the",
+      "case"
+    ],
+    "hint": "독립분사"
+  },
+  {
+    "id": "idiom-generally-speaking",
+    "label": "generally speaking",
+    "prompt": "일반적으로 말하면",
+    "tokens": [
+      "generally",
+      "speaking"
+    ],
+    "hint": "비인칭 독립분사"
+  },
+  {
+    "id": "idiom-strictly-speaking",
+    "label": "strictly speaking",
+    "prompt": "엄밀히 말하면",
+    "tokens": [
+      "strictly",
+      "speaking"
+    ],
+    "hint": "비인칭 독립분사"
+  },
+  {
+    "id": "idiom-judging-from",
+    "label": "judging from",
+    "prompt": "~로 판단하건대",
+    "tokens": [
+      "judging",
+      "from",
+      "noun"
+    ],
+    "hint": "비인칭 독립분사"
+  },
+  {
+    "id": "idiom-considering",
+    "label": "considering",
+    "prompt": "~을 고려하면",
+    "tokens": [
+      "considering",
+      "noun"
+    ],
+    "hint": "비인칭 독립분사"
+  },
+  {
+    "id": "idiom-provided",
+    "label": "provided / providing",
+    "prompt": "~한다면",
+    "tokens": [
+      "providing",
+      "that",
+      "S",
+      "V"
+    ],
+    "hint": "조건"
+  },
+  {
+    "id": "not-least-because",
+    "label": "not least because",
+    "prompt": "특히 ~때문에",
+    "tokens": [
+      "not",
+      "least",
+      "because",
+      "S",
+      "V"
+    ],
+    "hint": "이유 강조"
+  },
+  {
+    "id": "all-the-more",
+    "label": "all the more",
+    "prompt": "그만큼 더",
+    "tokens": [
+      "all",
+      "the",
+      "more",
+      "adjective"
+    ],
+    "hint": "비교 강조"
+  },
+  {
+    "id": "none-the-less",
+    "label": "none the less",
+    "prompt": "그럼에도 불구하고",
+    "tokens": [
+      "none",
+      "the",
+      "less"
+    ],
+    "hint": "양보"
+  },
+  {
+    "id": "the-last-to",
+    "label": "the last to",
+    "prompt": "결코 ~할 사람이 아닌",
+    "tokens": [
+      "the",
+      "last",
+      "to",
+      "V"
+    ],
+    "hint": "강한 부정"
+  },
+  {
+    "id": "anything-but",
+    "label": "anything but",
+    "prompt": "결코 ~아닌",
+    "tokens": [
+      "anything",
+      "but",
+      "adjective"
+    ],
+    "hint": "강한 부정"
+  },
+  {
+    "id": "nothing-but",
+    "label": "nothing but",
+    "prompt": "단지 ~일 뿐",
+    "tokens": [
+      "nothing",
+      "but",
+      "noun"
+    ],
+    "hint": "오직"
+  },
+  {
+    "id": "all-but",
+    "label": "all but",
+    "prompt": "거의",
+    "tokens": [
+      "all",
+      "but",
+      "adjective"
+    ],
+    "hint": "거의"
+  },
+  {
+    "id": "the-very-last",
+    "label": "none other than",
+    "prompt": "다름 아닌",
+    "tokens": [
+      "none",
+      "other",
+      "than"
+    ],
+    "hint": "강조"
+  },
+  {
+    "id": "not-necessarily",
+    "label": "not necessarily",
+    "prompt": "반드시 ~은 아닌",
+    "tokens": [
+      "not",
+      "necessarily"
+    ],
+    "hint": "부분 부정"
+  },
+  {
+    "id": "not-always",
+    "label": "not always",
+    "prompt": "항상 ~은 아닌",
+    "tokens": [
+      "not",
+      "always"
+    ],
+    "hint": "부분 부정"
+  },
+  {
+    "id": "no-less-a-than",
+    "label": "no less a person than",
+    "prompt": "다름 아닌 바로",
+    "tokens": [
+      "no",
+      "less",
+      "a",
+      "noun",
+      "than"
+    ],
+    "hint": "강조"
+  }
+]

@@ -1,0 +1,1255 @@
+[
+  {
+    "id": "midpoint-formula",
+    "label": "중점 공식",
+    "prompt": "두 점의 중점 공식",
+    "tokens": [
+      "(",
+      "x₁+x₂",
+      ")/2",
+      ",",
+      "(",
+      "y₁+y₂",
+      ")/2"
+    ],
+    "hint": "두 점 (x₁, y₁), (x₂, y₂)"
+  },
+  {
+    "id": "quadratic-formula",
+    "label": "근의 공식",
+    "prompt": "이차방정식 근의 공식",
+    "tokens": [
+      "x",
+      "=",
+      "(",
+      "-b ± √(b²-4ac)",
+      ")",
+      "/",
+      "2a"
+    ],
+    "hint": "ax² + bx + c = 0"
+  },
+  {
+    "id": "sin-ratio",
+    "label": "사인",
+    "prompt": "삼각함수 사인",
+    "tokens": [
+      "sin θ",
+      "=",
+      "대변",
+      "/",
+      "빗변"
+    ],
+    "hint": "SOH"
+  },
+  {
+    "id": "cos-ratio",
+    "label": "코사인",
+    "prompt": "삼각함수 코사인",
+    "tokens": [
+      "cos θ",
+      "=",
+      "밑변",
+      "/",
+      "빗변"
+    ],
+    "hint": "CAH"
+  },
+  {
+    "id": "tan-ratio",
+    "label": "탄젠트",
+    "prompt": "삼각함수 탄젠트",
+    "tokens": [
+      "tan θ",
+      "=",
+      "대변",
+      "/",
+      "밑변"
+    ],
+    "hint": "TOA"
+  },
+  {
+    "id": "distance-formula",
+    "label": "두 점 사이 거리",
+    "prompt": "두 점 사이의 거리 공식",
+    "tokens": [
+      "√",
+      "(",
+      "(x₂-x₁)²",
+      "+",
+      "(y₂-y₁)²",
+      ")"
+    ],
+    "hint": "두 점 (x₁, y₁), (x₂, y₂)"
+  },
+  {
+    "id": "slope-two-points",
+    "label": "두 점의 기울기",
+    "prompt": "두 점을 지나는 직선의 기울기",
+    "tokens": [
+      "(",
+      "y₂-y₁",
+      ")",
+      "/",
+      "(",
+      "x₂-x₁",
+      ")"
+    ],
+    "hint": "y 차이 나누기 x 차이"
+  },
+  {
+    "id": "slope-intercept-form",
+    "label": "기울기-절편형",
+    "prompt": "일차함수 표준형",
+    "tokens": [
+      "y",
+      "=",
+      "m",
+      "x",
+      "+",
+      "b"
+    ],
+    "hint": "기울기 m, y절편 b"
+  },
+  {
+    "id": "point-slope-form",
+    "label": "점-기울기형",
+    "prompt": "한 점과 기울기로 직선의 방정식",
+    "tokens": [
+      "y-y₁",
+      "=",
+      "m",
+      "(",
+      "x-x₁",
+      ")"
+    ],
+    "hint": "기울기 m, 한 점 (x₁, y₁)"
+  },
+  {
+    "id": "standard-line-form",
+    "label": "직선 일반형",
+    "prompt": "직선의 일반형",
+    "tokens": [
+      "a",
+      "x",
+      "+",
+      "b",
+      "y",
+      "=",
+      "c"
+    ],
+    "hint": "ax + by = c"
+  },
+  {
+    "id": "quadratic-vertex-form",
+    "label": "이차함수 꼭짓점형",
+    "prompt": "이차함수 꼭짓점 형태",
+    "tokens": [
+      "y",
+      "=",
+      "a",
+      "(x-h)²",
+      "+",
+      "k"
+    ],
+    "hint": "꼭짓점 (h, k)"
+  },
+  {
+    "id": "quadratic-standard",
+    "label": "이차함수 일반형",
+    "prompt": "이차함수 일반형",
+    "tokens": [
+      "y",
+      "=",
+      "ax²",
+      "+",
+      "bx",
+      "+",
+      "c"
+    ],
+    "hint": "a ≠ 0"
+  },
+  {
+    "id": "discriminant",
+    "label": "판별식",
+    "prompt": "이차방정식 판별식",
+    "tokens": [
+      "D",
+      "=",
+      "b²",
+      "-",
+      "4ac"
+    ],
+    "hint": "근의 개수를 판별"
+  },
+  {
+    "id": "vertex-x",
+    "label": "꼭짓점 x좌표",
+    "prompt": "이차함수 꼭짓점의 x좌표",
+    "tokens": [
+      "-b",
+      "/",
+      "2a"
+    ],
+    "hint": "축의 방정식"
+  },
+  {
+    "id": "sum-of-roots",
+    "label": "근과 계수 (합)",
+    "prompt": "이차방정식 두 근의 합",
+    "tokens": [
+      "-b",
+      "/",
+      "a"
+    ],
+    "hint": "비에트 정리"
+  },
+  {
+    "id": "product-of-roots",
+    "label": "근과 계수 (곱)",
+    "prompt": "이차방정식 두 근의 곱",
+    "tokens": [
+      "c",
+      "/",
+      "a"
+    ],
+    "hint": "비에트 정리"
+  },
+  {
+    "id": "difference-of-squares",
+    "label": "합차 공식",
+    "prompt": "제곱의 차 인수분해",
+    "tokens": [
+      "a²-b²",
+      "=",
+      "(a+b)",
+      "(a-b)"
+    ],
+    "hint": "곱셈 공식"
+  },
+  {
+    "id": "square-of-sum",
+    "label": "완전제곱 (합)",
+    "prompt": "합의 제곱 전개",
+    "tokens": [
+      "(a+b)²",
+      "=",
+      "a²",
+      "+",
+      "2ab",
+      "+",
+      "b²"
+    ],
+    "hint": "곱셈 공식"
+  },
+  {
+    "id": "square-of-difference",
+    "label": "완전제곱 (차)",
+    "prompt": "차의 제곱 전개",
+    "tokens": [
+      "(a-b)²",
+      "=",
+      "a²",
+      "-",
+      "2ab",
+      "+",
+      "b²"
+    ],
+    "hint": "곱셈 공식"
+  },
+  {
+    "id": "cube-of-sum",
+    "label": "세제곱 (합)",
+    "prompt": "합의 세제곱 전개",
+    "tokens": [
+      "(a+b)³",
+      "=",
+      "a³+3a²b",
+      "+",
+      "3ab²+b³"
+    ],
+    "hint": "삼차 곱셈 공식"
+  },
+  {
+    "id": "sum-of-cubes",
+    "label": "세제곱 합 인수분해",
+    "prompt": "세제곱의 합 인수분해",
+    "tokens": [
+      "a³+b³",
+      "=",
+      "(a+b)",
+      "(a²-ab+b²)"
+    ],
+    "hint": "인수분해 공식"
+  },
+  {
+    "id": "diff-of-cubes",
+    "label": "세제곱 차 인수분해",
+    "prompt": "세제곱의 차 인수분해",
+    "tokens": [
+      "a³-b³",
+      "=",
+      "(a-b)",
+      "(a²+ab+b²)"
+    ],
+    "hint": "인수분해 공식"
+  },
+  {
+    "id": "pythagorean-identity-1",
+    "label": "피타고라스 항등식",
+    "prompt": "삼각함수 피타고라스 항등식",
+    "tokens": [
+      "sin²θ",
+      "+",
+      "cos²θ",
+      "=",
+      "1"
+    ],
+    "hint": "기본 삼각 항등식"
+  },
+  {
+    "id": "law-of-sines",
+    "label": "사인 법칙",
+    "prompt": "삼각형의 변과 각의 관계",
+    "tokens": [
+      "a/sinA",
+      "=",
+      "b/sinB",
+      "=",
+      "c/sinC"
+    ],
+    "hint": "외접원 지름과 관련"
+  },
+  {
+    "id": "law-of-cosines",
+    "label": "코사인 법칙",
+    "prompt": "삼각형의 세 변과 한 각의 관계",
+    "tokens": [
+      "c²",
+      "=",
+      "a²+b²",
+      "-",
+      "2ab cosC"
+    ],
+    "hint": "피타고라스의 일반화"
+  },
+  {
+    "id": "triangle-area-sine",
+    "label": "삼각형 넓이 (사인)",
+    "prompt": "두 변과 끼인각으로 삼각형 넓이",
+    "tokens": [
+      "1/2",
+      "a",
+      "b",
+      "sinC"
+    ],
+    "hint": "두 변 a, b와 끼인각 C"
+  },
+  {
+    "id": "herons-formula",
+    "label": "헤론의 공식",
+    "prompt": "세 변으로 삼각형 넓이",
+    "tokens": [
+      "√",
+      "(",
+      "s(s-a)(s-b)(s-c)",
+      ")"
+    ],
+    "hint": "s는 둘레의 절반"
+  },
+  {
+    "id": "arithmetic-nth-term",
+    "label": "등차수열 일반항",
+    "prompt": "등차수열의 일반항",
+    "tokens": [
+      "aₙ",
+      "=",
+      "a₁",
+      "+",
+      "(n-1)d"
+    ],
+    "hint": "첫째항 a₁, 공차 d"
+  },
+  {
+    "id": "arithmetic-sum",
+    "label": "등차수열 합",
+    "prompt": "등차수열의 부분합",
+    "tokens": [
+      "Sₙ",
+      "=",
+      "n(a₁+aₙ)",
+      "/",
+      "2"
+    ],
+    "hint": "첫째항과 끝항의 평균 × n"
+  },
+  {
+    "id": "geometric-nth-term",
+    "label": "등비수열 일반항",
+    "prompt": "등비수열의 일반항",
+    "tokens": [
+      "aₙ",
+      "=",
+      "a₁",
+      "rⁿ⁻¹"
+    ],
+    "hint": "첫째항 a₁, 공비 r"
+  },
+  {
+    "id": "geometric-sum",
+    "label": "등비수열 합",
+    "prompt": "등비수열의 부분합",
+    "tokens": [
+      "Sₙ",
+      "=",
+      "a₁(1-rⁿ)",
+      "/",
+      "(1-r)"
+    ],
+    "hint": "공비 r ≠ 1"
+  },
+  {
+    "id": "log-product",
+    "label": "로그 곱 법칙",
+    "prompt": "로그의 곱셈 법칙",
+    "tokens": [
+      "log(xy)",
+      "=",
+      "log x",
+      "+",
+      "log y"
+    ],
+    "hint": "곱은 로그의 합"
+  },
+  {
+    "id": "log-quotient",
+    "label": "로그 나눗셈 법칙",
+    "prompt": "로그의 나눗셈 법칙",
+    "tokens": [
+      "log(x/y)",
+      "=",
+      "log x",
+      "-",
+      "log y"
+    ],
+    "hint": "몫은 로그의 차"
+  },
+  {
+    "id": "log-power",
+    "label": "로그 지수 법칙",
+    "prompt": "로그의 지수 법칙",
+    "tokens": [
+      "log(xⁿ)",
+      "=",
+      "n",
+      "log x"
+    ],
+    "hint": "지수는 앞으로"
+  },
+  {
+    "id": "change-of-base",
+    "label": "밑 변환 공식",
+    "prompt": "로그의 밑 변환",
+    "tokens": [
+      "logₐ b",
+      "=",
+      "log b",
+      "/",
+      "log a"
+    ],
+    "hint": "공통 밑으로 변환"
+  },
+  {
+    "id": "exponent-product",
+    "label": "지수 곱셈 법칙",
+    "prompt": "같은 밑 지수의 곱",
+    "tokens": [
+      "aᵐ",
+      "aⁿ",
+      "=",
+      "aᵐ⁺ⁿ"
+    ],
+    "hint": "지수끼리 더한다"
+  },
+  {
+    "id": "exponent-quotient",
+    "label": "지수 나눗셈 법칙",
+    "prompt": "같은 밑 지수의 몫",
+    "tokens": [
+      "aᵐ",
+      "/",
+      "aⁿ",
+      "=",
+      "aᵐ⁻ⁿ"
+    ],
+    "hint": "지수끼리 뺀다"
+  },
+  {
+    "id": "exponent-power",
+    "label": "지수의 지수",
+    "prompt": "지수의 거듭제곱",
+    "tokens": [
+      "(aᵐ)ⁿ",
+      "=",
+      "aᵐⁿ"
+    ],
+    "hint": "지수끼리 곱한다"
+  },
+  {
+    "id": "negative-exponent",
+    "label": "음의 지수",
+    "prompt": "음의 지수 정의",
+    "tokens": [
+      "a⁻ⁿ",
+      "=",
+      "1",
+      "/",
+      "aⁿ"
+    ],
+    "hint": "역수의 거듭제곱"
+  },
+  {
+    "id": "fractional-exponent",
+    "label": "분수 지수",
+    "prompt": "분수 지수와 거듭제곱근",
+    "tokens": [
+      "a^(1/n)",
+      "=",
+      "ⁿ√a"
+    ],
+    "hint": "n제곱근"
+  },
+  {
+    "id": "compound-interest",
+    "label": "복리",
+    "prompt": "복리 공식",
+    "tokens": [
+      "A",
+      "=",
+      "P",
+      "(1+r)ᵗ"
+    ],
+    "hint": "원금 P, 이율 r, 기간 t"
+  },
+  {
+    "id": "compound-interest-n",
+    "label": "복리 (n회)",
+    "prompt": "연 n회 복리 공식",
+    "tokens": [
+      "A",
+      "=",
+      "P",
+      "(1+r/n)ⁿᵗ"
+    ],
+    "hint": "연 n회 복리"
+  },
+  {
+    "id": "combination-formula",
+    "label": "조합",
+    "prompt": "조합의 수 공식",
+    "tokens": [
+      "ₙCᵣ",
+      "=",
+      "n!",
+      "/",
+      "(r!(n-r)!)"
+    ],
+    "hint": "순서 무관하게 선택"
+  },
+  {
+    "id": "permutation-formula",
+    "label": "순열",
+    "prompt": "순열의 수 공식",
+    "tokens": [
+      "ₙPᵣ",
+      "=",
+      "n!",
+      "/",
+      "(n-r)!"
+    ],
+    "hint": "순서를 고려해 배열"
+  },
+  {
+    "id": "factorial",
+    "label": "팩토리얼",
+    "prompt": "팩토리얼 정의",
+    "tokens": [
+      "n!",
+      "=",
+      "n",
+      "(n-1)!"
+    ],
+    "hint": "재귀적 정의"
+  },
+  {
+    "id": "tan-from-sin-cos",
+    "label": "탄젠트 항등식",
+    "prompt": "사인과 코사인으로 탄젠트",
+    "tokens": [
+      "tan θ",
+      "=",
+      "sin θ",
+      "/",
+      "cos θ"
+    ],
+    "hint": "사인 나누기 코사인"
+  },
+  {
+    "id": "secant-identity",
+    "label": "시컨트",
+    "prompt": "시컨트 정의",
+    "tokens": [
+      "sec θ",
+      "=",
+      "1",
+      "/",
+      "cos θ"
+    ],
+    "hint": "코사인의 역수"
+  },
+  {
+    "id": "cosecant-identity",
+    "label": "코시컨트",
+    "prompt": "코시컨트 정의",
+    "tokens": [
+      "csc θ",
+      "=",
+      "1",
+      "/",
+      "sin θ"
+    ],
+    "hint": "사인의 역수"
+  },
+  {
+    "id": "cotangent-identity",
+    "label": "코탄젠트",
+    "prompt": "코탄젠트 정의",
+    "tokens": [
+      "cot θ",
+      "=",
+      "1",
+      "/",
+      "tan θ"
+    ],
+    "hint": "탄젠트의 역수"
+  },
+  {
+    "id": "sec-tan-identity",
+    "label": "시컨트 항등식",
+    "prompt": "시컨트와 탄젠트 항등식",
+    "tokens": [
+      "1",
+      "+",
+      "tan²θ",
+      "=",
+      "sec²θ"
+    ],
+    "hint": "피타고라스 항등식 변형"
+  },
+  {
+    "id": "csc-cot-identity",
+    "label": "코시컨트 항등식",
+    "prompt": "코시컨트와 코탄젠트 항등식",
+    "tokens": [
+      "1",
+      "+",
+      "cot²θ",
+      "=",
+      "csc²θ"
+    ],
+    "hint": "피타고라스 항등식 변형"
+  },
+  {
+    "id": "circle-equation",
+    "label": "원의 방정식",
+    "prompt": "중심과 반지름으로 원의 방정식",
+    "tokens": [
+      "(x-h)²",
+      "+",
+      "(y-k)²",
+      "=",
+      "r²"
+    ],
+    "hint": "중심 (h, k), 반지름 r"
+  },
+  {
+    "id": "circle-equation-origin",
+    "label": "원점 중심 원",
+    "prompt": "원점이 중심인 원의 방정식",
+    "tokens": [
+      "x²",
+      "+",
+      "y²",
+      "=",
+      "r²"
+    ],
+    "hint": "반지름 r"
+  },
+  {
+    "id": "parabola-vertex",
+    "label": "포물선",
+    "prompt": "원점 꼭짓점 포물선",
+    "tokens": [
+      "y²",
+      "=",
+      "4",
+      "p",
+      "x"
+    ],
+    "hint": "초점거리 p"
+  },
+  {
+    "id": "ellipse-equation",
+    "label": "타원의 방정식",
+    "prompt": "원점 중심 타원의 방정식",
+    "tokens": [
+      "x²/a²",
+      "+",
+      "y²/b²",
+      "=",
+      "1"
+    ],
+    "hint": "반축 a, b"
+  },
+  {
+    "id": "hyperbola-equation",
+    "label": "쌍곡선의 방정식",
+    "prompt": "원점 중심 쌍곡선의 방정식",
+    "tokens": [
+      "x²/a²",
+      "-",
+      "y²/b²",
+      "=",
+      "1"
+    ],
+    "hint": "반축 a, b"
+  },
+  {
+    "id": "perpendicular-slopes",
+    "label": "수직 조건",
+    "prompt": "두 직선이 수직일 조건",
+    "tokens": [
+      "m₁",
+      "m₂",
+      "=",
+      "-1"
+    ],
+    "hint": "기울기의 곱이 -1"
+  },
+  {
+    "id": "parallel-slopes",
+    "label": "평행 조건",
+    "prompt": "두 직선이 평행할 조건",
+    "tokens": [
+      "m₁",
+      "=",
+      "m₂"
+    ],
+    "hint": "기울기가 같다"
+  },
+  {
+    "id": "variance-formula",
+    "label": "분산",
+    "prompt": "자료의 분산",
+    "tokens": [
+      "σ²",
+      "=",
+      "Σ(xᵢ-μ)²",
+      "/",
+      "N"
+    ],
+    "hint": "편차 제곱의 평균"
+  },
+  {
+    "id": "standard-deviation",
+    "label": "표준편차",
+    "prompt": "자료의 산포도",
+    "tokens": [
+      "σ",
+      "=",
+      "√",
+      "(",
+      "Σ(xᵢ-μ)²/N",
+      ")"
+    ],
+    "hint": "분산의 양의 제곱근"
+  },
+  {
+    "id": "z-score",
+    "label": "표준점수",
+    "prompt": "표준점수(z) 공식",
+    "tokens": [
+      "z",
+      "=",
+      "(x-μ)",
+      "/",
+      "σ"
+    ],
+    "hint": "평균과의 거리를 표준화"
+  },
+  {
+    "id": "weighted-mean",
+    "label": "가중평균",
+    "prompt": "가중평균 공식",
+    "tokens": [
+      "Σ(wᵢxᵢ)",
+      "/",
+      "Σwᵢ"
+    ],
+    "hint": "가중치 wᵢ"
+  },
+  {
+    "id": "sin-double-angle",
+    "label": "사인 배각",
+    "prompt": "사인의 배각 공식",
+    "tokens": [
+      "sin 2θ",
+      "=",
+      "2",
+      "sin θ",
+      "cos θ"
+    ],
+    "hint": "배각 공식"
+  },
+  {
+    "id": "cos-double-angle",
+    "label": "코사인 배각",
+    "prompt": "코사인의 배각 공식",
+    "tokens": [
+      "cos 2θ",
+      "=",
+      "cos²θ",
+      "-",
+      "sin²θ"
+    ],
+    "hint": "배각 공식"
+  },
+  {
+    "id": "sin-sum",
+    "label": "사인 덧셈정리",
+    "prompt": "사인의 덧셈정리",
+    "tokens": [
+      "sin(A+B)",
+      "=",
+      "sinA cosB",
+      "+",
+      "cosA sinB"
+    ],
+    "hint": "덧셈정리"
+  },
+  {
+    "id": "cos-sum",
+    "label": "코사인 덧셈정리",
+    "prompt": "코사인의 덧셈정리",
+    "tokens": [
+      "cos(A+B)",
+      "=",
+      "cosA cosB",
+      "-",
+      "sinA sinB"
+    ],
+    "hint": "덧셈정리"
+  },
+  {
+    "id": "geometric-mean-two",
+    "label": "기하평균",
+    "prompt": "두 수의 기하평균",
+    "tokens": [
+      "√",
+      "(",
+      "a",
+      "b",
+      ")"
+    ],
+    "hint": "곱의 제곱근"
+  },
+  {
+    "id": "harmonic-mean-two",
+    "label": "조화평균",
+    "prompt": "두 수의 조화평균",
+    "tokens": [
+      "2ab",
+      "/",
+      "(a+b)"
+    ],
+    "hint": "역수의 평균의 역수"
+  },
+  {
+    "id": "binomial-theorem-term",
+    "label": "이항정리 일반항",
+    "prompt": "이항전개의 일반항",
+    "tokens": [
+      "ₙCᵣ",
+      "aⁿ⁻ʳ",
+      "bʳ"
+    ],
+    "hint": "(a+b)ⁿ 전개"
+  },
+  {
+    "id": "sum-of-n",
+    "label": "자연수 합",
+    "prompt": "1부터 n까지의 합",
+    "tokens": [
+      "n(n+1)",
+      "/",
+      "2"
+    ],
+    "hint": "가우스 합"
+  },
+  {
+    "id": "sum-of-n-squares",
+    "label": "제곱의 합",
+    "prompt": "1부터 n까지 제곱의 합",
+    "tokens": [
+      "n(n+1)(2n+1)",
+      "/",
+      "6"
+    ],
+    "hint": "제곱수의 합"
+  },
+  {
+    "id": "sum-of-n-cubes",
+    "label": "세제곱의 합",
+    "prompt": "1부터 n까지 세제곱의 합",
+    "tokens": [
+      "(",
+      "n(n+1)/2",
+      ")",
+      "²"
+    ],
+    "hint": "자연수 합의 제곱"
+  },
+  {
+    "id": "absolute-value-distance",
+    "label": "수직선 거리",
+    "prompt": "수직선 위 두 점 사이 거리",
+    "tokens": [
+      "|",
+      "a",
+      "-",
+      "b",
+      "|"
+    ],
+    "hint": "차의 절댓값"
+  },
+  {
+    "id": "tangent-line-circle",
+    "label": "접선의 길이",
+    "prompt": "외부 점에서 원에 그은 접선 길이",
+    "tokens": [
+      "√",
+      "(",
+      "d²",
+      "-",
+      "r²",
+      ")"
+    ],
+    "hint": "중심거리 d, 반지름 r"
+  },
+  {
+    "id": "completing-square",
+    "label": "완전제곱식",
+    "prompt": "이차식의 완전제곱 변형",
+    "tokens": [
+      "x²+bx",
+      "=",
+      "(x+b/2)²",
+      "-",
+      "b²/4"
+    ],
+    "hint": "완전제곱꼴로"
+  },
+  {
+    "id": "inverse-proportion-product",
+    "label": "반비례 곱",
+    "prompt": "반비례 관계에서 곱은 일정",
+    "tokens": [
+      "x",
+      "y",
+      "=",
+      "k"
+    ],
+    "hint": "곱이 상수"
+  },
+  {
+    "id": "rate-work",
+    "label": "일률",
+    "prompt": "일률(작업 속도) 공식",
+    "tokens": [
+      "1",
+      "/",
+      "t"
+    ],
+    "hint": "전체 일을 1로 본 단위시간 작업량"
+  },
+  {
+    "id": "frustum-volume",
+    "label": "원뿔대 부피",
+    "prompt": "원뿔대(절두체) 부피",
+    "tokens": [
+      "1/3",
+      "πh",
+      "(R²+Rr+r²)"
+    ],
+    "hint": "두 반지름 R, r"
+  },
+  {
+    "id": "regular-tetrahedron-volume",
+    "label": "정사면체 부피",
+    "prompt": "정사면체 부피 공식",
+    "tokens": [
+      "s³",
+      "/",
+      "(6√2)"
+    ],
+    "hint": "한 모서리 s"
+  },
+  {
+    "id": "interior-angle-regular",
+    "label": "정다각형 내각",
+    "prompt": "정n각형 한 내각의 크기",
+    "tokens": [
+      "180",
+      "(n-2)",
+      "/",
+      "n"
+    ],
+    "hint": "변의 수 n"
+  },
+  {
+    "id": "exterior-angle-regular",
+    "label": "정다각형 외각",
+    "prompt": "정n각형 한 외각의 크기",
+    "tokens": [
+      "360",
+      "/",
+      "n"
+    ],
+    "hint": "변의 수 n"
+  },
+  {
+    "id": "diagonals-polygon",
+    "label": "대각선의 수",
+    "prompt": "n각형의 대각선 개수",
+    "tokens": [
+      "n(n-3)",
+      "/",
+      "2"
+    ],
+    "hint": "변의 수 n"
+  },
+  {
+    "id": "arc-length-radian",
+    "label": "호의 길이 (라디안)",
+    "prompt": "라디안으로 호의 길이",
+    "tokens": [
+      "r",
+      "θ"
+    ],
+    "hint": "반지름 r, 중심각 θ(라디안)"
+  },
+  {
+    "id": "sector-area-radian",
+    "label": "부채꼴 넓이 (라디안)",
+    "prompt": "라디안으로 부채꼴 넓이",
+    "tokens": [
+      "1/2",
+      "r²",
+      "θ"
+    ],
+    "hint": "중심각 θ(라디안)"
+  },
+  {
+    "id": "degree-to-radian",
+    "label": "도→라디안",
+    "prompt": "도를 라디안으로 변환",
+    "tokens": [
+      "θ",
+      "×",
+      "π/180"
+    ],
+    "hint": "π/180을 곱한다"
+  },
+  {
+    "id": "radian-to-degree",
+    "label": "라디안→도",
+    "prompt": "라디안을 도로 변환",
+    "tokens": [
+      "θ",
+      "×",
+      "180/π"
+    ],
+    "hint": "180/π를 곱한다"
+  },
+  {
+    "id": "vertex-y",
+    "label": "꼭짓점 y좌표",
+    "prompt": "이차함수 꼭짓점의 y좌표",
+    "tokens": [
+      "c",
+      "-",
+      "b²",
+      "/",
+      "4a"
+    ],
+    "hint": "최댓값 또는 최솟값"
+  },
+  {
+    "id": "midrange",
+    "label": "중간값(범위)",
+    "prompt": "최댓값과 최솟값의 평균",
+    "tokens": [
+      "(",
+      "max+min",
+      ")",
+      "/",
+      "2"
+    ],
+    "hint": "양 끝값의 평균"
+  },
+  {
+    "id": "coefficient-of-variation",
+    "label": "변동계수",
+    "prompt": "변동계수 공식",
+    "tokens": [
+      "σ",
+      "/",
+      "μ"
+    ],
+    "hint": "표준편차 나누기 평균"
+  },
+  {
+    "id": "expected-value",
+    "label": "기댓값",
+    "prompt": "이산확률변수의 기댓값",
+    "tokens": [
+      "E(X)",
+      "=",
+      "Σ",
+      "xᵢ",
+      "pᵢ"
+    ],
+    "hint": "값과 확률의 곱의 합"
+  },
+  {
+    "id": "complement-probability",
+    "label": "여사건 확률",
+    "prompt": "여사건의 확률",
+    "tokens": [
+      "P(Aᶜ)",
+      "=",
+      "1",
+      "-",
+      "P(A)"
+    ],
+    "hint": "전체에서 빼기"
+  },
+  {
+    "id": "addition-probability",
+    "label": "확률 덧셈정리",
+    "prompt": "두 사건의 합사건 확률",
+    "tokens": [
+      "P(A∪B)",
+      "=",
+      "P(A)+P(B)",
+      "-",
+      "P(A∩B)"
+    ],
+    "hint": "포함-배제"
+  },
+  {
+    "id": "conditional-probability",
+    "label": "조건부 확률",
+    "prompt": "조건부 확률 정의",
+    "tokens": [
+      "P(A|B)",
+      "=",
+      "P(A∩B)",
+      "/",
+      "P(B)"
+    ],
+    "hint": "B가 일어났을 때 A"
+  },
+  {
+    "id": "binomial-probability",
+    "label": "이항확률",
+    "prompt": "이항분포 확률",
+    "tokens": [
+      "ₙCₖ",
+      "pᵏ",
+      "(1-p)ⁿ⁻ᵏ"
+    ],
+    "hint": "성공 확률 p"
+  },
+  {
+    "id": "slant-height-cone",
+    "label": "원뿔 모선",
+    "prompt": "원뿔의 모선 길이",
+    "tokens": [
+      "√",
+      "(",
+      "r²",
+      "+",
+      "h²",
+      ")"
+    ],
+    "hint": "반지름 r, 높이 h"
+  },
+  {
+    "id": "regular-octagon-perimeter",
+    "label": "정팔각형 둘레",
+    "prompt": "정팔각형 둘레",
+    "tokens": [
+      "8",
+      "s"
+    ],
+    "hint": "한 변 s의 여덟 배"
+  },
+  {
+    "id": "diagonal-rectangle",
+    "label": "직사각형 대각선",
+    "prompt": "직사각형 대각선 길이",
+    "tokens": [
+      "√",
+      "(",
+      "l²",
+      "+",
+      "w²",
+      ")"
+    ],
+    "hint": "길이 l, 너비 w"
+  },
+  {
+    "id": "diagonal-cuboid",
+    "label": "직육면체 대각선",
+    "prompt": "직육면체 공간대각선 길이",
+    "tokens": [
+      "√",
+      "(",
+      "l²+w²+h²",
+      ")"
+    ],
+    "hint": "세 모서리 l, w, h"
+  },
+  {
+    "id": "nth-triangular-number",
+    "label": "삼각수",
+    "prompt": "n번째 삼각수",
+    "tokens": [
+      "n(n+1)",
+      "/",
+      "2"
+    ],
+    "hint": "1, 3, 6, 10, ..."
+  },
+  {
+    "id": "compound-percentage-growth",
+    "label": "복합 성장률",
+    "prompt": "n년 후 복합 성장",
+    "tokens": [
+      "P",
+      "(1+r)ⁿ"
+    ],
+    "hint": "성장률 r, n년"
+  }
+]

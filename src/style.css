@@ -1,0 +1,490 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  background: #f7f2e8;
+  color: #2e2a25;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: Inter, Pretendard, ui-sans-serif, system-ui, sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.theme-paper {
+  --page: #f7f2e8;
+  --panel: #fffaf0;
+  --panel-strong: #ffffff;
+  --ink: #2e2a25;
+  --muted: #756d63;
+  --line: #dfd4c3;
+  --accent: #0f766e;
+  --accent-ink: #ffffff;
+}
+
+.theme-midnight {
+  --page: #171b24;
+  --panel: #202636;
+  --panel-strong: #2c3346;
+  --ink: #f5f7fb;
+  --muted: #b8c0ce;
+  --line: #3d465d;
+  --accent: #f59e0b;
+  --accent-ink: #1a1304;
+}
+
+.theme-lab {
+  --page: #eef7f4;
+  --panel: #f7fffc;
+  --panel-strong: #ffffff;
+  --ink: #162522;
+  --muted: #5d706b;
+  --line: #c4ddd6;
+  --accent: #2563eb;
+  --accent-ink: #ffffff;
+}
+
+.block-face {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  isolation: isolate;
+  box-shadow: 0 14px 28px rgba(17, 24, 39, 0.16);
+}
+
+.block-face::before,
+.block-face::after {
+  position: absolute;
+  content: '';
+  pointer-events: none;
+}
+
+.block-label {
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0;
+}
+
+/* 선택 표시: 패널색 갭 + accent 링 + ink 외곽선으로 모든 테마/블럭색에서 또렷하게 */
+.block-selected {
+  transform: scale(0.9);
+  z-index: 3;
+  border-color: var(--accent-ink) !important;
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+  box-shadow:
+    0 0 0 3px var(--panel),
+    0 0 0 7px var(--accent),
+    0 16px 30px rgba(17, 24, 39, 0.38);
+  animation: block-selected-pulse 900ms ease-in-out infinite alternate;
+}
+
+/* 힌트: 제거 가능한 조합을 흰 점선 테두리로 강조 */
+.block-hint {
+  z-index: 4;
+  outline: 3px dashed #ffffff;
+  outline-offset: 3px;
+  box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.55);
+  animation: block-hint-pulse 700ms ease-in-out infinite alternate;
+}
+
+@keyframes block-hint-pulse {
+  from {
+    outline-offset: 2px;
+  }
+  to {
+    outline-offset: 5px;
+  }
+}
+
+@keyframes block-selected-pulse {
+  from {
+    box-shadow:
+      0 0 0 3px var(--panel),
+      0 0 0 6px var(--accent),
+      0 16px 30px rgba(17, 24, 39, 0.38);
+  }
+  to {
+    box-shadow:
+      0 0 0 3px var(--panel),
+      0 0 0 9px var(--accent),
+      0 18px 34px rgba(17, 24, 39, 0.45);
+  }
+}
+
+.block-style-jelly {
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 26% 18%, rgba(255, 255, 255, 0.82), transparent 26%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.35), rgba(0, 0, 0, 0.12));
+}
+
+.block-style-jelly::after {
+  inset: 8%;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+}
+
+.block-style-jelly .block-label {
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  text-shadow: 0 2px 8px rgba(15, 23, 42, 0.35);
+}
+
+.block-style-card {
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.78)),
+    currentColor;
+  color: #111827;
+  box-shadow:
+    inset 0 -5px 0 rgba(15, 23, 42, 0.12),
+    0 10px 20px rgba(17, 24, 39, 0.12);
+}
+
+.block-style-card::before {
+  inset: 0;
+  border-top: 5px solid var(--block-color);
+}
+
+.block-style-card .block-label {
+  border-radius: 7px;
+  color: #172033;
+}
+
+.block-style-tile {
+  border-radius: 4px;
+  background: #ffffff !important;
+  border-color: #111827 !important;
+  color: #111827;
+  box-shadow: none;
+}
+
+.block-style-tile .block-label {
+  border-radius: 2px;
+  color: #111827;
+  text-shadow: none;
+}
+
+.block-style-neon {
+  --neon-a: #22d3ee;
+  --neon-b: #f472b6;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(4, 7, 19, 0.98), rgba(12, 16, 33, 0.98)),
+    #050816 !important;
+  border-color: rgba(34, 211, 238, 0.85) !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(244, 114, 182, 0.72),
+    inset 0 0 18px rgba(34, 211, 238, 0.38),
+    0 0 8px rgba(34, 211, 238, 0.95),
+    0 0 18px rgba(34, 211, 238, 0.65),
+    0 0 34px rgba(244, 114, 182, 0.48),
+    0 16px 28px rgba(2, 6, 23, 0.5);
+}
+
+.block-style-neon::before {
+  inset: 9px;
+  border-radius: 13px;
+  border: 2px solid var(--neon-a);
+  box-shadow:
+    0 0 6px var(--neon-a),
+    0 0 14px var(--neon-a),
+    inset 0 0 10px rgba(34, 211, 238, 0.42);
+}
+
+.block-style-neon::after {
+  inset: 16px;
+  border-radius: 9px;
+  background:
+    linear-gradient(90deg, transparent 0 18%, rgba(244, 114, 182, 0.95) 18% 22%, transparent 22% 78%, rgba(244, 114, 182, 0.95) 78% 82%, transparent 82%),
+    linear-gradient(0deg, transparent 0 18%, rgba(244, 114, 182, 0.95) 18% 22%, transparent 22% 78%, rgba(244, 114, 182, 0.95) 78% 82%, transparent 82%);
+  filter: drop-shadow(0 0 6px var(--neon-b)) drop-shadow(0 0 16px var(--neon-b));
+  opacity: 0.9;
+}
+
+.block-style-neon .block-label {
+  border-radius: 10px;
+  color: #ffffff;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 0 3px #fff,
+    0 0 8px var(--neon-b),
+    0 0 16px var(--neon-b),
+    0 0 28px var(--neon-a),
+    0 0 44px var(--neon-a);
+  animation: neon-flicker 3.2s infinite;
+}
+
+@keyframes neon-flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    opacity: 1;
+    filter: brightness(1.08);
+  }
+  20%,
+  24%,
+  55% {
+    opacity: 0.82;
+    filter: brightness(0.88);
+  }
+}
+
+.board-grid {
+  position: relative;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.block-move,
+.block-enter-active,
+.block-leave-active {
+  transition:
+    transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 360ms ease,
+    filter 360ms ease;
+}
+
+.board-grid.is-falling .block-move,
+.board-grid.is-falling .block-enter-active {
+  transition:
+    transform 1000ms cubic-bezier(0.18, 0.84, 0.24, 1),
+    opacity 480ms ease,
+    filter 480ms ease;
+}
+
+.board-grid.is-swapping .block-move {
+  transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 숫자 모드: 사라질 때 크기 축소 없이 (회전/스케일 제거) */
+.board-grid.numbers-board .block-leave-active {
+  transition: opacity 150ms ease;
+}
+.board-grid.numbers-board .block-leave-to {
+  transform: none;
+  opacity: 0;
+}
+
+.block-enter-from {
+  opacity: 0;
+  transform: translateY(calc(var(--drop, 1) * -116%)) scale(0.92);
+  filter: brightness(1.22);
+}
+
+.block-leave-to {
+  opacity: 0;
+  transform: scale(0.55) rotate(8deg);
+  filter: brightness(1.4);
+}
+
+.block-leave-active {
+  position: absolute;
+  z-index: 0;
+}
+
+.block-clear-jelly,
+.block-clear-card,
+.block-clear-tile,
+.block-clear-neon,
+.block-fade-jelly,
+.block-fade-card,
+.block-fade-tile,
+.block-fade-neon {
+  z-index: 2;
+}
+
+.block-clear-jelly {
+  animation: jelly-clear 1000ms ease-in-out infinite alternate;
+}
+
+.block-fade-jelly {
+  opacity: 0;
+  transform: translateY(12px) scale(0.56) skewX(-3deg);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease,
+    filter 700ms ease;
+  filter: blur(1.5px) brightness(1.25) saturate(1.1);
+}
+
+.block-clear-card {
+  animation: card-clear 1000ms ease-in-out infinite alternate;
+}
+
+.block-fade-card {
+  opacity: 0;
+  transform: translateY(10px) rotate(-9deg) scale(0.72);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease,
+    filter 700ms ease;
+  filter: brightness(1.2) contrast(1.2);
+}
+
+.block-clear-tile {
+  animation: tile-clear 1000ms steps(2, end) infinite alternate;
+}
+
+.block-fade-tile {
+  opacity: 0;
+  transform: scale(0.5) rotate(4deg);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease,
+    filter 700ms ease;
+  filter: grayscale(1) brightness(1.15);
+}
+
+.block-clear-neon {
+  animation: neon-clear 1000ms ease-in-out infinite alternate;
+}
+
+.block-fade-neon {
+  opacity: 0;
+  transform: scale(0.62);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease,
+    filter 700ms ease;
+  filter: brightness(1.4) saturate(1.3);
+}
+
+@keyframes jelly-clear {
+  from {
+    transform: scale(1) translateY(0);
+    filter: brightness(1) saturate(1);
+    box-shadow: 0 14px 28px rgba(17, 24, 39, 0.16);
+  }
+  to {
+    transform: scale(1.06) translateY(-3px);
+    filter: brightness(1.45) saturate(1.35);
+    box-shadow:
+      0 0 0 4px rgba(255, 255, 255, 0.75),
+      0 0 30px rgba(255, 255, 255, 0.45);
+  }
+}
+
+@keyframes card-clear {
+  from {
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1) contrast(1);
+    box-shadow:
+      inset 0 -5px 0 rgba(15, 23, 42, 0.12),
+      0 10px 20px rgba(17, 24, 39, 0.12);
+  }
+  to {
+    transform: scale(1.05) rotate(-2deg);
+    filter: brightness(1.32) contrast(1.08);
+    box-shadow:
+      inset 0 -5px 0 rgba(15, 23, 42, 0.12),
+      0 0 0 4px rgba(255, 255, 255, 0.85),
+      0 0 24px rgba(15, 23, 42, 0.16);
+  }
+}
+
+@keyframes tile-clear {
+  from {
+    transform: scale(1);
+    filter: grayscale(0) brightness(1);
+  }
+  to {
+    transform: scale(1.03) translateY(-1px);
+    filter: grayscale(1) brightness(1.35);
+    box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.35);
+  }
+}
+
+@keyframes neon-clear {
+  0% {
+    filter: brightness(1.1) saturate(1.1);
+    box-shadow:
+      inset 0 0 0 2px rgba(244, 114, 182, 0.72),
+      inset 0 0 18px rgba(34, 211, 238, 0.38),
+      0 0 8px rgba(34, 211, 238, 0.95),
+      0 0 18px rgba(34, 211, 238, 0.65),
+      0 0 34px rgba(244, 114, 182, 0.48),
+      0 16px 28px rgba(2, 6, 23, 0.5);
+  }
+  50% {
+    filter: brightness(1.6) saturate(1.5);
+    box-shadow:
+      inset 0 0 0 2px rgba(244, 114, 182, 0.9),
+      inset 0 0 26px rgba(34, 211, 238, 0.7),
+      0 0 12px rgba(34, 211, 238, 1),
+      0 0 32px rgba(244, 114, 182, 0.85),
+      0 0 56px rgba(34, 211, 238, 0.5),
+      0 16px 28px rgba(2, 6, 23, 0.5);
+  }
+  100% {
+    filter: brightness(1.05) saturate(1.05);
+    box-shadow:
+      inset 0 0 0 2px rgba(244, 114, 182, 0.72),
+      inset 0 0 18px rgba(34, 211, 238, 0.38),
+      0 0 8px rgba(34, 211, 238, 0.95),
+      0 0 18px rgba(34, 211, 238, 0.65),
+      0 0 34px rgba(244, 114, 182, 0.48),
+      0 16px 28px rgba(2, 6, 23, 0.5);
+  }
+}
+
+/* 모바일: 게임하기 화면을 전체로 채우고 페이지 스크롤 잠금 */
+@media (max-width: 1023px) {
+  .app-main {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .app-shell {
+    height: 100%;
+    min-height: 0;
+  }
+  .app-layout {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  /* 활성 패널만 영역을 채움 (비활성은 Tailwind hidden 으로 숨김 유지) */
+  .app-panel {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  /* 게임하기: 점수+보드를 전체화면으로 덮어 가려지는 부분/스크롤 없음 */
+  .app-game-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--panel);
+    padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  }
+  .app-board {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+}

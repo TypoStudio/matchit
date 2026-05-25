@@ -1,0 +1,1156 @@
+[
+  {
+    "id": "circle-area",
+    "label": "원의 넓이",
+    "prompt": "원의 넓이 공식",
+    "tokens": [
+      "π",
+      "r",
+      "²"
+    ],
+    "hint": "반지름 r"
+  },
+  {
+    "id": "pythagoras",
+    "label": "피타고라스",
+    "prompt": "직각삼각형 관계식",
+    "tokens": [
+      "a²",
+      "+",
+      "b²",
+      "=",
+      "c²"
+    ],
+    "hint": "빗변은 c"
+  },
+  {
+    "id": "slope",
+    "label": "기울기",
+    "prompt": "기울기 공식",
+    "tokens": [
+      "Δy",
+      "/",
+      "Δx"
+    ],
+    "hint": "y 변화량 나누기 x 변화량"
+  },
+  {
+    "id": "square-area",
+    "label": "정사각형 넓이",
+    "prompt": "정사각형 넓이 공식",
+    "tokens": [
+      "s",
+      "²"
+    ],
+    "hint": "한 변의 길이 s"
+  },
+  {
+    "id": "rectangle-area",
+    "label": "직사각형 넓이",
+    "prompt": "직사각형 넓이 공식",
+    "tokens": [
+      "l",
+      "w"
+    ],
+    "hint": "길이 l, 너비 w"
+  },
+  {
+    "id": "triangle-area",
+    "label": "삼각형 넓이",
+    "prompt": "삼각형 넓이 공식",
+    "tokens": [
+      "1/2",
+      "b",
+      "h"
+    ],
+    "hint": "밑변 b, 높이 h"
+  },
+  {
+    "id": "circle-circumference",
+    "label": "원의 둘레",
+    "prompt": "원의 둘레 공식",
+    "tokens": [
+      "2",
+      "π",
+      "r"
+    ],
+    "hint": "반지름 r"
+  },
+  {
+    "id": "cube-volume",
+    "label": "정육면체 부피",
+    "prompt": "정육면체 부피 공식",
+    "tokens": [
+      "s",
+      "³"
+    ],
+    "hint": "한 변의 길이 s"
+  },
+  {
+    "id": "rectangular-prism-volume",
+    "label": "직육면체 부피",
+    "prompt": "직육면체 부피 공식",
+    "tokens": [
+      "l",
+      "w",
+      "h"
+    ],
+    "hint": "길이 l, 너비 w, 높이 h"
+  },
+  {
+    "id": "cylinder-volume",
+    "label": "원기둥 부피",
+    "prompt": "원기둥 부피 공식",
+    "tokens": [
+      "π",
+      "r",
+      "²",
+      "h"
+    ],
+    "hint": "반지름 r, 높이 h"
+  },
+  {
+    "id": "square-perimeter",
+    "label": "정사각형 둘레",
+    "prompt": "정사각형 둘레 공식",
+    "tokens": [
+      "4",
+      "s"
+    ],
+    "hint": "한 변 s의 네 배"
+  },
+  {
+    "id": "rectangle-perimeter",
+    "label": "직사각형 둘레",
+    "prompt": "직사각형 둘레 공식",
+    "tokens": [
+      "2",
+      "(",
+      "l",
+      "+",
+      "w",
+      ")"
+    ],
+    "hint": "길이와 너비의 합의 두 배"
+  },
+  {
+    "id": "diameter",
+    "label": "원의 지름",
+    "prompt": "원의 지름 공식",
+    "tokens": [
+      "2",
+      "r"
+    ],
+    "hint": "반지름의 두 배"
+  },
+  {
+    "id": "average-two",
+    "label": "두 수의 평균",
+    "prompt": "두 수 a, b의 평균",
+    "tokens": [
+      "(",
+      "a",
+      "+",
+      "b",
+      ")",
+      "/",
+      "2"
+    ],
+    "hint": "합을 둘로 나눈다"
+  },
+  {
+    "id": "parallelogram-area",
+    "label": "평행사변형 넓이",
+    "prompt": "평행사변형 넓이 공식",
+    "tokens": [
+      "b",
+      "h"
+    ],
+    "hint": "밑변 b, 높이 h"
+  },
+  {
+    "id": "trapezoid-area",
+    "label": "사다리꼴 넓이",
+    "prompt": "사다리꼴 넓이 공식",
+    "tokens": [
+      "1/2",
+      "(",
+      "a",
+      "+",
+      "b",
+      ")",
+      "h"
+    ],
+    "hint": "두 밑변 a, b와 높이 h"
+  },
+  {
+    "id": "rhombus-area",
+    "label": "마름모 넓이",
+    "prompt": "마름모 넓이 공식",
+    "tokens": [
+      "1/2",
+      "d₁",
+      "d₂"
+    ],
+    "hint": "두 대각선 d₁, d₂"
+  },
+  {
+    "id": "distance-speed-time",
+    "label": "거리 공식",
+    "prompt": "속력과 시간으로 거리 구하기",
+    "tokens": [
+      "v",
+      "t"
+    ],
+    "hint": "속력 v 곱하기 시간 t"
+  },
+  {
+    "id": "speed-formula",
+    "label": "속력 공식",
+    "prompt": "거리와 시간으로 속력 구하기",
+    "tokens": [
+      "d",
+      "/",
+      "t"
+    ],
+    "hint": "거리 나누기 시간"
+  },
+  {
+    "id": "density-formula",
+    "label": "밀도 공식",
+    "prompt": "질량과 부피로 밀도 구하기",
+    "tokens": [
+      "m",
+      "/",
+      "V"
+    ],
+    "hint": "질량 나누기 부피"
+  },
+  {
+    "id": "percent-formula",
+    "label": "백분율",
+    "prompt": "부분을 전체로 나눈 백분율",
+    "tokens": [
+      "(",
+      "part",
+      "/",
+      "whole",
+      ")",
+      "×",
+      "100"
+    ],
+    "hint": "부분을 전체로 나누고 100을 곱한다"
+  },
+  {
+    "id": "cuboid-surface",
+    "label": "직육면체 겉넓이",
+    "prompt": "직육면체 겉넓이 공식",
+    "tokens": [
+      "2",
+      "(",
+      "lw + lh + wh",
+      ")"
+    ],
+    "hint": "세 면의 넓이 합의 두 배"
+  },
+  {
+    "id": "cube-surface",
+    "label": "정육면체 겉넓이",
+    "prompt": "정육면체 겉넓이 공식",
+    "tokens": [
+      "6",
+      "s",
+      "²"
+    ],
+    "hint": "한 면 넓이의 여섯 배"
+  },
+  {
+    "id": "circle-diameter-circumference",
+    "label": "원의 둘레 (지름)",
+    "prompt": "지름으로 표현한 원의 둘레",
+    "tokens": [
+      "π",
+      "d"
+    ],
+    "hint": "지름 d"
+  },
+  {
+    "id": "linear-function",
+    "label": "일차함수",
+    "prompt": "일차함수 일반형",
+    "tokens": [
+      "y",
+      "=",
+      "a",
+      "x",
+      "+",
+      "b"
+    ],
+    "hint": "기울기 a, y절편 b"
+  },
+  {
+    "id": "proportion-direct",
+    "label": "정비례",
+    "prompt": "정비례 관계식",
+    "tokens": [
+      "y",
+      "=",
+      "k",
+      "x"
+    ],
+    "hint": "비례상수 k"
+  },
+  {
+    "id": "proportion-inverse",
+    "label": "반비례",
+    "prompt": "반비례 관계식",
+    "tokens": [
+      "y",
+      "=",
+      "k",
+      "/",
+      "x"
+    ],
+    "hint": "비례상수 k"
+  },
+  {
+    "id": "simple-interest",
+    "label": "단리",
+    "prompt": "단리 이자 공식",
+    "tokens": [
+      "P",
+      "r",
+      "t"
+    ],
+    "hint": "원금 P, 이율 r, 기간 t"
+  },
+  {
+    "id": "triangle-perimeter",
+    "label": "삼각형 둘레",
+    "prompt": "삼각형 둘레 공식",
+    "tokens": [
+      "a",
+      "+",
+      "b",
+      "+",
+      "c"
+    ],
+    "hint": "세 변의 합"
+  },
+  {
+    "id": "regular-polygon-perimeter",
+    "label": "정다각형 둘레",
+    "prompt": "정n각형 둘레 공식",
+    "tokens": [
+      "n",
+      "s"
+    ],
+    "hint": "변의 수 n, 한 변 s"
+  },
+  {
+    "id": "celsius-to-fahrenheit",
+    "label": "섭씨→화씨",
+    "prompt": "섭씨를 화씨로 변환",
+    "tokens": [
+      "9/5",
+      "C",
+      "+",
+      "32"
+    ],
+    "hint": "섭씨 C"
+  },
+  {
+    "id": "fahrenheit-to-celsius",
+    "label": "화씨→섭씨",
+    "prompt": "화씨를 섭씨로 변환",
+    "tokens": [
+      "5/9",
+      "(",
+      "F",
+      "-",
+      "32",
+      ")"
+    ],
+    "hint": "화씨 F"
+  },
+  {
+    "id": "kinetic-base",
+    "label": "운동량",
+    "prompt": "운동량 공식",
+    "tokens": [
+      "m",
+      "v"
+    ],
+    "hint": "질량 m, 속도 v"
+  },
+  {
+    "id": "force-formula",
+    "label": "힘",
+    "prompt": "뉴턴의 운동 제2법칙",
+    "tokens": [
+      "m",
+      "a"
+    ],
+    "hint": "질량 m, 가속도 a"
+  },
+  {
+    "id": "work-formula",
+    "label": "일",
+    "prompt": "일 공식",
+    "tokens": [
+      "F",
+      "d"
+    ],
+    "hint": "힘 F, 거리 d"
+  },
+  {
+    "id": "ohms-law",
+    "label": "옴의 법칙",
+    "prompt": "전압 공식",
+    "tokens": [
+      "I",
+      "R"
+    ],
+    "hint": "전류 I, 저항 R"
+  },
+  {
+    "id": "power-electric",
+    "label": "전력",
+    "prompt": "전력 공식",
+    "tokens": [
+      "V",
+      "I"
+    ],
+    "hint": "전압 V, 전류 I"
+  },
+  {
+    "id": "average-speed",
+    "label": "평균 속력",
+    "prompt": "총 거리와 총 시간으로 평균 속력",
+    "tokens": [
+      "total d",
+      "/",
+      "total t"
+    ],
+    "hint": "총 거리 나누기 총 시간"
+  },
+  {
+    "id": "area-of-sector-fraction",
+    "label": "부채꼴 넓이 (비)",
+    "prompt": "중심각 비로 표현한 부채꼴 넓이",
+    "tokens": [
+      "(",
+      "θ",
+      "/",
+      "360",
+      ")",
+      "π r²"
+    ],
+    "hint": "중심각 θ"
+  },
+  {
+    "id": "arc-length-fraction",
+    "label": "호의 길이 (비)",
+    "prompt": "중심각 비로 표현한 호의 길이",
+    "tokens": [
+      "(",
+      "θ",
+      "/",
+      "360",
+      ")",
+      "2πr"
+    ],
+    "hint": "중심각 θ"
+  },
+  {
+    "id": "square-diagonal",
+    "label": "정사각형 대각선",
+    "prompt": "정사각형 대각선 길이",
+    "tokens": [
+      "s",
+      "√2"
+    ],
+    "hint": "한 변 s"
+  },
+  {
+    "id": "discount-price",
+    "label": "할인가",
+    "prompt": "할인율 적용 가격",
+    "tokens": [
+      "P",
+      "(",
+      "1",
+      "-",
+      "r",
+      ")"
+    ],
+    "hint": "정가 P, 할인율 r"
+  },
+  {
+    "id": "markup-price",
+    "label": "인상가",
+    "prompt": "인상률 적용 가격",
+    "tokens": [
+      "P",
+      "(",
+      "1",
+      "+",
+      "r",
+      ")"
+    ],
+    "hint": "원가 P, 인상률 r"
+  },
+  {
+    "id": "ratio-fraction",
+    "label": "비의 값",
+    "prompt": "a 대 b의 비의 값",
+    "tokens": [
+      "a",
+      "/",
+      "b"
+    ],
+    "hint": "앞 항 나누기 뒤 항"
+  },
+  {
+    "id": "diff-of-squares-num",
+    "label": "두 수의 차",
+    "prompt": "큰 수에서 작은 수를 뺀 값",
+    "tokens": [
+      "a",
+      "-",
+      "b"
+    ],
+    "hint": "a에서 b를 뺀다"
+  },
+  {
+    "id": "perimeter-circle-half",
+    "label": "반원 둘레",
+    "prompt": "반원의 둘레 (호 + 지름)",
+    "tokens": [
+      "π r",
+      "+",
+      "2r"
+    ],
+    "hint": "반지름 r"
+  },
+  {
+    "id": "half-circle-area",
+    "label": "반원 넓이",
+    "prompt": "반원의 넓이",
+    "tokens": [
+      "1/2",
+      "π",
+      "r",
+      "²"
+    ],
+    "hint": "원 넓이의 절반"
+  },
+  {
+    "id": "quarter-circle-area",
+    "label": "사분원 넓이",
+    "prompt": "사분원의 넓이",
+    "tokens": [
+      "1/4",
+      "π",
+      "r",
+      "²"
+    ],
+    "hint": "원 넓이의 4분의 1"
+  },
+  {
+    "id": "cone-volume",
+    "label": "원뿔 부피",
+    "prompt": "원뿔 부피 공식",
+    "tokens": [
+      "1/3",
+      "π",
+      "r",
+      "²",
+      "h"
+    ],
+    "hint": "원기둥 부피의 3분의 1"
+  },
+  {
+    "id": "pyramid-volume",
+    "label": "각뿔 부피",
+    "prompt": "각뿔 부피 공식",
+    "tokens": [
+      "1/3",
+      "B",
+      "h"
+    ],
+    "hint": "밑넓이 B, 높이 h"
+  },
+  {
+    "id": "prism-volume",
+    "label": "각기둥 부피",
+    "prompt": "각기둥 부피 공식",
+    "tokens": [
+      "B",
+      "h"
+    ],
+    "hint": "밑넓이 B, 높이 h"
+  },
+  {
+    "id": "sphere-surface",
+    "label": "구 겉넓이",
+    "prompt": "구 겉넓이 공식",
+    "tokens": [
+      "4",
+      "π",
+      "r",
+      "²"
+    ],
+    "hint": "반지름 r"
+  },
+  {
+    "id": "cylinder-surface",
+    "label": "원기둥 겉넓이",
+    "prompt": "원기둥 겉넓이 공식",
+    "tokens": [
+      "2πr²",
+      "+",
+      "2πrh"
+    ],
+    "hint": "두 밑면과 옆면"
+  },
+  {
+    "id": "cylinder-lateral",
+    "label": "원기둥 옆넓이",
+    "prompt": "원기둥 옆면의 넓이",
+    "tokens": [
+      "2",
+      "π",
+      "r",
+      "h"
+    ],
+    "hint": "둘레 곱하기 높이"
+  },
+  {
+    "id": "equilateral-triangle-area",
+    "label": "정삼각형 넓이",
+    "prompt": "정삼각형 넓이 공식",
+    "tokens": [
+      "√3/4",
+      "s",
+      "²"
+    ],
+    "hint": "한 변 s"
+  },
+  {
+    "id": "regular-hexagon-area",
+    "label": "정육각형 넓이",
+    "prompt": "정육각형 넓이 공식",
+    "tokens": [
+      "3√3/2",
+      "s",
+      "²"
+    ],
+    "hint": "한 변 s"
+  },
+  {
+    "id": "interior-angle-sum",
+    "label": "내각의 합",
+    "prompt": "n각형 내각의 합",
+    "tokens": [
+      "(",
+      "n",
+      "-",
+      "2",
+      ")",
+      "×",
+      "180"
+    ],
+    "hint": "변의 수 n"
+  },
+  {
+    "id": "exterior-angle-sum",
+    "label": "외각의 합",
+    "prompt": "다각형 외각의 합",
+    "tokens": [
+      "360",
+      "°"
+    ],
+    "hint": "항상 일정하다"
+  },
+  {
+    "id": "one-interior-angle",
+    "label": "정다각형 한 내각",
+    "prompt": "정n각형의 한 내각",
+    "tokens": [
+      "(",
+      "n",
+      "-",
+      "2",
+      ")",
+      "180/n"
+    ],
+    "hint": "내각의 합을 n으로 나눈다"
+  },
+  {
+    "id": "fraction-add",
+    "label": "분수 덧셈",
+    "prompt": "분모가 같은 분수의 덧셈",
+    "tokens": [
+      "a/c",
+      "+",
+      "b/c",
+      "=",
+      "(a+b)/c"
+    ],
+    "hint": "분모는 그대로"
+  },
+  {
+    "id": "fraction-multiply",
+    "label": "분수 곱셈",
+    "prompt": "분수의 곱셈",
+    "tokens": [
+      "a/b",
+      "×",
+      "c/d",
+      "=",
+      "ac/bd"
+    ],
+    "hint": "분자끼리 분모끼리"
+  },
+  {
+    "id": "percentage-change",
+    "label": "변화율",
+    "prompt": "백분율 변화 공식",
+    "tokens": [
+      "(",
+      "new - old",
+      ")",
+      "/",
+      "old",
+      "× 100"
+    ],
+    "hint": "변화량을 처음 값으로 나눈다"
+  },
+  {
+    "id": "circle-area-diameter",
+    "label": "원의 넓이 (지름)",
+    "prompt": "지름으로 표현한 원의 넓이",
+    "tokens": [
+      "π",
+      "d²",
+      "/",
+      "4"
+    ],
+    "hint": "지름 d"
+  },
+  {
+    "id": "kite-area",
+    "label": "연 넓이",
+    "prompt": "연(kite) 넓이 공식",
+    "tokens": [
+      "1/2",
+      "d₁",
+      "d₂"
+    ],
+    "hint": "두 대각선 곱의 절반"
+  },
+  {
+    "id": "annulus-area",
+    "label": "고리 넓이",
+    "prompt": "두 원 사이 고리의 넓이",
+    "tokens": [
+      "π",
+      "(",
+      "R²",
+      "-",
+      "r²",
+      ")"
+    ],
+    "hint": "큰 원에서 작은 원 빼기"
+  },
+  {
+    "id": "ellipse-area",
+    "label": "타원 넓이",
+    "prompt": "타원의 넓이 공식",
+    "tokens": [
+      "π",
+      "a",
+      "b"
+    ],
+    "hint": "두 반축 a, b"
+  },
+  {
+    "id": "voltage-power-resistance",
+    "label": "전력 (저항)",
+    "prompt": "저항으로 표현한 전력",
+    "tokens": [
+      "I²",
+      "R"
+    ],
+    "hint": "전류 제곱 곱하기 저항"
+  },
+  {
+    "id": "weight-formula",
+    "label": "무게",
+    "prompt": "무게 공식",
+    "tokens": [
+      "m",
+      "g"
+    ],
+    "hint": "질량 m, 중력가속도 g"
+  },
+  {
+    "id": "pressure-formula",
+    "label": "압력",
+    "prompt": "압력 공식",
+    "tokens": [
+      "F",
+      "/",
+      "A"
+    ],
+    "hint": "힘 나누기 넓이"
+  },
+  {
+    "id": "frequency-period",
+    "label": "진동수",
+    "prompt": "주기로 표현한 진동수",
+    "tokens": [
+      "1",
+      "/",
+      "T"
+    ],
+    "hint": "주기 T의 역수"
+  },
+  {
+    "id": "wave-speed",
+    "label": "파동 속력",
+    "prompt": "파동의 속력 공식",
+    "tokens": [
+      "f",
+      "λ"
+    ],
+    "hint": "진동수 f, 파장 λ"
+  },
+  {
+    "id": "mean-formula",
+    "label": "평균",
+    "prompt": "자료의 산술 평균",
+    "tokens": [
+      "Σx",
+      "/",
+      "n"
+    ],
+    "hint": "총합 나누기 개수"
+  },
+  {
+    "id": "range-formula",
+    "label": "범위",
+    "prompt": "자료의 범위",
+    "tokens": [
+      "max",
+      "-",
+      "min"
+    ],
+    "hint": "최댓값 빼기 최솟값"
+  },
+  {
+    "id": "probability-basic",
+    "label": "확률",
+    "prompt": "기본 확률 공식",
+    "tokens": [
+      "(",
+      "유리한 경우",
+      ")",
+      "/",
+      "(",
+      "전체 경우",
+      ")"
+    ],
+    "hint": "경우의 수의 비"
+  },
+  {
+    "id": "perimeter-regular-triangle",
+    "label": "정삼각형 둘레",
+    "prompt": "정삼각형 둘레 공식",
+    "tokens": [
+      "3",
+      "s"
+    ],
+    "hint": "한 변 s의 세 배"
+  },
+  {
+    "id": "regular-pentagon-perimeter",
+    "label": "정오각형 둘레",
+    "prompt": "정오각형 둘레 공식",
+    "tokens": [
+      "5",
+      "s"
+    ],
+    "hint": "한 변 s의 다섯 배"
+  },
+  {
+    "id": "regular-hexagon-perimeter",
+    "label": "정육각형 둘레",
+    "prompt": "정육각형 둘레 공식",
+    "tokens": [
+      "6",
+      "s"
+    ],
+    "hint": "한 변 s의 여섯 배"
+  },
+  {
+    "id": "cone-lateral",
+    "label": "원뿔 옆넓이",
+    "prompt": "원뿔 옆면의 넓이",
+    "tokens": [
+      "π",
+      "r",
+      "l"
+    ],
+    "hint": "반지름 r, 모선 l"
+  },
+  {
+    "id": "cone-surface",
+    "label": "원뿔 겉넓이",
+    "prompt": "원뿔 겉넓이 공식",
+    "tokens": [
+      "πr²",
+      "+",
+      "πrl"
+    ],
+    "hint": "밑면과 옆면"
+  },
+  {
+    "id": "money-change",
+    "label": "거스름돈",
+    "prompt": "거스름돈 공식",
+    "tokens": [
+      "받은 돈",
+      "-",
+      "물건값"
+    ],
+    "hint": "낸 금액에서 가격 빼기"
+  },
+  {
+    "id": "total-cost",
+    "label": "총 비용",
+    "prompt": "단가와 수량으로 총 비용",
+    "tokens": [
+      "p",
+      "q"
+    ],
+    "hint": "단가 p, 수량 q"
+  },
+  {
+    "id": "unit-price",
+    "label": "단가",
+    "prompt": "단가 공식",
+    "tokens": [
+      "총 가격",
+      "/",
+      "수량"
+    ],
+    "hint": "가격 나누기 개수"
+  },
+  {
+    "id": "perimeter-of-l-shape",
+    "label": "둘레의 합",
+    "prompt": "여러 변의 둘레 합",
+    "tokens": [
+      "Σ",
+      "변의 길이"
+    ],
+    "hint": "모든 변의 길이를 더한다"
+  },
+  {
+    "id": "circle-radius-from-area",
+    "label": "넓이로 반지름",
+    "prompt": "넓이로부터 반지름 구하기",
+    "tokens": [
+      "√",
+      "(",
+      "A",
+      "/",
+      "π",
+      ")"
+    ],
+    "hint": "넓이 A"
+  },
+  {
+    "id": "doubling",
+    "label": "두 배",
+    "prompt": "어떤 수의 두 배",
+    "tokens": [
+      "2",
+      "x"
+    ],
+    "hint": "x의 두 배"
+  },
+  {
+    "id": "halving",
+    "label": "절반",
+    "prompt": "어떤 수의 절반",
+    "tokens": [
+      "x",
+      "/",
+      "2"
+    ],
+    "hint": "x를 둘로 나눈다"
+  },
+  {
+    "id": "squaring",
+    "label": "제곱",
+    "prompt": "어떤 수의 제곱",
+    "tokens": [
+      "x",
+      "²"
+    ],
+    "hint": "x를 두 번 곱한다"
+  },
+  {
+    "id": "cubing",
+    "label": "세제곱",
+    "prompt": "어떤 수의 세제곱",
+    "tokens": [
+      "x",
+      "³"
+    ],
+    "hint": "x를 세 번 곱한다"
+  },
+  {
+    "id": "reciprocal",
+    "label": "역수",
+    "prompt": "어떤 수의 역수",
+    "tokens": [
+      "1",
+      "/",
+      "x"
+    ],
+    "hint": "1을 x로 나눈다"
+  },
+  {
+    "id": "perimeter-circle-quarter",
+    "label": "사분원 둘레",
+    "prompt": "사분원의 둘레 (호 + 두 반지름)",
+    "tokens": [
+      "1/2 π r",
+      "+",
+      "2r"
+    ],
+    "hint": "반지름 r"
+  },
+  {
+    "id": "scale-factor",
+    "label": "닮음비",
+    "prompt": "닮음비 공식",
+    "tokens": [
+      "닮은 변",
+      "/",
+      "원래 변"
+    ],
+    "hint": "대응변의 비"
+  },
+  {
+    "id": "area-ratio-similar",
+    "label": "넓이 비",
+    "prompt": "닮은 도형의 넓이 비",
+    "tokens": [
+      "k",
+      "²"
+    ],
+    "hint": "닮음비 k의 제곱"
+  },
+  {
+    "id": "volume-ratio-similar",
+    "label": "부피 비",
+    "prompt": "닮은 입체의 부피 비",
+    "tokens": [
+      "k",
+      "³"
+    ],
+    "hint": "닮음비 k의 세제곱"
+  },
+  {
+    "id": "temperature-kelvin",
+    "label": "절대온도",
+    "prompt": "섭씨를 절대온도로 변환",
+    "tokens": [
+      "C",
+      "+",
+      "273.15"
+    ],
+    "hint": "섭씨에 273.15를 더한다"
+  },
+  {
+    "id": "perimeter-rectangle-sum",
+    "label": "직사각형 둘레 (합)",
+    "prompt": "네 변을 모두 더한 직사각형 둘레",
+    "tokens": [
+      "l",
+      "+",
+      "w",
+      "+",
+      "l",
+      "+",
+      "w"
+    ],
+    "hint": "두 길이와 두 너비"
+  },
+  {
+    "id": "gradient-percent",
+    "label": "경사도",
+    "prompt": "경사를 백분율로",
+    "tokens": [
+      "(",
+      "높이",
+      "/",
+      "수평거리",
+      ")",
+      "× 100"
+    ],
+    "hint": "오르막 백분율"
+  },
+  {
+    "id": "fuel-efficiency",
+    "label": "연비",
+    "prompt": "연비 공식",
+    "tokens": [
+      "거리",
+      "/",
+      "연료"
+    ],
+    "hint": "이동 거리 나누기 연료량"
+  },
+  {
+    "id": "bmi-formula",
+    "label": "체질량지수",
+    "prompt": "BMI 공식",
+    "tokens": [
+      "m",
+      "/",
+      "h",
+      "²"
+    ],
+    "hint": "질량을 키의 제곱으로 나눈다"
+  },
+  {
+    "id": "perimeter-semicircle-arc",
+    "label": "반원 호 길이",
+    "prompt": "반원 호의 길이",
+    "tokens": [
+      "π",
+      "r"
+    ],
+    "hint": "원 둘레의 절반"
+  },
+  {
+    "id": "area-square-from-perimeter",
+    "label": "둘레로 정사각형 넓이",
+    "prompt": "둘레로부터 정사각형 넓이",
+    "tokens": [
+      "(",
+      "P",
+      "/",
+      "4",
+      ")",
+      "²"
+    ],
+    "hint": "둘레 P"
+  }
+]
