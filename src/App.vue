@@ -57,7 +57,7 @@ const gameKind = ref<GameKind>((localStorage.getItem('matchit-game-kind') as Gam
 const solveMode = ref<SolveMode>((localStorage.getItem('matchit-solve-mode') as SolveMode) || 'sequence');
 const swapFirstIndex = ref<number | null>(null);
 const theme = ref<ThemeName>((localStorage.getItem('matchit-theme') as ThemeName) || 'midnight');
-const blockStyle = ref<BlockStyleName>((localStorage.getItem('matchit-block-style') as BlockStyleName) || 'card');
+const blockStyle = ref<BlockStyleName>((localStorage.getItem('matchit-block-style') as BlockStyleName) || 'jelly');
 const showAnswer = ref(localStorage.getItem('matchit-show-answer') !== 'off');
 const answerItem = ref<LessonItem | null>(null);
 const answerSlotSize = ref(48);
@@ -1017,6 +1017,7 @@ const canPass = computed(() => gameKind.value === 'lesson' && mode.value === 'si
 function passCurrent() {
   if (!canPass.value || isResolving.value) return;
   passes.value += 1;
+  combo.value = 1;
   selectedIndexes.value = [];
   swapFirstIndex.value = null;
   hintIndexes.value = [];
@@ -1514,7 +1515,7 @@ onMounted(async () => {
             </div>
           </div>
 
-          <div class="mb-3 rounded-md bg-[var(--panel-strong)] p-3">
+          <div class="relative mb-3 rounded-md bg-[var(--panel-strong)] p-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
               <div class="flex flex-wrap gap-2 max-lg:hidden">
@@ -1545,8 +1546,10 @@ onMounted(async () => {
               </div>
             </div>
             <p class="mt-3 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
-            <p v-if="hintText" class="mt-1 text-xl font-black text-[var(--accent)]">💡 {{ hintText }}</p>
-            <p v-else class="mt-1 text-xl font-black">{{ goalPrompt }}</p>
+            <p class="mt-1 truncate text-xl font-black">{{ goalPrompt }}</p>
+            <div v-if="hintText" class="hint-overlay">
+              <p>💡 {{ hintText }}</p>
+            </div>
           </div>
 
           <div class="mb-3 flex flex-wrap items-center justify-between gap-3 lg:flex max-lg:hidden">
