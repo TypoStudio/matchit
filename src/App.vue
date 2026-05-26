@@ -86,7 +86,7 @@ const hintIndexes = ref<number[]>([]);
 // 숫자 모드: 사라지는 블럭이 합쳐지는 칸으로 모이는 인라인 트랜스폼 (index -> style)
 const gatherStyles = ref<Map<number, Record<string, string>>>(new Map());
 const draggedIndex = ref<number | null>(null);
-const dragGhost = ref<{ token: string; color: string; x: number; y: number; size: number } | null>(null);
+const dragGhost = ref<{ token: string; color: string; x: number; y: number; w: number; h: number } | null>(null);
 const motionPhase = ref<'idle' | 'swap' | 'fall'>('idle');
 const error = ref('');
 const shareUrl = ref('');
@@ -129,6 +129,12 @@ const goalPrompt = computed(() => {
     return collectTargetItem.value?.prompt || '로딩 중';
   }
   return target.value?.prompt || '로딩 중';
+});
+// 힌트 버튼이 켜졌을 때 현재 목표 문항의 hint 텍스트
+const hintText = computed(() => {
+  if (!hintIndexes.value.length || gameKind.value !== 'lesson') return '';
+  const item = solveMode.value === 'collect' ? collectTargetItem.value : target.value;
+  return item?.hint ?? '';
 });
 
 function blockId() {
@@ -870,7 +876,8 @@ const swapEnabled = computed(() => gameKind.value === 'numbers' || solveMode.val
 let pointerStartIndex: number | null = null;
 let pointerStartX = 0;
 let pointerStartY = 0;
-let pointerStartSize = 48;
+let pointerStartW = 48;
+let pointerStartH = 48;
 let pointerMoved = false;
 
 function onPointerMove(event: PointerEvent) {
@@ -882,7 +889,7 @@ function onPointerMove(event: PointerEvent) {
     draggedIndex.value = pointerStartIndex;
     const block = board.value[pointerStartIndex];
     if (block) {
-      dragGhost.value = { token: block.token, color: block.color, x: event.clientX, y: event.clientY, size: pointerStartSize };
+      dragGhost.value = { token: block.token, color: block.color, x: event.clientX, y: event.clientY, w: pointerStartW, h: pointerStartH };
     }
   }
 }
@@ -917,7 +924,9 @@ function onBlockPointerDown(index: number, event: PointerEvent) {
   pointerStartIndex = index;
   pointerStartX = event.clientX;
   pointerStartY = event.clientY;
-  pointerStartSize = (event.currentTarget as HTMLElement).getBoundingClientRect().width;
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  pointerStartW = rect.width;
+  pointerStartH = rect.height;
   pointerMoved = false;
   window.addEventListener('pointermove', onPointerMove);
   window.addEventListener('pointerup', onPointerUp);
@@ -1368,7 +1377,7 @@ onMounted(async () => {
             <span class="rounded bg-[var(--panel-strong)] px-2 py-1 text-xs font-bold text-[var(--muted)]">{{ packs.length }} packs</span>
           </div>
 
-          <div class="mt-4 grid grid-cols-[1fr_auto] gap-2">
+          <div class="mt-4 grid grid-cols-[2fr_1fr] gap-2">
             <div>
               <label class="block text-xs font-bold uppercase text-[var(--muted)]" for="pack">Pack</label>
               <select id="pack" v-model="selectedPackId" class="mt-1 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3" @change="handlePackChange">
@@ -1391,7 +1400,7 @@ onMounted(async () => {
             </button>
           </div>
           <p v-if="error" class="mt-2 text-sm font-semibold text-rose-600">{{ error }}</p>
-          <p v-else class="mt-2 text-sm text-[var(--muted)]">Cloudflare Pages에 배포해도 같은 JSON 스키마를 원격으로 읽습니다.</p>
+          <p v-else class="mt-2 text-sm text-[var(--muted)]">JSON 스키마를 원격으로 읽습니다. (CORS 허용 필요)</p>
 
           <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Game Mode</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
@@ -1417,7 +1426,7 @@ onMounted(async () => {
             </button>
           </div>
 
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">정답 보기</p>
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">ANSWER</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="showAnswer ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setShowAnswer(true)">
               ON
@@ -1426,6 +1435,7 @@ onMounted(async () => {
               OFF
             </button>
           </div>
+          <p class="mt-2 text-sm text-[var(--muted)]">문제해결 후 정답을 보여줍니다.</p>
 
           </template>
 
@@ -1535,7 +1545,8 @@ onMounted(async () => {
               </div>
             </div>
             <p class="mt-3 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
-            <p class="mt-1 text-xl font-black">{{ goalPrompt }}</p>
+            <p v-if="hintText" class="mt-1 text-xl font-black text-[var(--accent)]">💡 {{ hintText }}</p>
+            <p v-else class="mt-1 text-xl font-black">{{ goalPrompt }}</p>
           </div>
 
           <div class="mb-3 flex flex-wrap items-center justify-between gap-3 lg:flex max-lg:hidden">
@@ -1688,12 +1699,18 @@ onMounted(async () => {
           </div>
         </aside>
       </section>
+
+      <footer class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-[var(--line)] pt-4 text-xs text-[var(--muted)]">
+        <span>© 2026 TypoStudio</span>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/TypoStudio/matchit" target="_blank" rel="noopener" class="font-bold text-[var(--accent)] underline">GitHub</a>
+      </footer>
     </div>
 
     <div
       v-if="dragGhost"
       class="pointer-events-none fixed z-50"
-      :style="{ left: `${dragGhost.x}px`, top: `${dragGhost.y}px`, width: `${dragGhost.size}px`, height: `${dragGhost.size}px`, transform: 'translate(-50%, -50%)' }"
+      :style="{ left: `${dragGhost.x}px`, top: `${dragGhost.y}px`, width: `${dragGhost.w}px`, height: `${dragGhost.h}px`, transform: 'translate(-50%, -50%)' }"
     >
       <div
         class="block-face grid h-full w-full place-items-center text-xl font-black opacity-90 shadow-2xl"
@@ -1726,7 +1743,8 @@ onMounted(async () => {
             <span class="block-label flex h-full w-full items-center justify-center" :style="{ '--len': token.length }">{{ token }}</span>
           </span>
         </div>
-        <p class="mt-4 text-xs text-[var(--muted)]">탭하거나 5초 후 닫힘 · 길게 누르면 유지</p>
+        <p v-if="answerItem.hint" class="mt-4 text-sm font-bold text-[var(--accent)]">💡 {{ answerItem.hint }}</p>
+        <p class="mt-3 text-xs text-[var(--muted)]">탭하거나 5초 후 닫힘 · 길게 누르면 유지</p>
       </div>
     </div>
 

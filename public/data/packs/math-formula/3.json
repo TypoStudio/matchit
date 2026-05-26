@@ -1,1273 +1,1190 @@
 [
   {
-    "id": "derivative-definition",
-    "label": "미분계수 정의",
-    "prompt": "도함수의 정의",
+    "id": "quadratic-eq",
+    "label": "ax²+bx+c",
+    "prompt": "이차방정식 표준형",
     "tokens": [
-      "f'(x)",
-      "=",
-      "lim",
-      "(f(x+h)-f(x))",
-      "/",
-      "h"
+      "a",
+      "x²",
+      "+",
+      "b",
+      "x",
+      "+",
+      "c"
     ],
-    "hint": "h → 0"
+    "hint": "ax²+bx+c=0 의 좌변"
   },
   {
-    "id": "power-rule-derivative",
-    "label": "멱법칙 (미분)",
-    "prompt": "x의 n제곱 미분",
+    "id": "vertex-form",
+    "label": "a(x−h)²",
+    "prompt": "이차함수 꼭짓점형",
     "tokens": [
-      "d/dx",
-      "xⁿ",
+      "a",
+      "(",
+      "x",
+      "−",
+      "h",
+      ")²"
+    ],
+    "hint": "a(x−h)²+k 형태"
+  },
+  {
+    "id": "sum-of-roots",
+    "label": "−b/a",
+    "prompt": "두 근의 합",
+    "tokens": [
+      "−",
+      "b",
+      "/",
+      "a"
+    ],
+    "hint": "−b/a — 근의 합"
+  },
+  {
+    "id": "product-of-roots",
+    "label": "c/a",
+    "prompt": "두 근의 곱",
+    "tokens": [
+      "c",
+      "/",
+      "a"
+    ],
+    "hint": "c/a — 근의 곱"
+  },
+  {
+    "id": "discriminant",
+    "label": "b²−4ac",
+    "prompt": "이차방정식 판별식",
+    "tokens": [
+      "b²",
+      "−",
+      "4ac"
+    ],
+    "hint": "b²−4ac — 근의 개수 판별"
+  },
+  {
+    "id": "exp-mul",
+    "label": "aᵐaⁿ=aᵐⁿ",
+    "prompt": "같은 밑 지수 곱",
+    "tokens": [
+      "aᵐ",
+      "aⁿ",
       "=",
+      "aᵐⁿ"
+    ],
+    "hint": "지수를 더한다"
+  },
+  {
+    "id": "exp-div",
+    "label": "aᵐ/aⁿ",
+    "prompt": "같은 밑 지수 나눗셈",
+    "tokens": [
+      "aᵐ",
+      "/",
+      "aⁿ"
+    ],
+    "hint": "지수를 뺀다"
+  },
+  {
+    "id": "exp-power",
+    "label": "(aᵐ)ⁿ",
+    "prompt": "지수의 거듭제곱 법칙",
+    "tokens": [
+      "(",
+      "aᵐ",
+      ")ⁿ"
+    ],
+    "hint": "지수를 곱한다"
+  },
+  {
+    "id": "exp-zero",
+    "label": "a⁰=1",
+    "prompt": "0제곱의 값",
+    "tokens": [
+      "a",
+      "⁰",
+      "=",
+      "1"
+    ],
+    "hint": "a⁰=1"
+  },
+  {
+    "id": "exp-neg",
+    "label": "a⁻ⁿ",
+    "prompt": "음의 지수 정의",
+    "tokens": [
+      "a",
+      "⁻ⁿ"
+    ],
+    "hint": "1/aⁿ 과 같다"
+  },
+  {
+    "id": "log-product",
+    "label": "loga+logb",
+    "prompt": "로그 곱셈법칙",
+    "tokens": [
+      "log",
+      "a",
+      "+",
+      "log",
+      "b"
+    ],
+    "hint": "log(ab)=log a+log b"
+  },
+  {
+    "id": "log-quotient",
+    "label": "loga−logb",
+    "prompt": "로그 나눗셈법칙",
+    "tokens": [
+      "log",
+      "a",
+      "−",
+      "log",
+      "b"
+    ],
+    "hint": "log(a/b)=log a−log b"
+  },
+  {
+    "id": "log-power",
+    "label": "nloga",
+    "prompt": "로그 거듭제곱 법칙",
+    "tokens": [
       "n",
-      "xⁿ⁻¹"
+      "log",
+      "a"
     ],
-    "hint": "다항함수 미분의 기본"
+    "hint": "log aⁿ=n log a"
   },
   {
-    "id": "power-rule-integral",
-    "label": "멱법칙 (적분)",
-    "prompt": "x의 n제곱 적분",
+    "id": "log-one",
+    "label": "log1=0",
+    "prompt": "log 1의 값",
     "tokens": [
-      "∫xⁿ dx",
-      "=",
-      "xⁿ⁺¹",
-      "/",
-      "(n+1)",
-      "+",
-      "C"
-    ],
-    "hint": "n ≠ -1"
-  },
-  {
-    "id": "product-rule",
-    "label": "곱의 미분법",
-    "prompt": "두 함수 곱의 미분",
-    "tokens": [
-      "(uv)'",
-      "=",
-      "u'v",
-      "+",
-      "uv'"
-    ],
-    "hint": "라이프니츠 법칙"
-  },
-  {
-    "id": "quotient-rule",
-    "label": "몫의 미분법",
-    "prompt": "두 함수 몫의 미분",
-    "tokens": [
-      "(u/v)'",
-      "=",
-      "(u'v-uv')",
-      "/",
-      "v²"
-    ],
-    "hint": "분수 함수 미분"
-  },
-  {
-    "id": "chain-rule",
-    "label": "연쇄 법칙",
-    "prompt": "합성함수의 미분",
-    "tokens": [
-      "(f∘g)'(x)",
-      "=",
-      "f'(g(x))",
-      "g'(x)"
-    ],
-    "hint": "미분의 핵심 법칙"
-  },
-  {
-    "id": "derivative-sin",
-    "label": "사인 미분",
-    "prompt": "사인 함수의 도함수",
-    "tokens": [
-      "d/dx",
-      "sin x",
-      "=",
-      "cos x"
-    ],
-    "hint": "사인의 미분은 코사인"
-  },
-  {
-    "id": "derivative-cos",
-    "label": "코사인 미분",
-    "prompt": "코사인 함수의 도함수",
-    "tokens": [
-      "d/dx",
-      "cos x",
-      "=",
-      "-sin x"
-    ],
-    "hint": "부호 주의"
-  },
-  {
-    "id": "derivative-tan",
-    "label": "탄젠트 미분",
-    "prompt": "탄젠트 함수의 도함수",
-    "tokens": [
-      "d/dx",
-      "tan x",
-      "=",
-      "sec²x"
-    ],
-    "hint": "시컨트 제곱"
-  },
-  {
-    "id": "derivative-exp",
-    "label": "지수함수 미분",
-    "prompt": "자연지수함수의 도함수",
-    "tokens": [
-      "d/dx",
-      "eˣ",
-      "=",
-      "eˣ"
-    ],
-    "hint": "자기 자신"
-  },
-  {
-    "id": "derivative-ln",
-    "label": "로그함수 미분",
-    "prompt": "자연로그의 도함수",
-    "tokens": [
-      "d/dx",
-      "ln x",
-      "=",
-      "1",
-      "/",
-      "x"
-    ],
-    "hint": "x의 역수"
-  },
-  {
-    "id": "derivative-ax",
-    "label": "지수 a^x 미분",
-    "prompt": "일반 지수함수의 도함수",
-    "tokens": [
-      "d/dx",
-      "aˣ",
-      "=",
-      "aˣ ln a"
-    ],
-    "hint": "밑이 a"
-  },
-  {
-    "id": "integral-by-parts",
-    "label": "부분적분법",
-    "prompt": "두 함수 곱의 적분",
-    "tokens": [
-      "∫u dv",
-      "=",
-      "uv",
-      "-",
-      "∫v du"
-    ],
-    "hint": "곱의 미분에서 유도"
-  },
-  {
-    "id": "integral-exp",
-    "label": "지수함수 적분",
-    "prompt": "자연지수함수의 적분",
-    "tokens": [
-      "∫eˣ dx",
-      "=",
-      "eˣ",
-      "+",
-      "C"
-    ],
-    "hint": "자기 자신"
-  },
-  {
-    "id": "integral-reciprocal",
-    "label": "1/x 적분",
-    "prompt": "x 역수의 적분",
-    "tokens": [
-      "∫",
-      "1/x",
-      "dx",
-      "=",
-      "ln|x|",
-      "+",
-      "C"
-    ],
-    "hint": "절댓값 로그"
-  },
-  {
-    "id": "integral-sin",
-    "label": "사인 적분",
-    "prompt": "사인 함수의 적분",
-    "tokens": [
-      "∫sin x dx",
-      "=",
-      "-cos x",
-      "+",
-      "C"
-    ],
-    "hint": "부호 주의"
-  },
-  {
-    "id": "integral-cos",
-    "label": "코사인 적분",
-    "prompt": "코사인 함수의 적분",
-    "tokens": [
-      "∫cos x dx",
-      "=",
-      "sin x",
-      "+",
-      "C"
-    ],
-    "hint": "코사인의 적분은 사인"
-  },
-  {
-    "id": "fundamental-theorem-calculus",
-    "label": "미적분 기본정리",
-    "prompt": "정적분과 원시함수의 관계",
-    "tokens": [
-      "∫ₐᵇ f(x)dx",
-      "=",
-      "F(b)",
-      "-",
-      "F(a)"
-    ],
-    "hint": "F는 f의 원시함수"
-  },
-  {
-    "id": "euler-formula",
-    "label": "오일러 공식",
-    "prompt": "복소지수와 삼각함수의 관계",
-    "tokens": [
-      "eⁱˣ",
-      "=",
-      "cos x",
-      "+",
-      "i",
-      "sin x"
-    ],
-    "hint": "복소해석의 핵심"
-  },
-  {
-    "id": "euler-identity",
-    "label": "오일러 항등식",
-    "prompt": "가장 아름다운 항등식",
-    "tokens": [
-      "eⁱᵖⁱ",
-      "+",
+      "log",
       "1",
       "=",
       "0"
     ],
-    "hint": "다섯 상수의 관계"
+    "hint": "log 1=0"
   },
   {
-    "id": "taylor-series",
-    "label": "테일러 급수",
-    "prompt": "함수의 테일러 전개",
+    "id": "arith-seq",
+    "label": "a+(n−1)d",
+    "prompt": "등차수열 일반항",
     "tokens": [
-      "f(x)",
-      "=",
-      "Σ",
-      "fⁿ(a)/n!",
-      "(x-a)ⁿ"
+      "a",
+      "+",
+      "(",
+      "n",
+      "−",
+      "1",
+      ")d"
     ],
-    "hint": "a 주변 전개"
+    "hint": "a+(n−1)d"
   },
   {
-    "id": "maclaurin-exp",
-    "label": "지수함수 급수",
-    "prompt": "e^x의 매클로린 급수",
+    "id": "geo-seq",
+    "label": "arⁿ⁻¹",
+    "prompt": "등비수열 일반항",
     "tokens": [
-      "eˣ",
-      "=",
-      "Σ",
-      "xⁿ",
+      "a",
+      "rⁿ⁻¹"
+    ],
+    "hint": "a·rⁿ⁻¹"
+  },
+  {
+    "id": "arith-sum",
+    "label": "n½(a+l)",
+    "prompt": "등차수열의 합",
+    "tokens": [
+      "n",
+      "½",
+      "(",
+      "a",
+      "+",
+      "l",
+      ")"
+    ],
+    "hint": "항수 곱 첫끝항 평균"
+  },
+  {
+    "id": "sum-1-n",
+    "label": "n(n+1)/2",
+    "prompt": "자연수의 합",
+    "tokens": [
+      "n",
+      "(",
+      "n",
+      "+",
+      "1",
+      ")",
+      "/2"
+    ],
+    "hint": "n(n+1)/2"
+  },
+  {
+    "id": "factorial",
+    "label": "n!",
+    "prompt": "계승 정의",
+    "tokens": [
+      "n",
+      "!"
+    ],
+    "hint": "n!=n·(n−1)···1"
+  },
+  {
+    "id": "combination",
+    "label": "ₙCᵣ",
+    "prompt": "조합 기호",
+    "tokens": [
+      "ₙ",
+      "C",
+      "ᵣ"
+    ],
+    "hint": "ₙCᵣ — n개에서 r개 선택"
+  },
+  {
+    "id": "quadratic-formula",
+    "label": "−b±√",
+    "prompt": "이차방정식 근의 분자",
+    "tokens": [
+      "−",
+      "b",
+      "±",
+      "√"
+    ],
+    "hint": "−b±√(b²−4ac)"
+  },
+  {
+    "id": "quadratic-denom",
+    "label": "2a",
+    "prompt": "근의 공식 분모",
+    "tokens": [
+      "2",
+      "a"
+    ],
+    "hint": "2a"
+  },
+  {
+    "id": "axis-symmetry",
+    "label": "−b/2a",
+    "prompt": "이차함수 대칭축",
+    "tokens": [
+      "−",
+      "b",
       "/",
-      "n!"
+      "2a"
     ],
-    "hint": "n = 0부터"
+    "hint": "x=−b/2a"
   },
   {
-    "id": "geometric-series-infinite",
-    "label": "무한등비급수",
-    "prompt": "무한등비급수의 합",
+    "id": "factored-form",
+    "label": "a(x−p)",
+    "prompt": "이차함수 인수분해형",
     "tokens": [
-      "Σ",
-      "arⁿ",
+      "a",
+      "(",
+      "x",
+      "−",
+      "p",
+      ")"
+    ],
+    "hint": "a(x−p)(x−q)"
+  },
+  {
+    "id": "exp-product-base",
+    "label": "aⁿbⁿ=abⁿ",
+    "prompt": "다른 밑 같은 지수",
+    "tokens": [
+      "aⁿ",
+      "bⁿ",
       "=",
+      "abⁿ"
+    ],
+    "hint": "(ab)ⁿ"
+  },
+  {
+    "id": "exp-frac",
+    "label": "(a/b)ⁿ",
+    "prompt": "분수의 거듭제곱",
+    "tokens": [
+      "(",
       "a",
       "/",
-      "(1-r)"
+      "b",
+      ")ⁿ"
     ],
-    "hint": "|r| < 1"
+    "hint": "aⁿ/bⁿ"
   },
   {
-    "id": "limit-sin-x",
-    "label": "삼각함수 극한",
-    "prompt": "유명한 삼각함수 극한",
+    "id": "root-as-exp",
+    "label": "a^½",
+    "prompt": "거듭제곱근의 지수표현",
     "tokens": [
-      "lim",
-      "sin x",
+      "a",
+      "^½"
+    ],
+    "hint": "√a = a^½"
+  },
+  {
+    "id": "nth-root",
+    "label": "a^¹ⁿ",
+    "prompt": "n제곱근 지수표현",
+    "tokens": [
+      "a",
+      "^¹ⁿ"
+    ],
+    "hint": "ⁿ√a = a^(1/n)"
+  },
+  {
+    "id": "log-base-change",
+    "label": "logb/loga",
+    "prompt": "로그 밑 변환",
+    "tokens": [
+      "log",
+      "b",
       "/",
-      "x",
-      "=",
-      "1"
+      "log",
+      "a"
     ],
-    "hint": "x → 0"
+    "hint": "logₐb=log b/log a"
   },
   {
-    "id": "limit-e-definition",
-    "label": "자연상수 정의",
-    "prompt": "극한으로 정의한 e",
+    "id": "log-exp-inverse",
+    "label": "logaˣ=x",
+    "prompt": "로그와 지수의 역관계",
     "tokens": [
+      "log",
+      "aˣ",
+      "=",
+      "x"
+    ],
+    "hint": "log_a aˣ=x"
+  },
+  {
+    "id": "ln-e",
+    "label": "lne=1",
+    "prompt": "ln e의 값",
+    "tokens": [
+      "ln",
       "e",
       "=",
-      "lim",
-      "(1+1/n)ⁿ"
-    ],
-    "hint": "n → ∞"
-  },
-  {
-    "id": "second-derivative",
-    "label": "이계도함수",
-    "prompt": "이계도함수 표기",
-    "tokens": [
-      "f''(x)",
-      "=",
-      "d²y",
-      "/",
-      "dx²"
-    ],
-    "hint": "두 번 미분"
-  },
-  {
-    "id": "average-rate-of-change",
-    "label": "평균변화율",
-    "prompt": "함수의 평균변화율",
-    "tokens": [
-      "(f(b)-f(a))",
-      "/",
-      "(b-a)"
-    ],
-    "hint": "할선의 기울기"
-  },
-  {
-    "id": "linear-approximation",
-    "label": "선형근사",
-    "prompt": "접선을 이용한 근사",
-    "tokens": [
-      "L(x)",
-      "=",
-      "f(a)",
-      "+",
-      "f'(a)(x-a)"
-    ],
-    "hint": "접선의 방정식"
-  },
-  {
-    "id": "area-under-curve",
-    "label": "곡선 아래 넓이",
-    "prompt": "정적분으로 표현한 넓이",
-    "tokens": [
-      "A",
-      "=",
-      "∫ₐᵇ",
-      "f(x)",
-      "dx"
-    ],
-    "hint": "f(x) ≥ 0"
-  },
-  {
-    "id": "volume-of-revolution-disk",
-    "label": "회전체 부피 (원판)",
-    "prompt": "원판법 회전체 부피",
-    "tokens": [
-      "V",
-      "=",
-      "π",
-      "∫ₐᵇ",
-      "[f(x)]²",
-      "dx"
-    ],
-    "hint": "x축 회전"
-  },
-  {
-    "id": "arc-length-integral",
-    "label": "곡선의 길이",
-    "prompt": "정적분으로 곡선의 길이",
-    "tokens": [
-      "L",
-      "=",
-      "∫ₐᵇ",
-      "√(1+[f'(x)]²)",
-      "dx"
-    ],
-    "hint": "도함수 이용"
-  },
-  {
-    "id": "product-to-sum-sin-cos",
-    "label": "곱→합 (sin cos)",
-    "prompt": "사인 코사인 곱을 합으로",
-    "tokens": [
-      "sinA cosB",
-      "=",
-      "1/2",
-      "[sin(A+B)+sin(A-B)]"
-    ],
-    "hint": "곱을 합차로"
-  },
-  {
-    "id": "sum-to-product-sin",
-    "label": "합→곱 (sin)",
-    "prompt": "사인의 합을 곱으로",
-    "tokens": [
-      "sinA+sinB",
-      "=",
-      "2",
-      "sin((A+B)/2)",
-      "cos((A-B)/2)"
-    ],
-    "hint": "합차를 곱으로"
-  },
-  {
-    "id": "cos-double-cos",
-    "label": "코사인 배각 (cos)",
-    "prompt": "코사인 배각 (코사인 형)",
-    "tokens": [
-      "cos 2θ",
-      "=",
-      "2cos²θ",
-      "-",
       "1"
     ],
-    "hint": "반각 유도에 사용"
+    "hint": "ln e=1"
   },
   {
-    "id": "cos-double-sin",
-    "label": "코사인 배각 (sin)",
-    "prompt": "코사인 배각 (사인 형)",
+    "id": "geo-sum-finite",
+    "label": "a(rⁿ−1)",
+    "prompt": "등비수열의 합",
     "tokens": [
-      "cos 2θ",
-      "=",
-      "1",
-      "-",
-      "2sin²θ"
-    ],
-    "hint": "반각 유도에 사용"
-  },
-  {
-    "id": "tan-double-angle",
-    "label": "탄젠트 배각",
-    "prompt": "탄젠트의 배각 공식",
-    "tokens": [
-      "tan 2θ",
-      "=",
-      "2tan θ",
-      "/",
-      "(1-tan²θ)"
-    ],
-    "hint": "배각 공식"
-  },
-  {
-    "id": "half-angle-sin",
-    "label": "사인 반각",
-    "prompt": "사인의 반각 공식",
-    "tokens": [
-      "sin²(θ/2)",
-      "=",
-      "(1-cos θ)",
-      "/",
-      "2"
-    ],
-    "hint": "반각 공식"
-  },
-  {
-    "id": "half-angle-cos",
-    "label": "코사인 반각",
-    "prompt": "코사인의 반각 공식",
-    "tokens": [
-      "cos²(θ/2)",
-      "=",
-      "(1+cos θ)",
-      "/",
-      "2"
-    ],
-    "hint": "반각 공식"
-  },
-  {
-    "id": "cos-difference",
-    "label": "코사인 뺄셈정리",
-    "prompt": "코사인의 뺄셈정리",
-    "tokens": [
-      "cos(A-B)",
-      "=",
-      "cosA cosB",
-      "+",
-      "sinA sinB"
-    ],
-    "hint": "뺄셈정리"
-  },
-  {
-    "id": "sin-difference",
-    "label": "사인 뺄셈정리",
-    "prompt": "사인의 뺄셈정리",
-    "tokens": [
-      "sin(A-B)",
-      "=",
-      "sinA cosB",
-      "-",
-      "cosA sinB"
-    ],
-    "hint": "뺄셈정리"
-  },
-  {
-    "id": "tan-sum",
-    "label": "탄젠트 덧셈정리",
-    "prompt": "탄젠트의 덧셈정리",
-    "tokens": [
-      "tan(A+B)",
-      "=",
-      "(tanA+tanB)",
-      "/",
-      "(1-tanA tanB)"
-    ],
-    "hint": "덧셈정리"
-  },
-  {
-    "id": "complex-modulus",
-    "label": "복소수 절댓값",
-    "prompt": "복소수의 크기",
-    "tokens": [
-      "|z|",
-      "=",
-      "√",
+      "a",
       "(",
-      "a²+b²",
+      "rⁿ",
+      "−",
+      "1",
       ")"
     ],
-    "hint": "z = a + bi"
+    "hint": "a(rⁿ−1)/(r−1)"
   },
   {
-    "id": "complex-conjugate-product",
-    "label": "켤레복소수 곱",
-    "prompt": "복소수와 켤레의 곱",
+    "id": "arith-common-diff",
+    "label": "aₙ−aₙ₋₁",
+    "prompt": "등차수열 공차",
     "tokens": [
-      "z",
-      "z̄",
-      "=",
-      "|z|²"
+      "aₙ",
+      "−",
+      "aₙ₋₁"
     ],
-    "hint": "크기의 제곱"
+    "hint": "이웃 항의 차"
   },
   {
-    "id": "de-moivre",
-    "label": "드무아브르 정리",
-    "prompt": "드무아브르의 정리",
+    "id": "geo-common-ratio",
+    "label": "aₙ/aₙ₋₁",
+    "prompt": "등비수열 공비",
     "tokens": [
-      "(cos θ+i sin θ)ⁿ",
-      "=",
-      "cos nθ",
+      "aₙ",
+      "/",
+      "aₙ₋₁"
+    ],
+    "hint": "이웃 항의 비"
+  },
+  {
+    "id": "sum-squares",
+    "label": "nn+12n+1/6",
+    "prompt": "자연수 제곱의 합",
+    "tokens": [
+      "n",
+      "n+1",
+      "2n+1",
+      "/6"
+    ],
+    "hint": "Σk² = n(n+1)(2n+1)/6"
+  },
+  {
+    "id": "sum-cubes",
+    "label": "(n(n+1)/2)²",
+    "prompt": "자연수 세제곱의 합",
+    "tokens": [
+      "(",
+      "n",
+      "(",
+      "n+1",
+      ")",
+      "/2",
+      ")²"
+    ],
+    "hint": "(Σk)²"
+  },
+  {
+    "id": "permutation",
+    "label": "ₙPᵣ",
+    "prompt": "순열 기호",
+    "tokens": [
+      "ₙ",
+      "P",
+      "ᵣ"
+    ],
+    "hint": "ₙPᵣ — 순서 있는 선택"
+  },
+  {
+    "id": "comb-formula",
+    "label": "r!(n−r)!",
+    "prompt": "조합 공식의 분모",
+    "tokens": [
+      "r",
+      "!",
+      "(",
+      "n−r",
+      ")!"
+    ],
+    "hint": "r!(n−r)!"
+  },
+  {
+    "id": "binom-coeff",
+    "label": "n!/r!",
+    "prompt": "이항계수",
+    "tokens": [
+      "n",
+      "!",
+      "/",
+      "r!"
+    ],
+    "hint": "(분모 일부) n!/(r!(n−r)!)"
+  },
+  {
+    "id": "prob-basic",
+    "label": "경우/전체",
+    "prompt": "확률의 정의",
+    "tokens": [
+      "경우",
+      "/",
+      "전체"
+    ],
+    "hint": "사건/전체"
+  },
+  {
+    "id": "prob-complement",
+    "label": "1−P",
+    "prompt": "여사건 확률",
+    "tokens": [
+      "1",
+      "−",
+      "P"
+    ],
+    "hint": "1−P(A)"
+  },
+  {
+    "id": "prob-and",
+    "label": "P×P",
+    "prompt": "독립사건 곱",
+    "tokens": [
+      "P",
+      "×",
+      "P"
+    ],
+    "hint": "P(A)·P(B)"
+  },
+  {
+    "id": "prob-or",
+    "label": "P+P",
+    "prompt": "배반사건 합",
+    "tokens": [
+      "P",
       "+",
-      "i sin nθ"
+      "P"
     ],
-    "hint": "복소수 거듭제곱"
+    "hint": "P(A)+P(B)"
   },
   {
-    "id": "polar-form-complex",
-    "label": "복소수 극형식",
-    "prompt": "복소수의 극형식",
+    "id": "mean-formula",
+    "label": "Σx/n",
+    "prompt": "자료의 평균",
     "tokens": [
-      "z",
+      "Σx",
+      "/",
+      "n"
+    ],
+    "hint": "합 나누기 개수"
+  },
+  {
+    "id": "variance",
+    "label": "Σ(x−m)²",
+    "prompt": "분산 기호",
+    "tokens": [
+      "Σ",
+      "(",
+      "x",
+      "−",
+      "m",
+      ")²"
+    ],
+    "hint": "편차 제곱의 평균 (분자)"
+  },
+  {
+    "id": "std-dev",
+    "label": "√σ²",
+    "prompt": "표준편차",
+    "tokens": [
+      "√",
+      "σ²"
+    ],
+    "hint": "√(분산)"
+  },
+  {
+    "id": "z-score",
+    "label": "(x−m)/σ",
+    "prompt": "표준점수",
+    "tokens": [
+      "(",
+      "x",
+      "−",
+      "m",
+      ")",
+      "/σ"
+    ],
+    "hint": "(x−μ)/σ"
+  },
+  {
+    "id": "abs-value",
+    "label": "|x|",
+    "prompt": "절댓값 정의",
+    "tokens": [
+      "|",
+      "x",
+      "|"
+    ],
+    "hint": "|x| — 거리"
+  },
+  {
+    "id": "ceil-floor",
+    "label": "[x]",
+    "prompt": "가우스 기호",
+    "tokens": [
+      "[",
+      "x",
+      "]"
+    ],
+    "hint": "x를 넘지 않는 최대 정수"
+  },
+  {
+    "id": "sum-notation",
+    "label": "Σaₖ",
+    "prompt": "합 기호",
+    "tokens": [
+      "Σ",
+      "aₖ"
+    ],
+    "hint": "Σ — 합"
+  },
+  {
+    "id": "product-notation",
+    "label": "Πaₖ",
+    "prompt": "곱 기호",
+    "tokens": [
+      "Π",
+      "aₖ"
+    ],
+    "hint": "Π — 곱"
+  },
+  {
+    "id": "gcd-lcm",
+    "label": "gcd×lcm",
+    "prompt": "GCD·LCM 관계",
+    "tokens": [
+      "gcd",
+      "×",
+      "lcm"
+    ],
+    "hint": "gcd·lcm=ab"
+  },
+  {
+    "id": "mod",
+    "label": "amodb",
+    "prompt": "나머지 연산",
+    "tokens": [
+      "a",
+      "mod",
+      "b"
+    ],
+    "hint": "a를 b로 나눈 나머지"
+  },
+  {
+    "id": "exp-neg-frac",
+    "label": "a⁻½",
+    "prompt": "음의 분수 지수",
+    "tokens": [
+      "a",
+      "⁻½"
+    ],
+    "hint": "1/√a"
+  },
+  {
+    "id": "log-sqrt",
+    "label": "½loga",
+    "prompt": "√의 로그",
+    "tokens": [
+      "½",
+      "log",
+      "a"
+    ],
+    "hint": "log√a=½log a"
+  },
+  {
+    "id": "compound-interest",
+    "label": "P(1+r)ⁿ",
+    "prompt": "복리 원리합계",
+    "tokens": [
+      "P",
+      "(",
+      "1",
+      "+",
+      "r",
+      ")ⁿ"
+    ],
+    "hint": "P(1+r)ⁿ"
+  },
+  {
+    "id": "seq-recursive",
+    "label": "aₙ₊₁=aₙ+d",
+    "prompt": "등차 점화식",
+    "tokens": [
+      "aₙ₊₁",
+      "=",
+      "aₙ",
+      "+",
+      "d"
+    ],
+    "hint": "다음 항=현재+d"
+  },
+  {
+    "id": "geo-recursive",
+    "label": "aₙ₊₁=raₙ",
+    "prompt": "등비 점화식",
+    "tokens": [
+      "aₙ₊₁",
       "=",
       "r",
-      "(cos θ+i sin θ)"
+      "aₙ"
     ],
-    "hint": "크기 r, 편각 θ"
+    "hint": "다음 항=r·현재"
   },
   {
-    "id": "normal-pdf",
-    "label": "정규분포 밀도함수",
-    "prompt": "정규분포 확률밀도함수",
+    "id": "polynomial-deg",
+    "label": "ax²",
+    "prompt": "이차 항",
     "tokens": [
-      "1/(σ√(2π))",
-      "e^(-(x-μ)²/(2σ²))"
+      "a",
+      "x²"
     ],
-    "hint": "평균 μ, 표준편차 σ"
+    "hint": "ax² — 최고차항"
   },
   {
-    "id": "binomial-mean",
-    "label": "이항분포 평균",
-    "prompt": "이항분포의 기댓값",
+    "id": "vertex-y",
+    "label": "c−b²/4a",
+    "prompt": "이차함수 꼭짓점 y",
     "tokens": [
-      "E(X)",
-      "=",
-      "n",
+      "c",
+      "−",
+      "b²",
+      "/",
+      "4a"
+    ],
+    "hint": "−b²/4a+c"
+  },
+  {
+    "id": "quad-complete",
+    "label": "(x+p)²",
+    "prompt": "이차식 완전제곱",
+    "tokens": [
+      "(",
+      "x",
+      "+",
+      "p",
+      ")²"
+    ],
+    "hint": "(x+p)²+q"
+  },
+  {
+    "id": "root-sum-monic",
+    "label": "−p",
+    "prompt": "x²+px+q 근의 합",
+    "tokens": [
+      "−",
       "p"
     ],
-    "hint": "시행 n, 성공확률 p"
+    "hint": "−p"
   },
   {
-    "id": "binomial-variance",
-    "label": "이항분포 분산",
-    "prompt": "이항분포의 분산",
+    "id": "root-prod-monic",
+    "label": "αβ=q",
+    "prompt": "x²+px+q 근의 곱",
     "tokens": [
-      "V(X)",
+      "αβ",
       "=",
-      "n",
-      "p",
-      "(1-p)"
+      "q"
     ],
-    "hint": "시행 n, 성공확률 p"
+    "hint": "q (단항계수 1)"
   },
   {
-    "id": "poisson-pmf",
-    "label": "푸아송 분포",
-    "prompt": "푸아송 분포 확률질량함수",
+    "id": "disc-positive",
+    "label": "b²>4ac",
+    "prompt": "서로 다른 두 실근",
     "tokens": [
-      "P(X=k)",
+      "b²",
+      ">",
+      "4ac"
+    ],
+    "hint": "D>0"
+  },
+  {
+    "id": "disc-zero",
+    "label": "b²=4ac",
+    "prompt": "중근 조건",
+    "tokens": [
+      "b²",
       "=",
-      "λᵏ e⁻ᵏ",
+      "4ac"
+    ],
+    "hint": "D=0"
+  },
+  {
+    "id": "exp-add-rule",
+    "label": "aˣaʸ=aˣʸ",
+    "prompt": "aˣaʸ",
+    "tokens": [
+      "aˣ",
+      "aʸ",
+      "=",
+      "aˣʸ"
+    ],
+    "hint": "지수를 더함"
+  },
+  {
+    "id": "exp-sub-rule",
+    "label": "aˣ/aʸ",
+    "prompt": "aˣ/aʸ",
+    "tokens": [
+      "aˣ",
       "/",
-      "k!"
+      "aʸ"
     ],
-    "hint": "평균 발생률 λ"
+    "hint": "지수를 뺌"
   },
   {
-    "id": "variance-shortcut",
-    "label": "분산 (간편식)",
-    "prompt": "분산의 간편 계산식",
+    "id": "exp-of-one",
+    "label": "1ⁿ=1",
+    "prompt": "1ⁿ의 값",
     "tokens": [
-      "V(X)",
+      "1",
+      "ⁿ",
       "=",
-      "E(X²)",
-      "-",
-      "[E(X)]²"
+      "1"
     ],
-    "hint": "제곱의 평균 빼기 평균의 제곱"
+    "hint": "1ⁿ=1"
   },
   {
-    "id": "covariance",
-    "label": "공분산",
-    "prompt": "두 변수의 공분산",
+    "id": "sqrt-mul",
+    "label": "√a√b=√ab",
+    "prompt": "√a·√b",
     "tokens": [
-      "Cov(X,Y)",
+      "√a",
+      "√b",
       "=",
-      "E(XY)",
-      "-",
-      "E(X)E(Y)"
+      "√ab"
     ],
-    "hint": "곱의 평균 빼기 평균의 곱"
+    "hint": "√a√b=√(ab)"
   },
   {
-    "id": "correlation-coefficient",
-    "label": "상관계수",
-    "prompt": "피어슨 상관계수",
+    "id": "sqrt-div",
+    "label": "√a/√b",
+    "prompt": "√a/√b",
     "tokens": [
-      "r",
-      "=",
-      "Cov(X,Y)",
+      "√a",
       "/",
-      "(σₓσᵧ)"
+      "√b"
     ],
-    "hint": "공분산을 표준편차 곱으로"
+    "hint": "√(a/b)"
   },
   {
-    "id": "newton-method",
-    "label": "뉴턴 방법",
-    "prompt": "뉴턴-랩슨 반복식",
+    "id": "log-self",
+    "label": "logₐa=1",
+    "prompt": "logₐa의 값",
     "tokens": [
-      "xₙ₊₁",
+      "logₐ",
+      "a",
       "=",
-      "xₙ",
-      "-",
-      "f(xₙ)/f'(xₙ)"
+      "1"
     ],
-    "hint": "근의 수치적 근사"
+    "hint": "logₐa=1"
   },
   {
-    "id": "lhopital-rule",
-    "label": "로피탈 정리",
-    "prompt": "부정형 극한 계산",
+    "id": "ln-one",
+    "label": "ln1=0",
+    "prompt": "ln 1의 값",
     "tokens": [
-      "lim",
-      "f/g",
+      "ln",
+      "1",
       "=",
-      "lim",
-      "f'/g'"
+      "0"
     ],
-    "hint": "0/0 또는 ∞/∞"
+    "hint": "ln1=0"
   },
   {
-    "id": "mvt",
-    "label": "평균값 정리",
-    "prompt": "미분의 평균값 정리",
+    "id": "log-ten",
+    "label": "log10=1",
+    "prompt": "log 10의 값",
     "tokens": [
-      "f'(c)",
+      "log",
+      "10",
       "=",
-      "(f(b)-f(a))",
-      "/",
-      "(b-a)"
+      "1"
     ],
-    "hint": "어떤 c가 존재"
+    "hint": "log10=1"
   },
   {
-    "id": "implicit-differentiation",
-    "label": "음함수 미분",
-    "prompt": "음함수 미분 표기",
+    "id": "arith-nth",
+    "label": "aₙ=a₁+n−1d",
+    "prompt": "등차수열 n항",
     "tokens": [
-      "d/dx",
-      "y²",
+      "aₙ",
       "=",
-      "2y",
-      "dy/dx"
+      "a₁",
+      "+",
+      "n−1",
+      "d"
     ],
-    "hint": "연쇄법칙 적용"
+    "hint": "a₁+(n−1)d"
   },
   {
-    "id": "logarithmic-differentiation",
-    "label": "로그 미분",
-    "prompt": "로그 미분의 기본 결과",
+    "id": "geo-nth",
+    "label": "aₙ=a₁rⁿ⁻¹",
+    "prompt": "등비수열 n항",
     "tokens": [
-      "(ln f)'",
+      "aₙ",
       "=",
-      "f'",
-      "/",
-      "f"
+      "a₁",
+      "rⁿ⁻¹"
     ],
-    "hint": "로그함수 미분"
+    "hint": "a₁rⁿ⁻¹"
   },
   {
-    "id": "partial-fraction-basic",
-    "label": "부분분수",
-    "prompt": "기본 부분분수 분해",
+    "id": "arith-sum2",
+    "label": "Sₙ=½n(a+l)",
+    "prompt": "등차수열 합",
     "tokens": [
-      "1/(x(x+1))",
+      "Sₙ",
       "=",
-      "1/x",
-      "-",
-      "1/(x+1)"
-    ],
-    "hint": "분수 쪼개기"
-  },
-  {
-    "id": "integration-by-substitution",
-    "label": "치환적분",
-    "prompt": "치환적분 공식",
-    "tokens": [
-      "∫f(g(x))g'(x)dx",
-      "=",
-      "∫f(u)du"
-    ],
-    "hint": "u = g(x)"
-  },
-  {
-    "id": "vector-dot-product",
-    "label": "벡터 내적",
-    "prompt": "두 벡터의 내적",
-    "tokens": [
-      "a·b",
-      "=",
-      "|a||b|",
-      "cos θ"
-    ],
-    "hint": "사잇각 θ"
-  },
-  {
-    "id": "vector-cross-magnitude",
-    "label": "벡터 외적 크기",
-    "prompt": "두 벡터 외적의 크기",
-    "tokens": [
-      "|a×b|",
-      "=",
-      "|a||b|",
-      "sin θ"
-    ],
-    "hint": "평행사변형 넓이"
-  },
-  {
-    "id": "vector-magnitude",
-    "label": "벡터 크기",
-    "prompt": "벡터의 크기",
-    "tokens": [
-      "|v|",
-      "=",
-      "√",
+      "½n",
       "(",
-      "x²+y²+z²",
+      "a+l",
       ")"
     ],
-    "hint": "성분 제곱합의 제곱근"
+    "hint": "½n(a+l)"
   },
   {
-    "id": "matrix-determinant-2x2",
-    "label": "2×2 행렬식",
-    "prompt": "2×2 행렬의 행렬식",
+    "id": "arith-mean",
+    "label": "(a+c)/2",
+    "prompt": "등차중항",
     "tokens": [
-      "det",
-      "=",
-      "ad",
-      "-",
-      "bc"
-    ],
-    "hint": "대각선 곱의 차"
-  },
-  {
-    "id": "matrix-inverse-2x2",
-    "label": "2×2 역행렬",
-    "prompt": "2×2 역행렬 공식",
-    "tokens": [
-      "1/(ad-bc)",
-      "[d -b; -c a]"
-    ],
-    "hint": "행렬식으로 나눔"
-  },
-  {
-    "id": "sum-arithmetic-first-form",
-    "label": "등차수열 합 (첫항형)",
-    "prompt": "첫째항과 공차로 등차수열 합",
-    "tokens": [
-      "Sₙ",
-      "=",
-      "n/2",
-      "(2a₁+(n-1)d)"
-    ],
-    "hint": "공차 d"
-  },
-  {
-    "id": "infinite-geometric-condition",
-    "label": "무한급수 수렴조건",
-    "prompt": "무한등비급수 수렴 조건",
-    "tokens": [
-      "|r|",
-      "<",
-      "1"
-    ],
-    "hint": "공비의 절댓값"
-  },
-  {
-    "id": "derivative-arcsin",
-    "label": "역사인 미분",
-    "prompt": "arcsin의 도함수",
-    "tokens": [
-      "d/dx",
-      "arcsin x",
-      "=",
-      "1",
-      "/",
-      "√(1-x²)"
-    ],
-    "hint": "역삼각함수"
-  },
-  {
-    "id": "derivative-arctan",
-    "label": "역탄젠트 미분",
-    "prompt": "arctan의 도함수",
-    "tokens": [
-      "d/dx",
-      "arctan x",
-      "=",
-      "1",
-      "/",
-      "(1+x²)"
-    ],
-    "hint": "역삼각함수"
-  },
-  {
-    "id": "integral-1-over-1-plus-x2",
-    "label": "1/(1+x²) 적분",
-    "prompt": "역탄젠트로 가는 적분",
-    "tokens": [
-      "∫",
-      "dx/(1+x²)",
-      "=",
-      "arctan x",
+      "(",
+      "a",
       "+",
-      "C"
+      "c",
+      ")",
+      "/2"
     ],
-    "hint": "역삼각함수 적분"
+    "hint": "b=(a+c)/2"
   },
   {
-    "id": "definite-integral-even",
-    "label": "우함수 적분",
-    "prompt": "우함수의 대칭 정적분",
+    "id": "geo-mean",
+    "label": "√ac",
+    "prompt": "등비중항",
     "tokens": [
-      "∫₋ₐᵃ f dx",
+      "√",
+      "a",
+      "c"
+    ],
+    "hint": "b=√(ac)"
+  },
+  {
+    "id": "comb-sym",
+    "label": "ₙCᵣ=ₙCₙ₋ᵣ",
+    "prompt": "ₙCᵣ=ₙCₙ₋ᵣ",
+    "tokens": [
+      "ₙCᵣ",
       "=",
-      "2",
-      "∫₀ᵃ f dx"
+      "ₙC",
+      "ₙ₋ᵣ"
     ],
-    "hint": "f가 우함수"
+    "hint": "대칭성"
   },
   {
-    "id": "definite-integral-odd",
-    "label": "기함수 적분",
-    "prompt": "기함수의 대칭 정적분",
+    "id": "perm-formula",
+    "label": "n!/n−r!",
+    "prompt": "순열(분모)",
     "tokens": [
-      "∫₋ₐᵃ f dx",
-      "=",
-      "0"
-    ],
-    "hint": "f가 기함수"
-  },
-  {
-    "id": "hyperbolic-sin",
-    "label": "쌍곡사인",
-    "prompt": "쌍곡사인 정의",
-    "tokens": [
-      "sinh x",
-      "=",
-      "(eˣ-e⁻ˣ)",
-      "/",
-      "2"
-    ],
-    "hint": "쌍곡선 함수"
-  },
-  {
-    "id": "hyperbolic-cos",
-    "label": "쌍곡코사인",
-    "prompt": "쌍곡코사인 정의",
-    "tokens": [
-      "cosh x",
-      "=",
-      "(eˣ+e⁻ˣ)",
-      "/",
-      "2"
-    ],
-    "hint": "쌍곡선 함수"
-  },
-  {
-    "id": "hyperbolic-identity",
-    "label": "쌍곡 항등식",
-    "prompt": "쌍곡함수 기본 항등식",
-    "tokens": [
-      "cosh²x",
-      "-",
-      "sinh²x",
-      "=",
-      "1"
-    ],
-    "hint": "부호 주의"
-  },
-  {
-    "id": "log-base-change-ln",
-    "label": "로그 자연로그 변환",
-    "prompt": "로그를 자연로그로",
-    "tokens": [
-      "logₐ x",
-      "=",
-      "ln x",
-      "/",
-      "ln a"
-    ],
-    "hint": "밑 변환 공식"
-  },
-  {
-    "id": "second-derivative-test",
-    "label": "변곡점 조건",
-    "prompt": "변곡점의 필요조건",
-    "tokens": [
-      "f''(x)",
-      "=",
-      "0"
-    ],
-    "hint": "이계도함수가 0"
-  },
-  {
-    "id": "critical-point",
-    "label": "임계점 조건",
-    "prompt": "극값의 필요조건",
-    "tokens": [
-      "f'(x)",
-      "=",
-      "0"
-    ],
-    "hint": "도함수가 0"
-  },
-  {
-    "id": "trapezoidal-rule",
-    "label": "사다리꼴 공식",
-    "prompt": "사다리꼴 수치적분 (한 구간)",
-    "tokens": [
-      "h/2",
-      "(f(a)+f(b))"
-    ],
-    "hint": "구간폭 h"
-  },
-  {
-    "id": "simpsons-rule-basic",
-    "label": "심프슨 공식",
-    "prompt": "심프슨 수치적분 (한 구간)",
-    "tokens": [
-      "h/3",
-      "(f₀+4f₁+f₂)"
-    ],
-    "hint": "포물선 근사"
-  },
-  {
-    "id": "derivative-cot",
-    "label": "코탄젠트 미분",
-    "prompt": "코탄젠트의 도함수",
-    "tokens": [
-      "d/dx",
-      "cot x",
-      "=",
-      "-csc²x"
-    ],
-    "hint": "부호 주의"
-  },
-  {
-    "id": "derivative-sec",
-    "label": "시컨트 미분",
-    "prompt": "시컨트의 도함수",
-    "tokens": [
-      "d/dx",
-      "sec x",
-      "=",
-      "sec x",
-      "tan x"
-    ],
-    "hint": "시컨트 탄젠트"
-  },
-  {
-    "id": "maclaurin-sin",
-    "label": "사인 급수",
-    "prompt": "사인의 매클로린 급수",
-    "tokens": [
-      "sin x",
-      "=",
-      "x",
-      "-",
-      "x³/3!",
-      "+",
-      "x⁵/5!"
-    ],
-    "hint": "기함수 급수"
-  },
-  {
-    "id": "maclaurin-cos",
-    "label": "코사인 급수",
-    "prompt": "코사인의 매클로린 급수",
-    "tokens": [
-      "cos x",
-      "=",
-      "1",
-      "-",
-      "x²/2!",
-      "+",
-      "x⁴/4!"
-    ],
-    "hint": "우함수 급수"
-  },
-  {
-    "id": "limit-1-minus-cos",
-    "label": "코사인 극한",
-    "prompt": "(1-cos x)/x의 극한",
-    "tokens": [
-      "lim",
-      "(1-cos x)/x",
-      "=",
-      "0"
-    ],
-    "hint": "x → 0"
-  },
-  {
-    "id": "exponential-growth",
-    "label": "지수적 성장",
-    "prompt": "지수적 성장 모형",
-    "tokens": [
-      "N(t)",
-      "=",
-      "N₀",
-      "e^(kt)"
-    ],
-    "hint": "성장률 k"
-  },
-  {
-    "id": "exponential-decay",
-    "label": "지수적 감소",
-    "prompt": "방사성 붕괴 모형",
-    "tokens": [
-      "N(t)",
-      "=",
-      "N₀",
-      "e^(-kt)"
-    ],
-    "hint": "붕괴 상수 k"
-  },
-  {
-    "id": "half-life-formula",
-    "label": "반감기",
-    "prompt": "반감기 공식",
-    "tokens": [
-      "t½",
-      "=",
-      "ln 2",
-      "/",
-      "k"
-    ],
-    "hint": "붕괴 상수 k"
-  },
-  {
-    "id": "logistic-equation",
-    "label": "로지스틱 방정식",
-    "prompt": "로지스틱 성장 모형",
-    "tokens": [
-      "P(t)",
-      "=",
-      "K",
-      "/",
-      "(1+Ae⁻ᵏᵗ)"
-    ],
-    "hint": "환경수용력 K"
-  },
-  {
-    "id": "average-value-function",
-    "label": "함수의 평균값",
-    "prompt": "구간에서 함수의 평균값",
-    "tokens": [
-      "1/(b-a)",
-      "∫ₐᵇ",
-      "f(x)",
-      "dx"
-    ],
-    "hint": "적분평균"
-  },
-  {
-    "id": "dot-product-components",
-    "label": "내적 (성분)",
-    "prompt": "성분으로 표현한 내적",
-    "tokens": [
-      "a·b",
-      "=",
-      "a₁b₁",
-      "+",
-      "a₂b₂"
-    ],
-    "hint": "성분곱의 합"
-  },
-  {
-    "id": "projection-vector",
-    "label": "정사영",
-    "prompt": "벡터의 정사영 크기",
-    "tokens": [
-      "a·b",
-      "/",
-      "|b|"
-    ],
-    "hint": "b 방향 성분"
-  },
-  {
-    "id": "angle-between-vectors",
-    "label": "벡터 사잇각",
-    "prompt": "두 벡터 사잇각의 코사인",
-    "tokens": [
-      "cos θ",
-      "=",
-      "a·b",
-      "/",
-      "(|a||b|)"
-    ],
-    "hint": "내적을 크기곱으로"
-  },
-  {
-    "id": "parametric-derivative",
-    "label": "매개변수 미분",
-    "prompt": "매개변수 함수의 도함수",
-    "tokens": [
-      "dy/dx",
-      "=",
-      "(dy/dt)",
-      "/",
-      "(dx/dt)"
-    ],
-    "hint": "매개변수 t"
-  },
-  {
-    "id": "sum-of-roots-cubic",
-    "label": "삼차 근의 합",
-    "prompt": "삼차방정식 세 근의 합",
-    "tokens": [
-      "-b",
-      "/",
-      "a"
-    ],
-    "hint": "비에트 정리"
-  },
-  {
-    "id": "geometric-series-finite-r1",
-    "label": "등비급수 (r=1)",
-    "prompt": "공비가 1인 등비수열의 합",
-    "tokens": [
-      "Sₙ",
-      "=",
       "n",
+      "!",
+      "/",
+      "n−r",
+      "!"
+    ],
+    "hint": "n!/(n−r)!"
+  },
+  {
+    "id": "prob-conditional",
+    "label": "PA∩B/PB",
+    "prompt": "조건부확률",
+    "tokens": [
+      "P",
+      "A∩B",
+      "/",
+      "P",
+      "B"
+    ],
+    "hint": "P(A|B)"
+  },
+  {
+    "id": "expected-value",
+    "label": "ΣxP",
+    "prompt": "기댓값",
+    "tokens": [
+      "Σ",
+      "x",
+      "P"
+    ],
+    "hint": "Σ x·P(x)"
+  },
+  {
+    "id": "range-stat",
+    "label": "max−min",
+    "prompt": "자료의 범위",
+    "tokens": [
+      "max",
+      "−",
+      "min"
+    ],
+    "hint": "최댓값−최솟값"
+  },
+  {
+    "id": "median-pos",
+    "label": "(n+1)/2",
+    "prompt": "중앙값 위치",
+    "tokens": [
+      "(",
+      "n",
+      "+",
+      "1",
+      ")",
+      "/2"
+    ],
+    "hint": "(n+1)/2번째"
+  },
+  {
+    "id": "cv",
+    "label": "σ/m",
+    "prompt": "변동계수",
+    "tokens": [
+      "σ",
+      "/",
+      "m"
+    ],
+    "hint": "표준편차/평균"
+  },
+  {
+    "id": "gcd-relation",
+    "label": "ab=gcdlcm",
+    "prompt": "곱 관계",
+    "tokens": [
+      "ab",
+      "=",
+      "gcd",
+      "lcm"
+    ],
+    "hint": "ab=gcd·lcm"
+  },
+  {
+    "id": "exp-frac-num",
+    "label": "ⁿ√aᵐ",
+    "prompt": "a^(m/n)",
+    "tokens": [
+      "ⁿ√",
+      "aᵐ"
+    ],
+    "hint": "a^(m/n)"
+  },
+  {
+    "id": "log-power-x",
+    "label": "xloga",
+    "prompt": "log aˣ",
+    "tokens": [
+      "x",
+      "log",
       "a"
     ],
-    "hint": "모든 항이 같다"
+    "hint": "log aˣ=x log a"
   },
   {
-    "id": "law-of-tangents",
-    "label": "탄젠트 법칙",
-    "prompt": "삼각형의 탄젠트 법칙",
+    "id": "compound-n",
+    "label": "(1+r/n)ⁿ",
+    "prompt": "연 n회 복리",
     "tokens": [
-      "(a-b)/(a+b)",
-      "=",
-      "tan((A-B)/2)",
-      "/",
-      "tan((A+B)/2)"
+      "(",
+      "1+",
+      "r/n",
+      ")ⁿ"
     ],
-    "hint": "변과 각의 관계"
+    "hint": "(1+r/n)ⁿᵗ 일부"
   },
   {
-    "id": "circumradius",
-    "label": "외접원 반지름",
-    "prompt": "삼각형 외접원 반지름",
+    "id": "arith-series-2",
+    "label": "½n(a₁+aₙ)",
+    "prompt": "첫항 끝항 합",
     "tokens": [
-      "R",
-      "=",
-      "abc",
-      "/",
-      "4K"
-    ],
-    "hint": "넓이 K"
-  },
-  {
-    "id": "inradius",
-    "label": "내접원 반지름",
-    "prompt": "삼각형 내접원 반지름",
-    "tokens": [
-      "r",
-      "=",
-      "K",
-      "/",
-      "s"
-    ],
-    "hint": "넓이 K, 반둘레 s"
-  },
-  {
-    "id": "derivative-power-chain",
-    "label": "일반 멱함수 미분",
-    "prompt": "합성 멱함수의 미분",
-    "tokens": [
-      "d/dx",
-      "[f(x)]ⁿ",
-      "=",
-      "n[f(x)]ⁿ⁻¹",
-      "f'(x)"
-    ],
-    "hint": "연쇄법칙 적용"
-  },
-  {
-    "id": "definite-integral-additivity",
-    "label": "적분 구간 합",
-    "prompt": "정적분의 구간 가법성",
-    "tokens": [
-      "∫ₐᶜ",
-      "=",
-      "∫ₐᵇ",
+      "½n",
+      "(",
+      "a₁",
       "+",
-      "∫ᵇᶜ"
+      "aₙ",
+      ")"
     ],
-    "hint": "구간을 나눈다"
+    "hint": "½n(a₁+aₙ)"
+  },
+  {
+    "id": "vertex-x",
+    "label": "−b/2a",
+    "prompt": "이차함수 꼭짓점 x",
+    "tokens": [
+      "−",
+      "b",
+      "/",
+      "2a"
+    ],
+    "hint": "x=−b/2a"
+  },
+  {
+    "id": "parabola-focus",
+    "label": "(p,0)",
+    "prompt": "y²=4px의 초점",
+    "tokens": [
+      "(",
+      "p",
+      ",",
+      "0",
+      ")"
+    ],
+    "hint": "초점 (p,0)"
+  },
+  {
+    "id": "abs-eq",
+    "label": "|x|=a",
+    "prompt": "|x|=a",
+    "tokens": [
+      "|x|",
+      "=",
+      "a"
+    ],
+    "hint": "x=±a"
+  },
+  {
+    "id": "floor-frac",
+    "label": "x−[x]",
+    "prompt": "소수 부분",
+    "tokens": [
+      "x",
+      "−",
+      "[x]"
+    ],
+    "hint": "x−[x]"
+  },
+  {
+    "id": "sigma-const",
+    "label": "nc",
+    "prompt": "상수 c를 n번",
+    "tokens": [
+      "n",
+      "c"
+    ],
+    "hint": "Σc=nc"
+  },
+  {
+    "id": "sigma-linear",
+    "label": "Σx+Σy",
+    "prompt": "시그마 일차 분해",
+    "tokens": [
+      "Σx",
+      "+",
+      "Σy"
+    ],
+    "hint": "Σ(x+y)=Σx+Σy"
+  },
+  {
+    "id": "triangle-num",
+    "label": "n(n+1)/2",
+    "prompt": "n번째 삼각수",
+    "tokens": [
+      "n",
+      "(",
+      "n+1",
+      ")",
+      "/2"
+    ],
+    "hint": "n(n+1)/2"
+  },
+  {
+    "id": "square-num-seq",
+    "label": "n²",
+    "prompt": "n번째 사각수",
+    "tokens": [
+      "n",
+      "²"
+    ],
+    "hint": "n²"
+  },
+  {
+    "id": "pentagonal",
+    "label": "n(3n−1)/2",
+    "prompt": "오각수",
+    "tokens": [
+      "n",
+      "(",
+      "3n−1",
+      ")",
+      "/2"
+    ],
+    "hint": "n(3n−1)/2"
+  },
+  {
+    "id": "binom-pascal",
+    "label": "ₙCᵣ+ₙCᵣ₊₁",
+    "prompt": "파스칼 삼각형",
+    "tokens": [
+      "ₙCᵣ",
+      "+",
+      "ₙC",
+      "ᵣ₊₁"
+    ],
+    "hint": "=ₙ₊₁Cᵣ₊₁"
   }
 ]

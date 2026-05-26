@@ -1,1265 +1,1147 @@
 [
   {
-    "id": "gradient-vector",
-    "label": "그래디언트",
-    "prompt": "스칼라장의 그래디언트",
+    "id": "deriv-xn",
+    "label": "nxⁿ⁻¹",
+    "prompt": "xⁿ의 도함수",
     "tokens": [
-      "∇f",
-      "=",
-      "(∂f/∂x, ∂f/∂y, ∂f/∂z)"
+      "n",
+      "xⁿ⁻¹"
     ],
-    "hint": "편도함수 벡터"
+    "hint": "d/dx xⁿ = n xⁿ⁻¹"
   },
   {
-    "id": "divergence",
-    "label": "발산",
-    "prompt": "벡터장의 발산",
+    "id": "deriv-x2",
+    "label": "2x",
+    "prompt": "x²의 도함수",
     "tokens": [
-      "∇·F",
-      "=",
-      "∂P/∂x",
-      "+",
-      "∂Q/∂y",
-      "+",
-      "∂R/∂z"
+      "2",
+      "x"
     ],
-    "hint": "스칼라 결과"
+    "hint": "d/dx x² = 2x"
   },
   {
-    "id": "laplacian",
-    "label": "라플라시안",
-    "prompt": "스칼라장의 라플라시안",
+    "id": "deriv-const",
+    "label": "dc=0",
+    "prompt": "상수의 도함수",
     "tokens": [
-      "∇²f",
-      "=",
-      "∂²f/∂x²",
-      "+",
-      "∂²f/∂y²"
-    ],
-    "hint": "발산의 그래디언트"
-  },
-  {
-    "id": "double-integral-area",
-    "label": "이중적분 넓이",
-    "prompt": "이중적분으로 영역의 넓이",
-    "tokens": [
-      "A",
-      "=",
-      "∬",
-      "dA"
-    ],
-    "hint": "영역 R 위에서"
-  },
-  {
-    "id": "greens-theorem",
-    "label": "그린 정리",
-    "prompt": "그린의 정리",
-    "tokens": [
-      "∮(Pdx+Qdy)",
-      "=",
-      "∬(∂Q/∂x-∂P/∂y)",
-      "dA"
-    ],
-    "hint": "선적분과 이중적분"
-  },
-  {
-    "id": "stokes-theorem",
-    "label": "스토크스 정리",
-    "prompt": "스토크스의 정리",
-    "tokens": [
-      "∮F·dr",
-      "=",
-      "∬(∇×F)·dS"
-    ],
-    "hint": "회전과 선적분"
-  },
-  {
-    "id": "divergence-theorem",
-    "label": "발산 정리",
-    "prompt": "가우스 발산 정리",
-    "tokens": [
-      "∯F·dS",
-      "=",
-      "∭(∇·F)",
-      "dV"
-    ],
-    "hint": "면적분과 부피적분"
-  },
-  {
-    "id": "chain-rule-multivariable",
-    "label": "다변수 연쇄법칙",
-    "prompt": "다변수 함수의 연쇄법칙",
-    "tokens": [
-      "df/dt",
-      "=",
-      "∂f/∂x dx/dt",
-      "+",
-      "∂f/∂y dy/dt"
-    ],
-    "hint": "편도함수 합"
-  },
-  {
-    "id": "total-differential",
-    "label": "전미분",
-    "prompt": "이변수 함수의 전미분",
-    "tokens": [
-      "df",
-      "=",
-      "∂f/∂x dx",
-      "+",
-      "∂f/∂y dy"
-    ],
-    "hint": "편미분 항의 합"
-  },
-  {
-    "id": "directional-derivative",
-    "label": "방향도함수",
-    "prompt": "단위벡터 방향의 도함수",
-    "tokens": [
-      "Dᵤf",
-      "=",
-      "∇f·u"
-    ],
-    "hint": "그래디언트와 내적"
-  },
-  {
-    "id": "jacobian-2d",
-    "label": "야코비안",
-    "prompt": "2차원 야코비 행렬식",
-    "tokens": [
-      "J",
-      "=",
-      "∂(x,y)",
-      "/",
-      "∂(u,v)"
-    ],
-    "hint": "변수변환"
-  },
-  {
-    "id": "lagrange-multiplier",
-    "label": "라그랑주 승수",
-    "prompt": "제약 최적화 조건",
-    "tokens": [
-      "∇f",
-      "=",
-      "λ",
-      "∇g"
-    ],
-    "hint": "그래디언트가 평행"
-  },
-  {
-    "id": "first-order-linear-ode",
-    "label": "1계 선형 미분방정식",
-    "prompt": "1계 선형 ODE 표준형",
-    "tokens": [
-      "dy/dx",
-      "+",
-      "P(x)y",
-      "=",
-      "Q(x)"
-    ],
-    "hint": "적분인자 사용"
-  },
-  {
-    "id": "integrating-factor",
-    "label": "적분인자",
-    "prompt": "1계 선형 ODE의 적분인자",
-    "tokens": [
-      "μ",
-      "=",
-      "e^(∫P dx)"
-    ],
-    "hint": "양변에 곱한다"
-  },
-  {
-    "id": "separable-ode",
-    "label": "변수분리형",
-    "prompt": "변수분리 미분방정식",
-    "tokens": [
-      "∫",
-      "dy/g(y)",
-      "=",
-      "∫",
-      "f(x)dx"
-    ],
-    "hint": "양변 분리 후 적분"
-  },
-  {
-    "id": "second-order-homogeneous",
-    "label": "2계 제차 ODE",
-    "prompt": "상수계수 2계 제차 방정식",
-    "tokens": [
-      "ay''",
-      "+",
-      "by'",
-      "+",
-      "cy",
-      "=",
-      "0"
-    ],
-    "hint": "특성방정식 사용"
-  },
-  {
-    "id": "characteristic-equation",
-    "label": "특성방정식",
-    "prompt": "2계 ODE의 특성방정식",
-    "tokens": [
-      "ar²",
-      "+",
-      "br",
-      "+",
+      "d",
       "c",
       "=",
       "0"
     ],
-    "hint": "근으로 해 결정"
+    "hint": "상수의 미분은 0"
   },
   {
-    "id": "laplace-transform",
-    "label": "라플라스 변환",
-    "prompt": "라플라스 변환 정의",
+    "id": "deriv-sin",
+    "label": "cosx",
+    "prompt": "sin x의 도함수",
     "tokens": [
-      "F(s)",
-      "=",
-      "∫₀^∞",
-      "f(t)e⁻ˢᵗ",
-      "dt"
+      "cos",
+      "x"
     ],
-    "hint": "시간을 s 영역으로"
+    "hint": "(sin x)′ = cos x"
   },
   {
-    "id": "laplace-derivative",
-    "label": "도함수 라플라스",
-    "prompt": "도함수의 라플라스 변환",
+    "id": "deriv-cos",
+    "label": "−sinx",
+    "prompt": "cos x의 도함수",
     "tokens": [
-      "L{f'}",
-      "=",
-      "s F(s)",
-      "-",
-      "f(0)"
+      "−",
+      "sin",
+      "x"
     ],
-    "hint": "초기값 포함"
+    "hint": "(cos x)′ = −sin x"
   },
   {
-    "id": "fourier-series",
-    "label": "푸리에 급수",
-    "prompt": "주기함수의 푸리에 급수",
+    "id": "deriv-ex",
+    "label": "eˣ",
+    "prompt": "eˣ의 도함수",
     "tokens": [
-      "f(x)",
-      "=",
-      "a₀/2",
+      "e",
+      "ˣ"
+    ],
+    "hint": "(eˣ)′ = eˣ"
+  },
+  {
+    "id": "deriv-lnx",
+    "label": "1/x",
+    "prompt": "ln x의 도함수",
+    "tokens": [
+      "1",
+      "/",
+      "x"
+    ],
+    "hint": "(ln x)′ = 1/x"
+  },
+  {
+    "id": "integral-xn",
+    "label": "xⁿ⁺¹/n+1",
+    "prompt": "xⁿ의 부정적분",
+    "tokens": [
+      "xⁿ⁺¹",
+      "/",
+      "n+1"
+    ],
+    "hint": "지수 +1, 그 값으로 나눔"
+  },
+  {
+    "id": "integral-1x",
+    "label": "ln|x|",
+    "prompt": "1/x의 적분",
+    "tokens": [
+      "ln",
+      "|",
+      "x",
+      "|"
+    ],
+    "hint": "∫1/x dx = ln|x|"
+  },
+  {
+    "id": "integral-ex",
+    "label": "eˣ+C",
+    "prompt": "eˣ의 적분",
+    "tokens": [
+      "e",
+      "ˣ",
       "+",
-      "Σ(aₙcos nx+bₙsin nx)"
+      "C"
     ],
-    "hint": "삼각급수 전개"
+    "hint": "∫eˣ dx = eˣ+C"
   },
   {
-    "id": "fourier-transform",
-    "label": "푸리에 변환",
-    "prompt": "연속 푸리에 변환",
+    "id": "sin-0",
+    "label": "sin0=0",
+    "prompt": "sin 0°의 값",
     "tokens": [
-      "X(ω)",
-      "=",
-      "∫",
-      "x(t)e⁻ⁱωᵗ",
-      "dt"
-    ],
-    "hint": "주파수 영역"
-  },
-  {
-    "id": "bayes-theorem",
-    "label": "베이즈 정리",
-    "prompt": "조건부 확률의 관계",
-    "tokens": [
-      "P(A|B)",
-      "=",
-      "P(B|A)P(A)",
-      "/",
-      "P(B)"
-    ],
-    "hint": "사전과 사후 확률"
-  },
-  {
-    "id": "total-probability",
-    "label": "전확률 정리",
-    "prompt": "전확률 공식",
-    "tokens": [
-      "P(B)",
-      "=",
-      "Σ",
-      "P(B|Aᵢ)",
-      "P(Aᵢ)"
-    ],
-    "hint": "분할에 대한 합"
-  },
-  {
-    "id": "moment-generating",
-    "label": "적률생성함수",
-    "prompt": "적률생성함수 정의",
-    "tokens": [
-      "M(t)",
-      "=",
-      "E(eᵗˣ)"
-    ],
-    "hint": "기댓값으로 정의"
-  },
-  {
-    "id": "central-limit",
-    "label": "중심극한정리",
-    "prompt": "표본평균의 극한 분포",
-    "tokens": [
-      "X̄",
-      "~",
-      "N(μ, σ²/n)"
-    ],
-    "hint": "n이 클 때 정규분포"
-  },
-  {
-    "id": "standard-error-mean",
-    "label": "평균의 표준오차",
-    "prompt": "표본평균의 표준오차",
-    "tokens": [
-      "SE",
-      "=",
-      "σ",
-      "/",
-      "√n"
-    ],
-    "hint": "표본 크기 n"
-  },
-  {
-    "id": "confidence-interval-mean",
-    "label": "신뢰구간",
-    "prompt": "모평균의 신뢰구간",
-    "tokens": [
-      "x̄",
-      "±",
-      "z",
-      "σ/√n"
-    ],
-    "hint": "z는 임계값"
-  },
-  {
-    "id": "linear-regression-slope",
-    "label": "회귀 기울기",
-    "prompt": "최소제곱 회귀직선 기울기",
-    "tokens": [
-      "b",
-      "=",
-      "Sₓᵧ",
-      "/",
-      "Sₓₓ"
-    ],
-    "hint": "공분산/분산"
-  },
-  {
-    "id": "eigenvalue-equation",
-    "label": "고윳값 방정식",
-    "prompt": "행렬의 고윳값 방정식",
-    "tokens": [
-      "A",
-      "v",
-      "=",
-      "λ",
-      "v"
-    ],
-    "hint": "고유벡터 v"
-  },
-  {
-    "id": "characteristic-polynomial-matrix",
-    "label": "특성다항식",
-    "prompt": "행렬의 특성방정식",
-    "tokens": [
-      "det(A-λI)",
+      "sin",
+      "0",
       "=",
       "0"
     ],
-    "hint": "고윳값 구하기"
+    "hint": "sin 0 = 0"
   },
   {
-    "id": "trace-matrix",
-    "label": "대각합",
-    "prompt": "행렬의 대각합",
+    "id": "cos-0",
+    "label": "cos0=1",
+    "prompt": "cos 0°의 값",
     "tokens": [
-      "tr(A)",
+      "cos",
+      "0",
       "=",
-      "Σ",
-      "aᵢᵢ"
-    ],
-    "hint": "고윳값의 합과 같다"
-  },
-  {
-    "id": "matrix-determinant-eigenvalues",
-    "label": "행렬식과 고윳값",
-    "prompt": "행렬식과 고윳값의 관계",
-    "tokens": [
-      "det(A)",
-      "=",
-      "Π",
-      "λᵢ"
-    ],
-    "hint": "고윳값의 곱"
-  },
-  {
-    "id": "vector-triple-product",
-    "label": "스칼라 삼중곱",
-    "prompt": "스칼라 삼중곱 (부피)",
-    "tokens": [
-      "a·(b×c)",
-      "=",
-      "det[a b c]"
-    ],
-    "hint": "평행육면체 부피"
-  },
-  {
-    "id": "cross-product-determinant",
-    "label": "외적 (행렬식)",
-    "prompt": "행렬식으로 표현한 외적",
-    "tokens": [
-      "a×b",
-      "=",
-      "det[i j k; a₁a₂a₃; b₁b₂b₃]"
-    ],
-    "hint": "단위벡터 i, j, k"
-  },
-  {
-    "id": "spherical-volume-element",
-    "label": "구면 부피요소",
-    "prompt": "구면좌표 부피요소",
-    "tokens": [
-      "dV",
-      "=",
-      "r²",
-      "sin φ",
-      "dr dφ dθ"
-    ],
-    "hint": "구면좌표"
-  },
-  {
-    "id": "cylindrical-volume-element",
-    "label": "원통 부피요소",
-    "prompt": "원통좌표 부피요소",
-    "tokens": [
-      "dV",
-      "=",
-      "r",
-      "dr dθ dz"
-    ],
-    "hint": "원통좌표"
-  },
-  {
-    "id": "polar-area-integral",
-    "label": "극좌표 넓이",
-    "prompt": "극좌표에서 넓이",
-    "tokens": [
-      "A",
-      "=",
-      "1/2",
-      "∫",
-      "r²",
-      "dθ"
-    ],
-    "hint": "극좌표 적분"
-  },
-  {
-    "id": "wronskian",
-    "label": "론스키안",
-    "prompt": "두 함수의 론스키안",
-    "tokens": [
-      "W",
-      "=",
-      "f g'",
-      "-",
-      "f' g"
-    ],
-    "hint": "선형독립 판정"
-  },
-  {
-    "id": "convolution",
-    "label": "합성곱",
-    "prompt": "합성곱 정의",
-    "tokens": [
-      "(f*g)(t)",
-      "=",
-      "∫",
-      "f(τ)g(t-τ)",
-      "dτ"
-    ],
-    "hint": "겹쳐 적분"
-  },
-  {
-    "id": "gamma-function",
-    "label": "감마함수",
-    "prompt": "감마함수 정의",
-    "tokens": [
-      "Γ(n)",
-      "=",
-      "∫₀^∞",
-      "tⁿ⁻¹e⁻ᵗ",
-      "dt"
-    ],
-    "hint": "팩토리얼의 일반화"
-  },
-  {
-    "id": "gamma-factorial",
-    "label": "감마-팩토리얼",
-    "prompt": "감마함수와 팩토리얼",
-    "tokens": [
-      "Γ(n+1)",
-      "=",
-      "n!"
-    ],
-    "hint": "자연수에서"
-  },
-  {
-    "id": "beta-function",
-    "label": "베타함수",
-    "prompt": "베타와 감마의 관계",
-    "tokens": [
-      "B(x,y)",
-      "=",
-      "Γ(x)Γ(y)",
-      "/",
-      "Γ(x+y)"
-    ],
-    "hint": "감마함수로 표현"
-  },
-  {
-    "id": "error-function",
-    "label": "오차함수",
-    "prompt": "오차함수 정의",
-    "tokens": [
-      "erf(x)",
-      "=",
-      "2/√π",
-      "∫₀ˣ",
-      "e⁻ᵗ²",
-      "dt"
-    ],
-    "hint": "정규분포와 관련"
-  },
-  {
-    "id": "arc-length-parametric",
-    "label": "매개 곡선 길이",
-    "prompt": "매개변수 곡선의 길이",
-    "tokens": [
-      "L",
-      "=",
-      "∫",
-      "√((dx/dt)²+(dy/dt)²)",
-      "dt"
-    ],
-    "hint": "매개변수 t"
-  },
-  {
-    "id": "surface-area-revolution",
-    "label": "회전체 겉넓이",
-    "prompt": "회전체의 겉넓이",
-    "tokens": [
-      "S",
-      "=",
-      "2π",
-      "∫",
-      "f(x)√(1+[f'(x)]²)",
-      "dx"
-    ],
-    "hint": "x축 회전"
-  },
-  {
-    "id": "shell-method",
-    "label": "원통껍질법",
-    "prompt": "원통껍질법 회전체 부피",
-    "tokens": [
-      "V",
-      "=",
-      "2π",
-      "∫",
-      "x f(x)",
-      "dx"
-    ],
-    "hint": "y축 회전"
-  },
-  {
-    "id": "curvature",
-    "label": "곡률",
-    "prompt": "평면곡선의 곡률",
-    "tokens": [
-      "κ",
-      "=",
-      "|y''|",
-      "/",
-      "(1+y'²)^(3/2)"
-    ],
-    "hint": "휘어짐의 정도"
-  },
-  {
-    "id": "taylor-remainder",
-    "label": "테일러 나머지",
-    "prompt": "라그랑주 나머지항",
-    "tokens": [
-      "Rₙ",
-      "=",
-      "fⁿ⁺¹(c)",
-      "/",
-      "(n+1)!",
-      "(x-a)ⁿ⁺¹"
-    ],
-    "hint": "어떤 c가 존재"
-  },
-  {
-    "id": "integral-test-series",
-    "label": "적분판정법",
-    "prompt": "급수 수렴의 적분판정",
-    "tokens": [
-      "Σ aₙ",
-      "~",
-      "∫",
-      "f(x)",
-      "dx"
-    ],
-    "hint": "양항급수 판정"
-  },
-  {
-    "id": "ratio-test",
-    "label": "비율판정법",
-    "prompt": "급수 수렴의 비율판정",
-    "tokens": [
-      "lim",
-      "|aₙ₊₁/aₙ|",
-      "<",
       "1"
     ],
-    "hint": "수렴 조건"
+    "hint": "cos 0 = 1"
   },
   {
-    "id": "p-series",
-    "label": "p-급수",
-    "prompt": "p-급수의 수렴 조건",
+    "id": "sin-90",
+    "label": "sin90=1",
+    "prompt": "sin 90°의 값",
     "tokens": [
-      "Σ",
-      "1/nᵖ",
-      "수렴",
-      "⟺",
-      "p>1"
-    ],
-    "hint": "p가 1보다 클 때"
-  },
-  {
-    "id": "harmonic-series-divergence",
-    "label": "조화급수",
-    "prompt": "조화급수의 발산",
-    "tokens": [
-      "Σ",
-      "1/n",
-      "→",
-      "∞"
-    ],
-    "hint": "발산한다"
-  },
-  {
-    "id": "basel-problem",
-    "label": "바젤 문제",
-    "prompt": "역제곱수 급수의 합",
-    "tokens": [
-      "Σ",
-      "1/n²",
+      "sin",
+      "90",
       "=",
-      "π²/6"
+      "1"
     ],
-    "hint": "오일러의 결과"
+    "hint": "sin 90° = 1"
   },
   {
-    "id": "improper-integral",
-    "label": "이상적분",
-    "prompt": "무한구간 이상적분",
+    "id": "tan-def",
+    "label": "sin/cos",
+    "prompt": "tan의 정의",
     "tokens": [
-      "∫ₐ^∞ f dx",
-      "=",
-      "lim",
-      "∫ₐᵇ f dx"
-    ],
-    "hint": "b → ∞"
-  },
-  {
-    "id": "gaussian-integral",
-    "label": "가우스 적분",
-    "prompt": "가우스 적분 값",
-    "tokens": [
-      "∫₋∞^∞",
-      "e⁻ˣ²",
-      "dx",
-      "=",
-      "√π"
-    ],
-    "hint": "전구간 적분"
-  },
-  {
-    "id": "hessian-matrix",
-    "label": "헤세 행렬",
-    "prompt": "이변수 함수의 헤세 행렬식",
-    "tokens": [
-      "H",
-      "=",
-      "fₓₓ fᵧᵧ",
-      "-",
-      "fₓᵧ²"
-    ],
-    "hint": "이계 판정법"
-  },
-  {
-    "id": "second-derivative-test-2var",
-    "label": "이변수 극값 판정",
-    "prompt": "극솟값 판정 조건",
-    "tokens": [
-      "H>0",
-      "그리고",
-      "fₓₓ>0"
-    ],
-    "hint": "극솟값 조건"
-  },
-  {
-    "id": "line-integral-scalar",
-    "label": "스칼라 선적분",
-    "prompt": "스칼라장의 선적분",
-    "tokens": [
-      "∫_C",
-      "f",
-      "ds"
-    ],
-    "hint": "곡선 C를 따라"
-  },
-  {
-    "id": "work-line-integral",
-    "label": "일 (선적분)",
-    "prompt": "힘이 한 일의 선적분",
-    "tokens": [
-      "W",
-      "=",
-      "∫_C",
-      "F·dr"
-    ],
-    "hint": "벡터장 선적분"
-  },
-  {
-    "id": "conservative-field",
-    "label": "보존장 조건",
-    "prompt": "2차원 보존장 조건",
-    "tokens": [
-      "∂P/∂y",
-      "=",
-      "∂Q/∂x"
-    ],
-    "hint": "회전이 0"
-  },
-  {
-    "id": "center-of-mass-1d",
-    "label": "질량중심",
-    "prompt": "선밀도의 질량중심",
-    "tokens": [
-      "x̄",
-      "=",
-      "∫xρ dx",
+      "sin",
       "/",
-      "∫ρ dx"
+      "cos"
     ],
-    "hint": "모멘트 나누기 질량"
+    "hint": "tan = sin/cos"
   },
   {
-    "id": "moment-of-inertia",
-    "label": "관성모멘트",
-    "prompt": "관성모멘트 적분식",
+    "id": "pythagorean-id",
+    "label": "sin²+cos²=1",
+    "prompt": "기본 삼각 항등식",
     "tokens": [
-      "I",
-      "=",
-      "∫",
-      "r²",
-      "dm"
-    ],
-    "hint": "거리 제곱 가중"
-  },
-  {
-    "id": "euler-lagrange",
-    "label": "오일러-라그랑주",
-    "prompt": "변분법 오일러-라그랑주 방정식",
-    "tokens": [
-      "∂L/∂q",
-      "-",
-      "d/dt(∂L/∂q̇)",
-      "=",
-      "0"
-    ],
-    "hint": "범함수 최적화"
-  },
-  {
-    "id": "gradient-descent-update",
-    "label": "경사하강법",
-    "prompt": "경사하강 갱신식",
-    "tokens": [
-      "xₙ₊₁",
-      "=",
-      "xₙ",
-      "-",
-      "η∇f"
-    ],
-    "hint": "학습률 η"
-  },
-  {
-    "id": "softmax",
-    "label": "소프트맥스",
-    "prompt": "소프트맥스 함수",
-    "tokens": [
-      "σ(z)ᵢ",
-      "=",
-      "e^(zᵢ)",
-      "/",
-      "Σe^(zⱼ)"
-    ],
-    "hint": "확률 분포로 변환"
-  },
-  {
-    "id": "sigmoid",
-    "label": "시그모이드",
-    "prompt": "시그모이드 함수",
-    "tokens": [
-      "σ(x)",
-      "=",
-      "1",
-      "/",
-      "(1+e⁻ˣ)"
-    ],
-    "hint": "S자 곡선"
-  },
-  {
-    "id": "cross-entropy",
-    "label": "교차 엔트로피",
-    "prompt": "교차 엔트로피 손실",
-    "tokens": [
-      "H",
-      "=",
-      "-Σ",
-      "yᵢ",
-      "log pᵢ"
-    ],
-    "hint": "분류 손실함수"
-  },
-  {
-    "id": "entropy-shannon",
-    "label": "섀넌 엔트로피",
-    "prompt": "정보 엔트로피",
-    "tokens": [
-      "H(X)",
-      "=",
-      "-Σ",
-      "p(x)",
-      "log p(x)"
-    ],
-    "hint": "정보량의 기댓값"
-  },
-  {
-    "id": "kl-divergence",
-    "label": "KL 발산",
-    "prompt": "쿨백-라이블러 발산",
-    "tokens": [
-      "D(P‖Q)",
-      "=",
-      "Σ",
-      "p log(p/q)"
-    ],
-    "hint": "분포 간 차이"
-  },
-  {
-    "id": "bernoulli-variance",
-    "label": "베르누이 분산",
-    "prompt": "베르누이 분포의 분산",
-    "tokens": [
-      "V(X)",
-      "=",
-      "p",
-      "(1-p)"
-    ],
-    "hint": "성공확률 p"
-  },
-  {
-    "id": "geometric-distribution-mean",
-    "label": "기하분포 평균",
-    "prompt": "기하분포의 기댓값",
-    "tokens": [
-      "E(X)",
-      "=",
-      "1",
-      "/",
-      "p"
-    ],
-    "hint": "성공확률 p"
-  },
-  {
-    "id": "exponential-distribution-mean",
-    "label": "지수분포 평균",
-    "prompt": "지수분포의 기댓값",
-    "tokens": [
-      "E(X)",
-      "=",
-      "1",
-      "/",
-      "λ"
-    ],
-    "hint": "비율 λ"
-  },
-  {
-    "id": "uniform-variance",
-    "label": "균등분포 분산",
-    "prompt": "연속균등분포의 분산",
-    "tokens": [
-      "V(X)",
-      "=",
-      "(b-a)²",
-      "/",
-      "12"
-    ],
-    "hint": "구간 [a, b]"
-  },
-  {
-    "id": "stirling-approximation",
-    "label": "스털링 근사",
-    "prompt": "팩토리얼의 스털링 근사",
-    "tokens": [
-      "n!",
-      "≈",
-      "√(2πn)",
-      "(n/e)ⁿ"
-    ],
-    "hint": "큰 n에서"
-  },
-  {
-    "id": "cauchy-integral",
-    "label": "코시 적분공식",
-    "prompt": "코시 적분 공식",
-    "tokens": [
-      "f(a)",
-      "=",
-      "1/(2πi)",
-      "∮",
-      "f(z)/(z-a)",
-      "dz"
-    ],
-    "hint": "복소 해석"
-  },
-  {
-    "id": "residue-theorem",
-    "label": "유수 정리",
-    "prompt": "유수 정리",
-    "tokens": [
-      "∮f dz",
-      "=",
-      "2πi",
-      "Σ",
-      "Res(f)"
-    ],
-    "hint": "극에서의 유수 합"
-  },
-  {
-    "id": "cauchy-riemann",
-    "label": "코시-리만 방정식",
-    "prompt": "복소함수 미분가능 조건",
-    "tokens": [
-      "∂u/∂x",
-      "=",
-      "∂v/∂y",
-      "그리고",
-      "∂u/∂y=-∂v/∂x"
-    ],
-    "hint": "해석함수 조건"
-  },
-  {
-    "id": "binomial-series",
-    "label": "이항급수",
-    "prompt": "일반 이항급수",
-    "tokens": [
-      "(1+x)ᵅ",
-      "=",
-      "Σ",
-      "C(α,k)",
-      "xᵏ"
-    ],
-    "hint": "실수 지수 α"
-  },
-  {
-    "id": "maclaurin-ln",
-    "label": "로그 급수",
-    "prompt": "ln(1+x)의 매클로린 급수",
-    "tokens": [
-      "ln(1+x)",
-      "=",
-      "x",
-      "-",
-      "x²/2",
+      "sin²",
       "+",
-      "x³/3"
+      "cos²",
+      "=",
+      "1"
     ],
-    "hint": "|x| < 1"
+    "hint": "sin²θ+cos²θ=1"
   },
   {
-    "id": "maclaurin-arctan",
-    "label": "역탄젠트 급수",
-    "prompt": "arctan x의 매클로린 급수",
+    "id": "newton-2nd",
+    "label": "F=ma",
+    "prompt": "운동 방정식",
     "tokens": [
-      "arctan x",
+      "F",
       "=",
-      "x",
-      "-",
-      "x³/3",
+      "m",
+      "a"
+    ],
+    "hint": "F=ma — 힘은 질량 곱 가속도"
+  },
+  {
+    "id": "emc2",
+    "label": "E=mc²",
+    "prompt": "질량-에너지 등가",
+    "tokens": [
+      "E",
+      "=",
+      "m",
+      "c",
+      "²"
+    ],
+    "hint": "E=mc²"
+  },
+  {
+    "id": "velocity",
+    "label": "v=v₀+at",
+    "prompt": "등가속도 속도 공식",
+    "tokens": [
+      "v",
+      "=",
+      "v₀",
       "+",
-      "x⁵/5"
+      "a",
+      "t"
     ],
-    "hint": "라이프니츠 공식 관련"
-  },
-  {
-    "id": "leibniz-pi",
-    "label": "라이프니츠 π급수",
-    "prompt": "π/4의 라이프니츠 급수",
-    "tokens": [
-      "π/4",
-      "=",
-      "1",
-      "-",
-      "1/3",
-      "+",
-      "1/5"
-    ],
-    "hint": "교대급수"
-  },
-  {
-    "id": "rms-value",
-    "label": "RMS 값",
-    "prompt": "제곱평균제곱근",
-    "tokens": [
-      "x_rms",
-      "=",
-      "√",
-      "(",
-      "Σxᵢ²/n",
-      ")"
-    ],
-    "hint": "제곱의 평균의 제곱근"
-  },
-  {
-    "id": "geometric-mean-n",
-    "label": "기하평균 (n개)",
-    "prompt": "n개 수의 기하평균",
-    "tokens": [
-      "G",
-      "=",
-      "(x₁x₂...xₙ)^(1/n)"
-    ],
-    "hint": "곱의 n제곱근"
-  },
-  {
-    "id": "harmonic-mean-n",
-    "label": "조화평균 (n개)",
-    "prompt": "n개 수의 조화평균",
-    "tokens": [
-      "H",
-      "=",
-      "n",
-      "/",
-      "Σ(1/xᵢ)"
-    ],
-    "hint": "역수 평균의 역수"
-  },
-  {
-    "id": "amgm-inequality",
-    "label": "산술-기하 부등식",
-    "prompt": "AM-GM 부등식",
-    "tokens": [
-      "(a+b)/2",
-      "≥",
-      "√(ab)"
-    ],
-    "hint": "등호는 a=b"
-  },
-  {
-    "id": "cauchy-schwarz",
-    "label": "코시-슈바르츠",
-    "prompt": "코시-슈바르츠 부등식",
-    "tokens": [
-      "|a·b|",
-      "≤",
-      "|a|",
-      "|b|"
-    ],
-    "hint": "내적의 크기 한계"
-  },
-  {
-    "id": "triangle-inequality",
-    "label": "삼각부등식",
-    "prompt": "벡터 삼각부등식",
-    "tokens": [
-      "|a+b|",
-      "≤",
-      "|a|",
-      "+",
-      "|b|"
-    ],
-    "hint": "합의 크기 한계"
-  },
-  {
-    "id": "parseval-theorem",
-    "label": "파르스발 정리",
-    "prompt": "파르스발 항등식",
-    "tokens": [
-      "∫|f|²dx",
-      "=",
-      "Σ",
-      "|cₙ|²"
-    ],
-    "hint": "에너지 보존"
-  },
-  {
-    "id": "gradient-magnitude",
-    "label": "그래디언트 크기",
-    "prompt": "최대 변화율",
-    "tokens": [
-      "최대 Dᵤf",
-      "=",
-      "|∇f|"
-    ],
-    "hint": "그래디언트 방향"
-  },
-  {
-    "id": "normal-line",
-    "label": "법선의 기울기",
-    "prompt": "접선에 수직인 법선",
-    "tokens": [
-      "m_normal",
-      "=",
-      "-1",
-      "/",
-      "f'(a)"
-    ],
-    "hint": "접선 기울기의 음의 역수"
-  },
-  {
-    "id": "related-rates",
-    "label": "관련변화율",
-    "prompt": "원 넓이의 시간변화율",
-    "tokens": [
-      "dA/dt",
-      "=",
-      "2πr",
-      "dr/dt"
-    ],
-    "hint": "연쇄법칙 적용"
-  },
-  {
-    "id": "spring-energy",
-    "label": "탄성에너지",
-    "prompt": "용수철의 탄성위치에너지",
-    "tokens": [
-      "U",
-      "=",
-      "1/2",
-      "k",
-      "x²"
-    ],
-    "hint": "용수철 상수 k"
+    "hint": "v=v₀+at"
   },
   {
     "id": "kinetic-energy",
-    "label": "운동에너지",
-    "prompt": "운동에너지 공식",
+    "label": "½mv²",
+    "prompt": "운동 에너지 공식",
     "tokens": [
-      "KE",
+      "½",
+      "m",
+      "v",
+      "²"
+    ],
+    "hint": "½mv²"
+  },
+  {
+    "id": "momentum",
+    "label": "p=mv",
+    "prompt": "운동량 공식",
+    "tokens": [
+      "p",
       "=",
-      "1/2",
+      "m",
+      "v"
+    ],
+    "hint": "p=mv — 질량 곱 속도"
+  },
+  {
+    "id": "deriv-sum",
+    "label": "u′+v′",
+    "prompt": "합의 미분법",
+    "tokens": [
+      "u′",
+      "+",
+      "v′"
+    ],
+    "hint": "(u+v)′=u′+v′"
+  },
+  {
+    "id": "deriv-const-mul",
+    "label": "cf′",
+    "prompt": "상수배 미분",
+    "tokens": [
+      "c",
+      "f′"
+    ],
+    "hint": "(cf)′=cf′"
+  },
+  {
+    "id": "deriv-power-3",
+    "label": "3x²",
+    "prompt": "x³의 도함수",
+    "tokens": [
+      "3",
+      "x",
+      "²"
+    ],
+    "hint": "3x²"
+  },
+  {
+    "id": "deriv-sqrt",
+    "label": "1/2√x",
+    "prompt": "√x의 도함수",
+    "tokens": [
+      "1",
+      "/",
+      "2√x"
+    ],
+    "hint": "1/(2√x)"
+  },
+  {
+    "id": "deriv-1x",
+    "label": "−1/x²",
+    "prompt": "1/x의 도함수",
+    "tokens": [
+      "−",
+      "1",
+      "/",
+      "x²"
+    ],
+    "hint": "−1/x²"
+  },
+  {
+    "id": "deriv-ax",
+    "label": "aˣlna",
+    "prompt": "aˣ의 도함수",
+    "tokens": [
+      "aˣ",
+      "ln",
+      "a"
+    ],
+    "hint": "aˣ ln a"
+  },
+  {
+    "id": "integral-const",
+    "label": "cx+C",
+    "prompt": "상수의 적분",
+    "tokens": [
+      "c",
+      "x",
+      "+",
+      "C"
+    ],
+    "hint": "∫c dx=cx+C"
+  },
+  {
+    "id": "integral-x",
+    "label": "½x²",
+    "prompt": "x의 적분",
+    "tokens": [
+      "½",
+      "x",
+      "²"
+    ],
+    "hint": "½x²+C"
+  },
+  {
+    "id": "integral-x2",
+    "label": "x³/3",
+    "prompt": "x²의 적분",
+    "tokens": [
+      "x",
+      "³",
+      "/",
+      "3"
+    ],
+    "hint": "x³/3+C"
+  },
+  {
+    "id": "definite-integral",
+    "label": "F(b)−F(a)",
+    "prompt": "정적분 기본정리",
+    "tokens": [
+      "F",
+      "(",
+      "b",
+      ")",
+      "−",
+      "F(a)"
+    ],
+    "hint": "F(b)−F(a)"
+  },
+  {
+    "id": "tan-45",
+    "label": "tan45=1",
+    "prompt": "tan 45°의 값",
+    "tokens": [
+      "tan",
+      "45",
+      "=",
+      "1"
+    ],
+    "hint": "tan45°=1"
+  },
+  {
+    "id": "cos-90",
+    "label": "cos90=0",
+    "prompt": "cos 90°의 값",
+    "tokens": [
+      "cos",
+      "90",
+      "=",
+      "0"
+    ],
+    "hint": "cos90°=0"
+  },
+  {
+    "id": "sin-30",
+    "label": "sin30=½",
+    "prompt": "sin 30°의 값",
+    "tokens": [
+      "sin",
+      "30",
+      "=",
+      "½"
+    ],
+    "hint": "sin30°=½"
+  },
+  {
+    "id": "cos-60",
+    "label": "cos60=½",
+    "prompt": "cos 60°의 값",
+    "tokens": [
+      "cos",
+      "60",
+      "=",
+      "½"
+    ],
+    "hint": "cos60°=½"
+  },
+  {
+    "id": "cot-def",
+    "label": "cos/sin",
+    "prompt": "cot의 정의",
+    "tokens": [
+      "cos",
+      "/",
+      "sin"
+    ],
+    "hint": "cot=cos/sin"
+  },
+  {
+    "id": "sec-def",
+    "label": "1/cos",
+    "prompt": "sec의 정의",
+    "tokens": [
+      "1",
+      "/",
+      "cos"
+    ],
+    "hint": "sec=1/cos"
+  },
+  {
+    "id": "csc-def",
+    "label": "1/sin",
+    "prompt": "csc의 정의",
+    "tokens": [
+      "1",
+      "/",
+      "sin"
+    ],
+    "hint": "csc=1/sin"
+  },
+  {
+    "id": "gravity-pe",
+    "label": "mgh",
+    "prompt": "중력 위치 에너지",
+    "tokens": [
+      "m",
+      "g",
+      "h"
+    ],
+    "hint": "mgh"
+  },
+  {
+    "id": "hookes-law",
+    "label": "−kx",
+    "prompt": "용수철 힘",
+    "tokens": [
+      "−",
+      "k",
+      "x"
+    ],
+    "hint": "F=−kx"
+  },
+  {
+    "id": "spring-pe",
+    "label": "½kx²",
+    "prompt": "용수철 탄성 에너지",
+    "tokens": [
+      "½",
+      "k",
+      "x",
+      "²"
+    ],
+    "hint": "½kx²"
+  },
+  {
+    "id": "coulomb",
+    "label": "kq₁q₂",
+    "prompt": "쿨롱 힘 분자",
+    "tokens": [
+      "k",
+      "q₁",
+      "q₂"
+    ],
+    "hint": "kq₁q₂/r²"
+  },
+  {
+    "id": "gravitation",
+    "label": "Gm₁m₂",
+    "prompt": "만유인력 분자",
+    "tokens": [
+      "G",
+      "m₁",
+      "m₂"
+    ],
+    "hint": "Gm₁m₂/r²"
+  },
+  {
+    "id": "period-pendulum",
+    "label": "2π√L",
+    "prompt": "단진자 주기",
+    "tokens": [
+      "2",
+      "π",
+      "√",
+      "L"
+    ],
+    "hint": "2π√(L/g)"
+  },
+  {
+    "id": "wave-speed",
+    "label": "fλ",
+    "prompt": "파동 속력",
+    "tokens": [
+      "f",
+      "λ"
+    ],
+    "hint": "fλ — 진동수 곱 파장"
+  },
+  {
+    "id": "photon-energy",
+    "label": "hf",
+    "prompt": "광자 에너지",
+    "tokens": [
+      "h",
+      "f"
+    ],
+    "hint": "hf — 플랑크상수 곱 진동수"
+  },
+  {
+    "id": "ideal-gas",
+    "label": "PV",
+    "prompt": "PV=nRT 좌변",
+    "tokens": [
+      "P",
+      "V"
+    ],
+    "hint": "PV=nRT"
+  },
+  {
+    "id": "centripetal",
+    "label": "v²/r",
+    "prompt": "구심 가속도",
+    "tokens": [
+      "v",
+      "²",
+      "/",
+      "r"
+    ],
+    "hint": "v²/r"
+  },
+  {
+    "id": "heat",
+    "label": "cmΔT",
+    "prompt": "열량 공식",
+    "tokens": [
+      "c",
+      "m",
+      "ΔT"
+    ],
+    "hint": "cmΔT"
+  },
+  {
+    "id": "avg-velocity",
+    "label": "Δx/Δt",
+    "prompt": "평균 속도",
+    "tokens": [
+      "Δx",
+      "/",
+      "Δt"
+    ],
+    "hint": "변위/시간"
+  },
+  {
+    "id": "impulse",
+    "label": "FΔt",
+    "prompt": "충격량",
+    "tokens": [
+      "F",
+      "Δt"
+    ],
+    "hint": "FΔt"
+  },
+  {
+    "id": "deriv-tan-q",
+    "label": "sec²x",
+    "prompt": "tan의 도함수(간단)",
+    "tokens": [
+      "sec²",
+      "x"
+    ],
+    "hint": "sec²x"
+  },
+  {
+    "id": "deriv-cot",
+    "label": "−csc²x",
+    "prompt": "cot의 도함수",
+    "tokens": [
+      "−",
+      "csc²",
+      "x"
+    ],
+    "hint": "−csc²x"
+  },
+  {
+    "id": "integral-sec2",
+    "label": "tanx+C",
+    "prompt": "sec²의 적분",
+    "tokens": [
+      "tan",
+      "x",
+      "+",
+      "C"
+    ],
+    "hint": "∫sec²x dx=tan x+C"
+  },
+  {
+    "id": "lim-def",
+    "label": "limf(x)",
+    "prompt": "함수의 극한 표기",
+    "tokens": [
+      "lim",
+      "f",
+      "(",
+      "x",
+      ")"
+    ],
+    "hint": "x→a일 때"
+  },
+  {
+    "id": "avg-rate",
+    "label": "Δy/Δx",
+    "prompt": "평균변화율",
+    "tokens": [
+      "Δy",
+      "/",
+      "Δx"
+    ],
+    "hint": "(미분계수 전 단계) 함수 증가/x 증가"
+  },
+  {
+    "id": "second-deriv",
+    "label": "f″",
+    "prompt": "이계도함수 기호",
+    "tokens": [
+      "f",
+      "″"
+    ],
+    "hint": "f″ — 두 번 미분"
+  },
+  {
+    "id": "deriv-notation",
+    "label": "dy/dx",
+    "prompt": "라이프니츠 도함수",
+    "tokens": [
+      "dy",
+      "/",
+      "dx"
+    ],
+    "hint": "dy/dx"
+  },
+  {
+    "id": "tangent-line",
+    "label": "f′(a)",
+    "prompt": "접선의 기울기",
+    "tokens": [
+      "f′",
+      "(",
+      "a",
+      ")"
+    ],
+    "hint": "x=a에서 미분계수"
+  },
+  {
+    "id": "euler-num",
+    "label": "lim(1+¹ⁿ)ⁿ",
+    "prompt": "자연상수 정의 일부",
+    "tokens": [
+      "lim",
+      "(",
+      "1+",
+      "¹ⁿ",
+      ")ⁿ"
+    ],
+    "hint": "e의 정의"
+  },
+  {
+    "id": "log-deriv",
+    "label": "1x⁻¹",
+    "prompt": "ln x의 도함수(재확인)",
+    "tokens": [
+      "1",
+      "x⁻¹"
+    ],
+    "hint": "(ln x)′=1/x"
+  },
+  {
+    "id": "deriv-x4",
+    "label": "4x³",
+    "prompt": "x⁴의 도함수",
+    "tokens": [
+      "4",
+      "x",
+      "³"
+    ],
+    "hint": "4x³"
+  },
+  {
+    "id": "deriv-x5",
+    "label": "5x⁴",
+    "prompt": "x⁵의 도함수",
+    "tokens": [
+      "5",
+      "x",
+      "⁴"
+    ],
+    "hint": "5x⁴"
+  },
+  {
+    "id": "deriv-2x",
+    "label": "d2x=2",
+    "prompt": "2x의 도함수",
+    "tokens": [
+      "d",
+      "2x",
+      "=",
+      "2"
+    ],
+    "hint": "(2x)′=2"
+  },
+  {
+    "id": "deriv-ax2",
+    "label": "2ax",
+    "prompt": "ax²의 도함수",
+    "tokens": [
+      "2",
+      "a",
+      "x"
+    ],
+    "hint": "2ax"
+  },
+  {
+    "id": "deriv-poly",
+    "label": "naₙxⁿ⁻¹",
+    "prompt": "각 항 미분",
+    "tokens": [
+      "n",
+      "aₙ",
+      "xⁿ⁻¹"
+    ],
+    "hint": "항별 미분"
+  },
+  {
+    "id": "integral-x3",
+    "label": "x⁴/4",
+    "prompt": "x³의 적분",
+    "tokens": [
+      "x",
+      "⁴",
+      "/",
+      "4"
+    ],
+    "hint": "x⁴/4+C"
+  },
+  {
+    "id": "integral-2x",
+    "label": "x²+C",
+    "prompt": "2x의 적분",
+    "tokens": [
+      "x",
+      "²",
+      "+",
+      "C"
+    ],
+    "hint": "x²+C"
+  },
+  {
+    "id": "integral-1",
+    "label": "x+C",
+    "prompt": "1의 적분",
+    "tokens": [
+      "x",
+      "+",
+      "C"
+    ],
+    "hint": "∫1 dx=x+C"
+  },
+  {
+    "id": "integral-cos2",
+    "label": "sinx",
+    "prompt": "cos 적분",
+    "tokens": [
+      "sin",
+      "x"
+    ],
+    "hint": "∫cos=sin"
+  },
+  {
+    "id": "integral-sin2",
+    "label": "−cosx",
+    "prompt": "sin 적분",
+    "tokens": [
+      "−",
+      "cos",
+      "x"
+    ],
+    "hint": "∫sin=−cos"
+  },
+  {
+    "id": "sin-45",
+    "label": "√2/2",
+    "prompt": "sin 45°",
+    "tokens": [
+      "√2",
+      "/",
+      "2"
+    ],
+    "hint": "√2/2"
+  },
+  {
+    "id": "cos-45",
+    "label": "√2/2",
+    "prompt": "cos 45°",
+    "tokens": [
+      "√2",
+      "/",
+      "2"
+    ],
+    "hint": "√2/2"
+  },
+  {
+    "id": "sin-60",
+    "label": "√3/2",
+    "prompt": "sin 60°",
+    "tokens": [
+      "√3",
+      "/",
+      "2"
+    ],
+    "hint": "√3/2"
+  },
+  {
+    "id": "cos-30",
+    "label": "√3/2",
+    "prompt": "cos 30°",
+    "tokens": [
+      "√3",
+      "/",
+      "2"
+    ],
+    "hint": "√3/2"
+  },
+  {
+    "id": "tan-30",
+    "label": "1/√3",
+    "prompt": "tan 30°",
+    "tokens": [
+      "1",
+      "/",
+      "√3"
+    ],
+    "hint": "1/√3"
+  },
+  {
+    "id": "tan-60",
+    "label": "√3",
+    "prompt": "tan 60°",
+    "tokens": [
+      "√",
+      "3"
+    ],
+    "hint": "√3"
+  },
+  {
+    "id": "tan-0",
+    "label": "tan0=0",
+    "prompt": "tan 0°",
+    "tokens": [
+      "tan",
+      "0",
+      "=",
+      "0"
+    ],
+    "hint": "tan0=0"
+  },
+  {
+    "id": "sin-180",
+    "label": "sin180=0",
+    "prompt": "sin 180°",
+    "tokens": [
+      "sin",
+      "180",
+      "=",
+      "0"
+    ],
+    "hint": "sin180°=0"
+  },
+  {
+    "id": "cos-180",
+    "label": "cos180=−1",
+    "prompt": "cos 180°",
+    "tokens": [
+      "cos",
+      "180",
+      "=",
+      "−1"
+    ],
+    "hint": "cos180°=−1"
+  },
+  {
+    "id": "recip-sin",
+    "label": "1/sinθ",
+    "prompt": "csc",
+    "tokens": [
+      "1",
+      "/",
+      "sinθ"
+    ],
+    "hint": "csc=1/sin"
+  },
+  {
+    "id": "gpe2",
+    "label": "U=mgh",
+    "prompt": "위치 에너지",
+    "tokens": [
+      "U",
+      "=",
+      "m",
+      "g",
+      "h"
+    ],
+    "hint": "U=mgh"
+  },
+  {
+    "id": "kinetic3",
+    "label": "E=½mv²",
+    "prompt": "운동 에너지",
+    "tokens": [
+      "E",
+      "=",
+      "½",
       "m",
       "v²"
     ],
-    "hint": "질량 m, 속도 v"
+    "hint": "E=½mv²"
   },
   {
-    "id": "simple-harmonic",
-    "label": "단조화운동",
-    "prompt": "단조화운동의 변위",
+    "id": "work2",
+    "label": "W=Fd",
+    "prompt": "일",
     "tokens": [
-      "x(t)",
+      "W",
       "=",
-      "A",
-      "cos(ωt+φ)"
+      "F",
+      "d"
     ],
-    "hint": "진폭 A, 각진동수 ω"
+    "hint": "W=Fd"
   },
   {
-    "id": "angular-frequency",
-    "label": "각진동수",
-    "prompt": "각진동수와 진동수",
-    "tokens": [
-      "ω",
-      "=",
-      "2",
-      "π",
-      "f"
-    ],
-    "hint": "진동수 f"
-  },
-  {
-    "id": "doppler-effect",
-    "label": "도플러 효과",
-    "prompt": "도플러 진동수 변화",
-    "tokens": [
-      "f'",
-      "=",
-      "f",
-      "(v±v_o)/(v∓v_s)"
-    ],
-    "hint": "관측자/음원 속도"
-  },
-  {
-    "id": "matrix-rank-nullity",
-    "label": "계수-퇴화 정리",
-    "prompt": "선형변환 차원 정리",
-    "tokens": [
-      "rank",
-      "+",
-      "nullity",
-      "=",
-      "n"
-    ],
-    "hint": "정의역 차원 n"
-  },
-  {
-    "id": "orthogonal-projection-matrix",
-    "label": "정사영 행렬",
-    "prompt": "열공간 정사영 행렬",
+    "id": "power3",
+    "label": "P=W/t",
+    "prompt": "일률",
     "tokens": [
       "P",
       "=",
-      "A(AᵀA)⁻¹Aᵀ"
+      "W",
+      "/",
+      "t"
     ],
-    "hint": "최소제곱 투영"
+    "hint": "P=W/t"
   },
   {
-    "id": "normal-equation-lsq",
-    "label": "정규방정식",
-    "prompt": "최소제곱 정규방정식",
+    "id": "momentum2",
+    "label": "p=mv",
+    "prompt": "운동량",
     "tokens": [
-      "AᵀA",
-      "x",
+      "p",
       "=",
-      "Aᵀb"
+      "m",
+      "v"
     ],
-    "hint": "최소제곱 해"
+    "hint": "p=mv"
   },
   {
-    "id": "double-integral-fubini",
-    "label": "푸비니 정리",
-    "prompt": "이중적분 순서교환",
+    "id": "velocity-sq",
+    "label": "v₀²+2as",
+    "prompt": "등가속도 v²",
     "tokens": [
-      "∬f dA",
-      "=",
-      "∫∫f dx dy",
-      "=",
-      "∫∫f dy dx"
+      "v₀²",
+      "+",
+      "2as"
     ],
-    "hint": "적분 순서 교환"
+    "hint": "v²=v₀²+2as"
+  },
+  {
+    "id": "displacement",
+    "label": "v₀t+½at²",
+    "prompt": "등가속도 변위",
+    "tokens": [
+      "v₀",
+      "t",
+      "+",
+      "½at²"
+    ],
+    "hint": "v₀t+½at²"
+  },
+  {
+    "id": "freefall",
+    "label": "½gt²",
+    "prompt": "자유낙하",
+    "tokens": [
+      "½",
+      "g",
+      "t",
+      "²"
+    ],
+    "hint": "½gt²"
+  },
+  {
+    "id": "centrip-force",
+    "label": "mv²/r",
+    "prompt": "구심력",
+    "tokens": [
+      "m",
+      "v²",
+      "/",
+      "r"
+    ],
+    "hint": "mv²/r"
+  },
+  {
+    "id": "gravity-g",
+    "label": "g≈9.8",
+    "prompt": "g 근삿값",
+    "tokens": [
+      "g",
+      "≈",
+      "9.8"
+    ],
+    "hint": "g≈9.8 m/s²"
+  },
+  {
+    "id": "ohm2",
+    "label": "V=IR",
+    "prompt": "옴의 법칙",
+    "tokens": [
+      "V",
+      "=",
+      "I",
+      "R"
+    ],
+    "hint": "V=IR"
+  },
+  {
+    "id": "charge",
+    "label": "Q=It",
+    "prompt": "전류와 시간",
+    "tokens": [
+      "Q",
+      "=",
+      "I",
+      "t"
+    ],
+    "hint": "Q=It"
+  },
+  {
+    "id": "wave2",
+    "label": "v=fλ",
+    "prompt": "파동",
+    "tokens": [
+      "v",
+      "=",
+      "f",
+      "λ"
+    ],
+    "hint": "v=fλ"
+  },
+  {
+    "id": "energy-photon2",
+    "label": "E=hf",
+    "prompt": "광자",
+    "tokens": [
+      "E",
+      "=",
+      "h",
+      "f"
+    ],
+    "hint": "E=hf"
+  },
+  {
+    "id": "snell",
+    "label": "nsinθ",
+    "prompt": "굴절",
+    "tokens": [
+      "n",
+      "sin",
+      "θ"
+    ],
+    "hint": "n₁sinθ₁=n₂sinθ₂"
+  },
+  {
+    "id": "avg-accel",
+    "label": "(v−v₀)/t",
+    "prompt": "평균 가속도",
+    "tokens": [
+      "(",
+      "v",
+      "−",
+      "v₀",
+      ")",
+      "/t"
+    ],
+    "hint": "(v−v₀)/t"
+  },
+  {
+    "id": "deriv-csc2",
+    "label": "−cotx",
+    "prompt": "csc² 적분",
+    "tokens": [
+      "−",
+      "cot",
+      "x"
+    ],
+    "hint": "∫csc²=−cot"
+  },
+  {
+    "id": "deriv-sec-tan",
+    "label": "sectan",
+    "prompt": "sec의 도함수",
+    "tokens": [
+      "sec",
+      "tan"
+    ],
+    "hint": "(secx)′=secx tanx"
+  },
+  {
+    "id": "second-deriv2",
+    "label": "d²y/dx²",
+    "prompt": "d²y/dx²",
+    "tokens": [
+      "d²y",
+      "/",
+      "dx²"
+    ],
+    "hint": "두 번 미분"
+  },
+  {
+    "id": "normal-line",
+    "label": "−1/f′",
+    "prompt": "법선의 기울기",
+    "tokens": [
+      "−",
+      "1",
+      "/",
+      "f′"
+    ],
+    "hint": "접선 기울기의 음역수"
   }
 ]
