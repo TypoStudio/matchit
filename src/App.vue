@@ -1506,7 +1506,7 @@ onMounted(async () => {
               :disabled="isResolving"
               @pointerdown="onBlockPointerDown(index, $event)"
             >
-              <span class="block-label grid h-full place-items-center font-black" :style="{ '--len': block.token.length }">
+              <span class="block-label flex h-full w-full items-center justify-center font-black" :style="{ '--len': block.token.length }">
                 {{ block.token }}
               </span>
             </button>
@@ -1616,7 +1616,7 @@ onMounted(async () => {
             :class="`block-style-${blockStyle}`"
             :style="{ width: `${answerSlotSize}px`, height: `${wideBlocks ? Math.round(answerSlotSize / 1.5) : answerSlotSize}px`, backgroundColor: colorForToken(token), '--block-color': colorForToken(token) }"
           >
-            <span class="block-label grid h-full w-full place-items-center" :style="{ '--len': token.length }">{{ token }}</span>
+            <span class="block-label flex h-full w-full items-center justify-center" :style="{ '--len': token.length }">{{ token }}</span>
           </span>
         </div>
         <p class="mt-4 text-xs text-[var(--muted)]">탭하거나 5초 후 닫힘 · 길게 누르면 유지</p>
