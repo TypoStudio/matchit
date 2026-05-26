@@ -1399,13 +1399,9 @@ onMounted(async () => {
           </div>
 
           <div class="mb-3 rounded-md bg-[var(--panel-strong)] p-3">
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
-                <p class="mt-2 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
-                <p class="mt-2 text-xl font-black">{{ goalPrompt }}</p>
-              </div>
-              <div class="flex shrink-0 gap-2">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
+              <div class="flex flex-wrap gap-2">
                 <button
                   class="h-10 rounded-md border px-3 text-sm font-black"
                   :class="hintIndexes.length ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
@@ -1432,6 +1428,8 @@ onMounted(async () => {
                 </button>
               </div>
             </div>
+            <p class="mt-3 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
+            <p class="mt-1 text-xl font-black">{{ goalPrompt }}</p>
           </div>
 
           <div class="mb-3 flex flex-wrap items-center justify-between gap-3 lg:flex max-lg:hidden">
