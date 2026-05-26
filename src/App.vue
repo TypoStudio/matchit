@@ -1921,8 +1921,8 @@ onMounted(async () => {
                 <p class="mt-1 text-2xl font-black">{{ passes }}</p>
               </div>
             </div>
-            <!-- 우측: 레벨별 점수 / 푼 문제수 (학습 모드) -->
-            <div v-if="gameKind === 'lesson'" class="space-y-2">
+            <!-- 우측: 레벨별 점수 / 푼 문제수 (학습 모드). 5개 높이만 보이고 나머지는 스크롤 -->
+            <div v-if="gameKind === 'lesson'" class="space-y-2 max-h-[27rem] overflow-y-auto pr-1">
               <div
                 v-for="level in levels"
                 :key="level"
