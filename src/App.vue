@@ -87,6 +87,7 @@ const targetIndex = ref(0);
 const showHint = ref(false);
 const activeMobilePanel = ref<MobilePanel>('packs');
 const showExitConfirm = ref(false);
+const gameFullscreen = ref(false);
 
 const activePack = computed(() => packs.value.find((pack) => pack.id === selectedPackId.value));
 const target = computed(() => {
@@ -1375,7 +1376,7 @@ onMounted(async () => {
 
         <section
           class="relative rounded-lg border border-[var(--line)] bg-[var(--panel)] p-3 sm:p-4"
-          :class="activeMobilePanel === 'game' ? 'app-game-panel' : 'hidden lg:block'"
+          :class="[activeMobilePanel === 'game' ? 'app-game-panel' : 'hidden lg:block', gameFullscreen ? 'app-game-fullscreen' : '']"
         >
           <div class="mb-3 flex items-center justify-between lg:hidden">
             <h2 class="text-lg font-black">게임</h2>
@@ -1420,6 +1421,14 @@ onMounted(async () => {
                   @click="passCurrent"
                 >
                   패스 →
+                </button>
+                <button
+                  class="hidden h-10 items-center rounded-md border px-3 text-sm font-black lg:inline-flex"
+                  :class="gameFullscreen ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
+                  type="button"
+                  @click="gameFullscreen = !gameFullscreen"
+                >
+                  {{ gameFullscreen ? '✕ 해제' : '⛶ 전체화면' }}
                 </button>
               </div>
             </div>
