@@ -2,101 +2,101 @@
   {
     "id": "emphasis-the-very",
     "label": "the very + 명사",
-    "prompt": "바로 그",
+    "prompt": "바로 그 명사를 강조",
     "tokens": [
       "the",
       "very",
       "noun"
     ],
-    "hint": "명사 강조"
+    "hint": "the very + 명사로 '바로 그'를 강조 (the very man)"
   },
   {
     "id": "emphasis-at-all",
     "label": "at all",
-    "prompt": "전혀",
+    "prompt": "부정문 뒤 '전혀' 강조",
     "tokens": [
       "not",
       "at",
       "all"
     ],
-    "hint": "부정 강조"
+    "hint": "not ~ at all로 '전혀 ~아니다' 강한 부정 강조"
   },
   {
     "id": "emphasis-whatever",
     "label": "whatever (강조)",
-    "prompt": "전혀 ~없는",
+    "prompt": "no 명사 뒤 '전혀'",
     "tokens": [
       "noun",
       "whatever"
     ],
-    "hint": "부정 강조"
+    "hint": "no + 명사 + whatever로 '조금도 없는' 전면 부정 강조"
   },
   {
     "id": "double-comparative",
     "label": "이중 비교 강조",
-    "prompt": "far/even + 비교급",
+    "prompt": "비교급을 even/far로 강조",
     "tokens": [
       "even",
       "~er",
       "than"
     ],
-    "hint": "비교 강조"
+    "hint": "even/far/much + 비교급 + than으로 '훨씬 더' 강조 (even bigger)"
   },
   {
     "id": "latin-comparative",
     "label": "라틴 비교급",
-    "prompt": "superior to 등",
+    "prompt": "than 대신 to 쓰는 비교",
     "tokens": [
       "superior",
       "to"
     ],
-    "hint": "than 대신 to"
+    "hint": "superior/inferior/prior 등은 than 아닌 to를 씀 (superior to)"
   },
   {
     "id": "the-least",
     "label": "the least",
-    "prompt": "가장 덜 ~한",
+    "prompt": "가장 덜 ~한 (최하급)",
     "tokens": [
       "the",
       "least",
       "adjective"
     ],
-    "hint": "최하급"
+    "hint": "the least + 형용사로 '가장 덜 ~한' (the least likely)"
   },
   {
     "id": "no-comparative-than",
     "label": "no 비교급 than",
-    "prompt": "~보다 더 ~않은",
+    "prompt": "양자 모두 부정하는 비교",
     "tokens": [
       "no",
       "~er",
       "than"
     ],
-    "hint": "동등 부정"
+    "hint": "no + 비교급 + than으로 둘 다 부정 (no taller than = 똑같이 작다)"
   },
   {
     "id": "not-so-much-as",
     "label": "not so much A as B",
-    "prompt": "A라기보다 B",
+    "prompt": "A라기보다 오히려 B",
     "tokens": [
       "not",
       "so",
       "much",
       "as"
     ],
-    "hint": "비교 표현"
+    "hint": "not so much A as B로 'A보다는 B' (not so much luck as effort)"
   },
   {
     "id": "would-sooner",
     "label": "would sooner",
-    "prompt": "차라리 ~하겠다",
+    "prompt": "차라리 ~하는 게 낫다",
     "tokens": [
       "would",
       "sooner",
       "V",
       "than"
     ],
-    "hint": "선호"
+    "hint": "would sooner V than으로 '~보다 차라리 ~하겠다' 선호 표현"
   },
   {
     "id": "may-well",
@@ -107,19 +107,19 @@
       "well",
       "V"
     ],
-    "hint": "강한 추측"
+    "hint": "may well + 동사원형으로 '~하는 것도 당연/충분히 ~할 만하다'"
   },
   {
     "id": "may-as-well",
     "label": "may as well",
-    "prompt": "~하는 편이 낫다",
+    "prompt": "~하는 편이 낫겠다",
     "tokens": [
       "may",
       "as",
       "well",
       "V"
     ],
-    "hint": "권유"
+    "hint": "may as well + 동사원형으로 '(달리 할 것 없으니) ~하는 게 낫다'"
   },
   {
     "id": "cannot-but",
@@ -130,7 +130,7 @@
       "but",
       "V"
     ],
-    "hint": "이중부정"
+    "hint": "cannot but + 동사원형으로 '~할 수밖에 없다' 이중부정 (cannot but laugh)"
   },
   {
     "id": "cannot-help-ing",
@@ -141,7 +141,7 @@
       "help",
       "~ing"
     ],
-    "hint": "불가피"
+    "hint": "cannot help + ~ing로 '~을 어쩔 수 없다' (cannot help crying)"
   },
   {
     "id": "no-choice-but",
@@ -155,12 +155,12 @@
       "to",
       "V"
     ],
-    "hint": "불가피"
+    "hint": "have no choice but to V로 '~외에 선택이 없다' (no choice but to go)"
   },
   {
     "id": "on-the-point-of",
     "label": "on the point of",
-    "prompt": "막 ~하려는",
+    "prompt": "막 ~하려는 순간",
     "tokens": [
       "on",
       "the",
@@ -168,7 +168,7 @@
       "of",
       "~ing"
     ],
-    "hint": "임박"
+    "hint": "be on the point of + ~ing로 '막 ~하려던 참' 임박 (on the point of leaving)"
   },
   {
     "id": "be-about-to",
@@ -180,18 +180,18 @@
       "to",
       "V"
     ],
-    "hint": "임박한 미래"
+    "hint": "be about to + 동사원형으로 '곧 ~하려 하다' 임박한 미래"
   },
   {
     "id": "be-to-infinitive",
     "label": "be + to부정사",
-    "prompt": "예정/의무/운명",
+    "prompt": "예정·의무·운명 등 표현",
     "tokens": [
       "be",
       "to",
       "V"
     ],
-    "hint": "여러 의미"
+    "hint": "be + to부정사는 예정·의무·가능·운명·의도 등 여러 뜻 (are to meet)"
   },
   {
     "id": "had-only-to",
@@ -203,7 +203,7 @@
       "to",
       "V"
     ],
-    "hint": "간단함"
+    "hint": "had only to V로 '~하기만 하면 됐다' 간단함 강조 (had only to ask)"
   },
   {
     "id": "not-to-mention",
@@ -215,7 +215,7 @@
       "mention",
       "noun"
     ],
-    "hint": "추가"
+    "hint": "not to mention + 명사로 '~은 물론이고' 추가 (not to mention cost)"
   },
   {
     "id": "have-yet-to",
@@ -227,70 +227,70 @@
       "to",
       "V"
     ],
-    "hint": "미완료"
+    "hint": "have yet to V로 '아직 ~하지 않았다' 미완료 (have yet to decide)"
   },
   {
     "id": "cleft-all-that",
     "label": "all ~ that 분열문",
-    "prompt": "All ~ is 강조",
+    "prompt": "오직 ~뿐임을 강조",
     "tokens": [
       "All",
       "S",
       "V",
       "is"
     ],
-    "hint": "오직 ~뿐"
+    "hint": "All + 주어 + 동사 + is로 '~한 것은 ~뿐' (All I want is rest)"
   },
   {
     "id": "cleft-the-reason",
     "label": "the reason 분열문",
-    "prompt": "The reason ~ is that",
+    "prompt": "이유를 따로 강조",
     "tokens": [
       "The",
       "reason",
       "is",
       "that"
     ],
-    "hint": "이유 강조"
+    "hint": "The reason ~ is that 절로 이유 강조 (The reason is that ...)"
   },
   {
     "id": "cleft-the-place",
     "label": "the place 분열문",
-    "prompt": "The place where ~ is",
+    "prompt": "장소를 따로 강조",
     "tokens": [
       "The",
       "place",
       "where",
       "is"
     ],
-    "hint": "장소 강조"
+    "hint": "The place where ~ is로 장소 강조 (The place where we met is ...)"
   },
   {
     "id": "fronting",
     "label": "전치 강조",
-    "prompt": "목적어/보어 문두 이동",
+    "prompt": "목적어·보어를 문두로",
     "tokens": [
       "Object",
       "S",
       "V"
     ],
-    "hint": "강조를 위한 어순"
+    "hint": "목적어·보어를 문두에 두어 강조 (That book I love)"
   },
   {
     "id": "object-fronting-inversion",
     "label": "목적어 도치",
-    "prompt": "목적어 문두 + 도치",
+    "prompt": "문두 어구 뒤 주어·동사 도치",
     "tokens": [
       "Such",
       "be",
       "S"
     ],
-    "hint": "강조 도치"
+    "hint": "강조어구가 문두로 가면 동사·주어 도치 (Such was his fate)"
   },
   {
     "id": "so-adjective-inversion",
     "label": "so + 형용사 도치",
-    "prompt": "So ~ that 도치",
+    "prompt": "So 형용사가 문두로 도치",
     "tokens": [
       "So",
       "adjective",
@@ -298,18 +298,18 @@
       "S",
       "that"
     ],
-    "hint": "강조 도치"
+    "hint": "So + 형용사 + be + 주어 + that 도치 (So great was the noise that ...)"
   },
   {
     "id": "such-inversion",
     "label": "such 도치",
-    "prompt": "Such be 도치",
+    "prompt": "Such가 문두로 도치",
     "tokens": [
       "Such",
       "be",
       "S"
     ],
-    "hint": "강조 도치"
+    "hint": "Such + be + 주어로 도치 강조 (Such is life)"
   },
   {
     "id": "many-a-inversion",
@@ -321,7 +321,7 @@
       "noun",
       "V"
     ],
-    "hint": "문어체"
+    "hint": "Many a + 단수명사 + 단수동사로 '수많은' 문어체 (Many a man has tried)"
   },
   {
     "id": "there-existential-inversion",
@@ -332,35 +332,35 @@
       "V",
       "S"
     ],
-    "hint": "존재 도치"
+    "hint": "There + 동사 + 주어로 존재 표현 (There stood a tower)"
   },
   {
     "id": "locative-inversion",
     "label": "장소 부사구 도치",
-    "prompt": "Here/장소 + 동사 + 주어",
+    "prompt": "장소 부사 뒤 동사·주어 도치",
     "tokens": [
       "Here",
       "comes",
       "S"
     ],
-    "hint": "장소 도치"
+    "hint": "장소부사가 문두로 가면 동사+주어 도치 (Here comes the bus)"
   },
   {
     "id": "exclamatory-how",
     "label": "감탄문 How",
-    "prompt": "How + 형용사 + 주어 + 동사",
+    "prompt": "How + 형용사로 감탄",
     "tokens": [
       "How",
       "adjective",
       "S",
       "V"
     ],
-    "hint": "감탄"
+    "hint": "How + 형용사/부사 + 주어 + 동사 감탄문 (How beautiful it is!)"
   },
   {
     "id": "exclamatory-what",
     "label": "감탄문 What",
-    "prompt": "What + (a) + 명사",
+    "prompt": "What + 명사로 감탄",
     "tokens": [
       "What",
       "a",
@@ -368,24 +368,24 @@
       "S",
       "V"
     ],
-    "hint": "감탄"
+    "hint": "What + (a) + 명사 + 주어 + 동사 감탄문 (What a day it was!)"
   },
   {
     "id": "subjunctive-lest",
     "label": "lest 가정법",
-    "prompt": "~하지 않도록",
+    "prompt": "~하지 않도록 (목적)",
     "tokens": [
       "lest",
       "S",
       "(should)",
       "V"
     ],
-    "hint": "동사원형"
+    "hint": "lest + 주어 + (should) 동사원형으로 '~하지 않도록' (lest he fail)"
   },
   {
     "id": "subjunctive-for-fear",
     "label": "for fear that",
-    "prompt": "~할까 봐",
+    "prompt": "~할까 봐 (걱정)",
     "tokens": [
       "for",
       "fear",
@@ -393,12 +393,12 @@
       "S",
       "should"
     ],
-    "hint": "걱정"
+    "hint": "for fear that + 주어 + should V로 '~할까 봐' 우려 (for fear that he should fall)"
   },
   {
     "id": "subjunctive-be-it",
     "label": "be it 양보",
-    "prompt": "Be it ~ or",
+    "prompt": "~이든 ~이든 (양보)",
     "tokens": [
       "Be",
       "it",
@@ -406,7 +406,7 @@
       "or",
       "Y"
     ],
-    "hint": "~이든 아니든"
+    "hint": "Be it X or Y로 '~이든 ~이든' 양보 가정법 (Be it rich or poor)"
   },
   {
     "id": "subjunctive-come-what-may",
@@ -417,24 +417,24 @@
       "what",
       "may"
     ],
-    "hint": "관용 가정법"
+    "hint": "Come what may로 '무슨 일이 있어도' 관용 가정법"
   },
   {
     "id": "subjunctive-god-save",
     "label": "God save",
-    "prompt": "기원의 가정법",
+    "prompt": "동사원형으로 기원 표현",
     "tokens": [
       "God",
       "save",
       "the",
       "queen"
     ],
-    "hint": "동사원형 기원"
+    "hint": "주어 + 동사원형으로 기원·소망 (God save the Queen)"
   },
   {
     "id": "inverted-conditional-omission",
     "label": "if 생략 도치 종합",
-    "prompt": "Had/Were/Should 도치",
+    "prompt": "if 생략 후 조동사 도치",
     "tokens": [
       "Had",
       "S",
@@ -444,7 +444,7 @@
       "have",
       "p.p."
     ],
-    "hint": "조건절 도치"
+    "hint": "if 생략 시 Had/Were/Should가 문두로 도치 (Had I known, ...)"
   },
   {
     "id": "mixed-conditional-reverse",
@@ -459,19 +459,19 @@
       "have",
       "p.p."
     ],
-    "hint": "현재가 과거에 영향"
+    "hint": "If 과거형 가정 + would have p.p. 결과로 현재가 과거에 영향"
   },
   {
     "id": "implied-conditional",
     "label": "함축 조건",
-    "prompt": "otherwise 등 함축",
+    "prompt": "otherwise 등에 조건 함축",
     "tokens": [
       "otherwise",
       "S",
       "would",
       "V"
     ],
-    "hint": "조건 함축"
+    "hint": "otherwise/but for 등에 if절 뜻이 함축 (otherwise I would fail)"
   },
   {
     "id": "conditional-but-that",
@@ -483,80 +483,80 @@
       "S",
       "V"
     ],
-    "hint": "조건 부정"
+    "hint": "but that + 주어 + 동사로 '~이 아니었다면' 조건 부정 (but that he came)"
   },
   {
     "id": "past-future-perfect",
     "label": "과거에서 본 미래완료",
-    "prompt": "would have p.p.",
+    "prompt": "과거 시점의 미래완료",
     "tokens": [
       "would",
       "have",
       "p.p."
     ],
-    "hint": "시제 일치"
+    "hint": "would have p.p.로 과거에서 본 미래완료 시제 일치 (would have finished)"
   },
   {
     "id": "past-future",
     "label": "과거에서 본 미래",
-    "prompt": "would V",
+    "prompt": "과거 시점에서 본 미래",
     "tokens": [
       "would",
       "V"
     ],
-    "hint": "시제 일치"
+    "hint": "would + 동사원형으로 과거 시점에서 본 미래 시제 일치 (said he would come)"
   },
   {
     "id": "double-passive",
     "label": "이중 수동태",
-    "prompt": "5형식 수동태",
+    "prompt": "5형식의 수동 전환",
     "tokens": [
       "be",
       "p.p.",
       "to",
       "V"
     ],
-    "hint": "목적격보어 수동"
+    "hint": "5형식 목적격보어가 to부정사로 남는 수동 (is said to be ...)"
   },
   {
     "id": "passive-of-perception",
     "label": "지각동사 수동 종합",
-    "prompt": "be heard to V",
+    "prompt": "지각동사 수동 시 to V",
     "tokens": [
       "be",
       "heard",
       "to",
       "V"
     ],
-    "hint": "to부정사 전환"
+    "hint": "지각동사 수동태는 원형이 to부정사로 (was heard to sing)"
   },
   {
     "id": "passive-with-prepositions",
     "label": "구동사 수동태",
-    "prompt": "be looked after 등",
+    "prompt": "구동사를 수동태로",
     "tokens": [
       "be",
       "p.p.",
       "preposition"
     ],
-    "hint": "전치사 유지"
+    "hint": "구동사 수동 시 전치사를 그대로 유지 (was looked after)"
   },
   {
     "id": "passive-reporting-it",
     "label": "보고 수동 (It)",
-    "prompt": "It is said that",
+    "prompt": "It + be p.p. + that절",
     "tokens": [
       "It",
       "is",
       "said",
       "that"
     ],
-    "hint": "전언 수동"
+    "hint": "It is said/believed that 절로 전언을 수동 (It is said that ...)"
   },
   {
     "id": "passive-reporting-subject",
     "label": "보고 수동 (주어)",
-    "prompt": "S is said to V",
+    "prompt": "주어 + be p.p. + to V",
     "tokens": [
       "S",
       "is",
@@ -564,82 +564,82 @@
       "to",
       "V"
     ],
-    "hint": "전언 수동"
+    "hint": "주어 + is said to V로 전언 수동 (He is said to be rich)"
   },
   {
     "id": "gerund-after-preposition",
     "label": "전치사 + 동명사",
-    "prompt": "전치사 뒤 동명사",
+    "prompt": "전치사 뒤엔 동명사",
     "tokens": [
       "preposition",
       "~ing"
     ],
-    "hint": "동명사 필수"
+    "hint": "전치사 뒤 동사는 반드시 동명사 (good at swimming)"
   },
   {
     "id": "gerund-possessive-subject",
     "label": "동명사 소유격 주어",
-    "prompt": "소유격 + 동명사",
+    "prompt": "소유격으로 의미상 주어",
     "tokens": [
       "'s",
       "~ing"
     ],
-    "hint": "의미상 주어"
+    "hint": "소유격 + 동명사로 동명사의 의미상 주어 표시 (his coming late)"
   },
   {
     "id": "regret-to-vs-ing",
     "label": "regret to/~ing",
-    "prompt": "의미 차이",
+    "prompt": "to·~ing 뜻 차이",
     "tokens": [
       "regret",
       "to",
       "V"
     ],
-    "hint": "to=알림, ~ing=후회"
+    "hint": "regret to V=유감스럽게 알리다, regret ~ing=후회하다"
   },
   {
     "id": "remember-to-vs-ing",
     "label": "remember to/~ing",
-    "prompt": "의미 차이",
+    "prompt": "to·~ing 뜻 차이",
     "tokens": [
       "remember",
       "to",
       "V"
     ],
-    "hint": "to=미래, ~ing=과거"
+    "hint": "remember to V=할 일 기억(미래), remember ~ing=한 일 기억(과거)"
   },
   {
     "id": "forget-to-vs-ing",
     "label": "forget to/~ing",
-    "prompt": "의미 차이",
+    "prompt": "to·~ing 뜻 차이",
     "tokens": [
       "forget",
       "to",
       "V"
     ],
-    "hint": "to=미래, ~ing=과거"
+    "hint": "forget to V=할 일을 잊다(미래), forget ~ing=한 일을 잊다(과거)"
   },
   {
     "id": "stop-to-vs-ing",
     "label": "stop to/~ing",
-    "prompt": "의미 차이",
+    "prompt": "to·~ing 뜻 차이",
     "tokens": [
       "stop",
       "to",
       "V"
     ],
-    "hint": "to=목적, ~ing=중단"
+    "hint": "stop to V=~하려고 멈추다(목적), stop ~ing=~을 그만두다"
   },
   {
     "id": "try-to-vs-ing",
     "label": "try to/~ing",
-    "prompt": "의미 차이",
+    "prompt": "to·~ing 뜻 차이",
     "tokens": [
       "try",
       "to",
       "V"
     ],
-    "hint": "to=노력, ~ing=시도"
+    "hint": "try to V=~하려 애쓰다(노력), try ~ing=시험 삼아 해보다"
   },
   {
     "id": "need-ing-passive",
@@ -649,17 +649,17 @@
       "need",
       "~ing"
     ],
-    "hint": "수동 의미 동명사"
+    "hint": "need + ~ing는 수동 의미 '~될 필요가 있다' (needs fixing = 고쳐야 한다)"
   },
   {
     "id": "want-ing-passive",
     "label": "want ~ing (수동)",
-    "prompt": "~할 필요가 있다",
+    "prompt": "~될 필요가 있다",
     "tokens": [
       "want",
       "~ing"
     ],
-    "hint": "수동 의미 동명사"
+    "hint": "want + ~ing는 수동 의미 '~될 필요가 있다' (wants cleaning)"
   },
   {
     "id": "worth-ing",
@@ -669,7 +669,7 @@
       "worth",
       "~ing"
     ],
-    "hint": "능동형 수동의미"
+    "hint": "worth + ~ing는 능동형이나 수동 의미 (worth reading = 읽을 가치)"
   },
   {
     "id": "busy-ing",
@@ -679,29 +679,29 @@
       "busy",
       "~ing"
     ],
-    "hint": "관용"
+    "hint": "be busy + ~ing로 '~하느라 바쁘다' 관용 (busy working)"
   },
   {
     "id": "have-difficulty-ing",
     "label": "have difficulty ~ing",
-    "prompt": "~하는 데 어려움",
+    "prompt": "~하는 데 어려움을 겪다",
     "tokens": [
       "have",
       "difficulty",
       "~ing"
     ],
-    "hint": "관용"
+    "hint": "have difficulty (in) ~ing로 '~에 어려움' 관용 (difficulty sleeping)"
   },
   {
     "id": "spend-time-ing",
     "label": "spend time ~ing",
-    "prompt": "~하는 데 시간 쓰다",
+    "prompt": "~하는 데 시간을 쓰다",
     "tokens": [
       "spend",
       "time",
       "~ing"
     ],
-    "hint": "관용"
+    "hint": "spend + 시간/돈 + ~ing로 '~하는 데 쓰다' (spend time reading)"
   },
   {
     "id": "feel-like-ing",
@@ -712,7 +712,7 @@
       "like",
       "~ing"
     ],
-    "hint": "관용"
+    "hint": "feel like + ~ing로 '~하고 싶은 기분이다' 관용 (feel like crying)"
   },
   {
     "id": "it-no-use-ing",
@@ -725,7 +725,7 @@
       "use",
       "~ing"
     ],
-    "hint": "관용"
+    "hint": "It is no use + ~ing로 '~해도 소용없다' 관용 (no use crying)"
   },
   {
     "id": "on-ing",
@@ -735,7 +735,7 @@
       "on",
       "~ing"
     ],
-    "hint": "관용"
+    "hint": "on + ~ing로 '~하자마자' (on arriving = 도착하자마자)"
   },
   {
     "id": "in-ing",
@@ -745,18 +745,18 @@
       "in",
       "~ing"
     ],
-    "hint": "관용"
+    "hint": "in + ~ing로 '~하는 데/~할 때' (in solving = 푸는 데 있어)"
   },
   {
     "id": "far-from-ing",
     "label": "far from ~ing",
-    "prompt": "결코 ~아닌",
+    "prompt": "결코 ~이 아닌",
     "tokens": [
       "far",
       "from",
       "~ing"
     ],
-    "hint": "강한 부정"
+    "hint": "far from + ~ing로 '결코 ~아닌' 강한 부정 (far from being easy)"
   },
   {
     "id": "correlative-comparative",
@@ -767,66 +767,66 @@
       "as",
       "as"
     ],
-    "hint": "~의 두 배"
+    "hint": "배수사 + as 원급 as로 '~배' (twice as large as = 두 배 크기)"
   },
   {
     "id": "multiple-times-than",
     "label": "배수 + 비교급",
-    "prompt": "배수 + 비교급 than",
+    "prompt": "배수 + 비교급 + than",
     "tokens": [
       "three",
       "times",
       "~er",
       "than"
     ],
-    "hint": "~배 더"
+    "hint": "배수 + 비교급 + than으로 '~배 더' (three times bigger than)"
   },
   {
     "id": "the-same-as",
     "label": "the same as",
-    "prompt": "~와 같은",
+    "prompt": "~와 똑같은",
     "tokens": [
       "the",
       "same",
       "as"
     ],
-    "hint": "동일"
+    "hint": "the same + (명사) + as로 '~와 같은' (the same as before)"
   },
   {
     "id": "superlative-comparative",
     "label": "비교급 최상급 표현",
-    "prompt": "as ~ as any",
+    "prompt": "원급으로 최상급 의미",
     "tokens": [
       "as",
       "adjective",
       "as",
       "any"
     ],
-    "hint": "최상급 의미"
+    "hint": "as 형용사 as any로 '어느 것 못지않게' 최상급 의미 (as good as any)"
   },
   {
     "id": "negative-superlative",
     "label": "부정 + 비교급 최상급",
-    "prompt": "no ~ er than",
+    "prompt": "부정 비교로 최상급 의미",
     "tokens": [
       "no",
       "other",
       "~er",
       "than"
     ],
-    "hint": "최상급 의미"
+    "hint": "no other + 비교급 + than으로 최상급 의미 (no other taller than him)"
   },
   {
     "id": "nothing-comparative",
     "label": "nothing + 비교급",
-    "prompt": "nothing is more",
+    "prompt": "부정주어 비교로 최상급",
     "tokens": [
       "nothing",
       "is",
       "more",
       "than"
     ],
-    "hint": "최상급 의미"
+    "hint": "Nothing is more ~ than으로 '~보다 더한 건 없다' 최상급 의미"
   },
   {
     "id": "would-that",
@@ -838,19 +838,19 @@
       "S",
       "past"
     ],
-    "hint": "문어체 소망"
+    "hint": "Would that + 주어 + 과거형으로 '~라면 좋을 텐데' 문어체 소망"
   },
   {
     "id": "oh-that",
     "label": "oh that",
-    "prompt": "~라면",
+    "prompt": "~라면 (간절한 소망)",
     "tokens": [
       "Oh",
       "that",
       "S",
       "would"
     ],
-    "hint": "문어체 소망"
+    "hint": "Oh that + 주어 + would로 '~라면' 간절한 소망 문어체"
   },
   {
     "id": "subjunctive-it-time-high",
@@ -864,18 +864,18 @@
       "S",
       "past"
     ],
-    "hint": "가정법 과거"
+    "hint": "It is high time + 주어 + 과거형은 가정법 과거 (high time you left)"
   },
   {
     "id": "whether-or-not",
     "label": "whether ~ or not",
-    "prompt": "~이든 아니든",
+    "prompt": "~이든 아니든 (양보)",
     "tokens": [
       "whether",
       "or",
       "not"
     ],
-    "hint": "양보"
+    "hint": "whether ~ or not으로 '~이든 아니든' 양보 (whether you like it or not)"
   },
   {
     "id": "no-matter-how",
@@ -887,12 +887,12 @@
       "how",
       "adjective"
     ],
-    "hint": "양보"
+    "hint": "no matter how + 형용사로 '아무리 ~해도' 양보 (no matter how hard)"
   },
   {
     "id": "no-matter-what",
     "label": "no matter what",
-    "prompt": "무엇을 ~해도",
+    "prompt": "무엇을 ~하더라도",
     "tokens": [
       "no",
       "matter",
@@ -900,19 +900,19 @@
       "S",
       "V"
     ],
-    "hint": "양보"
+    "hint": "no matter what + 주어 + 동사로 '무엇을 ~해도' 양보"
   },
   {
     "id": "as-concessive",
     "label": "as 양보",
-    "prompt": "형용사 + as + 주어 + 동사",
+    "prompt": "형용사 문두 양보 도치",
     "tokens": [
       "adjective",
       "as",
       "S",
       "V"
     ],
-    "hint": "~이지만 (도치)"
+    "hint": "형용사 + as + 주어 + 동사로 '~이지만' 양보 도치 (Young as he is)"
   },
   {
     "id": "granting-that",
@@ -924,6 +924,6 @@
       "S",
       "V"
     ],
-    "hint": "양보"
+    "hint": "granting that + 절로 '~을 인정하더라도' 양보 (Granting that it's true)"
   }
 ]

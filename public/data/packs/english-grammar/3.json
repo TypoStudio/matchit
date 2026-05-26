@@ -2,322 +2,322 @@
   {
     "id": "lets",
     "label": "let's",
-    "prompt": "제안 표현",
+    "prompt": "함께 하자는 제안",
     "tokens": [
       "let's",
       "V"
     ],
-    "hint": "~하자"
+    "hint": "Let's + 동사원형. ~하자며 함께 할 것을 제안"
   },
   {
     "id": "plural-noun",
     "label": "복수 명사",
-    "prompt": "복수 명사 형태",
+    "prompt": "둘 이상의 명사 표현",
     "tokens": [
       "noun",
       "~s/es"
     ],
-    "hint": "둘 이상"
+    "hint": "명사 + s/es. 둘 이상의 복수를 나타내는 형태"
   },
   {
     "id": "possessive-s",
     "label": "소유격",
-    "prompt": "소유격 표현",
+    "prompt": "누구의 것인지 표현",
     "tokens": [
       "noun",
       "'s"
     ],
-    "hint": "~의"
+    "hint": "명사 + 's. ~의 라는 소유 관계를 나타냄"
   },
   {
     "id": "a-an-article",
     "label": "부정관사",
-    "prompt": "부정관사 a/an",
+    "prompt": "정해지지 않은 하나",
     "tokens": [
       "a",
       "an"
     ],
-    "hint": "하나의"
+    "hint": "a/an + 명사. 불특정한 하나를 가리키는 부정관사"
   },
   {
     "id": "the-article",
     "label": "정관사",
-    "prompt": "정관사 the",
+    "prompt": "특정한 그것을 표현",
     "tokens": [
       "the",
       "noun"
     ],
-    "hint": "특정한 것"
+    "hint": "the + 명사. 이미 정해진 특정 대상을 가리킴"
   },
   {
     "id": "demonstrative",
     "label": "지시대명사",
-    "prompt": "지시대명사",
+    "prompt": "이것 저것을 가리킴",
     "tokens": [
       "this",
       "that",
       "these"
     ],
-    "hint": "이것, 저것"
+    "hint": "this/that/these/those. 거리·수에 따라 대상을 지시"
   },
   {
     "id": "subject-pronoun",
     "label": "주격 인칭대명사",
-    "prompt": "주격 대명사",
+    "prompt": "문장의 주어 대명사",
     "tokens": [
       "I",
       "you",
       "he"
     ],
-    "hint": "문장의 주어"
+    "hint": "I/you/he 등. 동작의 주체인 주어 자리에 쓰임"
   },
   {
     "id": "object-pronoun",
     "label": "목적격 인칭대명사",
-    "prompt": "목적격 대명사",
+    "prompt": "동사의 목적어 대명사",
     "tokens": [
       "me",
       "you",
       "him"
     ],
-    "hint": "동사의 목적어"
+    "hint": "me/you/him 등. 동작을 받는 목적어 자리에 쓰임"
   },
   {
     "id": "possessive-pronoun",
     "label": "소유대명사",
-    "prompt": "소유대명사",
+    "prompt": "~의 것을 나타냄",
     "tokens": [
       "mine",
       "yours",
       "his"
     ],
-    "hint": "~의 것"
+    "hint": "mine/yours/his 등. 소유격+명사를 대신하는 ~의 것"
   },
   {
     "id": "how-many",
     "label": "how many",
-    "prompt": "셀 수 있는 수량 질문",
+    "prompt": "셀 수 있는 수를 질문",
     "tokens": [
       "How",
       "many",
       "noun"
     ],
-    "hint": "몇 개?"
+    "hint": "How many + 복수명사? 개수를 묻는 의문문"
   },
   {
     "id": "how-much",
     "label": "how much",
-    "prompt": "셀 수 없는 양 질문",
+    "prompt": "셀 수 없는 양을 질문",
     "tokens": [
       "How",
       "much",
       "noun"
     ],
-    "hint": "얼마?"
+    "hint": "How much + 명사? 양이나 가격을 묻는 의문문"
   },
   {
     "id": "preposition-place",
     "label": "장소 전치사",
-    "prompt": "장소 전치사",
+    "prompt": "장소나 위치를 표현",
     "tokens": [
       "in",
       "on",
       "at"
     ],
-    "hint": "~안에, 위에"
+    "hint": "in/on/at + 장소. 공간 범위에 따라 위치를 나타냄"
   },
   {
     "id": "preposition-time",
     "label": "시간 전치사",
-    "prompt": "시간 전치사",
+    "prompt": "시간이나 때를 표현",
     "tokens": [
       "in",
       "on",
       "at"
     ],
-    "hint": "~에 (시간)"
+    "hint": "in/on/at + 시간. 기간·날짜·시각을 나타냄"
   },
   {
     "id": "and-conjunction",
     "label": "등위접속사 and",
-    "prompt": "연결 접속사",
+    "prompt": "대등하게 이어주기",
     "tokens": [
       "A",
       "and",
       "B"
     ],
-    "hint": "그리고"
+    "hint": "A and B. 단어·구·절을 대등하게 연결 (그리고)"
   },
   {
     "id": "but-conjunction",
     "label": "등위접속사 but",
-    "prompt": "대조 접속사",
+    "prompt": "반대 내용을 이어주기",
     "tokens": [
       "A",
       "but",
       "B"
     ],
-    "hint": "그러나"
+    "hint": "A but B. 앞뒤가 대조되는 내용을 연결 (그러나)"
   },
   {
     "id": "or-conjunction",
     "label": "등위접속사 or",
-    "prompt": "선택 접속사",
+    "prompt": "선택지를 이어주기",
     "tokens": [
       "A",
       "or",
       "B"
     ],
-    "hint": "또는"
+    "hint": "A or B. 둘 중 하나를 고르는 선택을 연결 (또는)"
   },
   {
     "id": "because-clause",
     "label": "because 절",
-    "prompt": "이유 표현",
+    "prompt": "이유나 원인을 표현",
     "tokens": [
       "because",
       "S",
       "V"
     ],
-    "hint": "~때문에"
+    "hint": "because + 주어 + 동사. ~때문에라는 이유를 나타냄"
   },
   {
     "id": "when-clause",
     "label": "when 절",
-    "prompt": "시간 표현",
+    "prompt": "~할 때를 표현",
     "tokens": [
       "when",
       "S",
       "V"
     ],
-    "hint": "~할 때"
+    "hint": "when + 주어 + 동사. ~할 때라는 시간을 나타냄"
   },
   {
     "id": "if-clause-basic",
     "label": "if 절 기초",
-    "prompt": "조건 표현",
+    "prompt": "만약의 조건을 표현",
     "tokens": [
       "if",
       "S",
       "V"
     ],
-    "hint": "만약 ~라면"
+    "hint": "if + 주어 + 동사. 만약 ~라면이라는 조건을 나타냄"
   },
   {
     "id": "frequency-adverb",
     "label": "빈도부사",
-    "prompt": "빈도부사 위치",
+    "prompt": "얼마나 자주 하는지",
     "tokens": [
       "always",
       "usually",
       "often"
     ],
-    "hint": "얼마나 자주"
+    "hint": "always/usually/often 등. 보통 일반동사 앞에 위치"
   },
   {
     "id": "adjective-order",
     "label": "형용사",
-    "prompt": "형용사 + 명사",
+    "prompt": "명사를 꾸미는 말",
     "tokens": [
       "adjective",
       "noun"
     ],
-    "hint": "명사를 수식"
+    "hint": "형용사 + 명사. 명사의 성질·상태를 앞에서 수식"
   },
   {
     "id": "adverb-ly",
     "label": "부사",
-    "prompt": "부사 형태",
+    "prompt": "동사를 꾸미는 말",
     "tokens": [
       "adjective",
       "~ly"
     ],
-    "hint": "동사를 수식"
+    "hint": "형용사 + ly. 동사·형용사를 수식하는 부사 형태"
   },
   {
     "id": "how-question",
     "label": "how 의문문",
-    "prompt": "방법/상태 질문",
+    "prompt": "방법이나 상태를 질문",
     "tokens": [
       "How",
       "be",
       "S"
     ],
-    "hint": "어떻게"
+    "hint": "How + be동사 + 주어? 방법·상태를 묻는 의문문"
   },
   {
     "id": "what-question",
     "label": "what 의문문",
-    "prompt": "무엇 질문",
+    "prompt": "무엇인지 질문",
     "tokens": [
       "What",
       "be",
       "S"
     ],
-    "hint": "무엇"
+    "hint": "What + be동사 + 주어? 무엇인지를 묻는 의문문"
   },
   {
     "id": "where-question",
     "label": "where 의문문",
-    "prompt": "장소 질문",
+    "prompt": "장소를 질문",
     "tokens": [
       "Where",
       "be",
       "S"
     ],
-    "hint": "어디"
+    "hint": "Where + be동사 + 주어? 어디인지를 묻는 의문문"
   },
   {
     "id": "who-question",
     "label": "who 의문문",
-    "prompt": "사람 질문",
+    "prompt": "사람을 질문",
     "tokens": [
       "Who",
       "be",
       "S"
     ],
-    "hint": "누구"
+    "hint": "Who + be동사 + 주어? 누구인지를 묻는 의문문"
   },
   {
     "id": "when-question",
     "label": "when 의문문",
-    "prompt": "시간 질문",
+    "prompt": "때를 질문",
     "tokens": [
       "When",
       "be",
       "S"
     ],
-    "hint": "언제"
+    "hint": "When + be동사 + 주어? 언제인지를 묻는 의문문"
   },
   {
     "id": "why-question",
     "label": "why 의문문",
-    "prompt": "이유 질문",
+    "prompt": "이유를 질문",
     "tokens": [
       "Why",
       "be",
       "S"
     ],
-    "hint": "왜"
+    "hint": "Why + be동사 + 주어? 왜인지 이유를 묻는 의문문"
   },
   {
     "id": "which-question",
     "label": "which 의문문",
-    "prompt": "선택 질문",
+    "prompt": "어느 것인지 질문",
     "tokens": [
       "Which",
       "noun"
     ],
-    "hint": "어느 것"
+    "hint": "Which + 명사? 정해진 범위에서 어느 것인지 물음"
   },
   {
     "id": "whose-question",
     "label": "whose 의문문",
-    "prompt": "소유 질문",
+    "prompt": "누구의 것인지 질문",
     "tokens": [
       "Whose",
       "noun"
     ],
-    "hint": "누구의"
+    "hint": "Whose + 명사? 누구의 것인지 소유를 묻는 의문문"
   }
 ]

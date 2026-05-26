@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { Block, BlockStyleName, GameKind, GameMode, LessonItem, LessonPack, SolveMode, ThemeName } from './types';
 
 const cols = ref(Number(localStorage.getItem('matchit-cols')) || 7);
 const rows = ref(Number(localStorage.getItem('matchit-rows')) || 7);
-const boardSizes = [3, 4, 5, 6, 7, 8, 9];
 const packBoardSizes: Record<string, { cols: number; rows: number }> = {
   'english-grammar': { cols: 5, rows: 7 },
   'math-formula': { cols: 5, rows: 7 },
@@ -33,6 +32,15 @@ const blockStyles: Array<{ id: BlockStyleName; label: string }> = [
   { id: 'card', label: 'Card' },
   { id: 'tile', label: 'Tile' },
   { id: 'neon', label: 'Neon' },
+];
+const blockPreviewColors = ['#f97316', '#3b82f6'];
+const boardPresets: Array<{ cols: number; rows: number; wide?: boolean }> = [
+  { cols: 3, rows: 3 },
+  { cols: 5, rows: 5 },
+  { cols: 7, rows: 7 },
+  { cols: 5, rows: 7 },
+  { cols: 9, rows: 9, wide: true },
+  { cols: 7, rows: 9, wide: true },
 ];
 
 const solveModes: Array<{ id: SolveMode; label: string }> = [
@@ -77,6 +85,19 @@ const answerSlotSize = ref(48);
 const answerSlotColors = ref<string[]>([]); // 각 정답 슬롯 색(날아온 보드 블럭과 동일)
 const boardEl = ref<HTMLElement | null>(null);
 const answerEl = ref<HTMLElement | null>(null);
+// 셀 실제 픽셀 크기(글자 크기 계산용). Safari의 container-type:size + aspect-ratio 버그를 피해 JS로 측정.
+const cellW = ref(0);
+const cellH = ref(0);
+let boardResizeObserver: ResizeObserver | null = null;
+function measureCell() {
+  const el = boardEl.value?.querySelector('.block-label') as HTMLElement | null;
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  if (r.width && r.height) {
+    cellW.value = r.width;
+    cellH.value = r.height;
+  }
+}
 let answerTimer: number | undefined;
 let answerStartRects: Array<DOMRect | null> = [];
 const remoteUrl = ref(localStorage.getItem('matchit-data-url') || localPackUrl);
@@ -1296,6 +1317,12 @@ function applyBoardSize() {
   resetGame();
 }
 
+function setBoardPreset(c: number, r: number) {
+  cols.value = c;
+  rows.value = r;
+  applyBoardSize();
+}
+
 function setShowAnswer(on: boolean) {
   showAnswer.value = on;
   localStorage.setItem('matchit-show-answer', on ? 'on' : 'off');
@@ -1578,6 +1605,17 @@ onMounted(async () => {
   watch(board, saveGame, { deep: true });
   watch([score, combo, moves, passes, targetIndex, gameOver, collectTargetItem, gameKind, solveMode, mode], saveGame);
   watch(activeMobilePanel, (panel) => localStorage.setItem('matchit-panel', panel));
+
+  // 셀 크기 측정: 보드 크기·전체화면·패널 전환·블럭 수 변화 시 재측정
+  await nextTick();
+  measureCell();
+  boardResizeObserver = new ResizeObserver(() => measureCell());
+  if (boardEl.value) boardResizeObserver.observe(boardEl.value);
+  watch([cols, rows, gameFullscreen, activeMobilePanel, () => board.value.length], () => nextTick(measureCell));
+});
+
+onBeforeUnmount(() => {
+  boardResizeObserver?.disconnect();
 });
 </script>
 
@@ -1593,7 +1631,7 @@ onMounted(async () => {
               <span class="text-sm font-bold text-[var(--muted)] sm:text-base">{{ appVersion }}</span>
             </h1>
             <p class="mt-2 hidden max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base lg:block">
-              화학식, 문법, 공식, 사자성어를 블럭 규칙으로 맞추는 정적 웹 게임 프로토타입.
+              블럭 맞추기로 여러가지 문제를 풀어보세요.
             </p>
           </div>
           <div class="flex items-center gap-2">
@@ -1722,34 +1760,46 @@ onMounted(async () => {
           </template>
 
           <div class="mt-5">
-            <p class="text-xs font-bold uppercase text-[var(--muted)]">Block Design</p>
+            <p class="text-xs font-bold uppercase text-[var(--muted)]">Board Size (Width x Height)</p>
             <div class="mt-2 grid grid-cols-2 gap-2">
               <button
-                v-for="style in blockStyles"
-                :key="style.id"
-                class="h-12 rounded-md border px-2 text-sm font-black"
-                :class="blockStyle === style.id ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'"
+                v-for="preset in boardPresets"
+                :key="`${preset.cols}x${preset.rows}`"
+                class="h-11 rounded-md border text-sm font-black"
+                :class="[
+                  preset.wide ? 'hidden min-[900px]:block' : '',
+                  cols === preset.cols && rows === preset.rows ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]',
+                ]"
                 type="button"
-                @click="setBlockStyle(style.id)"
+                @click="setBoardPreset(preset.cols, preset.rows)"
               >
-                {{ style.label }}
+                {{ preset.cols }} x {{ preset.rows }}
               </button>
             </div>
           </div>
 
           <div class="mt-5">
-            <p class="text-xs font-bold uppercase text-[var(--muted)]">Board Size (Width x Height)</p>
+            <p class="text-xs font-bold uppercase text-[var(--muted)]">Block Design</p>
             <div class="mt-2 grid grid-cols-2 gap-2">
-              <label class="flex items-center gap-2 text-sm font-bold">
-                <select v-model.number="cols" class="h-10 flex-1 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-2" @change="applyBoardSize">
-                  <option v-for="n in boardSizes" :key="n" :value="n">{{ n }}</option>
-                </select>
-              </label>
-              <label class="flex items-center gap-2 text-sm font-bold">
-                <select v-model.number="rows" class="h-10 flex-1 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-2" @change="applyBoardSize">
-                  <option v-for="n in boardSizes" :key="n" :value="n">{{ n }}</option>
-                </select>
-              </label>
+              <button
+                v-for="style in blockStyles"
+                :key="style.id"
+                class="flex flex-col items-center gap-2 rounded-md border px-2 py-2 text-sm font-black"
+                :class="blockStyle === style.id ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'"
+                type="button"
+                @click="setBlockStyle(style.id)"
+              >
+                <span class="flex gap-1.5">
+                  <span
+                    v-for="(c, i) in blockPreviewColors"
+                    :key="i"
+                    class="block-face block-preview h-6 w-6 rounded"
+                    :class="`block-style-${style.id}`"
+                    :style="{ backgroundColor: c, '--block-color': c }"
+                  ></span>
+                </span>
+                {{ style.label }}
+              </button>
             </div>
           </div>
 
@@ -1762,12 +1812,18 @@ onMounted(async () => {
           <div class="mb-3 flex items-center justify-between gap-2">
             <div class="flex gap-2">
               <button
-                class="h-10 rounded-md border px-3 text-sm font-black"
+                class="inline-flex h-10 items-center justify-center rounded-md border px-3 font-black"
                 :class="hintIndexes.length ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'"
                 type="button"
+                title="힌트"
+                aria-label="힌트"
                 @click="toggleHint"
               >
-                힌트
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+                  <path d="M9 18h6"/>
+                  <path d="M10 22h4"/>
+                </svg>
               </button>
               <button
                 v-if="canPass"
@@ -1789,11 +1845,16 @@ onMounted(async () => {
             </div>
             <div class="flex gap-2">
               <button
-                class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-4 text-sm font-black"
+                class="inline-flex h-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 font-black"
                 type="button"
+                title="새판"
+                aria-label="새판"
                 @click="resetGame()"
               >
-                새판
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                </svg>
               </button>
               <button
                 class="hidden h-10 items-center rounded-md border px-3 text-sm font-black lg:inline-flex"
@@ -1804,11 +1865,17 @@ onMounted(async () => {
                 {{ gameFullscreen ? '✕ 해제' : '⛶' }}
               </button>
               <button
-                class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-4 text-sm font-black lg:hidden"
+                class="inline-flex h-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 font-black lg:hidden"
                 type="button"
+                title="나가기"
+                aria-label="나가기"
                 @click="requestExit"
               >
-                나가기
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <polyline points="16 17 21 12 16 7"/>
+                  <line x1="21" x2="9" y1="12" y2="12"/>
+                </svg>
               </button>
             </div>
           </div>
@@ -1851,7 +1918,7 @@ onMounted(async () => {
               'is-falling': motionPhase === 'fall',
               'numbers-board': gameKind === 'numbers',
             }"
-            :style="{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }"
+            :style="{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`, '--cell-w': `${cellW}px`, '--cell-h': `${cellH}px` }"
           >
             <button
               v-for="(block, index) in board"
@@ -1993,7 +2060,7 @@ onMounted(async () => {
       <div
         class="block-face grid h-full w-full place-items-center font-black opacity-90 shadow-2xl"
         :class="`block-style-${blockStyle}`"
-        :style="{ backgroundColor: dragGhost.color, '--block-color': dragGhost.color }"
+        :style="{ backgroundColor: dragGhost.color, '--block-color': dragGhost.color, '--cell-w': `${dragGhost.w}px`, '--cell-h': `${dragGhost.h}px` }"
       >
         <span class="block-label flex h-full w-full items-center justify-center font-black" :style="{ '--len': dragGhost.token.length }">{{ dragGhost.token }}</span>
       </div>
@@ -2016,7 +2083,7 @@ onMounted(async () => {
             :key="i"
             class="answer-slot block-face grid place-items-center font-black text-white"
             :class="`block-style-${blockStyle}`"
-            :style="{ width: `${answerSlotSize}px`, height: `${wideBlocks ? Math.round(answerSlotSize / 1.5) : answerSlotSize}px`, backgroundColor: answerSlotColors[i] ?? colorForToken(token), '--block-color': answerSlotColors[i] ?? colorForToken(token) }"
+            :style="{ width: `${answerSlotSize}px`, height: `${wideBlocks ? Math.round(answerSlotSize / 1.5) : answerSlotSize}px`, backgroundColor: answerSlotColors[i] ?? colorForToken(token), '--block-color': answerSlotColors[i] ?? colorForToken(token), '--cell-w': `${answerSlotSize}px`, '--cell-h': `${wideBlocks ? Math.round(answerSlotSize / 1.5) : answerSlotSize}px` }"
           >
             <span class="block-label flex h-full w-full items-center justify-center" :style="{ '--len': token.length }">{{ token }}</span>
           </span>

@@ -12,7 +12,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: Inter, Pretendard, ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Noto Sans KR', Inter, Pretendard, ui-sans-serif, system-ui, sans-serif;
 }
 
 button,
@@ -63,7 +63,7 @@ select {
   touch-action: none; /* 모바일에서 드래그(스왑) 시 스크롤 방지 */
   user-select: none;
   -webkit-user-select: none;
-  container-type: size; /* 글자 크기를 블럭 가로·세로에 비례시키기 위함 */
+  container-type: size;
 }
 
 .block-face::before,
@@ -74,12 +74,16 @@ select {
 }
 
 .block-label {
-  position: relative;
+  /* h-full(height:100%)이 Safari에서 aspect-ratio 높이를 못 잡아 위로 쏠리는 문제 →
+     절대 위치로 박스를 확실히 채워서 flex 중앙정렬이 항상 동작하게 함 */
+  position: absolute;
+  inset: 0;
   z-index: 1;
   letter-spacing: 0;
   line-height: 1;
-  /* 블럭 가로·세로에 비례. 높이(70cqh)와 폭(글자수 분배) 둘 다 제약 → 절대 넘치지 않음 */
-  font-size: clamp(0.4rem, min(72cqh, calc(170cqw / (var(--len, 1) + 0.5))), 4rem);
+  white-space: nowrap; /* 글자가 세로로 줄바꿈되는 현상 방지 */
+  /* JS로 측정한 셀 크기(--cell-w/--cell-h)에 비례. 높이(0.72)·폭(글자수 분배) 둘 다 제약 → 절대 넘치지 않음 */
+  font-size: clamp(0.4rem, min(calc(var(--cell-h, 0px) * 0.72), calc(var(--cell-w, 0px) * 1.7 / (var(--len, 1) + 0.5))), 4rem);
 }
 
 /* iOS Safari(WebKit)에서 글자가 아래로 치우치는 현상 보정 (글자 크기에 비례) */
@@ -191,40 +195,36 @@ select {
 }
 
 .block-style-neon {
-  --neon-a: #22d3ee;
-  --neon-b: #f472b6;
-  border-radius: 18px;
+  --neon-a: #a855f7;
+  --neon-b: #38bdf8;
+  border-radius: 14px;
   background:
-    linear-gradient(145deg, rgba(4, 7, 19, 0.98), rgba(12, 16, 33, 0.98)),
-    #050816 !important;
-  border-color: rgba(34, 211, 238, 0.85) !important;
+    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.28), transparent 70%),
+    linear-gradient(160deg, #0b0820, #060414) !important;
+  border-color: transparent !important;
   box-shadow:
-    inset 0 0 0 2px rgba(244, 114, 182, 0.72),
-    inset 0 0 18px rgba(34, 211, 238, 0.38),
-    0 0 8px rgba(34, 211, 238, 0.95),
-    0 0 18px rgba(34, 211, 238, 0.65),
-    0 0 34px rgba(244, 114, 182, 0.48),
-    0 16px 28px rgba(2, 6, 23, 0.5);
+    0 0 5px rgba(168, 85, 247, 0.45),
+    0 0 12px rgba(56, 189, 248, 0.22),
+    0 14px 26px rgba(2, 6, 23, 0.55);
 }
 
 .block-style-neon::before {
-  inset: 9px;
-  border-radius: 13px;
-  border: 2px solid var(--neon-a);
-  box-shadow:
-    0 0 6px var(--neon-a),
-    0 0 14px var(--neon-a),
-    inset 0 0 10px rgba(34, 211, 238, 0.42);
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--neon-a), var(--neon-b));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 2px var(--neon-a)) drop-shadow(0 0 4px var(--neon-b));
 }
 
 .block-style-neon::after {
-  inset: 16px;
-  border-radius: 9px;
-  background:
-    linear-gradient(90deg, transparent 0 18%, rgba(244, 114, 182, 0.95) 18% 22%, transparent 22% 78%, rgba(244, 114, 182, 0.95) 78% 82%, transparent 82%),
-    linear-gradient(0deg, transparent 0 18%, rgba(244, 114, 182, 0.95) 18% 22%, transparent 22% 78%, rgba(244, 114, 182, 0.95) 78% 82%, transparent 82%);
-  filter: drop-shadow(0 0 6px var(--neon-b)) drop-shadow(0 0 16px var(--neon-b));
-  opacity: 0.9;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 120%, rgba(56, 189, 248, 0.35), transparent 60%);
 }
 
 .block-style-neon .block-label {
@@ -232,12 +232,19 @@ select {
   color: #ffffff;
   -webkit-text-stroke: 0;
   text-shadow:
-    0 0 3px #fff,
-    0 0 8px var(--neon-b),
-    0 0 16px var(--neon-b),
-    0 0 28px var(--neon-a),
-    0 0 44px var(--neon-a);
+    0 0 2px #fff,
+    0 0 6px var(--neon-a),
+    0 0 12px var(--neon-b);
 }
+
+/* Block Design 미리보기: 버튼이 작아 radius/인셋을 줄임 */
+.block-preview.block-style-jelly,
+.block-preview.block-style-neon {
+  border-radius: 6px;
+}
+.block-preview.block-style-card { border-radius: 5px; }
+.block-preview.block-style-card::before { border-top-width: 2px; }
+.block-preview.block-style-jelly::after { inset: 2px; border-radius: 4px; }
 
 /* 레벨 클리어 축하 팝 */
 .level-clear-pop {
