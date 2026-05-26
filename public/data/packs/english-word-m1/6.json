@@ -1,0 +1,302 @@
+[
+  {
+    "word": "long",
+    "meaning": "긴",
+    "hint": "형용사"
+  },
+  {
+    "word": "look",
+    "meaning": "보다",
+    "hint": "동작"
+  },
+  {
+    "word": "lose",
+    "meaning": "잃다",
+    "hint": "동작"
+  },
+  {
+    "word": "love",
+    "meaning": "사랑하다",
+    "hint": "감정"
+  },
+  {
+    "word": "make",
+    "meaning": "만들다",
+    "hint": "동작"
+  },
+  {
+    "word": "math",
+    "meaning": "수학",
+    "hint": "과목"
+  },
+  {
+    "word": "meal",
+    "meaning": "식사",
+    "hint": "음식"
+  },
+  {
+    "word": "meat",
+    "meaning": "고기",
+    "hint": "음식"
+  },
+  {
+    "word": "meet",
+    "meaning": "만나다",
+    "hint": "동작"
+  },
+  {
+    "word": "milk",
+    "meaning": "우유",
+    "hint": "음료"
+  },
+  {
+    "word": "mole",
+    "meaning": "두더지",
+    "hint": "동물"
+  },
+  {
+    "word": "moon",
+    "meaning": "달",
+    "hint": "자연"
+  },
+  {
+    "word": "move",
+    "meaning": "움직이다",
+    "hint": "동작"
+  },
+  {
+    "word": "neck",
+    "meaning": "목",
+    "hint": "신체"
+  },
+  {
+    "word": "need",
+    "meaning": "필요하다",
+    "hint": "동작"
+  },
+  {
+    "word": "nice",
+    "meaning": "멋진",
+    "hint": "형용사"
+  },
+  {
+    "word": "nine",
+    "meaning": "아홉",
+    "hint": "숫자"
+  },
+  {
+    "word": "noon",
+    "meaning": "정오",
+    "hint": "시간"
+  },
+  {
+    "word": "nose",
+    "meaning": "코",
+    "hint": "신체"
+  },
+  {
+    "word": "note",
+    "meaning": "공책",
+    "hint": "학교"
+  },
+  {
+    "word": "open",
+    "meaning": "열다",
+    "hint": "동작"
+  },
+  {
+    "word": "page",
+    "meaning": "쪽",
+    "hint": "학교"
+  },
+  {
+    "word": "pear",
+    "meaning": "배",
+    "hint": "과일"
+  },
+  {
+    "word": "pink",
+    "meaning": "분홍",
+    "hint": "색깔"
+  },
+  {
+    "word": "play",
+    "meaning": "놀다",
+    "hint": "동작"
+  },
+  {
+    "word": "plum",
+    "meaning": "자두",
+    "hint": "과일"
+  },
+  {
+    "word": "pond",
+    "meaning": "연못",
+    "hint": "자연"
+  },
+  {
+    "word": "pork",
+    "meaning": "돼지고기",
+    "hint": "음식"
+  },
+  {
+    "word": "pull",
+    "meaning": "당기다",
+    "hint": "동작"
+  },
+  {
+    "word": "push",
+    "meaning": "밀다",
+    "hint": "동작"
+  },
+  {
+    "word": "rain",
+    "meaning": "비",
+    "hint": "날씨"
+  },
+  {
+    "word": "read",
+    "meaning": "읽다",
+    "hint": "학교"
+  },
+  {
+    "word": "rice",
+    "meaning": "쌀",
+    "hint": "음식"
+  },
+  {
+    "word": "ride",
+    "meaning": "타다",
+    "hint": "동작"
+  },
+  {
+    "word": "ring",
+    "meaning": "반지",
+    "hint": "옷"
+  },
+  {
+    "word": "rock",
+    "meaning": "바위",
+    "hint": "자연"
+  },
+  {
+    "word": "roof",
+    "meaning": "지붕",
+    "hint": "집"
+  },
+  {
+    "word": "room",
+    "meaning": "방",
+    "hint": "집"
+  },
+  {
+    "word": "root",
+    "meaning": "뿌리",
+    "hint": "자연"
+  },
+  {
+    "word": "salt",
+    "meaning": "소금",
+    "hint": "음식"
+  },
+  {
+    "word": "sand",
+    "meaning": "모래",
+    "hint": "자연"
+  },
+  {
+    "word": "save",
+    "meaning": "저장하다",
+    "hint": "동작"
+  },
+  {
+    "word": "seed",
+    "meaning": "씨앗",
+    "hint": "자연"
+  },
+  {
+    "word": "sell",
+    "meaning": "팔다",
+    "hint": "동작"
+  },
+  {
+    "word": "shoe",
+    "meaning": "신발",
+    "hint": "옷"
+  },
+  {
+    "word": "show",
+    "meaning": "보여주다",
+    "hint": "동작"
+  },
+  {
+    "word": "sing",
+    "meaning": "노래하다",
+    "hint": "동작"
+  },
+  {
+    "word": "skin",
+    "meaning": "피부",
+    "hint": "신체"
+  },
+  {
+    "word": "slow",
+    "meaning": "느린",
+    "hint": "형용사"
+  },
+  {
+    "word": "snow",
+    "meaning": "눈",
+    "hint": "날씨"
+  },
+  {
+    "word": "soap",
+    "meaning": "비누",
+    "hint": "집"
+  },
+  {
+    "word": "sock",
+    "meaning": "양말",
+    "hint": "옷"
+  },
+  {
+    "word": "sofa",
+    "meaning": "소파",
+    "hint": "집"
+  },
+  {
+    "word": "soft",
+    "meaning": "부드러운",
+    "hint": "형용사"
+  },
+  {
+    "word": "soup",
+    "meaning": "수프",
+    "hint": "음식"
+  },
+  {
+    "word": "star",
+    "meaning": "별",
+    "hint": "자연"
+  },
+  {
+    "word": "stop",
+    "meaning": "멈추다",
+    "hint": "동작"
+  },
+  {
+    "word": "swim",
+    "meaning": "수영하다",
+    "hint": "동작"
+  },
+  {
+    "word": "take",
+    "meaning": "가지다",
+    "hint": "동작"
+  },
+  {
+    "word": "talk",
+    "meaning": "말하다",
+    "hint": "동작"
+  }
+]

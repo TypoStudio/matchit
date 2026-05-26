@@ -1,0 +1,402 @@
+[
+  {
+    "word": "python",
+    "meaning": "비단뱀",
+    "hint": "큰뱀"
+  },
+  {
+    "word": "reader",
+    "meaning": "독자",
+    "hint": "읽는이"
+  },
+  {
+    "word": "reason",
+    "meaning": "이유",
+    "hint": "까닭"
+  },
+  {
+    "word": "reduce",
+    "meaning": "줄이다",
+    "hint": "감소하다"
+  },
+  {
+    "word": "refuse",
+    "meaning": "거절하다",
+    "hint": "마다하다"
+  },
+  {
+    "word": "regret",
+    "meaning": "후회하다",
+    "hint": "뉘우치다"
+  },
+  {
+    "word": "remind",
+    "meaning": "상기시키다",
+    "hint": "일깨우다"
+  },
+  {
+    "word": "report",
+    "meaning": "보고",
+    "hint": "알림"
+  },
+  {
+    "word": "result",
+    "meaning": "결과",
+    "hint": "끝맺음"
+  },
+  {
+    "word": "reward",
+    "meaning": "보상",
+    "hint": "상"
+  },
+  {
+    "word": "rhythm",
+    "meaning": "리듬",
+    "hint": "박자"
+  },
+  {
+    "word": "ripple",
+    "meaning": "잔물결",
+    "hint": "작은물결"
+  },
+  {
+    "word": "safety",
+    "meaning": "안전",
+    "hint": "위험없음"
+  },
+  {
+    "word": "sailor",
+    "meaning": "선원",
+    "hint": "배타는이"
+  },
+  {
+    "word": "salmon",
+    "meaning": "연어",
+    "hint": "붉은살생선"
+  },
+  {
+    "word": "secret",
+    "meaning": "비밀",
+    "hint": "숨김"
+  },
+  {
+    "word": "shadow",
+    "meaning": "그림자",
+    "hint": "빛의반대"
+  },
+  {
+    "word": "shrimp",
+    "meaning": "새우",
+    "hint": "작은갑각류"
+  },
+  {
+    "word": "soccer",
+    "meaning": "축구",
+    "hint": "공경기"
+  },
+  {
+    "word": "square",
+    "meaning": "정사각형",
+    "hint": "네모"
+  },
+  {
+    "word": "stream",
+    "meaning": "개울",
+    "hint": "작은물줄기"
+  },
+  {
+    "word": "stress",
+    "meaning": "스트레스",
+    "hint": "압박"
+  },
+  {
+    "word": "subway",
+    "meaning": "지하철",
+    "hint": "땅속기차"
+  },
+  {
+    "word": "sunset",
+    "meaning": "일몰",
+    "hint": "해짐"
+  },
+  {
+    "word": "talent",
+    "meaning": "재능",
+    "hint": "타고난능력"
+  },
+  {
+    "word": "tennis",
+    "meaning": "테니스",
+    "hint": "라켓경기"
+  },
+  {
+    "word": "throat",
+    "meaning": "목구멍",
+    "hint": "목안"
+  },
+  {
+    "word": "ticket",
+    "meaning": "표",
+    "hint": "입장권"
+  },
+  {
+    "word": "tunnel",
+    "meaning": "터널",
+    "hint": "산속길"
+  },
+  {
+    "word": "turkey",
+    "meaning": "칠면조",
+    "hint": "큰가금"
+  },
+  {
+    "word": "violin",
+    "meaning": "바이올린",
+    "hint": "줄악기"
+  },
+  {
+    "word": "wallet",
+    "meaning": "지갑",
+    "hint": "돈넣는것"
+  },
+  {
+    "word": "walrus",
+    "meaning": "바다코끼리",
+    "hint": "긴엄니"
+  },
+  {
+    "word": "wealth",
+    "meaning": "부",
+    "hint": "재산"
+  },
+  {
+    "word": "weasel",
+    "meaning": "족제비",
+    "hint": "가늘긴동물"
+  },
+  {
+    "word": "weight",
+    "meaning": "무게",
+    "hint": "무거움"
+  },
+  {
+    "word": "wisdom",
+    "meaning": "지혜",
+    "hint": "슬기"
+  },
+  {
+    "word": "worker",
+    "meaning": "노동자",
+    "hint": "일하는이"
+  },
+  {
+    "word": "bedroom",
+    "meaning": "침실",
+    "hint": "자는방"
+  },
+  {
+    "word": "breathe",
+    "meaning": "숨쉬다",
+    "hint": "호흡하다"
+  },
+  {
+    "word": "capital",
+    "meaning": "수도",
+    "hint": "중심도시"
+  },
+  {
+    "word": "catfish",
+    "meaning": "메기",
+    "hint": "수염물고기"
+  },
+  {
+    "word": "ceiling",
+    "meaning": "천장",
+    "hint": "방위쪽"
+  },
+  {
+    "word": "century",
+    "meaning": "세기",
+    "hint": "백년"
+  },
+  {
+    "word": "climate",
+    "meaning": "기후",
+    "hint": "지역날씨"
+  },
+  {
+    "word": "comfort",
+    "meaning": "위안",
+    "hint": "편안함"
+  },
+  {
+    "word": "company",
+    "meaning": "회사",
+    "hint": "기업"
+  },
+  {
+    "word": "compare",
+    "meaning": "비교하다",
+    "hint": "견주다"
+  },
+  {
+    "word": "concert",
+    "meaning": "음악회",
+    "hint": "공연"
+  },
+  {
+    "word": "contain",
+    "meaning": "포함하다",
+    "hint": "담다"
+  },
+  {
+    "word": "control",
+    "meaning": "통제하다",
+    "hint": "다스리다"
+  },
+  {
+    "word": "country",
+    "meaning": "나라",
+    "hint": "국가"
+  },
+  {
+    "word": "courage",
+    "meaning": "용기",
+    "hint": "담대함"
+  },
+  {
+    "word": "cricket",
+    "meaning": "귀뚜라미",
+    "hint": "가을우는벌레"
+  },
+  {
+    "word": "culture",
+    "meaning": "문화",
+    "hint": "생활양식"
+  },
+  {
+    "word": "declare",
+    "meaning": "선언하다",
+    "hint": "밝히다"
+  },
+  {
+    "word": "deliver",
+    "meaning": "배달하다",
+    "hint": "전하다"
+  },
+  {
+    "word": "dentist",
+    "meaning": "치과의사",
+    "hint": "이치료의사"
+  },
+  {
+    "word": "deserve",
+    "meaning": "받을만하다",
+    "hint": "누릴자격"
+  },
+  {
+    "word": "develop",
+    "meaning": "발전하다",
+    "hint": "키우다"
+  },
+  {
+    "word": "discuss",
+    "meaning": "논의하다",
+    "hint": "의논하다"
+  },
+  {
+    "word": "disease",
+    "meaning": "질병",
+    "hint": "병"
+  },
+  {
+    "word": "disturb",
+    "meaning": "방해하다",
+    "hint": "훼방하다"
+  },
+  {
+    "word": "drawing",
+    "meaning": "소묘",
+    "hint": "그린것"
+  },
+  {
+    "word": "drizzle",
+    "meaning": "이슬비",
+    "hint": "가는비"
+  },
+  {
+    "word": "economy",
+    "meaning": "경제",
+    "hint": "돈흐름"
+  },
+  {
+    "word": "educate",
+    "meaning": "교육하다",
+    "hint": "가르치다"
+  },
+  {
+    "word": "emotion",
+    "meaning": "감정",
+    "hint": "마음움직임"
+  },
+  {
+    "word": "examine",
+    "meaning": "검사하다",
+    "hint": "살피다"
+  },
+  {
+    "word": "example",
+    "meaning": "예시",
+    "hint": "보기"
+  },
+  {
+    "word": "exhibit",
+    "meaning": "전시하다",
+    "hint": "보이다"
+  },
+  {
+    "word": "explore",
+    "meaning": "탐험하다",
+    "hint": "찾아다니다"
+  },
+  {
+    "word": "express",
+    "meaning": "표현하다",
+    "hint": "나타내다"
+  },
+  {
+    "word": "eyebrow",
+    "meaning": "눈썹",
+    "hint": "눈위털"
+  },
+  {
+    "word": "factory",
+    "meaning": "공장",
+    "hint": "만드는곳"
+  },
+  {
+    "word": "failure",
+    "meaning": "실패",
+    "hint": "못이룸"
+  },
+  {
+    "word": "fashion",
+    "meaning": "유행",
+    "hint": "멋새것"
+  },
+  {
+    "word": "feather",
+    "meaning": "깃털",
+    "hint": "새의털"
+  },
+  {
+    "word": "feeling",
+    "meaning": "느낌",
+    "hint": "감정"
+  },
+  {
+    "word": "firefly",
+    "meaning": "반딧불이",
+    "hint": "빛내는벌레"
+  }
+]

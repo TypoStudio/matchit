@@ -1,1202 +1,602 @@
 [
   {
-    "id": "gagajeryang",
-    "label": "가가대소",
-    "prompt": "소리를 크게 내어 웃음",
+    "id": "cheongchuleoram",
+    "label": "청출어람",
+    "prompt": "제자가 스승보다 나음",
     "tokens": [
-      "가",
-      "가",
-      "대",
-      "소"
+      "청",
+      "출",
+      "어",
+      "람"
     ],
-    "hint": "呵呵大笑"
+    "hint": "靑出於藍"
   },
   {
-    "id": "gadamhangui",
-    "label": "가담항설",
-    "prompt": "거리에 떠도는 근거 없는 소문",
+    "id": "hyeongseoljigong",
+    "label": "형설지공",
+    "prompt": "어려운 환경 속에서 공부하여 성공함",
     "tokens": [
-      "가",
-      "담",
-      "항",
-      "설"
+      "형",
+      "설",
+      "지",
+      "공"
     ],
-    "hint": "街談巷說"
+    "hint": "螢雪之功"
   },
   {
-    "id": "gwonbulsimnyeon",
-    "label": "권불십년",
-    "prompt": "권세는 십 년을 가지 못함, 권력의 무상함",
-    "tokens": [
-      "권",
-      "불",
-      "십",
-      "년"
-    ],
-    "hint": "權不十年"
-  },
-  {
-    "id": "gangukbongchu",
-    "label": "각곡유아",
-    "prompt": "성공하진 못해도 노력하면 흉내는 냄",
-    "tokens": [
-      "각",
-      "곡",
-      "유",
-      "아"
-    ],
-    "hint": "刻鵠類鵝"
-  },
-  {
-    "id": "ganunbuljeong",
-    "label": "간운보월",
-    "prompt": "고향을 그리워하는 마음",
-    "tokens": [
-      "간",
-      "운",
-      "보",
-      "월"
-    ],
-    "hint": "看雲步月"
-  },
-  {
-    "id": "galjeunghaengseong",
-    "label": "갈택이어",
-    "prompt": "눈앞의 이익을 위해 장래를 생각지 않음",
-    "tokens": [
-      "갈",
-      "택",
-      "이",
-      "어"
-    ],
-    "hint": "竭澤而漁"
-  },
-  {
-    "id": "gamtanseolwol",
-    "label": "감개무량",
-    "prompt": "마음속 깊이 사무치게 느끼는 정이 끝이 없음",
-    "tokens": [
-      "감",
-      "개",
-      "무",
-      "량"
-    ],
-    "hint": "感慨無量"
-  },
-  {
-    "id": "gangguahmun",
-    "label": "강구화실",
-    "prompt": "헛된 이론으로 실속이 없음",
-    "tokens": [
-      "강",
-      "구",
-      "화",
-      "실"
-    ],
-    "hint": "講究華實"
-  },
-  {
-    "id": "gaengyujihaeng",
-    "label": "개과자신",
-    "prompt": "지난 잘못을 고쳐 스스로 새로워짐",
-    "tokens": [
-      "개",
-      "과",
-      "자",
-      "신"
-    ],
-    "hint": "改過自新"
-  },
-  {
-    "id": "geosehosaeng",
-    "label": "거세개탁",
-    "prompt": "온 세상이 다 흐림, 지위 높은 자가 다 바르지 못함",
-    "tokens": [
-      "거",
-      "세",
-      "개",
-      "탁"
-    ],
-    "hint": "擧世皆濁"
-  },
-  {
-    "id": "geonmoksuun",
-    "label": "건목수생",
-    "prompt": "마른나무에서 물을 짜내듯 무리하게 요구함",
-    "tokens": [
-      "건",
-      "목",
-      "수",
-      "생"
-    ],
-    "hint": "乾木水生"
-  },
-  {
-    "id": "gyeokhwagwangsan",
-    "label": "격화소양",
-    "prompt": "신을 신은 채 발바닥을 긁듯 성에 차지 않음",
-    "tokens": [
-      "격",
-      "화",
-      "소",
-      "양"
-    ],
-    "hint": "隔靴搔癢"
-  },
-  {
-    "id": "gyeongahnseolwol",
-    "label": "견리사의",
-    "prompt": "이익을 보면 의리를 먼저 생각함",
-    "tokens": [
-      "견",
-      "리",
-      "사",
-      "의"
-    ],
-    "hint": "見利思義"
-  },
-  {
-    "id": "gyeolchajedang",
-    "label": "결초제당",
-    "prompt": "풀을 묶어 은혜를 갚으려는 마음",
+    "id": "gyeolchoboeun",
+    "label": "결초보은",
+    "prompt": "죽어서도 은혜를 잊지 않고 갚음",
     "tokens": [
       "결",
       "초",
-      "제",
-      "당"
+      "보",
+      "은"
     ],
-    "hint": "結草齊堂"
+    "hint": "結草報恩"
   },
   {
-    "id": "gyeombingsudo",
-    "label": "겸인지용",
-    "prompt": "혼자서 능히 여러 사람을 당해 낼 만한 용기",
+    "id": "baengnyeonhaero",
+    "label": "백년해로",
+    "prompt": "부부가 되어 평생을 함께 늙음",
     "tokens": [
-      "겸",
-      "인",
+      "백",
+      "년",
+      "해",
+      "로"
+    ],
+    "hint": "百年偕老"
+  },
+  {
+    "id": "tasanjiseok",
+    "label": "타산지석",
+    "prompt": "남의 언행이라도 자신을 닦는 데 도움이 됨",
+    "tokens": [
+      "타",
+      "산",
       "지",
-      "용"
-    ],
-    "hint": "兼人之勇"
-  },
-  {
-    "id": "gyeongjeonhasok",
-    "label": "경전하사",
-    "prompt": "고래 싸움에 새우 등 터짐",
-    "tokens": [
-      "경",
-      "전",
-      "하",
-      "사"
-    ],
-    "hint": "鯨戰蝦死"
-  },
-  {
-    "id": "gyeongsejemin",
-    "label": "경세제민",
-    "prompt": "세상을 다스리고 백성을 구제함",
-    "tokens": [
-      "경",
-      "세",
-      "제",
-      "민"
-    ],
-    "hint": "經世濟民"
-  },
-  {
-    "id": "gomahomil",
-    "label": "고굉지신",
-    "prompt": "임금이 가장 신임하는 중요한 신하",
-    "tokens": [
-      "고",
-      "굉",
-      "지",
-      "신"
-    ],
-    "hint": "股肱之臣"
-  },
-  {
-    "id": "godaehyeongsil",
-    "label": "고운야학",
-    "prompt": "벼슬을 마다하고 한가로이 지내는 사람",
-    "tokens": [
-      "고",
-      "운",
-      "야",
-      "학"
-    ],
-    "hint": "孤雲野鶴"
-  },
-  {
-    "id": "jagangbulsik",
-    "label": "자강불식",
-    "prompt": "스스로 힘써 쉬지 않고 노력함",
-    "tokens": [
-      "자",
-      "강",
-      "불",
-      "식"
-    ],
-    "hint": "自强不息"
-  },
-  {
-    "id": "gwajeolyusin",
-    "label": "과하지욕",
-    "prompt": "큰 뜻을 위해 한때의 부끄러움을 참음",
-    "tokens": [
-      "과",
-      "하",
-      "지",
-      "욕"
-    ],
-    "hint": "胯下之辱"
-  },
-  {
-    "id": "gwanhonsangje",
-    "label": "관혼상제",
-    "prompt": "관례·혼례·상례·제례의 네 가지 예법",
-    "tokens": [
-      "관",
-      "혼",
-      "상",
-      "제"
-    ],
-    "hint": "冠婚喪祭"
-  },
-  {
-    "id": "gyodogyeolmok",
-    "label": "교토삼굴",
-    "prompt": "재난을 피하려고 미리 여러 대비책을 세움",
-    "tokens": [
-      "교",
-      "토",
-      "삼",
-      "굴"
-    ],
-    "hint": "狡兔三窟"
-  },
-  {
-    "id": "guseunghyeong",
-    "label": "소리장도",
-    "prompt": "겉으로는 웃으나 속으로는 칼을 품음",
-    "tokens": [
-      "소",
-      "리",
-      "장",
-      "도"
-    ],
-    "hint": "笑裏藏刀"
-  },
-  {
-    "id": "gusengmodeun",
-    "label": "구화지문",
-    "prompt": "입은 화를 부르는 문",
-    "tokens": [
-      "구",
-      "화",
-      "지",
-      "문"
-    ],
-    "hint": "口禍之門"
-  },
-  {
-    "id": "gukgungjinchwi",
-    "label": "국궁진췌",
-    "prompt": "몸을 굽혀 마음과 힘을 다해 애씀",
-    "tokens": [
-      "국",
-      "궁",
-      "진",
-      "췌"
-    ],
-    "hint": "鞠躬盡瘁"
-  },
-  {
-    "id": "gunjamsamrak",
-    "label": "군자삼락",
-    "prompt": "군자의 세 가지 즐거움",
-    "tokens": [
-      "군",
-      "자",
-      "삼",
-      "락"
-    ],
-    "hint": "君子三樂"
-  },
-  {
-    "id": "gwonsangchaek",
-    "label": "권상요목",
-    "prompt": "남을 부추겨 놓고 곤경에 빠뜨림",
-    "tokens": [
-      "권",
-      "상",
-      "요",
-      "목"
-    ],
-    "hint": "勸上搖木"
-  },
-  {
-    "id": "geunhwairiyong",
-    "label": "근화일일",
-    "prompt": "무궁화는 하루의 영화, 덧없는 영화",
-    "tokens": [
-      "근",
-      "화",
-      "일",
-      "일"
-    ],
-    "hint": "槿花一日"
-  },
-  {
-    "id": "geumeuiusang",
-    "label": "금구목설",
-    "prompt": "입을 다물어 말을 삼감",
-    "tokens": [
-      "금",
-      "구",
-      "목",
-      "설"
-    ],
-    "hint": "金口木舌"
-  },
-  {
-    "id": "geumseokgisik",
-    "label": "금석뇌약",
-    "prompt": "쇠와 돌 같은 굳은 약속",
-    "tokens": [
-      "금",
-      "석",
-      "뇌",
-      "약"
-    ],
-    "hint": "金石牢約"
-  },
-  {
-    "id": "gibokimung",
-    "label": "기복염거",
-    "prompt": "유능한 인재가 천한 일에 종사함",
-    "tokens": [
-      "기",
-      "복",
-      "염",
-      "거"
-    ],
-    "hint": "驥服鹽車"
-  },
-  {
-    "id": "gisanghyeong",
-    "label": "기진맥진",
-    "prompt": "기운과 정력이 다하여 더 이상 없음",
-    "tokens": [
-      "기",
-      "진",
-      "맥",
-      "진"
-    ],
-    "hint": "氣盡脈盡"
-  },
-  {
-    "id": "nakyumun",
-    "label": "낙정하석",
-    "prompt": "어려운 처지의 사람을 더욱 괴롭힘",
-    "tokens": [
-      "낙",
-      "정",
-      "하",
       "석"
     ],
-    "hint": "落穽下石"
+    "hint": "他山之石"
   },
   {
-    "id": "nanjihaengmul",
-    "label": "난의포식",
-    "prompt": "따뜻이 입고 배불리 먹는 넉넉한 생활",
+    "id": "pungjeondeunghwa",
+    "label": "풍전등화",
+    "prompt": "바람 앞의 등불처럼 매우 위태로움",
     "tokens": [
+      "풍",
+      "전",
+      "등",
+      "화"
+    ],
+    "hint": "風前燈火"
+  },
+  {
+    "id": "buhwanoedong",
+    "label": "부화뇌동",
+    "prompt": "줏대 없이 남의 의견에 따라 움직임",
+    "tokens": [
+      "부",
+      "화",
+      "뇌",
+      "동"
+    ],
+    "hint": "附和雷同"
+  },
+  {
+    "id": "gakgolnanmang",
+    "label": "각골난망",
+    "prompt": "은혜가 뼈에 새길 만큼 커서 잊히지 않음",
+    "tokens": [
+      "각",
+      "골",
       "난",
-      "의",
+      "망"
+    ],
+    "hint": "刻骨難忘"
+  },
+  {
+    "id": "wasinsangdam",
+    "label": "와신상담",
+    "prompt": "원수를 갚으려 온갖 괴로움을 참고 견딤",
+    "tokens": [
+      "와",
+      "신",
+      "상",
+      "담"
+    ],
+    "hint": "臥薪嘗膽"
+  },
+  {
+    "id": "cheonjaeilu",
+    "label": "천재일우",
+    "prompt": "좀처럼 만나기 어려운 좋은 기회",
+    "tokens": [
+      "천",
+      "재",
+      "일",
+      "우"
+    ],
+    "hint": "千載一遇"
+  },
+  {
+    "id": "gogunbuntu",
+    "label": "고군분투",
+    "prompt": "혼자서 힘겹게 싸우며 애씀",
+    "tokens": [
+      "고",
+      "군",
+      "분",
+      "투"
+    ],
+    "hint": "孤軍奮鬪"
+  },
+  {
+    "id": "jaseungjabak",
+    "label": "자승자박",
+    "prompt": "자기 말과 행동에 자신이 얽매여 곤란해짐",
+    "tokens": [
+      "자",
+      "승",
+      "자",
+      "박"
+    ],
+    "hint": "自繩自縛"
+  },
+  {
+    "id": "dongbyeongsangnyeon",
+    "label": "동병상련",
+    "prompt": "같은 처지의 사람끼리 서로 가엾게 여김",
+    "tokens": [
+      "동",
+      "병",
+      "상",
+      "련"
+    ],
+    "hint": "同病相憐"
+  },
+  {
+    "id": "hamheungchasa",
+    "label": "함흥차사",
+    "prompt": "심부름 간 사람이 소식이 없음",
+    "tokens": [
+      "함",
+      "흥",
+      "차",
+      "사"
+    ],
+    "hint": "咸興差使"
+  },
+  {
+    "id": "hwaryongjeomjeong",
+    "label": "화룡점정",
+    "prompt": "가장 중요한 부분을 마무리하여 완성함",
+    "tokens": [
+      "화",
+      "룡",
+      "점",
+      "정"
+    ],
+    "hint": "畵龍點睛"
+  },
+  {
+    "id": "godaegwangsil",
+    "label": "고대광실",
+    "prompt": "매우 크고 좋은 집",
+    "tokens": [
+      "고",
+      "대",
+      "광",
+      "실"
+    ],
+    "hint": "高臺廣室"
+  },
+  {
+    "id": "gyeonmagjiro",
+    "label": "견마지로",
+    "prompt": "임금이나 나라를 위해 바치는 노력",
+    "tokens": [
+      "견",
+      "마",
+      "지",
+      "로"
+    ],
+    "hint": "犬馬之勞"
+  },
+  {
+    "id": "gyepojigye",
+    "label": "계포일낙",
+    "prompt": "틀림없이 지키는 약속",
+    "tokens": [
+      "계",
       "포",
-      "식"
+      "일",
+      "낙"
     ],
-    "hint": "暖衣飽食"
+    "hint": "季布一諾"
   },
   {
-    "id": "namgwallbukgwi",
-    "label": "남귤북지",
-    "prompt": "환경에 따라 사람의 성질이 변함",
+    "id": "gohwarosseong",
+    "label": "고립무의",
+    "prompt": "외롭고 의지할 데가 없음",
     "tokens": [
-      "남",
-      "귤",
-      "북",
-      "지"
+      "고",
+      "립",
+      "무",
+      "의"
     ],
-    "hint": "南橘北枳"
+    "hint": "孤立無依"
   },
   {
-    "id": "namusinkwi",
-    "label": "낭패불감",
-    "prompt": "이러지도 저러지도 못하는 딱한 처지",
+    "id": "gwajeolsogi",
+    "label": "곡학아세",
+    "prompt": "학문을 굽혀 세상에 아첨함",
     "tokens": [
-      "낭",
-      "패",
-      "불",
-      "감"
+      "곡",
+      "학",
+      "아",
+      "세"
     ],
-    "hint": "狼狽不堪"
+    "hint": "曲學阿世"
   },
   {
-    "id": "naepojibyeong",
-    "label": "내우외란",
-    "prompt": "안의 근심과 밖의 어지러움",
+    "id": "gwanpojigyo",
+    "label": "관포지교",
+    "prompt": "관중과 포숙처럼 변함없는 두터운 우정",
     "tokens": [
-      "내",
-      "우",
-      "외",
-      "란"
-    ],
-    "hint": "內憂外亂"
-  },
-  {
-    "id": "nodangikseo",
-    "label": "노당익장",
-    "prompt": "늙어서도 더욱 굳세어짐",
-    "tokens": [
-      "노",
-      "당",
-      "익",
-      "장"
-    ],
-    "hint": "老當益壯"
-  },
-  {
-    "id": "nokrimhogeol",
-    "label": "녹림호걸",
-    "prompt": "화적이나 도둑을 달리 이르는 말",
-    "tokens": [
-      "녹",
-      "림",
-      "호",
-      "걸"
-    ],
-    "hint": "綠林豪傑"
-  },
-  {
-    "id": "noenmasangsu",
-    "label": "농가성진",
-    "prompt": "농담으로 한 말이 참말이 됨",
-    "tokens": [
-      "농",
-      "가",
-      "성",
-      "진"
-    ],
-    "hint": "弄假成眞"
-  },
-  {
-    "id": "nujinosin",
-    "label": "누진취영",
-    "prompt": "헛된 명예를 좇음",
-    "tokens": [
-      "누",
-      "진",
-      "취",
-      "영"
-    ],
-    "hint": "陋塵吹影"
-  },
-  {
-    "id": "dangisangchu",
-    "label": "단기지교",
-    "prompt": "학문을 도중에 그만두지 말라는 교훈",
-    "tokens": [
-      "단",
-      "기",
+      "관",
+      "포",
       "지",
       "교"
     ],
-    "hint": "斷機之敎"
+    "hint": "管鮑之交"
   },
   {
-    "id": "danseungbuldae",
-    "label": "단표누항",
-    "prompt": "소박한 시골 생활을 이르는 말",
+    "id": "gwadaemangsang",
+    "label": "괄목상대",
+    "prompt": "남의 학식이나 재주가 크게 늘어 놀람",
     "tokens": [
-      "단",
-      "표",
-      "누",
-      "항"
-    ],
-    "hint": "簞瓢陋巷"
-  },
-  {
-    "id": "danggujimun",
-    "label": "당랑포선",
-    "prompt": "눈앞의 이익만 알고 뒤의 위험을 모름",
-    "tokens": [
-      "당",
-      "랑",
-      "포",
-      "선"
-    ],
-    "hint": "螳螂捕蟬"
-  },
-  {
-    "id": "daegyowarjol",
-    "label": "대교약졸",
-    "prompt": "아주 교묘한 솜씨는 도리어 서툴게 보임",
-    "tokens": [
-      "대",
-      "교",
-      "약",
-      "졸"
-    ],
-    "hint": "大巧若拙"
-  },
-  {
-    "id": "deokmubuiun",
-    "label": "덕무상사",
-    "prompt": "덕을 닦는 데는 일정한 스승이 없음",
-    "tokens": [
-      "덕",
-      "무",
+      "괄",
+      "목",
       "상",
-      "사"
+      "대"
     ],
-    "hint": "德無常師"
+    "hint": "刮目相對"
   },
   {
-    "id": "doharudasi",
-    "label": "가담항어",
-    "prompt": "길에서 듣고 길에서 옮기는 헛된 말",
+    "id": "gyodongbeolja",
+    "label": "교각살우",
+    "prompt": "작은 흠을 고치려다 큰 것을 망침",
     "tokens": [
+      "교",
+      "각",
+      "살",
+      "우"
+    ],
+    "hint": "矯角殺牛"
+  },
+  {
+    "id": "gunjeilhak",
+    "label": "군계일학",
+    "prompt": "여럿 가운데 가장 뛰어난 사람",
+    "tokens": [
+      "군",
+      "계",
+      "일",
+      "학"
+    ],
+    "hint": "群鷄一鶴"
+  },
+  {
+    "id": "gungyeomulpgi",
+    "label": "궁여지책",
+    "prompt": "막다른 처지에서 짜내는 계책",
+    "tokens": [
+      "궁",
+      "여",
+      "지",
+      "책"
+    ],
+    "hint": "窮餘之策"
+  },
+  {
+    "id": "geunmukjaheuk",
+    "label": "근묵자흑",
+    "prompt": "나쁜 사람과 가까이하면 물들기 쉬움",
+    "tokens": [
+      "근",
+      "묵",
+      "자",
+      "흑"
+    ],
+    "hint": "近墨者黑"
+  },
+  {
+    "id": "geumuijuhaeng",
+    "label": "금의야행",
+    "prompt": "생색나지 않는 헛된 일을 함",
+    "tokens": [
+      "금",
+      "의",
+      "야",
+      "행"
+    ],
+    "hint": "錦衣夜行"
+  },
+  {
+    "id": "gigohmangsang",
+    "label": "기고만장",
+    "prompt": "기운이 펄펄 나서 한껏 뽐냄",
+    "tokens": [
+      "기",
+      "고",
+      "만",
+      "장"
+    ],
+    "hint": "氣高萬丈"
+  },
+  {
+    "id": "gisahoesaeng",
+    "label": "기사회생",
+    "prompt": "거의 죽을 뻔하다가 도로 살아남",
+    "tokens": [
+      "기",
+      "사",
+      "회",
+      "생"
+    ],
+    "hint": "起死回生"
+  },
+  {
+    "id": "naranseonghyeong",
+    "label": "낙화유수",
+    "prompt": "힘과 세력이 약해져 보잘것없이 됨",
+    "tokens": [
+      "낙",
+      "화",
+      "유",
+      "수"
+    ],
+    "hint": "落花流水"
+  },
+  {
+    "id": "namgajeong",
+    "label": "남가일몽",
+    "prompt": "덧없는 꿈이나 한때의 헛된 부귀영화",
+    "tokens": [
+      "남",
       "가",
-      "담",
-      "항",
-      "어"
+      "일",
+      "몽"
     ],
-    "hint": "街談巷語"
+    "hint": "南柯一夢"
   },
   {
-    "id": "dokseojongja",
-    "label": "독서종자",
-    "prompt": "대대로 글공부를 이어 가는 집안",
+    "id": "nangjungjichu",
+    "label": "낭중지추",
+    "prompt": "재능이 뛰어난 사람은 저절로 드러남",
     "tokens": [
-      "독",
-      "서",
-      "종",
-      "자"
-    ],
-    "hint": "讀書種子"
-  },
-  {
-    "id": "dongseomuljimun",
-    "label": "동성이속",
-    "prompt": "본성은 같으나 습관에 따라 달라짐",
-    "tokens": [
-      "동",
-      "성",
-      "이",
-      "속"
-    ],
-    "hint": "同性異俗"
-  },
-  {
-    "id": "deungtaegwangmyeong",
-    "label": "등태소천",
-    "prompt": "높은 곳에 올라야 천하가 작게 보임",
-    "tokens": [
-      "등",
-      "태",
-      "소",
-      "천"
-    ],
-    "hint": "登泰小天"
-  },
-  {
-    "id": "magakgwangbu",
-    "label": "마중지봉",
-    "prompt": "좋은 환경에서 자라면 저절로 바르게 됨",
-    "tokens": [
-      "마",
+      "낭",
       "중",
       "지",
-      "봉"
+      "추"
     ],
-    "hint": "麻中之蓬"
+    "hint": "囊中之錐"
   },
   {
-    "id": "manggukjieum",
-    "label": "망국지음",
-    "prompt": "나라를 망하게 할 음란하고 사치한 음악",
+    "id": "noseunghyeong",
+    "label": "노심초사",
+    "prompt": "몹시 마음을 쓰며 애를 태움",
     "tokens": [
-      "망",
-      "국",
+      "노",
+      "심",
+      "초",
+      "사"
+    ],
+    "hint": "勞心焦思"
+  },
+  {
+    "id": "nuranjiwi",
+    "label": "누란지위",
+    "prompt": "층층이 쌓은 알처럼 매우 위태로움",
+    "tokens": [
+      "누",
+      "란",
       "지",
-      "음"
+      "위"
     ],
-    "hint": "亡國之音"
+    "hint": "累卵之危"
   },
   {
-    "id": "maemujisin",
-    "label": "매처학자",
-    "prompt": "속세를 떠나 유유자적하게 사는 풍류",
+    "id": "danbsanjisil",
+    "label": "단순호치",
+    "prompt": "붉은 입술과 흰 이, 아름다운 여인",
     "tokens": [
-      "매",
-      "처",
-      "학",
-      "자"
-    ],
-    "hint": "梅妻鶴子"
-  },
-  {
-    "id": "myeokronseong",
-    "label": "맥구읍인",
-    "prompt": "어리석고 고지식하여 융통성이 없음",
-    "tokens": [
-      "맥",
-      "구",
-      "읍",
-      "인"
-    ],
-    "hint": "麥丘邑人"
-  },
-  {
-    "id": "myeongmoholjeong",
-    "label": "명모호치",
-    "prompt": "맑은 눈동자와 흰 이, 미인",
-    "tokens": [
-      "명",
-      "모",
+      "단",
+      "순",
       "호",
       "치"
     ],
-    "hint": "明眸皓齒"
+    "hint": "丹脣皓齒"
   },
   {
-    "id": "morisujeong",
-    "label": "목후이관",
-    "prompt": "겉만 그럴듯하고 속은 보잘것없음",
+    "id": "dangihwhang",
+    "label": "당랑거철",
+    "prompt": "분수도 모르고 강자에게 함부로 덤빔",
     "tokens": [
-      "목",
-      "후",
-      "이",
-      "관"
-    ],
-    "hint": "沐猴而冠"
-  },
-  {
-    "id": "mongjungseolmong",
-    "label": "몽중설몽",
-    "prompt": "꿈속에서 꿈 이야기를 함, 종잡을 수 없는 말",
-    "tokens": [
-      "몽",
-      "중",
-      "설",
-      "몽"
-    ],
-    "hint": "夢中說夢"
-  },
-  {
-    "id": "munangbojang",
-    "label": "무망지복",
-    "prompt": "뜻하지 않게 얻는 복",
-    "tokens": [
-      "무",
-      "망",
-      "지",
-      "복"
-    ],
-    "hint": "毋望之福"
-  },
-  {
-    "id": "munjeongjakra",
-    "label": "문전작라",
-    "prompt": "권세를 잃어 찾아오는 이가 없어 한산함",
-    "tokens": [
-      "문",
-      "전",
-      "작",
-      "라"
-    ],
-    "hint": "門前雀羅"
-  },
-  {
-    "id": "geoanjemi",
-    "label": "거안제미",
-    "prompt": "밥상을 눈썹 높이로 받듦, 남편을 깍듯이 공경함",
-    "tokens": [
+      "당",
+      "랑",
       "거",
-      "안",
-      "제",
-      "미"
+      "철"
     ],
-    "hint": "擧案齊眉"
+    "hint": "螳螂拒轍"
   },
   {
-    "id": "bakgwanyoyak",
-    "label": "박람강기",
-    "prompt": "널리 읽고 잘 기억함",
+    "id": "daegihwseong",
+    "label": "대경실색",
+    "prompt": "몹시 놀라 얼굴빛이 변함",
     "tokens": [
-      "박",
-      "람",
-      "강",
-      "기"
+      "대",
+      "경",
+      "실",
+      "색"
     ],
-    "hint": "博覽强記"
+    "hint": "大驚失色"
   },
   {
-    "id": "hojeopjimong",
-    "label": "호접지몽",
-    "prompt": "나비가 된 꿈, 물아의 구별을 잊은 경지",
+    "id": "dosgeunbun",
+    "label": "도청도설",
+    "prompt": "길거리에 떠도는 근거 없는 소문",
     "tokens": [
-      "호",
-      "접",
-      "지",
+      "도",
+      "청",
+      "도",
+      "설"
+    ],
+    "hint": "道聽塗說"
+  },
+  {
+    "id": "dongsangijong",
+    "label": "동상이몽",
+    "prompt": "같이 행동하면서 속으로 딴생각을 함",
+    "tokens": [
+      "동",
+      "상",
+      "이",
       "몽"
     ],
-    "hint": "胡蝶之夢"
+    "hint": "同床異夢"
   },
   {
-    "id": "baekgyeolbulgul",
-    "label": "백구과극",
-    "prompt": "세월이 빨리 지나감",
+    "id": "deungyangbulgon",
+    "label": "등하불명",
+    "prompt": "가까이 있는 것을 도리어 모름",
     "tokens": [
-      "백",
-      "구",
-      "과",
-      "극"
-    ],
-    "hint": "白駒過隙"
-  },
-  {
-    "id": "honjeongsinseong",
-    "label": "혼정신성",
-    "prompt": "저녁엔 잠자리를 보고 아침엔 안부를 살핌, 부모를 잘 섬김",
-    "tokens": [
-      "혼",
-      "정",
-      "신",
-      "성"
-    ],
-    "hint": "昏定晨省"
-  },
-  {
-    "id": "byeongiphaengno",
-    "label": "병입고황",
-    "prompt": "병이 고치기 어려울 만큼 깊이 듦",
-    "tokens": [
-      "병",
-      "입",
-      "고",
-      "황"
-    ],
-    "hint": "病入膏肓"
-  },
-  {
-    "id": "bokgyeongseong",
-    "label": "복수불반",
-    "prompt": "엎지른 물은 다시 담을 수 없음",
-    "tokens": [
-      "복",
-      "수",
-      "불",
-      "반"
-    ],
-    "hint": "覆水不返"
-  },
-  {
-    "id": "bujakgieok",
-    "label": "부저추신",
-    "prompt": "근본 원인을 없애 폐단을 막음",
-    "tokens": [
-      "부",
-      "저",
-      "추",
-      "신"
-    ],
-    "hint": "釜底抽薪"
-  },
-  {
-    "id": "bunseojaengyu",
-    "label": "분형동기",
-    "prompt": "형제는 부모의 몸을 나눠 받은 한 핏줄",
-    "tokens": [
-      "분",
-      "형",
-      "동",
-      "기"
-    ],
-    "hint": "分形同氣"
-  },
-  {
-    "id": "bulilhwadong",
-    "label": "불비불명",
-    "prompt": "큰일을 하려고 오랫동안 조용히 때를 기다림",
-    "tokens": [
-      "불",
-      "비",
+      "등",
+      "하",
       "불",
       "명"
     ],
-    "hint": "不蜚不鳴"
+    "hint": "燈下不明"
   },
   {
-    "id": "bunghuiman",
-    "label": "붕성지통",
-    "prompt": "임금이나 아버지를 여읜 큰 슬픔",
+    "id": "mangyangbojang",
+    "label": "망양보뢰",
+    "prompt": "이미 일을 그르친 뒤에 뉘우쳐도 소용없음",
     "tokens": [
-      "붕",
-      "성",
-      "지",
-      "통"
+      "망",
+      "양",
+      "보",
+      "뢰"
     ],
-    "hint": "崩城之痛"
+    "hint": "亡羊補牢"
   },
   {
-    "id": "bigyeolmun",
-    "label": "비육지탄",
-    "prompt": "재능을 펴지 못하고 헛되이 세월만 보냄을 한탄함",
+    "id": "myeongjeolgwansan",
+    "label": "명재경각",
+    "prompt": "거의 죽게 되어 곧 숨이 끊어질 지경",
     "tokens": [
-      "비",
-      "육",
-      "지",
-      "탄"
+      "명",
+      "재",
+      "경",
+      "각"
     ],
-    "hint": "髀肉之嘆"
+    "hint": "命在頃刻"
   },
   {
-    "id": "bingjihaeng",
-    "label": "빈계지신",
-    "prompt": "암탉이 새벽에 욺, 여자가 정사에 간섭함",
+    "id": "mokbulsikjeong",
+    "label": "목불식정",
+    "prompt": "아주 무식하여 글자를 전혀 모름",
     "tokens": [
-      "빈",
-      "계",
+      "목",
+      "불",
+      "식",
+      "정"
+    ],
+    "hint": "目不識丁"
+  },
+  {
+    "id": "mugongibsam",
+    "label": "무용지물",
+    "prompt": "쓸모없는 물건이나 사람",
+    "tokens": [
+      "무",
+      "용",
       "지",
+      "물"
+    ],
+    "hint": "無用之物"
+  },
+  {
+    "id": "mungyeongmugyeon",
+    "label": "문전걸식",
+    "prompt": "이 집 저 집 돌아다니며 빌어먹음",
+    "tokens": [
+      "문",
+      "전",
+      "걸",
+      "식"
+    ],
+    "hint": "門前乞食"
+  },
+  {
+    "id": "baekgolnanmang",
+    "label": "백골난망",
+    "prompt": "죽어도 잊지 못할 큰 은혜",
+    "tokens": [
+      "백",
+      "골",
+      "난",
+      "망"
+    ],
+    "hint": "白骨難忘"
+  },
+  {
+    "id": "baekjipohaeng",
+    "label": "백척간두",
+    "prompt": "매우 어렵고 위태로운 지경",
+    "tokens": [
+      "백",
+      "척",
+      "간",
+      "두"
+    ],
+    "hint": "百尺竿頭"
+  },
+  {
+    "id": "bujigisu",
+    "label": "부지기수",
+    "prompt": "헤아릴 수 없을 만큼 많음",
+    "tokens": [
+      "부",
+      "지",
+      "기",
+      "수"
+    ],
+    "hint": "不知其數"
+  },
+  {
+    "id": "bunbalmangsik",
+    "label": "분골쇄신",
+    "prompt": "있는 힘을 다해 노력함",
+    "tokens": [
+      "분",
+      "골",
+      "쇄",
       "신"
     ],
-    "hint": "牝鷄之晨"
+    "hint": "粉骨碎身"
   },
   {
-    "id": "sageosuhwa",
-    "label": "사거십리",
-    "prompt": "사방으로 거리가 멀리 떨어져 있음",
+    "id": "bulgocheonman",
+    "label": "불요불굴",
+    "prompt": "한번 결심한 마음이 흔들리지 않음",
     "tokens": [
-      "사",
-      "거",
-      "십",
-      "리"
+      "불",
+      "요",
+      "불",
+      "굴"
     ],
-    "hint": "四去十里"
-  },
-  {
-    "id": "samajimun",
-    "label": "사마난추",
-    "prompt": "한번 한 말은 빨리 퍼져 되돌리기 어려움",
-    "tokens": [
-      "사",
-      "마",
-      "난",
-      "추"
-    ],
-    "hint": "駟馬難追"
-  },
-  {
-    "id": "saseodorip",
-    "label": "사상마련",
-    "prompt": "실제 일을 겪으며 단련하고 수양함",
-    "tokens": [
-      "사",
-      "상",
-      "마",
-      "련"
-    ],
-    "hint": "事上磨鍊"
-  },
-  {
-    "id": "sahaehyeongje",
-    "label": "사해형제",
-    "prompt": "온 세상 사람이 모두 형제와 같음",
-    "tokens": [
-      "사",
-      "해",
-      "형",
-      "제"
-    ],
-    "hint": "四海兄弟"
-  },
-  {
-    "id": "sangganghaengsil",
-    "label": "상가지구",
-    "prompt": "초라하고 떠돌이 신세의 사람",
-    "tokens": [
-      "상",
-      "가",
-      "지",
-      "구"
-    ],
-    "hint": "喪家之狗"
-  },
-  {
-    "id": "saekeunmosa",
-    "label": "색은행괴",
-    "prompt": "괴이한 일을 들춰내 이름을 떨치려 함",
-    "tokens": [
-      "색",
-      "은",
-      "행",
-      "괴"
-    ],
-    "hint": "索隱行怪"
-  },
-  {
-    "id": "seonjjamwidae",
-    "label": "선즉제인",
-    "prompt": "남보다 앞서 일을 도모하면 유리함",
-    "tokens": [
-      "선",
-      "즉",
-      "제",
-      "인"
-    ],
-    "hint": "先則制人"
-  },
-  {
-    "id": "seolbutsanghyeong",
-    "label": "설부화용",
-    "prompt": "눈처럼 흰 살결과 꽃 같은 얼굴, 미인",
-    "tokens": [
-      "설",
-      "부",
-      "화",
-      "용"
-    ],
-    "hint": "雪膚花容"
-  },
-  {
-    "id": "seongseokwajeong",
-    "label": "성쇠지리",
-    "prompt": "성하고 쇠함이 끊임없이 도는 이치",
-    "tokens": [
-      "성",
-      "쇠",
-      "지",
-      "리"
-    ],
-    "hint": "盛衰之理"
-  },
-  {
-    "id": "gyeontojijaeng",
-    "label": "견토지쟁",
-    "prompt": "개와 토끼의 다툼, 엉뚱한 제삼자가 이득을 봄",
-    "tokens": [
-      "견",
-      "토",
-      "지",
-      "쟁"
-    ],
-    "hint": "犬兔之爭"
-  },
-  {
-    "id": "sohwajigwang",
-    "label": "소훼난파",
-    "prompt": "둥지가 부서지면 알도 깨짐, 함께 망함",
-    "tokens": [
-      "소",
-      "훼",
-      "난",
-      "파"
-    ],
-    "hint": "巢毁卵破"
-  },
-  {
-    "id": "songgoryangsu",
-    "label": "송무백열",
-    "prompt": "벗이 잘되는 것을 함께 기뻐함",
-    "tokens": [
-      "송",
-      "무",
-      "백",
-      "열"
-    ],
-    "hint": "松茂栢悅"
-  },
-  {
-    "id": "sugujihaeng",
-    "label": "수석침류",
-    "prompt": "억지로 자기 잘못을 꾸며 우김",
-    "tokens": [
-      "수",
-      "석",
-      "침",
-      "류"
-    ],
-    "hint": "漱石枕流"
-  },
-  {
-    "id": "sunmangchijeong",
-    "label": "수즉다욕",
-    "prompt": "오래 살수록 그만큼 욕된 일도 많음",
-    "tokens": [
-      "수",
-      "즉",
-      "다",
-      "욕"
-    ],
-    "hint": "壽則多辱"
-  },
-  {
-    "id": "seungdangwasil",
-    "label": "승영구구",
-    "prompt": "보잘것없는 이익을 좇아 악착같이 다툼",
-    "tokens": [
-      "승",
-      "영",
-      "구",
-      "구"
-    ],
-    "hint": "蠅營狗苟"
-  },
-  {
-    "id": "hoejajeongri",
-    "label": "회자정리",
-    "prompt": "만난 자는 반드시 헤어지게 됨",
-    "tokens": [
-      "회",
-      "자",
-      "정",
-      "리"
-    ],
-    "hint": "會者定離"
-  },
-  {
-    "id": "sinsangmunbeol",
-    "label": "신언서판",
-    "prompt": "사람을 평가하는 네 가지 기준",
-    "tokens": [
-      "신",
-      "언",
-      "서",
-      "판"
-    ],
-    "hint": "身言書判"
-  },
-  {
-    "id": "simyowonhyeong",
-    "label": "심원의마",
-    "prompt": "마음이 흩어져 진정하기 어려움",
-    "tokens": [
-      "심",
-      "원",
-      "의",
-      "마"
-    ],
-    "hint": "心猿意馬"
-  },
-  {
-    "id": "akwgangsong",
-    "label": "악목도천",
-    "prompt": "아무리 곤란해도 부정한 것은 가까이 않음",
-    "tokens": [
-      "악",
-      "목",
-      "도",
-      "천"
-    ],
-    "hint": "惡木盜泉"
-  },
-  {
-    "id": "ansseokjihye",
-    "label": "안서지혜",
-    "prompt": "기러기가 글을 전한다는 옛이야기의 지혜",
-    "tokens": [
-      "안",
-      "서",
-      "지",
-      "혜"
-    ],
-    "hint": "雁書之惠"
-  },
-  {
-    "id": "yangsangchaekgun",
-    "label": "양금택목",
-    "prompt": "현명한 사람은 좋은 주인을 가려 섬김",
-    "tokens": [
-      "양",
-      "금",
-      "택",
-      "목"
-    ],
-    "hint": "良禽擇木"
-  },
-  {
-    "id": "eohanggwa",
-    "label": "어궤조산",
-    "prompt": "물고기와 새가 흩어지듯 무너져 흩어짐",
-    "tokens": [
-      "어",
-      "궤",
-      "조",
-      "산"
-    ],
-    "hint": "魚潰鳥散"
-  },
-  {
-    "id": "eonbihaengseo",
-    "label": "언비천리",
-    "prompt": "말이 빠르게 멀리까지 퍼짐",
-    "tokens": [
-      "언",
-      "비",
-      "천",
-      "리"
-    ],
-    "hint": "言飛千里"
-  },
-  {
-    "id": "yeokjichipiseong",
-    "label": "여호모피",
-    "prompt": "이해가 상반된 자와 일을 꾀하면 이루기 어려움",
-    "tokens": [
-      "여",
-      "호",
-      "모",
-      "피"
-    ],
-    "hint": "與虎謀皮"
-  },
-  {
-    "id": "yeonjamoraek",
-    "label": "연안짐독",
-    "prompt": "눈앞의 편안함은 독을 마시는 것과 같음",
-    "tokens": [
-      "연",
-      "안",
-      "짐",
-      "독"
-    ],
-    "hint": "宴安鴆毒"
-  },
-  {
-    "id": "ohamsulgun",
-    "label": "오풍십우",
-    "prompt": "기후가 순조로워 풍년이 듦",
-    "tokens": [
-      "오",
-      "풍",
-      "십",
-      "우"
-    ],
-    "hint": "五風十雨"
-  },
-  {
-    "id": "ongoljihaeng",
-    "label": "옥상가옥",
-    "prompt": "쓸데없는 일을 거듭함",
-    "tokens": [
-      "옥",
-      "상",
-      "가",
-      "옥"
-    ],
-    "hint": "屋上架屋"
+    "hint": "不撓不屈"
   }
 ]

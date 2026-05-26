@@ -1,0 +1,452 @@
+[
+  {
+    "word": "thumb",
+    "meaning": "엄지",
+    "hint": "신체"
+  },
+  {
+    "word": "tiger",
+    "meaning": "호랑이",
+    "hint": "동물"
+  },
+  {
+    "word": "today",
+    "meaning": "오늘",
+    "hint": "시간"
+  },
+  {
+    "word": "tooth",
+    "meaning": "이",
+    "hint": "신체"
+  },
+  {
+    "word": "touch",
+    "meaning": "만지다",
+    "hint": "동작"
+  },
+  {
+    "word": "towel",
+    "meaning": "수건",
+    "hint": "집"
+  },
+  {
+    "word": "uncle",
+    "meaning": "삼촌",
+    "hint": "가족"
+  },
+  {
+    "word": "visit",
+    "meaning": "방문하다",
+    "hint": "동작"
+  },
+  {
+    "word": "watch",
+    "meaning": "손목시계",
+    "hint": "옷"
+  },
+  {
+    "word": "water",
+    "meaning": "물",
+    "hint": "음료"
+  },
+  {
+    "word": "whale",
+    "meaning": "고래",
+    "hint": "동물"
+  },
+  {
+    "word": "white",
+    "meaning": "하양",
+    "hint": "색깔"
+  },
+  {
+    "word": "woman",
+    "meaning": "여자",
+    "hint": "사람"
+  },
+  {
+    "word": "world",
+    "meaning": "세계",
+    "hint": "자연"
+  },
+  {
+    "word": "write",
+    "meaning": "쓰다",
+    "hint": "학교"
+  },
+  {
+    "word": "young",
+    "meaning": "젊은",
+    "hint": "형용사"
+  },
+  {
+    "word": "zebra",
+    "meaning": "얼룩말",
+    "hint": "동물"
+  },
+  {
+    "word": "afraid",
+    "meaning": "두려운",
+    "hint": "감정"
+  },
+  {
+    "word": "answer",
+    "meaning": "대답",
+    "hint": "학교"
+  },
+  {
+    "word": "appear",
+    "meaning": "나타나다",
+    "hint": "동작"
+  },
+  {
+    "word": "arrive",
+    "meaning": "도착하다",
+    "hint": "동작"
+  },
+  {
+    "word": "artist",
+    "meaning": "예술가",
+    "hint": "직업"
+  },
+  {
+    "word": "autumn",
+    "meaning": "가을",
+    "hint": "계절"
+  },
+  {
+    "word": "banana",
+    "meaning": "바나나",
+    "hint": "과일"
+  },
+  {
+    "word": "basket",
+    "meaning": "바구니",
+    "hint": "집"
+  },
+  {
+    "word": "borrow",
+    "meaning": "빌리다",
+    "hint": "동작"
+  },
+  {
+    "word": "bottle",
+    "meaning": "병",
+    "hint": "집"
+  },
+  {
+    "word": "bridge",
+    "meaning": "다리",
+    "hint": "건축물"
+  },
+  {
+    "word": "bright",
+    "meaning": "밝은",
+    "hint": "형용사"
+  },
+  {
+    "word": "butter",
+    "meaning": "버터",
+    "hint": "음식"
+  },
+  {
+    "word": "button",
+    "meaning": "단추",
+    "hint": "옷"
+  },
+  {
+    "word": "candle",
+    "meaning": "양초",
+    "hint": "집"
+  },
+  {
+    "word": "carrot",
+    "meaning": "당근",
+    "hint": "채소"
+  },
+  {
+    "word": "change",
+    "meaning": "바꾸다",
+    "hint": "동작"
+  },
+  {
+    "word": "cheese",
+    "meaning": "치즈",
+    "hint": "음식"
+  },
+  {
+    "word": "cherry",
+    "meaning": "체리",
+    "hint": "과일"
+  },
+  {
+    "word": "choose",
+    "meaning": "고르다",
+    "hint": "동작"
+  },
+  {
+    "word": "coffee",
+    "meaning": "커피",
+    "hint": "음료"
+  },
+  {
+    "word": "corner",
+    "meaning": "모퉁이",
+    "hint": "장소"
+  },
+  {
+    "word": "cousin",
+    "meaning": "사촌",
+    "hint": "가족"
+  },
+  {
+    "word": "dancer",
+    "meaning": "무용수",
+    "hint": "직업"
+  },
+  {
+    "word": "decide",
+    "meaning": "결정하다",
+    "hint": "동작"
+  },
+  {
+    "word": "dinner",
+    "meaning": "저녁식사",
+    "hint": "음식"
+  },
+  {
+    "word": "doctor",
+    "meaning": "의사",
+    "hint": "직업"
+  },
+  {
+    "word": "drawer",
+    "meaning": "서랍",
+    "hint": "집"
+  },
+  {
+    "word": "driver",
+    "meaning": "운전사",
+    "hint": "직업"
+  },
+  {
+    "word": "eleven",
+    "meaning": "열하나",
+    "hint": "숫자"
+  },
+  {
+    "word": "eraser",
+    "meaning": "지우개",
+    "hint": "학교"
+  },
+  {
+    "word": "expect",
+    "meaning": "기대하다",
+    "hint": "동작"
+  },
+  {
+    "word": "family",
+    "meaning": "가족",
+    "hint": "사람"
+  },
+  {
+    "word": "famous",
+    "meaning": "유명한",
+    "hint": "형용사"
+  },
+  {
+    "word": "farmer",
+    "meaning": "농부",
+    "hint": "직업"
+  },
+  {
+    "word": "father",
+    "meaning": "아버지",
+    "hint": "가족"
+  },
+  {
+    "word": "finger",
+    "meaning": "손가락",
+    "hint": "신체"
+  },
+  {
+    "word": "finish",
+    "meaning": "끝내다",
+    "hint": "동작"
+  },
+  {
+    "word": "flower",
+    "meaning": "꽃",
+    "hint": "자연"
+  },
+  {
+    "word": "follow",
+    "meaning": "따르다",
+    "hint": "동작"
+  },
+  {
+    "word": "forest",
+    "meaning": "숲",
+    "hint": "자연"
+  },
+  {
+    "word": "forget",
+    "meaning": "잊다",
+    "hint": "동작"
+  },
+  {
+    "word": "friend",
+    "meaning": "친구",
+    "hint": "사람"
+  },
+  {
+    "word": "future",
+    "meaning": "미래",
+    "hint": "시간"
+  },
+  {
+    "word": "garden",
+    "meaning": "정원",
+    "hint": "집"
+  },
+  {
+    "word": "happen",
+    "meaning": "일어나다",
+    "hint": "동작"
+  },
+  {
+    "word": "insect",
+    "meaning": "곤충",
+    "hint": "동물"
+  },
+  {
+    "word": "invite",
+    "meaning": "초대하다",
+    "hint": "동작"
+  },
+  {
+    "word": "island",
+    "meaning": "섬",
+    "hint": "자연"
+  },
+  {
+    "word": "jacket",
+    "meaning": "재킷",
+    "hint": "옷"
+  },
+  {
+    "word": "kitten",
+    "meaning": "새끼고양이",
+    "hint": "동물"
+  },
+  {
+    "word": "lesson",
+    "meaning": "수업",
+    "hint": "학교"
+  },
+  {
+    "word": "letter",
+    "meaning": "글자",
+    "hint": "학교"
+  },
+  {
+    "word": "listen",
+    "meaning": "듣다",
+    "hint": "동작"
+  },
+  {
+    "word": "market",
+    "meaning": "시장",
+    "hint": "장소"
+  },
+  {
+    "word": "minute",
+    "meaning": "분",
+    "hint": "시간"
+  },
+  {
+    "word": "mirror",
+    "meaning": "거울",
+    "hint": "집"
+  },
+  {
+    "word": "moment",
+    "meaning": "순간",
+    "hint": "시간"
+  },
+  {
+    "word": "monday",
+    "meaning": "월요일",
+    "hint": "요일"
+  },
+  {
+    "word": "monkey",
+    "meaning": "원숭이",
+    "hint": "동물"
+  },
+  {
+    "word": "mother",
+    "meaning": "어머니",
+    "hint": "가족"
+  },
+  {
+    "word": "narrow",
+    "meaning": "좁은",
+    "hint": "형용사"
+  },
+  {
+    "word": "nature",
+    "meaning": "자연",
+    "hint": "자연"
+  },
+  {
+    "word": "noodle",
+    "meaning": "국수",
+    "hint": "음식"
+  },
+  {
+    "word": "number",
+    "meaning": "숫자",
+    "hint": "숫자"
+  },
+  {
+    "word": "office",
+    "meaning": "사무실",
+    "hint": "장소"
+  },
+  {
+    "word": "orange",
+    "meaning": "주황",
+    "hint": "색깔"
+  },
+  {
+    "word": "parent",
+    "meaning": "부모",
+    "hint": "가족"
+  },
+  {
+    "word": "pencil",
+    "meaning": "연필",
+    "hint": "학교"
+  },
+  {
+    "word": "people",
+    "meaning": "사람들",
+    "hint": "사람"
+  },
+  {
+    "word": "pepper",
+    "meaning": "후추",
+    "hint": "음식"
+  },
+  {
+    "word": "person",
+    "meaning": "사람",
+    "hint": "사람"
+  },
+  {
+    "word": "pillow",
+    "meaning": "베개",
+    "hint": "집"
+  }
+]

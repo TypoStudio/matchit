@@ -1,0 +1,302 @@
+[
+  {
+    "word": "smoke",
+    "meaning": "연기",
+    "hint": "불에서남"
+  },
+  {
+    "word": "snout",
+    "meaning": "주둥이",
+    "hint": "동물코입"
+  },
+  {
+    "word": "socks",
+    "meaning": "양말",
+    "hint": "발옷"
+  },
+  {
+    "word": "sound",
+    "meaning": "소리",
+    "hint": "들리는것"
+  },
+  {
+    "word": "south",
+    "meaning": "남쪽",
+    "hint": "아래방향"
+  },
+  {
+    "word": "space",
+    "meaning": "우주",
+    "hint": "별의공간"
+  },
+  {
+    "word": "spark",
+    "meaning": "불똥",
+    "hint": "튀는불"
+  },
+  {
+    "word": "speed",
+    "meaning": "속도",
+    "hint": "빠르기"
+  },
+  {
+    "word": "spine",
+    "meaning": "척추",
+    "hint": "등뼈"
+  },
+  {
+    "word": "sport",
+    "meaning": "스포츠",
+    "hint": "운동경기"
+  },
+  {
+    "word": "squid",
+    "meaning": "오징어",
+    "hint": "길쭉바다생물"
+  },
+  {
+    "word": "stamp",
+    "meaning": "우표",
+    "hint": "편지표"
+  },
+  {
+    "word": "steam",
+    "meaning": "증기",
+    "hint": "물의김"
+  },
+  {
+    "word": "store",
+    "meaning": "가게",
+    "hint": "파는곳"
+  },
+  {
+    "word": "stork",
+    "meaning": "황새",
+    "hint": "긴부리새"
+  },
+  {
+    "word": "style",
+    "meaning": "양식",
+    "hint": "멋"
+  },
+  {
+    "word": "swamp",
+    "meaning": "늪",
+    "hint": "질척땅"
+  },
+  {
+    "word": "theme",
+    "meaning": "주제",
+    "hint": "중심생각"
+  },
+  {
+    "word": "topic",
+    "meaning": "주제",
+    "hint": "화제"
+  },
+  {
+    "word": "total",
+    "meaning": "총합",
+    "hint": "전체"
+  },
+  {
+    "word": "tower",
+    "meaning": "탑",
+    "hint": "높은건물"
+  },
+  {
+    "word": "trade",
+    "meaning": "무역",
+    "hint": "거래"
+  },
+  {
+    "word": "trout",
+    "meaning": "송어",
+    "hint": "민물고기"
+  },
+  {
+    "word": "truck",
+    "meaning": "트럭",
+    "hint": "큰차"
+  },
+  {
+    "word": "trunk",
+    "meaning": "코끼리코",
+    "hint": "긴코"
+  },
+  {
+    "word": "truth",
+    "meaning": "진실",
+    "hint": "참"
+  },
+  {
+    "word": "value",
+    "meaning": "가치",
+    "hint": "값어치"
+  },
+  {
+    "word": "viper",
+    "meaning": "독사",
+    "hint": "독있는뱀"
+  },
+  {
+    "word": "voice",
+    "meaning": "목소리",
+    "hint": "사람소리"
+  },
+  {
+    "word": "waist",
+    "meaning": "허리",
+    "hint": "몸중간"
+  },
+  {
+    "word": "wheel",
+    "meaning": "바퀴",
+    "hint": "둥근것"
+  },
+  {
+    "word": "width",
+    "meaning": "너비",
+    "hint": "넓이"
+  },
+  {
+    "word": "worry",
+    "meaning": "걱정",
+    "hint": "근심"
+  },
+  {
+    "word": "wrist",
+    "meaning": "손목",
+    "hint": "손관절"
+  },
+  {
+    "word": "accept",
+    "meaning": "받아들이다",
+    "hint": "수용하다"
+  },
+  {
+    "word": "action",
+    "meaning": "행동",
+    "hint": "움직임"
+  },
+  {
+    "word": "advice",
+    "meaning": "조언",
+    "hint": "도움말"
+  },
+  {
+    "word": "amount",
+    "meaning": "양",
+    "hint": "분량"
+  },
+  {
+    "word": "animal",
+    "meaning": "동물",
+    "hint": "숨쉬는것"
+  },
+  {
+    "word": "antler",
+    "meaning": "사슴뿔",
+    "hint": "가지친뿔"
+  },
+  {
+    "word": "author",
+    "meaning": "작가",
+    "hint": "글쓴이"
+  },
+  {
+    "word": "badger",
+    "meaning": "오소리",
+    "hint": "땅파는동물"
+  },
+  {
+    "word": "beauty",
+    "meaning": "아름다움",
+    "hint": "미"
+  },
+  {
+    "word": "beaver",
+    "meaning": "비버",
+    "hint": "댐만듦"
+  },
+  {
+    "word": "beetle",
+    "meaning": "딱정벌레",
+    "hint": "단단한벌레"
+  },
+  {
+    "word": "belief",
+    "meaning": "믿음",
+    "hint": "신념"
+  },
+  {
+    "word": "bother",
+    "meaning": "귀찮게하다",
+    "hint": "성가시게"
+  },
+  {
+    "word": "bottom",
+    "meaning": "바닥",
+    "hint": "아래"
+  },
+  {
+    "word": "branch",
+    "meaning": "가지",
+    "hint": "나무팔"
+  },
+  {
+    "word": "breeze",
+    "meaning": "산들바람",
+    "hint": "부드런바람"
+  },
+  {
+    "word": "burrow",
+    "meaning": "굴",
+    "hint": "동물땅굴"
+  },
+  {
+    "word": "camera",
+    "meaning": "카메라",
+    "hint": "찍는기계"
+  },
+  {
+    "word": "canary",
+    "meaning": "카나리아",
+    "hint": "노란새"
+  },
+  {
+    "word": "canyon",
+    "meaning": "협곡",
+    "hint": "깊은골짜기"
+  },
+  {
+    "word": "castle",
+    "meaning": "성",
+    "hint": "돌건물"
+  },
+  {
+    "word": "center",
+    "meaning": "중심",
+    "hint": "가운데"
+  },
+  {
+    "word": "chance",
+    "meaning": "기회",
+    "hint": "때"
+  },
+  {
+    "word": "choice",
+    "meaning": "선택",
+    "hint": "고름"
+  },
+  {
+    "word": "church",
+    "meaning": "교회",
+    "hint": "기도하는곳"
+  },
+  {
+    "word": "circle",
+    "meaning": "원",
+    "hint": "둥근것"
+  }
+]

@@ -1,0 +1,352 @@
+[
+  {
+    "word": "pursue",
+    "meaning": "추구하다",
+    "hint": "좇다"
+  },
+  {
+    "word": "radius",
+    "meaning": "반지름",
+    "hint": "원반폭"
+  },
+  {
+    "word": "recipe",
+    "meaning": "조리법",
+    "hint": "요리법"
+  },
+  {
+    "word": "record",
+    "meaning": "기록",
+    "hint": "적음"
+  },
+  {
+    "word": "region",
+    "meaning": "지역",
+    "hint": "구역"
+  },
+  {
+    "word": "remain",
+    "meaning": "남다",
+    "hint": "머무르다"
+  },
+  {
+    "word": "remove",
+    "meaning": "제거하다",
+    "hint": "없애다"
+  },
+  {
+    "word": "repair",
+    "meaning": "수리하다",
+    "hint": "고치다"
+  },
+  {
+    "word": "rescue",
+    "meaning": "구조하다",
+    "hint": "구하다"
+  },
+  {
+    "word": "ritual",
+    "meaning": "의례",
+    "hint": "의식행위"
+  },
+  {
+    "word": "sample",
+    "meaning": "견본",
+    "hint": "표본"
+  },
+  {
+    "word": "signal",
+    "meaning": "신호",
+    "hint": "알림표시"
+  },
+  {
+    "word": "spirit",
+    "meaning": "영혼",
+    "hint": "넋"
+  },
+  {
+    "word": "survey",
+    "meaning": "조사",
+    "hint": "설문"
+  },
+  {
+    "word": "symbol",
+    "meaning": "상징",
+    "hint": "표상"
+  },
+  {
+    "word": "system",
+    "meaning": "체계",
+    "hint": "조직"
+  },
+  {
+    "word": "tactic",
+    "meaning": "전술",
+    "hint": "방책"
+  },
+  {
+    "word": "temple",
+    "meaning": "사원",
+    "hint": "절"
+  },
+  {
+    "word": "theory",
+    "meaning": "이론",
+    "hint": "학설"
+  },
+  {
+    "word": "volume",
+    "meaning": "부피",
+    "hint": "용량"
+  },
+  {
+    "word": "weapon",
+    "meaning": "무기",
+    "hint": "싸움도구"
+  },
+  {
+    "word": "abandon",
+    "meaning": "버리다",
+    "hint": "포기하다"
+  },
+  {
+    "word": "ability",
+    "meaning": "능력",
+    "hint": "할수있음"
+  },
+  {
+    "word": "absence",
+    "meaning": "부재",
+    "hint": "없는상태"
+  },
+  {
+    "word": "account",
+    "meaning": "계좌",
+    "hint": "장부"
+  },
+  {
+    "word": "achieve",
+    "meaning": "성취하다",
+    "hint": "이루다"
+  },
+  {
+    "word": "acquire",
+    "meaning": "습득하다",
+    "hint": "얻다"
+  },
+  {
+    "word": "alcohol",
+    "meaning": "술",
+    "hint": "마시는것"
+  },
+  {
+    "word": "analyst",
+    "meaning": "분석가",
+    "hint": "분석하는사람"
+  },
+  {
+    "word": "analyze",
+    "meaning": "분석하다",
+    "hint": "자세히살핌"
+  },
+  {
+    "word": "ancient",
+    "meaning": "고대의",
+    "hint": "아주오래된"
+  },
+  {
+    "word": "anxiety",
+    "meaning": "불안",
+    "hint": "걱정"
+  },
+  {
+    "word": "applaud",
+    "meaning": "박수치다",
+    "hint": "손뼉"
+  },
+  {
+    "word": "approve",
+    "meaning": "승인하다",
+    "hint": "찬성하다"
+  },
+  {
+    "word": "arrange",
+    "meaning": "배열하다",
+    "hint": "정돈하다"
+  },
+  {
+    "word": "arrival",
+    "meaning": "도착",
+    "hint": "도착함"
+  },
+  {
+    "word": "article",
+    "meaning": "기사",
+    "hint": "글"
+  },
+  {
+    "word": "athlete",
+    "meaning": "운동선수",
+    "hint": "경기자"
+  },
+  {
+    "word": "attempt",
+    "meaning": "시도하다",
+    "hint": "해보다"
+  },
+  {
+    "word": "auction",
+    "meaning": "경매",
+    "hint": "입찰판매"
+  },
+  {
+    "word": "average",
+    "meaning": "평균",
+    "hint": "고른값"
+  },
+  {
+    "word": "balance",
+    "meaning": "균형",
+    "hint": "평형"
+  },
+  {
+    "word": "balcony",
+    "meaning": "발코니",
+    "hint": "건물난간"
+  },
+  {
+    "word": "bandage",
+    "meaning": "붕대",
+    "hint": "상처감싸기"
+  },
+  {
+    "word": "bargain",
+    "meaning": "흥정하다",
+    "hint": "값깎기"
+  },
+  {
+    "word": "barrier",
+    "meaning": "장벽",
+    "hint": "막는것"
+  },
+  {
+    "word": "beneath",
+    "meaning": "아래에",
+    "hint": "밑에"
+  },
+  {
+    "word": "benefit",
+    "meaning": "이익",
+    "hint": "혜택"
+  },
+  {
+    "word": "biscuit",
+    "meaning": "비스킷",
+    "hint": "과자"
+  },
+  {
+    "word": "calorie",
+    "meaning": "칼로리",
+    "hint": "열량"
+  },
+  {
+    "word": "capable",
+    "meaning": "유능한",
+    "hint": "할수있는"
+  },
+  {
+    "word": "cartoon",
+    "meaning": "만화",
+    "hint": "그림이야기"
+  },
+  {
+    "word": "chamber",
+    "meaning": "방",
+    "hint": "실내공간"
+  },
+  {
+    "word": "chapter",
+    "meaning": "장",
+    "hint": "책장"
+  },
+  {
+    "word": "chimney",
+    "meaning": "굴뚝",
+    "hint": "연기통로"
+  },
+  {
+    "word": "circuit",
+    "meaning": "회로",
+    "hint": "전기길"
+  },
+  {
+    "word": "citizen",
+    "meaning": "시민",
+    "hint": "국민"
+  },
+  {
+    "word": "commute",
+    "meaning": "통근하다",
+    "hint": "오가다"
+  },
+  {
+    "word": "conceal",
+    "meaning": "숨기다",
+    "hint": "감추다"
+  },
+  {
+    "word": "concept",
+    "meaning": "개념",
+    "hint": "생각틀"
+  },
+  {
+    "word": "condemn",
+    "meaning": "비난하다",
+    "hint": "꾸짖다"
+  },
+  {
+    "word": "confess",
+    "meaning": "고백하다",
+    "hint": "털어놓다"
+  },
+  {
+    "word": "consent",
+    "meaning": "동의하다",
+    "hint": "허락하다"
+  },
+  {
+    "word": "consume",
+    "meaning": "소비하다",
+    "hint": "쓰다"
+  },
+  {
+    "word": "contest",
+    "meaning": "대회",
+    "hint": "겨루기"
+  },
+  {
+    "word": "convict",
+    "meaning": "유죄선고하다",
+    "hint": "죄판정"
+  },
+  {
+    "word": "costume",
+    "meaning": "의상",
+    "hint": "분장옷"
+  },
+  {
+    "word": "cottage",
+    "meaning": "오두막집",
+    "hint": "시골작은집"
+  },
+  {
+    "word": "cunning",
+    "meaning": "교활한",
+    "hint": "꾀많은"
+  },
+  {
+    "word": "cushion",
+    "meaning": "쿠션",
+    "hint": "푹신한것"
+  }
+]

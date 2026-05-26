@@ -11,10 +11,16 @@ const packBoardSizes: Record<string, { cols: number; rows: number }> = {
 };
 // 토큰(글자)이 긴 팩은 가로로 1.5배 긴 블럭 사용
 const wideBlockPacks = new Set(['english-grammar', 'math-formula']);
+// 영어 단어 팩(학년별): 철자/뜻 양방향 모드. id가 english-word 로 시작.
+const isWordPackId = (id: string) => id.startsWith('english-word');
 const appVersion = `v${__APP_VERSION__}`;
 const baseUrl = import.meta.env.BASE_URL;
 const localPackUrl = `${baseUrl}data/lesson-packs.json`;
-const palette = ['#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef'];
+const palette = [
+  '#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef', '#eab308',
+  '#3b82f6', '#ef4444', '#10b981', '#a855f7', '#f43f5e', '#0ea5e9', '#65a30d', '#fb923c',
+  '#8b5cf6', '#06b6d4', '#db2777', '#22c55e', '#f59e0b', '#7c3aed', '#dc2626', '#2dd4bf',
+];
 
 const themes: Array<{ id: ThemeName; label: string }> = [
   { id: 'paper', label: 'Paper' },
@@ -50,7 +56,14 @@ type MobilePanel = (typeof mobilePanels)[number]['id'];
 const packs = ref<LessonPack[]>([]);
 const selectedPackId = ref('');
 const selectedLevel = ref(1);
-const lessonItems = ref<LessonItem[]>([]);
+const lessonItems = ref<LessonItem[]>([]); // 현재 레벨 파일의 문제
+const rawWordEntries = ref<Array<{ word: string; meaning: string; hint?: string }>>([]); // 현재 레벨 영어단어 원본
+const wordDirection = ref<'spell' | 'meaning'>((localStorage.getItem('matchit-word-direction') as 'spell' | 'meaning') || 'spell');
+const STAGE_SIZE = 10; // 한 스테이지의 문제 수
+const currentStage = ref(1); // 현재 스테이지(1-based)
+const clearedStages = ref<Record<number, number[]>>({}); // {레벨: [클리어한 스테이지...]} (현재 팩)
+const showStageClear = ref(false);
+const stageClearInfo = ref<{ level: number; stage: number; hasNext: boolean }>({ level: 1, stage: 1, hasNext: false });
 const sampleItems = ref<LessonItem[]>([]); // 팩 문항 목록에 보여줄 랜덤 30개
 const mode = ref<GameMode>('single');
 const gameKind = ref<GameKind>((localStorage.getItem('matchit-game-kind') as GameKind) || 'lesson');
@@ -61,6 +74,7 @@ const blockStyle = ref<BlockStyleName>((localStorage.getItem('matchit-block-styl
 const showAnswer = ref(localStorage.getItem('matchit-show-answer') !== 'off');
 const answerItem = ref<LessonItem | null>(null);
 const answerSlotSize = ref(48);
+const answerSlotColors = ref<string[]>([]); // 각 정답 슬롯 색(날아온 보드 블럭과 동일)
 const boardEl = ref<HTMLElement | null>(null);
 const answerEl = ref<HTMLElement | null>(null);
 let answerTimer: number | undefined;
@@ -98,6 +112,41 @@ const showExitConfirm = ref(false);
 const gameFullscreen = ref(false);
 
 const activePack = computed(() => packs.value.find((pack) => pack.id === selectedPackId.value));
+const isWordPack = computed(() => isWordPackId(selectedPackId.value));
+const levels = computed(() => activePack.value?.levels ?? []);
+function levelLabel(level: number) {
+  return `Lv ${level}`;
+}
+// 영어단어 원본을 방향(철자/뜻)에 따라 LessonItem으로 변환
+function buildWordItems(raw: Array<{ word: string; meaning: string; hint?: string }>, dir: 'spell' | 'meaning'): LessonItem[] {
+  return raw.map((r) => {
+    const word = r.word.trim();
+    const meaning = r.meaning.trim();
+    const extra = r.hint ? ` · ${r.hint}` : '';
+    if (dir === 'spell') {
+      return {
+        id: `${word}-spell`,
+        label: word,
+        prompt: `${meaning} 의 철자`,
+        tokens: word.toLowerCase().replace(/[^a-z]/g, '').split(''),
+        hint: `${word} = ${meaning}${extra}`,
+      };
+    }
+    return {
+      id: `${word}-mean`,
+      label: meaning,
+      prompt: word,
+      tokens: meaning.replace(/\s/g, '').split(''),
+      hint: `${word} = ${meaning}${extra}`,
+    };
+  });
+}
+// 레벨을 10문제씩 스테이지로 분할
+const stageCount = computed(() => Math.max(1, Math.ceil(lessonItems.value.length / STAGE_SIZE)));
+const stageItems = computed(() => lessonItems.value.slice((currentStage.value - 1) * STAGE_SIZE, currentStage.value * STAGE_SIZE));
+// 한 문제씩 모드는 현재 스테이지(10문제)만, 연속 모드는 레벨 전체를 대상으로
+const activeItems = computed(() => (gameKind.value === 'lesson' && mode.value === 'single' ? stageItems.value : lessonItems.value));
+
 const target = computed(() => {
   if (mode.value === 'endless') {
     return {
@@ -108,8 +157,8 @@ const target = computed(() => {
       hint: '보드에 있는 정답을 연속으로 맞추세요.',
     };
   }
-  if (!lessonItems.value.length) return null;
-  return lessonItems.value[targetIndex.value % lessonItems.value.length];
+  if (!activeItems.value.length) return null;
+  return activeItems.value[targetIndex.value % activeItems.value.length];
 });
 const selectedBlocks = computed((): Block[] => selectedIndexes.value.map((index) => board.value[index]).filter((block): block is Block => Boolean(block)));
 const selectedText = computed(() => selectedBlocks.value.map((block) => block.token).join(' '));
@@ -117,7 +166,8 @@ const selectedText = computed(() => selectedBlocks.value.map((block) => block.to
 // 블럭모으기 모드: 블럭을 교환해 목표 식의 글자들을 상하좌우로 붙이면(연결) 제거
 const collectTargetItem = ref<LessonItem | null>(null);
 const collectableItems = computed(() =>
-  lessonItems.value.filter((it) => it.tokens.length >= 2 && it.tokens.length <= Math.max(rows.value, cols.value)),
+  // 1글자 답도 포함(탭으로 해결). 상한은 보드 한 변 길이.
+  activeItems.value.filter((it) => it.tokens.length >= 1 && it.tokens.length <= Math.max(rows.value, cols.value)),
 );
 const maxValue = computed(() => board.value.reduce((max, block) => Math.max(max, block?.value ?? 0), 0));
 // 토큰(글자)이 긴 팩(영문법·수학식)은 가로로 긴 블럭 사용
@@ -130,11 +180,12 @@ const goalPrompt = computed(() => {
   }
   return target.value?.prompt || '로딩 중';
 });
+// 힌트로 강조한 실제 문항 (연속모드 가상 목표 대신 사용)
+const hintItem = ref<LessonItem | null>(null);
 // 힌트 버튼이 켜졌을 때 현재 목표 문항의 hint 텍스트
 const hintText = computed(() => {
   if (!hintIndexes.value.length || gameKind.value !== 'lesson') return '';
-  const item = solveMode.value === 'collect' ? collectTargetItem.value : target.value;
-  return item?.hint ?? '';
+  return hintItem.value?.hint ?? '';
 });
 
 function blockId() {
@@ -275,7 +326,9 @@ function findTargetCluster(brd: Block[], tokens: string[], startCells?: number[]
 }
 
 function findAnyTargetCluster(brd: Block[], startCells?: number[]): { indexes: number[]; item: LessonItem } | null {
-  for (const item of collectableItems.value) {
+  // 여러 답이 동시에 성립하면 블럭(토큰) 개수가 많은 답을 우선
+  const candidates = [...collectableItems.value].sort((a, b) => b.tokens.length - a.tokens.length);
+  for (const item of candidates) {
     const indexes = findTargetCluster(brd, item.tokens, startCells);
     if (indexes) return { indexes, item };
   }
@@ -298,14 +351,20 @@ function canFormFromBoard(item: LessonItem) {
 
 // 보드가 이미 지원하는(만들 수 있고 아직 붙어있지 않은) 식 중에서 다음 목표를 고른다
 function chooseNextCollectTarget(): LessonItem | null {
-  const supportable = collectableItems.value.filter(canFormFromBoard);
+  // 이미 푼 문제는 제외(스테이지 내 중복 출제 방지), 다 풀었으면 전체에서
+  const unsolved = collectableItems.value.filter((it) => !solvedItems.value.includes(it.id));
+  const base = unsolved.length ? unsolved : collectableItems.value;
+  // 보드에서 실제로 만들 수 있는 것만 목표가 될 수 있다(없으면 null → 새 판)
+  const supportable = base.filter(canFormFromBoard);
+  if (!supportable.length) return null;
   const fresh = supportable.filter((item) => !findTargetCluster(board.value, item.tokens));
   const pool = fresh.length ? fresh : supportable;
-  return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 function pickCollectItem() {
-  const pool = collectableItems.value;
+  const unsolved = collectableItems.value.filter((it) => !solvedItems.value.includes(it.id));
+  const pool = unsolved.length ? unsolved : collectableItems.value;
   collectTargetItem.value = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
 }
 
@@ -321,35 +380,43 @@ function scatterTokens(brd: Block[], item: LessonItem) {
 // 보드에 글자가 다 있는 식을 우선 목표로, 없으면 새 목표를 고르고 답 글자를 위에서 떨어뜨린다.
 function ensureSequenceTargetOnBoard() {
   if (gameKind.value !== 'lesson' || solveMode.value !== 'sequence' || mode.value !== 'single') return;
-  const items = lessonItems.value;
+  const items = activeItems.value; // 현재 스테이지(10문제)
   if (!items.length) return;
-  const present = items.filter(canFormFromBoard);
-  if (present.length) {
-    targetIndex.value = items.indexOf(present[Math.floor(Math.random() * present.length)]);
-    return;
-  }
-  const chosen = items[Math.floor(Math.random() * items.length)];
+  // 이미 푼 문제는 제외해 스테이지 내 중복 출제를 막는다
+  const remaining = items.filter((it) => !solvedItems.value.includes(it.id));
+  const candidates = remaining.length ? remaining : items;
+  // 목표를 먼저 무작위로 고른다(보드에 이미 있는지와 무관하게 매번 달라지도록)
+  const chosen = candidates[Math.floor(Math.random() * candidates.length)];
   targetIndex.value = items.indexOf(chosen);
-  const positions = shuffle(Array.from({ length: rows.value * cols.value }, (_, i) => i));
-  const next = [...board.value];
-  chosen.tokens.forEach((token, k) => {
-    const block = makeBlock(chosen, token);
-    block.dropFrom = rows.value;
-    next[positions[k]] = block;
-  });
-  board.value = next;
+  // 고른 목표를 보드에서 만들 수 없으면 새 판을 만들고 안내
+  if (!canFormFromBoard(chosen)) {
+    message.value = '보드에 답이 없어 새 판을 만들었어요.';
+    const fresh = seededBlocks();
+    // 새 판에도 목표 글자가 반드시 포함되도록 보장
+    const positions = shuffle(Array.from({ length: rows.value * cols.value }, (_, i) => i));
+    chosen.tokens.forEach((token, k) => {
+      const block = makeBlock(chosen, token);
+      block.dropFrom = rows.value;
+      fresh[positions[k]] = block;
+    });
+    board.value = fresh;
+  }
 }
 
 function buildCollectBoard(): Block[] {
-  const items = lessonItems.value;
+  const items = activeItems.value;
   const target = collectTargetItem.value;
   const pool = collectableItems.value;
+  const total = rows.value * cols.value;
   let candidate: Block[] = [];
   for (let attempt = 0; attempt < 16; attempt += 1) {
-    candidate = Array.from({ length: rows.value * cols.value }, () => makeBlock(items[Math.floor(Math.random() * items.length)]));
-    // 풀 수 있도록 목표(엔드리스는 무작위 식)의 토큰을 흩뿌림
+    // 풀 수 있는 정답들을 최대한 보드에 깔고(중복 최소화), 남는 칸은 스테이지 글자로
+    candidate = fillAnswerBoard(pool, items, total);
+    // 목표는 반드시 보드에 있도록 흩뿌려 보장
     const guarantee = target || (pool.length ? pool[Math.floor(Math.random() * pool.length)] : null);
     if (guarantee) scatterTokens(candidate, guarantee);
+    // 1글자 목표는 항상 보드에 존재(탭으로 해결)하므로 미리완성 검사 생략
+    if (target && target.tokens.length < 2) break;
     // 시작부터 정답이 완성돼(붙어) 있지 않도록
     const preSolved = target ? findTargetCluster(candidate, target.tokens) : findAnyTargetCluster(candidate);
     if (!preSolved) break;
@@ -360,7 +427,7 @@ function buildCollectBoard(): Block[] {
 function seededBlocks() {
   if (gameKind.value === 'numbers') return seedNumberBoard();
 
-  const items = lessonItems.value;
+  const items = activeItems.value;
   if (!items.length) return [];
 
   if (solveMode.value === 'collect') {
@@ -384,37 +451,102 @@ function seededBlocks() {
     return shuffle(newBoard);
   }
 
-  const exactTargets = items.flatMap((item) => item.tokens.map((token) => makeBlock(item, token)));
-  const fillers = Array.from({ length: Math.max(0, total - exactTargets.length) }, () => {
-    const item = items[Math.floor(Math.random() * items.length)];
-    return makeBlock(item);
-  });
-  return shuffle([...exactTargets, ...fillers]).slice(0, total);
+  return fillAnswerBoard(items, items, total);
+}
+
+// 정답들을 "완전한 단위"로 보드에 채운다(중복 최소화·부분 잘림 없이).
+// answerPool: 보장하려는 정답들, fillerPool: 남는 칸을 채울 글자 출처.
+function fillAnswerBoard(answerPool: LessonItem[], fillerPool: LessonItem[], total: number): Block[] {
+  const blocks: Block[] = [];
+  for (const item of shuffle(answerPool)) {
+    if (blocks.length + item.tokens.length > total) continue; // 안 들어가면 통째로 건너뜀
+    for (const token of item.tokens) blocks.push(makeBlock(item, token));
+  }
+  const pool = fillerPool.length ? fillerPool : answerPool;
+  while (blocks.length < total && pool.length) {
+    const item = pool[Math.floor(Math.random() * pool.length)];
+    blocks.push(makeBlock(item, item.tokens[Math.floor(Math.random() * item.tokens.length)]));
+  }
+  return shuffle(blocks);
 }
 
 const solvedItems = ref<string[]>([]);
+// 현재 스테이지 진행도(푼 개수 / 총 개수) — 학습·한문제씩 모드에서만
+const showProgress = computed(() => gameKind.value === 'lesson' && mode.value === 'single');
+const levelProgress = computed(() => {
+  const total = activeItems.value.length; // 스테이지 문제 수(=10)
+  return { current: Math.min(solvedItems.value.length + 1, total), total, levelTotal: lessonItems.value.length };
+});
 
 watch(solvedItems, (solved) => {
-  const required = solveMode.value === 'collect' ? collectableItems.value : lessonItems.value;
-  if (mode.value === 'single' && required.length > 0 && solved.length >= required.length) {
-    const currentLevelIndex = activePack.value?.levels.indexOf(selectedLevel.value) ?? -1;
-    if (currentLevelIndex !== -1 && activePack.value && currentLevelIndex < activePack.value.levels.length - 1) {
-      const nextLevel = activePack.value.levels[currentLevelIndex + 1];
-      selectedLevel.value = nextLevel;
-      loadLevel(selectedPackId.value, nextLevel);
-      message.value = `레벨 클리어! 다음 레벨로 이동합니다.`;
-    } else {
-      message.value = '팩의 모든 레벨을 클리어했습니다!';
-    }
+  const required = solveMode.value === 'collect' ? collectableItems.value : activeItems.value;
+  if (mode.value === 'single' && gameKind.value === 'lesson' && required.length > 0 && solved.length >= required.length) {
+    markStageCleared(selectedLevel.value, currentStage.value);
   }
 });
+
+// 한 레벨의 스테이지 수(레벨 N = N개 스테이지). 현재 레벨은 실제 문제 수로 계산.
+function stagesInLevel(level: number) {
+  if (level === selectedLevel.value) return stageCount.value;
+  return level; // 10·20·30… 설계상 레벨 번호 = 스테이지 수
+}
+function isLevelCleared(level: number) {
+  return (clearedStages.value[level]?.length || 0) >= stagesInLevel(level);
+}
+function firstUnclearedStage(level: number) {
+  const done = clearedStages.value[level] || [];
+  for (let s = 1; s <= stageCount.value; s += 1) if (!done.includes(s)) return s;
+  return 1;
+}
+function clearedKey() {
+  return `matchit-cleared-${selectedPackId.value}`;
+}
+function loadClearedStages() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(clearedKey()) || '{}');
+    clearedStages.value = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+  } catch {
+    clearedStages.value = {};
+  }
+}
+function markStageCleared(level: number, stage: number) {
+  const done = clearedStages.value[level] || [];
+  if (!done.includes(stage)) {
+    clearedStages.value = { ...clearedStages.value, [level]: [...done, stage].sort((a, b) => a - b) };
+    localStorage.setItem(clearedKey(), JSON.stringify(clearedStages.value));
+  }
+  const maxLevel = levels.value[levels.value.length - 1] ?? level;
+  const hasNext = stage < stageCount.value || level < maxLevel;
+  stageClearInfo.value = { level, stage, hasNext };
+  showStageClear.value = true;
+}
+function onStageSelect(e: Event) {
+  const stage = Number((e.target as HTMLSelectElement).value);
+  if (stage === currentStage.value) return;
+  currentStage.value = stage;
+  resetGame();
+}
+function goNextStageAfterClear() {
+  showStageClear.value = false;
+  const { level, stage } = stageClearInfo.value;
+  if (stage < stageCount.value) {
+    currentStage.value = stage + 1;
+    resetGame();
+  } else if (levels.value.includes(level + 1)) {
+    selectLevel(level + 1); // 다음 레벨(스테이지 1부터)
+  }
+}
 function resetGame(keepScore = false) {
+  // 보드를 만들기 전에 상태를 먼저 초기화(목표 선택이 이전 상태를 보지 않도록)
+  solvedItems.value = [];
+  targetIndex.value = 0;
+  hintIndexes.value = [];
+  hintItem.value = null;
   board.value = seededBlocks();
   selectedIndexes.value = [];
   swapFirstIndex.value = null;
   clearingIndexes.value = [];
   fadingIndexes.value = [];
-  hintIndexes.value = [];
   draggedIndex.value = null;
   motionPhase.value = 'idle';
   combo.value = 1;
@@ -423,9 +555,7 @@ function resetGame(keepScore = false) {
   gameOver.value = false;
   shareUrl.value = '';
   lastSolved.value = null;
-  targetIndex.value = 0;
   showHint.value = false;
-  solvedItems.value = [];
   if (!keepScore) score.value = 0;
   if (gameKind.value === 'numbers') {
     message.value = '같은 숫자 3개 이상을 붙여 더 큰 수를 만드세요.';
@@ -442,22 +572,37 @@ function resetGame(keepScore = false) {
   ensureSequenceTargetOnBoard();
 }
 
+// 레벨별 파일(packs/{id}/{level}.json)을 불러온다.
 async function loadLevel(packId: string, level: number) {
   loading.value = true;
   error.value = '';
   try {
     const response = await fetch(`${baseUrl}data/packs/${packId}/${level}.json`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const items = (await response.json()) as LessonItem[];
-    if (!items.length) throw new Error('수준에 항목이 없습니다.');
-    lessonItems.value = items;
+    const raw = await response.json();
+    if (!Array.isArray(raw) || !raw.length) throw new Error('문제가 없습니다.');
+    if (isWordPackId(packId)) {
+      rawWordEntries.value = raw as Array<{ word: string; meaning: string; hint?: string }>;
+      lessonItems.value = buildWordItems(rawWordEntries.value, wordDirection.value);
+    } else {
+      rawWordEntries.value = [];
+      lessonItems.value = raw as LessonItem[];
+    }
+    loadClearedStages();
     loadLevelStats();
+    currentStage.value = firstUnclearedStage(level); // 첫 미클리어 스테이지부터
     resetGame();
   } catch (loadError) {
     error.value = loadError instanceof Error ? loadError.message : '데이터를 읽지 못했습니다.';
   } finally {
     loading.value = false;
   }
+}
+
+// 같은 팩 안에서 레벨만 바꾼다.
+function selectLevel(level: number) {
+  selectedLevel.value = level;
+  loadLevel(selectedPackId.value, level);
 }
 
 async function loadPacks(url = remoteUrl.value) {
@@ -469,9 +614,9 @@ async function loadPacks(url = remoteUrl.value) {
     const data = (await response.json()) as LessonPack[];
     if (!data.length) throw new Error('packs 배열이 비어 있습니다.');
     packs.value = data;
-    if (!selectedPackId.value) {
+    if (!selectedPackId.value || !data.some((p) => p.id === selectedPackId.value)) {
       selectedPackId.value = data[0].id;
-      selectedLevel.value = data[0].levels[0];
+      selectedLevel.value = 1;
     }
     localStorage.setItem('matchit-data-url', url);
     if (gameKind.value === 'lesson') applyPackDefaultSize(selectedPackId.value);
@@ -499,7 +644,11 @@ function saveLevelStats() {
 }
 
 function scoreMatch(item: LessonItem, length: number) {
-  const gained = length * 120 * combo.value;
+  // 문제당 10점 × 콤보 배수(최대 5배). 토큰 수는 점수에 미반영.
+  void length;
+  const base = 10;
+  const gained = base * Math.min(combo.value, 5);
+  const comboBonus = gained - base;
   score.value += gained;
   combo.value += 1;
   lastSolved.value = item;
@@ -511,11 +660,13 @@ function scoreMatch(item: LessonItem, length: number) {
   levelStats.value = { ...levelStats.value, [lv]: { score: cur.score + gained, solved: cur.solved + 1 } };
   saveLevelStats();
   if (mode.value !== 'endless') {
-    targetIndex.value = Math.floor(Math.random() * lessonItems.value.length);
+    targetIndex.value = Math.floor(Math.random() * activeItems.value.length);
   }
   showHint.value = false;
   hintIndexes.value = [];
-  message.value = `${item.label} 해결 +${gained}`;
+  message.value = comboBonus > 0
+    ? `${item.label} 해결 +${base}점 + Combo ${comboBonus}점`
+    : `${item.label} 해결 +${base}점`;
 }
 
 function sleep(ms: number) {
@@ -525,9 +676,11 @@ function sleep(ms: number) {
 }
 
 function applyGravity(indexes: number[]) {
-  const items = lessonItems.value;
   const removed = new Set(indexes);
   const nextBoard: Block[] = new Array(rows.value * cols.value);
+  // 새로 떨어질 블럭: 미해결 정답이 보드에서 만들어지도록 부족한 글자를 우선 보충
+  const refill = gameKind.value === 'numbers' ? [] : refillTokens(indexes.length, removed);
+  let refillIdx = 0;
 
   for (let col = 0; col < cols.value; col += 1) {
     const survivors: Block[] = [];
@@ -545,9 +698,13 @@ function applyGravity(indexes: number[]) {
       if (survivor) {
         nextBoard[index] = survivor;
       } else {
-        const fresh = gameKind.value === 'numbers'
-          ? makeNumberBlock(randomSpawnValue())
-          : makeBlock(items[Math.floor(Math.random() * items.length)]);
+        let fresh: Block;
+        if (gameKind.value === 'numbers') {
+          fresh = makeNumberBlock(randomSpawnValue());
+        } else {
+          const spec = refill[refillIdx++];
+          fresh = spec ? makeBlock(spec.item, spec.token) : makeBlock(activeItems.value[Math.floor(Math.random() * activeItems.value.length)]);
+        }
         // 보드 최상단 위에서부터(열에서 비워진 칸 수만큼) 떨어지도록
         fresh.dropFrom = emptyCount;
         nextBoard[index] = fresh;
@@ -556,6 +713,42 @@ function applyGravity(indexes: number[]) {
   }
 
   board.value = nextBoard;
+}
+
+// 빈 칸을 채울 토큰 목록 — 미해결 정답들을 만들 수 있도록 부족한 글자를 우선 보충
+function refillTokens(count: number, removed: Set<number>): Array<{ token: string; item: LessonItem }> {
+  const result: Array<{ token: string; item: LessonItem }> = [];
+  if (count <= 0) return result;
+  const items = activeItems.value;
+  if (!items.length) return result;
+  // 살아남는 보드의 토큰 수(가용량)
+  const avail = new Map<string, number>();
+  board.value.forEach((b, i) => {
+    if (!removed.has(i) && b) avail.set(b.token, (avail.get(b.token) || 0) + 1);
+  });
+  const unsolved = items.filter((it) => !solvedItems.value.includes(it.id));
+  for (const item of unsolved) {
+    if (result.length >= count) break;
+    const tmp = new Map(avail);
+    const deficit: string[] = [];
+    for (const [tk, c] of tokenCounts(item.tokens)) {
+      const have = tmp.get(tk) || 0;
+      if (have >= c) tmp.set(tk, have - c);
+      else { for (let k = 0; k < c - have; k += 1) deficit.push(tk); tmp.set(tk, 0); }
+    }
+    if (deficit.length <= count - result.length) {
+      // 이 정답을 만들 수 있게 부족분 추가 + 사용량 예약(다른 정답과 글자 공유 방지)
+      for (const tk of deficit) result.push({ token: tk, item });
+      for (const [k, v] of tmp) avail.set(k, v);
+    }
+  }
+  // 남는 칸은 정답 글자로 무작위 채움
+  const pool = unsolved.length ? unsolved : items;
+  while (result.length < count) {
+    const item = pool[Math.floor(Math.random() * pool.length)];
+    result.push({ token: item.tokens[Math.floor(Math.random() * item.tokens.length)], item });
+  }
+  return shuffle(result);
 }
 
 async function resolveMatch(item: LessonItem, indexes: number[]) {
@@ -573,7 +766,7 @@ async function resolveMatch(item: LessonItem, indexes: number[]) {
   applyGravity(indexes);
   moves.value -= 1;
   if (mode.value === 'single' && !solvedItems.value.includes(item.id)) {
-    solvedItems.value.push(item.id);
+    solvedItems.value = [...solvedItems.value, item.id]; // 재할당해야 watch가 감지
   }
   // 다음 목표를 랜덤 선택하고 보드에 답이 있도록 보장 (없으면 답 글자가 떨어짐)
   ensureSequenceTargetOnBoard();
@@ -644,7 +837,7 @@ async function resolveCollect(indexes: number[], item: LessonItem) {
   motionPhase.value = 'idle';
 
   if (mode.value === 'single' && !solvedItems.value.includes(item.id)) {
-    solvedItems.value.push(item.id);
+    solvedItems.value = [...solvedItems.value, item.id]; // 재할당해야 watch가 감지
   }
 
   // 다음 목표는 보드가 이미 지원하는 식 중에서 선택 (블럭을 덮어쓰지 않음)
@@ -655,6 +848,7 @@ async function resolveCollect(indexes: number[], item: LessonItem) {
     if (next) {
       collectTargetItem.value = next;
     } else {
+      message.value = '보드에 답이 없어 새 판을 만들었어요.';
       pickCollectItem();
       board.value = buildCollectBoard();
     }
@@ -854,6 +1048,25 @@ async function trySwap(a: number, b: number) {
 
 async function handleCollectClick(index: number) {
   if (isResolving.value) return;
+  // 1글자 정답은 해당 블럭을 탭하면 바로 해결
+  if (mode.value !== 'endless') {
+    const t = collectTargetItem.value;
+    if (t && t.tokens.length === 1 && board.value[index]?.token === t.tokens[0]) {
+      swapFirstIndex.value = null;
+      selectedIndexes.value = [];
+      await resolveCollect([index], t);
+      return;
+    }
+  } else {
+    // 연속 모드: 1글자 답이면 그 블럭 탭으로 해결
+    const one = collectableItems.value.find((it) => it.tokens.length === 1 && it.tokens[0] === board.value[index]?.token);
+    if (one) {
+      swapFirstIndex.value = null;
+      selectedIndexes.value = [];
+      await resolveCollect([index], one);
+      return;
+    }
+  }
   if (swapFirstIndex.value === null) {
     swapFirstIndex.value = index;
     selectedIndexes.value = [index];
@@ -953,6 +1166,8 @@ function resetScore() {
   localStorage.setItem(bestKey(), '0');
   levelStats.value = {};
   saveLevelStats();
+  clearedStages.value = {};
+  localStorage.setItem(clearedKey(), '{}');
 }
 
 function requestExit() {
@@ -992,13 +1207,30 @@ function computeHintIndexes(): number[] {
     }
     return result;
   };
-  const pool = solveMode.value === 'collect' ? collectableItems.value : lessonItems.value;
-  const preferred = solveMode.value === 'collect' ? collectTargetItem.value : target.value;
-  const ordered = preferred ? [preferred, ...pool.filter((it) => it.id !== preferred.id)] : pool;
-  for (const item of ordered) {
-    const found = tokensOnBoard(item);
-    if (found) return found;
+  const rawPreferred = solveMode.value === 'collect' ? collectTargetItem.value : target.value;
+  // 연속모드의 가상 목표(tokens 비어있음)는 제외
+  const preferred = rawPreferred && rawPreferred.tokens.length ? rawPreferred : null;
+  // 단일 모드: 힌트는 반드시 현재 목표만 가리킨다(문제·답·힌트 일치 보장)
+  if (mode.value !== 'endless') {
+    if (preferred) {
+      const found = tokensOnBoard(preferred);
+      if (found && found.length) {
+        hintItem.value = preferred;
+        return found;
+      }
+    }
+    hintItem.value = null;
+    return [];
   }
+  // 연속 모드: 보드에서 만들 수 있는 아무 식이나 강조
+  for (const item of activeItems.value) {
+    const found = tokensOnBoard(item);
+    if (found && found.length) {
+      hintItem.value = item;
+      return found;
+    }
+  }
+  hintItem.value = null;
   return [];
 }
 
@@ -1007,6 +1239,7 @@ function toggleHint() {
     hintIndexes.value = [];
     return;
   }
+  // 힌트는 보드를 새로 만들지 않는다(현재 목표만 강조). 답 보장은 블럭 낙하 흐름에서 처리.
   const hint = computeHintIndexes();
   hintIndexes.value = hint;
   if (!hint.length) message.value = '표시할 조합이 없어요.';
@@ -1026,6 +1259,7 @@ function passCurrent() {
     if (next) {
       collectTargetItem.value = next;
     } else {
+      message.value = '보드에 답이 없어 새 판을 만들었어요.';
       pickCollectItem();
       board.value = buildCollectBoard();
     }
@@ -1071,7 +1305,17 @@ function showAnswerPopup(item: LessonItem, indexes: number[]) {
   if (gameKind.value !== 'lesson' || !showAnswer.value) return;
   // 정답이 된 보드 블럭들의 화면 위치를 먼저 기록 (제거되기 전)
   const buttons = boardEl.value?.querySelectorAll<HTMLElement>('.block-face');
-  answerStartRects = indexes.map((i) => buttons?.[i]?.getBoundingClientRect() ?? null);
+  // 각 정답 슬롯(item.tokens 순서)을 같은 글자의 보드 셀에서 출발시킨다(가까운 순 아님)
+  const remaining = [...indexes];
+  const colors: string[] = [];
+  answerStartRects = item.tokens.map((token) => {
+    let pos = remaining.findIndex((idx) => board.value[idx]?.token === token);
+    if (pos < 0) pos = 0; // 같은 글자가 없으면(예외) 남은 것 중 앞에서
+    const idx = remaining.splice(pos, 1)[0];
+    colors.push(idx != null ? (board.value[idx]?.color ?? colorForToken(token)) : colorForToken(token));
+    return idx != null ? (buttons?.[idx]?.getBoundingClientRect() ?? null) : null;
+  });
+  answerSlotColors.value = colors; // 팝업 색을 실제 보드 블럭 색과 일치
   // 팝업 블럭 크기를 현재 보드 블럭 크기에 맞춤 (보드 크기에 비례)
   const cellWidth = answerStartRects.find((r) => r)?.width;
   answerSlotSize.value = cellWidth ? Math.round(cellWidth) : 48;
@@ -1122,6 +1366,16 @@ function setMode(nextMode: GameMode) {
   resetGame(true);
 }
 
+function setWordDirection(dir: 'spell' | 'meaning') {
+  if (wordDirection.value === dir) return;
+  wordDirection.value = dir;
+  localStorage.setItem('matchit-word-direction', dir);
+  if (rawWordEntries.value.length) {
+    lessonItems.value = buildWordItems(rawWordEntries.value, dir);
+    resetGame();
+  }
+}
+
 async function handleLevelChange() {
   if (!activePack.value) return;
   await loadLevel(selectedPackId.value, selectedLevel.value);
@@ -1129,9 +1383,9 @@ async function handleLevelChange() {
 
 async function handlePackChange() {
   if (!activePack.value) return;
-  selectedLevel.value = activePack.value.levels[0];
+  selectedLevel.value = 1;
   applyPackDefaultSize(selectedPackId.value);
-  await handleLevelChange();
+  await loadLevel(selectedPackId.value, 1);
 }
 
 async function createShareImage() {
@@ -1152,7 +1406,7 @@ async function createShareImage() {
   context.fillRect(0, 0, width, height);
   const subtitle = gameKind.value === 'numbers'
     ? '숫자 더하기'
-    : `${activePack.value?.title || ''}${mode.value === 'single' ? ` · Level ${selectedLevel.value}` : ' · 연속으로'}`;
+    : `${activePack.value?.title || ''}${mode.value === 'single' ? ` · ${levelLabel(selectedLevel.value)}` : ' · 연속으로'}`;
   const solvedTotal = Object.values(levelStats.value).reduce((sum, s) => sum + (s?.solved || 0), 0);
   const detailLabel = gameKind.value === 'numbers' ? '최고 숫자' : '푼 문제';
   const detailValue = gameKind.value === 'numbers' ? formatValue(maxValue.value) : `${solvedTotal}`;
@@ -1186,13 +1440,14 @@ async function createShareImage() {
   context.font = '800 176px sans-serif';
   context.fillText(String(score.value), 130, 566);
 
-  // 박스 아래: 최고점수 · 콤보 · 푼문제(또는 최고 숫자) 3열
+  // 박스 아래: 최고점수 · 콤보 · 푼문제(또는 최고 숫자) · 블럭(보드 크기) 4열
   const stats: Array<[string, string]> = [
     ['BEST', String(best.value)],
     ['COMBO', `x${Math.max(1, combo.value - 1)}`],
     [detailLabel, detailValue],
+    ['블럭', `${cols.value}×${rows.value}`],
   ];
-  const colWidth = 912 / 3;
+  const colWidth = 912 / stats.length;
   context.textAlign = 'center';
   stats.forEach(([label, value], i) => {
     const cx = 84 + colWidth * i + colWidth / 2;
@@ -1226,6 +1481,7 @@ function saveGame() {
       solveMode: solveMode.value,
       packId: selectedPackId.value,
       level: selectedLevel.value,
+      stage: currentStage.value,
       cols: cols.value,
       rows: rows.value,
       board: board.value.map((b) => ({ token: b.token, value: b.value, lessonId: b.lessonId, label: b.label, color: b.color })),
@@ -1245,7 +1501,7 @@ function saveGame() {
 
 interface SavedGame {
   gameKind: GameKind; mode: GameMode; solveMode: SolveMode;
-  packId: string; level: number; cols?: number; rows?: number;
+  packId: string; level: number; stage?: number; cols?: number; rows?: number;
   board: Array<{ token: string; value?: number; lessonId: string; label: string; color: string }>;
   lessonItems: LessonItem[];
   score: number; combo: number; moves: number; passes: number;
@@ -1266,6 +1522,7 @@ function restoreFromSave(s: SavedGame) {
   solveMode.value = s.solveMode;
   selectedPackId.value = s.packId;
   selectedLevel.value = s.level;
+  currentStage.value = s.stage ?? 1;
   if (s.cols) cols.value = s.cols;
   if (s.rows) rows.value = s.rows;
   lessonItems.value = s.lessonItems || [];
@@ -1285,6 +1542,18 @@ function restoreFromSave(s: SavedGame) {
   gameOver.value = !!s.gameOver;
   collectTargetItem.value = lessonItems.value.find((it) => it.id === s.collectTargetId) || null;
   best.value = Number(localStorage.getItem(bestKey()) || 0);
+  // 복원한 보드에서 현재 답을 만들 수 없으면(과거 저장 오류 등) 새 판을 만든다
+  if (gameKind.value === 'lesson' && mode.value === 'single') {
+    const t = solveMode.value === 'collect' ? collectTargetItem.value : target.value;
+    if (t && t.tokens.length && !canFormFromBoard(t)) {
+      if (solveMode.value === 'collect') {
+        pickCollectItem();
+        board.value = buildCollectBoard();
+      } else {
+        ensureSequenceTargetOnBoard();
+      }
+    }
+  }
 }
 
 onMounted(async () => {
@@ -1388,7 +1657,7 @@ onMounted(async () => {
             <div>
               <label class="block text-xs font-bold uppercase text-[var(--muted)]" for="level">Level</label>
               <select id="level" v-model="selectedLevel" class="mt-1 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3" @change="handleLevelChange">
-                <option v-for="level in activePack?.levels" :key="level" :value="level">{{ level }}</option>
+                <option v-for="level in levels" :key="level" :value="level">{{ levelLabel(level) }}{{ isLevelCleared(level) ? ' ✓' : '' }}</option>
               </select>
             </div>
           </div>
@@ -1412,6 +1681,18 @@ onMounted(async () => {
               연속으로
             </button>
           </div>
+
+          <template v-if="isWordPack">
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Word Mode</p>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <button class="h-11 rounded-md border text-sm font-black" :class="wordDirection === 'spell' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setWordDirection('spell')">
+              뜻 → 철자
+            </button>
+            <button class="h-11 rounded-md border text-sm font-black" :class="wordDirection === 'meaning' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setWordDirection('meaning')">
+              영단어 → 뜻
+            </button>
+          </div>
+          </template>
 
           <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Solve Mode</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
@@ -1478,7 +1759,7 @@ onMounted(async () => {
           class="relative rounded-lg border border-[var(--line)] bg-[var(--panel)] p-3 sm:p-4"
           :class="[activeMobilePanel === 'game' ? 'app-game-panel' : 'hidden lg:block', gameFullscreen ? 'app-game-fullscreen' : '']"
         >
-          <div class="mb-3 flex items-center justify-between gap-2 lg:hidden">
+          <div class="mb-3 flex items-center justify-between gap-2">
             <div class="flex gap-2">
               <button
                 class="h-10 rounded-md border px-3 text-sm font-black"
@@ -1497,6 +1778,15 @@ onMounted(async () => {
                 패스 →
               </button>
             </div>
+            <div v-if="showProgress" class="flex items-center">
+              <select
+                class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm font-black"
+                :value="currentStage"
+                @change="onStageSelect"
+              >
+                <option v-for="n in stageCount" :key="n" :value="n">스테이지 {{ n }}{{ (clearedStages[selectedLevel] || []).includes(n) ? ' ✓' : '' }}</option>
+              </select>
+            </div>
             <div class="flex gap-2">
               <button
                 class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-4 text-sm font-black"
@@ -1506,7 +1796,15 @@ onMounted(async () => {
                 새판
               </button>
               <button
-                class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-4 text-sm font-black"
+                class="hidden h-10 items-center rounded-md border px-3 text-sm font-black lg:inline-flex"
+                :class="gameFullscreen ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
+                type="button"
+                @click="gameFullscreen = !gameFullscreen"
+              >
+                {{ gameFullscreen ? '✕ 해제' : '⛶' }}
+              </button>
+              <button
+                class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-4 text-sm font-black lg:hidden"
                 type="button"
                 @click="requestExit"
               >
@@ -1518,31 +1816,11 @@ onMounted(async () => {
           <div class="relative mb-3 rounded-md bg-[var(--panel-strong)] p-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
-              <div class="flex flex-wrap gap-2 max-lg:hidden">
-                <button
-                  class="h-10 rounded-md border px-3 text-sm font-black"
-                  :class="hintIndexes.length ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
-                  type="button"
-                  @click="toggleHint"
-                >
-                  힌트
-                </button>
-                <button
-                  v-if="canPass"
-                  class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel)] px-3 text-sm font-black"
-                  type="button"
-                  @click="passCurrent"
-                >
-                  패스 →
-                </button>
-                <button
-                  class="hidden h-10 items-center rounded-md border px-3 text-sm font-black lg:inline-flex"
-                  :class="gameFullscreen ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
-                  type="button"
-                  @click="gameFullscreen = !gameFullscreen"
-                >
-                  {{ gameFullscreen ? '✕ 해제' : '⛶' }}
-                </button>
+              <div class="flex items-center gap-3">
+                <div v-if="showProgress" class="flex flex-col items-end leading-tight">
+                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · Lv{{ selectedLevel }} · 스테이지 {{ currentStage }}/{{ stageCount }}</span>
+                  <span class="text-sm font-black text-[var(--accent)]">{{ levelProgress.current }} / {{ levelProgress.total }} / {{ levelProgress.levelTotal }}</span>
+                </div>
               </div>
             </div>
             <p class="mt-3 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
@@ -1557,9 +1835,6 @@ onMounted(async () => {
               <p class="text-sm font-bold text-[var(--muted)]">{{ message }}</p>
               <p class="text-xs text-[var(--muted)]">선택: {{ selectedText || '-' }}</p>
             </div>
-            <button class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm font-black" type="button" @click="resetGame()">
-              새판
-            </button>
           </div>
 
           <div ref="boardEl" class="app-board">
@@ -1649,13 +1924,13 @@ onMounted(async () => {
             <!-- 우측: 레벨별 점수 / 푼 문제수 (학습 모드) -->
             <div v-if="gameKind === 'lesson'" class="space-y-2">
               <div
-                v-for="level in activePack?.levels"
+                v-for="level in levels"
                 :key="level"
                 class="flex h-20 flex-col justify-center rounded-md p-3"
                 :class="level === selectedLevel ? 'bg-[var(--accent)] text-[var(--accent-ink)]' : 'bg-[var(--panel-strong)]'"
               >
                 <p class="text-xs font-bold uppercase" :class="level === selectedLevel ? '' : 'text-[var(--muted)]'">
-                  Level {{ level }} · {{ levelStats[level]?.solved || 0 }}문제
+                  {{ levelLabel(level) }}{{ isLevelCleared(level) ? ' ✓' : '' }} · 스테이지 {{ (clearedStages[level]?.length || 0) }}/{{ level }}
                 </p>
                 <p class="mt-1 text-2xl font-black">{{ levelStats[level]?.score || 0 }}</p>
               </div>
@@ -1716,11 +1991,11 @@ onMounted(async () => {
       :style="{ left: `${dragGhost.x}px`, top: `${dragGhost.y}px`, width: `${dragGhost.w}px`, height: `${dragGhost.h}px`, transform: 'translate(-50%, -50%)' }"
     >
       <div
-        class="block-face grid h-full w-full place-items-center text-xl font-black opacity-90 shadow-2xl"
+        class="block-face grid h-full w-full place-items-center font-black opacity-90 shadow-2xl"
         :class="`block-style-${blockStyle}`"
         :style="{ backgroundColor: dragGhost.color, '--block-color': dragGhost.color }"
       >
-        {{ dragGhost.token }}
+        <span class="block-label flex h-full w-full items-center justify-center font-black" :style="{ '--len': dragGhost.token.length }">{{ dragGhost.token }}</span>
       </div>
     </div>
 
@@ -1741,13 +2016,32 @@ onMounted(async () => {
             :key="i"
             class="answer-slot block-face grid place-items-center font-black text-white"
             :class="`block-style-${blockStyle}`"
-            :style="{ width: `${answerSlotSize}px`, height: `${wideBlocks ? Math.round(answerSlotSize / 1.5) : answerSlotSize}px`, backgroundColor: colorForToken(token), '--block-color': colorForToken(token) }"
+            :style="{ width: `${answerSlotSize}px`, height: `${wideBlocks ? Math.round(answerSlotSize / 1.5) : answerSlotSize}px`, backgroundColor: answerSlotColors[i] ?? colorForToken(token), '--block-color': answerSlotColors[i] ?? colorForToken(token) }"
           >
             <span class="block-label flex h-full w-full items-center justify-center" :style="{ '--len': token.length }">{{ token }}</span>
           </span>
         </div>
         <p v-if="answerItem.hint" class="mt-4 text-sm font-bold text-[var(--accent)]">💡 {{ answerItem.hint }}</p>
         <p class="mt-3 text-xs text-[var(--muted)]">탭하거나 5초 후 닫힘 · 길게 누르면 유지</p>
+      </div>
+    </div>
+
+    <div
+      v-if="showStageClear"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-6"
+    >
+      <div class="level-clear-pop w-full max-w-xs rounded-2xl border border-[var(--accent)] bg-[var(--panel)] p-6 text-center shadow-2xl">
+        <p class="text-5xl">🎉</p>
+        <p class="mt-2 text-2xl font-black text-[var(--accent)]">스테이지 클리어!</p>
+        <p class="mt-1 text-sm font-bold">{{ levelLabel(stageClearInfo.level) }} · 스테이지 {{ stageClearInfo.stage }} 완료!</p>
+        <div class="mt-5 grid gap-2" :class="stageClearInfo.hasNext ? 'grid-cols-2' : 'grid-cols-1'">
+          <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showStageClear = false">
+            계속
+          </button>
+          <button v-if="stageClearInfo.hasNext" class="h-11 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="goNextStageAfterClear">
+            다음 →
+          </button>
+        </div>
       </div>
     </div>
 

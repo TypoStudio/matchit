@@ -1,1147 +1,477 @@
 [
   {
-    "id": "deriv-xn",
-    "label": "nxⁿ⁻¹",
-    "prompt": "xⁿ의 도함수",
+    "id": "add-five",
+    "label": "a+5",
+    "prompt": "5를 더한 값",
     "tokens": [
-      "n",
-      "xⁿ⁻¹"
-    ],
-    "hint": "d/dx xⁿ = n xⁿ⁻¹"
-  },
-  {
-    "id": "deriv-x2",
-    "label": "2x",
-    "prompt": "x²의 도함수",
-    "tokens": [
-      "2",
-      "x"
-    ],
-    "hint": "d/dx x² = 2x"
-  },
-  {
-    "id": "deriv-const",
-    "label": "dc=0",
-    "prompt": "상수의 도함수",
-    "tokens": [
-      "d",
-      "c",
-      "=",
-      "0"
-    ],
-    "hint": "상수의 미분은 0"
-  },
-  {
-    "id": "deriv-sin",
-    "label": "cosx",
-    "prompt": "sin x의 도함수",
-    "tokens": [
-      "cos",
-      "x"
-    ],
-    "hint": "(sin x)′ = cos x"
-  },
-  {
-    "id": "deriv-cos",
-    "label": "−sinx",
-    "prompt": "cos x의 도함수",
-    "tokens": [
-      "−",
-      "sin",
-      "x"
-    ],
-    "hint": "(cos x)′ = −sin x"
-  },
-  {
-    "id": "deriv-ex",
-    "label": "eˣ",
-    "prompt": "eˣ의 도함수",
-    "tokens": [
-      "e",
-      "ˣ"
-    ],
-    "hint": "(eˣ)′ = eˣ"
-  },
-  {
-    "id": "deriv-lnx",
-    "label": "1/x",
-    "prompt": "ln x의 도함수",
-    "tokens": [
-      "1",
-      "/",
-      "x"
-    ],
-    "hint": "(ln x)′ = 1/x"
-  },
-  {
-    "id": "integral-xn",
-    "label": "xⁿ⁺¹/n+1",
-    "prompt": "xⁿ의 부정적분",
-    "tokens": [
-      "xⁿ⁺¹",
-      "/",
-      "n+1"
-    ],
-    "hint": "지수 +1, 그 값으로 나눔"
-  },
-  {
-    "id": "integral-1x",
-    "label": "ln|x|",
-    "prompt": "1/x의 적분",
-    "tokens": [
-      "ln",
-      "|",
-      "x",
-      "|"
-    ],
-    "hint": "∫1/x dx = ln|x|"
-  },
-  {
-    "id": "integral-ex",
-    "label": "eˣ+C",
-    "prompt": "eˣ의 적분",
-    "tokens": [
-      "e",
-      "ˣ",
-      "+",
-      "C"
-    ],
-    "hint": "∫eˣ dx = eˣ+C"
-  },
-  {
-    "id": "sin-0",
-    "label": "sin0=0",
-    "prompt": "sin 0°의 값",
-    "tokens": [
-      "sin",
-      "0",
-      "=",
-      "0"
-    ],
-    "hint": "sin 0 = 0"
-  },
-  {
-    "id": "cos-0",
-    "label": "cos0=1",
-    "prompt": "cos 0°의 값",
-    "tokens": [
-      "cos",
-      "0",
-      "=",
-      "1"
-    ],
-    "hint": "cos 0 = 1"
-  },
-  {
-    "id": "sin-90",
-    "label": "sin90=1",
-    "prompt": "sin 90°의 값",
-    "tokens": [
-      "sin",
-      "90",
-      "=",
-      "1"
-    ],
-    "hint": "sin 90° = 1"
-  },
-  {
-    "id": "tan-def",
-    "label": "sin/cos",
-    "prompt": "tan의 정의",
-    "tokens": [
-      "sin",
-      "/",
-      "cos"
-    ],
-    "hint": "tan = sin/cos"
-  },
-  {
-    "id": "pythagorean-id",
-    "label": "sin²+cos²=1",
-    "prompt": "기본 삼각 항등식",
-    "tokens": [
-      "sin²",
-      "+",
-      "cos²",
-      "=",
-      "1"
-    ],
-    "hint": "sin²θ+cos²θ=1"
-  },
-  {
-    "id": "newton-2nd",
-    "label": "F=ma",
-    "prompt": "운동 방정식",
-    "tokens": [
-      "F",
-      "=",
-      "m",
-      "a"
-    ],
-    "hint": "F=ma — 힘은 질량 곱 가속도"
-  },
-  {
-    "id": "emc2",
-    "label": "E=mc²",
-    "prompt": "질량-에너지 등가",
-    "tokens": [
-      "E",
-      "=",
-      "m",
-      "c",
-      "²"
-    ],
-    "hint": "E=mc²"
-  },
-  {
-    "id": "velocity",
-    "label": "v=v₀+at",
-    "prompt": "등가속도 속도 공식",
-    "tokens": [
-      "v",
-      "=",
-      "v₀",
-      "+",
       "a",
-      "t"
-    ],
-    "hint": "v=v₀+at"
-  },
-  {
-    "id": "kinetic-energy",
-    "label": "½mv²",
-    "prompt": "운동 에너지 공식",
-    "tokens": [
-      "½",
-      "m",
-      "v",
-      "²"
-    ],
-    "hint": "½mv²"
-  },
-  {
-    "id": "momentum",
-    "label": "p=mv",
-    "prompt": "운동량 공식",
-    "tokens": [
-      "p",
-      "=",
-      "m",
-      "v"
-    ],
-    "hint": "p=mv — 질량 곱 속도"
-  },
-  {
-    "id": "deriv-sum",
-    "label": "u′+v′",
-    "prompt": "합의 미분법",
-    "tokens": [
-      "u′",
       "+",
-      "v′"
+      "5"
     ],
-    "hint": "(u+v)′=u′+v′"
+    "hint": "a+5"
   },
   {
-    "id": "deriv-const-mul",
-    "label": "cf′",
-    "prompt": "상수배 미분",
+    "id": "add-twenty",
+    "label": "a+20",
+    "prompt": "20을 더한 값",
     "tokens": [
-      "c",
-      "f′"
-    ],
-    "hint": "(cf)′=cf′"
-  },
-  {
-    "id": "deriv-power-3",
-    "label": "3x²",
-    "prompt": "x³의 도함수",
-    "tokens": [
-      "3",
-      "x",
-      "²"
-    ],
-    "hint": "3x²"
-  },
-  {
-    "id": "deriv-sqrt",
-    "label": "1/2√x",
-    "prompt": "√x의 도함수",
-    "tokens": [
-      "1",
-      "/",
-      "2√x"
-    ],
-    "hint": "1/(2√x)"
-  },
-  {
-    "id": "deriv-1x",
-    "label": "−1/x²",
-    "prompt": "1/x의 도함수",
-    "tokens": [
-      "−",
-      "1",
-      "/",
-      "x²"
-    ],
-    "hint": "−1/x²"
-  },
-  {
-    "id": "deriv-ax",
-    "label": "aˣlna",
-    "prompt": "aˣ의 도함수",
-    "tokens": [
-      "aˣ",
-      "ln",
-      "a"
-    ],
-    "hint": "aˣ ln a"
-  },
-  {
-    "id": "integral-const",
-    "label": "cx+C",
-    "prompt": "상수의 적분",
-    "tokens": [
-      "c",
-      "x",
-      "+",
-      "C"
-    ],
-    "hint": "∫c dx=cx+C"
-  },
-  {
-    "id": "integral-x",
-    "label": "½x²",
-    "prompt": "x의 적분",
-    "tokens": [
-      "½",
-      "x",
-      "²"
-    ],
-    "hint": "½x²+C"
-  },
-  {
-    "id": "integral-x2",
-    "label": "x³/3",
-    "prompt": "x²의 적분",
-    "tokens": [
-      "x",
-      "³",
-      "/",
-      "3"
-    ],
-    "hint": "x³/3+C"
-  },
-  {
-    "id": "definite-integral",
-    "label": "F(b)−F(a)",
-    "prompt": "정적분 기본정리",
-    "tokens": [
-      "F",
-      "(",
-      "b",
-      ")",
-      "−",
-      "F(a)"
-    ],
-    "hint": "F(b)−F(a)"
-  },
-  {
-    "id": "tan-45",
-    "label": "tan45=1",
-    "prompt": "tan 45°의 값",
-    "tokens": [
-      "tan",
-      "45",
-      "=",
-      "1"
-    ],
-    "hint": "tan45°=1"
-  },
-  {
-    "id": "cos-90",
-    "label": "cos90=0",
-    "prompt": "cos 90°의 값",
-    "tokens": [
-      "cos",
-      "90",
-      "=",
-      "0"
-    ],
-    "hint": "cos90°=0"
-  },
-  {
-    "id": "sin-30",
-    "label": "sin30=½",
-    "prompt": "sin 30°의 값",
-    "tokens": [
-      "sin",
-      "30",
-      "=",
-      "½"
-    ],
-    "hint": "sin30°=½"
-  },
-  {
-    "id": "cos-60",
-    "label": "cos60=½",
-    "prompt": "cos 60°의 값",
-    "tokens": [
-      "cos",
-      "60",
-      "=",
-      "½"
-    ],
-    "hint": "cos60°=½"
-  },
-  {
-    "id": "cot-def",
-    "label": "cos/sin",
-    "prompt": "cot의 정의",
-    "tokens": [
-      "cos",
-      "/",
-      "sin"
-    ],
-    "hint": "cot=cos/sin"
-  },
-  {
-    "id": "sec-def",
-    "label": "1/cos",
-    "prompt": "sec의 정의",
-    "tokens": [
-      "1",
-      "/",
-      "cos"
-    ],
-    "hint": "sec=1/cos"
-  },
-  {
-    "id": "csc-def",
-    "label": "1/sin",
-    "prompt": "csc의 정의",
-    "tokens": [
-      "1",
-      "/",
-      "sin"
-    ],
-    "hint": "csc=1/sin"
-  },
-  {
-    "id": "gravity-pe",
-    "label": "mgh",
-    "prompt": "중력 위치 에너지",
-    "tokens": [
-      "m",
-      "g",
-      "h"
-    ],
-    "hint": "mgh"
-  },
-  {
-    "id": "hookes-law",
-    "label": "−kx",
-    "prompt": "용수철 힘",
-    "tokens": [
-      "−",
-      "k",
-      "x"
-    ],
-    "hint": "F=−kx"
-  },
-  {
-    "id": "spring-pe",
-    "label": "½kx²",
-    "prompt": "용수철 탄성 에너지",
-    "tokens": [
-      "½",
-      "k",
-      "x",
-      "²"
-    ],
-    "hint": "½kx²"
-  },
-  {
-    "id": "coulomb",
-    "label": "kq₁q₂",
-    "prompt": "쿨롱 힘 분자",
-    "tokens": [
-      "k",
-      "q₁",
-      "q₂"
-    ],
-    "hint": "kq₁q₂/r²"
-  },
-  {
-    "id": "gravitation",
-    "label": "Gm₁m₂",
-    "prompt": "만유인력 분자",
-    "tokens": [
-      "G",
-      "m₁",
-      "m₂"
-    ],
-    "hint": "Gm₁m₂/r²"
-  },
-  {
-    "id": "period-pendulum",
-    "label": "2π√L",
-    "prompt": "단진자 주기",
-    "tokens": [
-      "2",
-      "π",
-      "√",
-      "L"
-    ],
-    "hint": "2π√(L/g)"
-  },
-  {
-    "id": "wave-speed",
-    "label": "fλ",
-    "prompt": "파동 속력",
-    "tokens": [
-      "f",
-      "λ"
-    ],
-    "hint": "fλ — 진동수 곱 파장"
-  },
-  {
-    "id": "photon-energy",
-    "label": "hf",
-    "prompt": "광자 에너지",
-    "tokens": [
-      "h",
-      "f"
-    ],
-    "hint": "hf — 플랑크상수 곱 진동수"
-  },
-  {
-    "id": "ideal-gas",
-    "label": "PV",
-    "prompt": "PV=nRT 좌변",
-    "tokens": [
-      "P",
-      "V"
-    ],
-    "hint": "PV=nRT"
-  },
-  {
-    "id": "centripetal",
-    "label": "v²/r",
-    "prompt": "구심 가속도",
-    "tokens": [
-      "v",
-      "²",
-      "/",
-      "r"
-    ],
-    "hint": "v²/r"
-  },
-  {
-    "id": "heat",
-    "label": "cmΔT",
-    "prompt": "열량 공식",
-    "tokens": [
-      "c",
-      "m",
-      "ΔT"
-    ],
-    "hint": "cmΔT"
-  },
-  {
-    "id": "avg-velocity",
-    "label": "Δx/Δt",
-    "prompt": "평균 속도",
-    "tokens": [
-      "Δx",
-      "/",
-      "Δt"
-    ],
-    "hint": "변위/시간"
-  },
-  {
-    "id": "impulse",
-    "label": "FΔt",
-    "prompt": "충격량",
-    "tokens": [
-      "F",
-      "Δt"
-    ],
-    "hint": "FΔt"
-  },
-  {
-    "id": "deriv-tan-q",
-    "label": "sec²x",
-    "prompt": "tan의 도함수(간단)",
-    "tokens": [
-      "sec²",
-      "x"
-    ],
-    "hint": "sec²x"
-  },
-  {
-    "id": "deriv-cot",
-    "label": "−csc²x",
-    "prompt": "cot의 도함수",
-    "tokens": [
-      "−",
-      "csc²",
-      "x"
-    ],
-    "hint": "−csc²x"
-  },
-  {
-    "id": "integral-sec2",
-    "label": "tanx+C",
-    "prompt": "sec²의 적분",
-    "tokens": [
-      "tan",
-      "x",
-      "+",
-      "C"
-    ],
-    "hint": "∫sec²x dx=tan x+C"
-  },
-  {
-    "id": "lim-def",
-    "label": "limf(x)",
-    "prompt": "함수의 극한 표기",
-    "tokens": [
-      "lim",
-      "f",
-      "(",
-      "x",
-      ")"
-    ],
-    "hint": "x→a일 때"
-  },
-  {
-    "id": "avg-rate",
-    "label": "Δy/Δx",
-    "prompt": "평균변화율",
-    "tokens": [
-      "Δy",
-      "/",
-      "Δx"
-    ],
-    "hint": "(미분계수 전 단계) 함수 증가/x 증가"
-  },
-  {
-    "id": "second-deriv",
-    "label": "f″",
-    "prompt": "이계도함수 기호",
-    "tokens": [
-      "f",
-      "″"
-    ],
-    "hint": "f″ — 두 번 미분"
-  },
-  {
-    "id": "deriv-notation",
-    "label": "dy/dx",
-    "prompt": "라이프니츠 도함수",
-    "tokens": [
-      "dy",
-      "/",
-      "dx"
-    ],
-    "hint": "dy/dx"
-  },
-  {
-    "id": "tangent-line",
-    "label": "f′(a)",
-    "prompt": "접선의 기울기",
-    "tokens": [
-      "f′",
-      "(",
       "a",
-      ")"
+      "+",
+      "20"
     ],
-    "hint": "x=a에서 미분계수"
+    "hint": "a+20"
   },
   {
-    "id": "euler-num",
-    "label": "lim(1+¹ⁿ)ⁿ",
-    "prompt": "자연상수 정의 일부",
+    "id": "sub-two",
+    "label": "a−2",
+    "prompt": "2를 뺀 값",
     "tokens": [
-      "lim",
-      "(",
-      "1+",
-      "¹ⁿ",
-      ")ⁿ"
-    ],
-    "hint": "e의 정의"
-  },
-  {
-    "id": "log-deriv",
-    "label": "1x⁻¹",
-    "prompt": "ln x의 도함수(재확인)",
-    "tokens": [
-      "1",
-      "x⁻¹"
-    ],
-    "hint": "(ln x)′=1/x"
-  },
-  {
-    "id": "deriv-x4",
-    "label": "4x³",
-    "prompt": "x⁴의 도함수",
-    "tokens": [
-      "4",
-      "x",
-      "³"
-    ],
-    "hint": "4x³"
-  },
-  {
-    "id": "deriv-x5",
-    "label": "5x⁴",
-    "prompt": "x⁵의 도함수",
-    "tokens": [
-      "5",
-      "x",
-      "⁴"
-    ],
-    "hint": "5x⁴"
-  },
-  {
-    "id": "deriv-2x",
-    "label": "d2x=2",
-    "prompt": "2x의 도함수",
-    "tokens": [
-      "d",
-      "2x",
-      "=",
+      "a",
+      "−",
       "2"
     ],
-    "hint": "(2x)′=2"
+    "hint": "a−2"
   },
   {
-    "id": "deriv-ax2",
-    "label": "2ax",
-    "prompt": "ax²의 도함수",
+    "id": "sub-ten",
+    "label": "a−10",
+    "prompt": "10을 뺀 값",
+    "tokens": [
+      "a",
+      "−",
+      "10"
+    ],
+    "hint": "a−10"
+  },
+  {
+    "id": "mul-two",
+    "label": "a×2",
+    "prompt": "2를 곱한 값",
+    "tokens": [
+      "a",
+      "×",
+      "2"
+    ],
+    "hint": "a×2"
+  },
+  {
+    "id": "mul-three",
+    "label": "a×3",
+    "prompt": "3을 곱한 값",
+    "tokens": [
+      "a",
+      "×",
+      "3"
+    ],
+    "hint": "a×3"
+  },
+  {
+    "id": "mul-ten",
+    "label": "a×10",
+    "prompt": "10을 곱한 값",
+    "tokens": [
+      "a",
+      "×",
+      "10"
+    ],
+    "hint": "a×10"
+  },
+  {
+    "id": "div-two",
+    "label": "a÷2",
+    "prompt": "2로 나눈 값",
+    "tokens": [
+      "a",
+      "÷",
+      "2"
+    ],
+    "hint": "a÷2"
+  },
+  {
+    "id": "div-ten",
+    "label": "a÷10",
+    "prompt": "10으로 나눈 값",
+    "tokens": [
+      "a",
+      "÷",
+      "10"
+    ],
+    "hint": "a÷10"
+  },
+  {
+    "id": "plus-b-plus-c",
+    "label": "a+b+c+d",
+    "prompt": "세 항 덧셈식",
+    "tokens": [
+      "a",
+      "+",
+      "b",
+      "+",
+      "c",
+      "+",
+      "d"
+    ],
+    "hint": "네 수의 합"
+  },
+  {
+    "id": "triangle-area2",
+    "label": "bh/2",
+    "prompt": "밑변·높이로 넓이",
+    "tokens": [
+      "b",
+      "h",
+      "/",
+      "2"
+    ],
+    "hint": "bh/2"
+  },
+  {
+    "id": "rect-area2",
+    "label": "w×h",
+    "prompt": "가로·세로 넓이",
+    "tokens": [
+      "w",
+      "×",
+      "h"
+    ],
+    "hint": "w×h"
+  },
+  {
+    "id": "perimeter-rect2",
+    "label": "2w+2h",
+    "prompt": "가로·세로 둘레",
     "tokens": [
       "2",
+      "w",
+      "+",
+      "2",
+      "h"
+    ],
+    "hint": "2w+2h"
+  },
+  {
+    "id": "square-perim2",
+    "label": "s+s+s+s",
+    "prompt": "네 변의 합",
+    "tokens": [
+      "s",
+      "+",
+      "s",
+      "+",
+      "s",
+      "+",
+      "s"
+    ],
+    "hint": "4s"
+  },
+  {
+    "id": "cube-edge-sum",
+    "label": "12a",
+    "prompt": "모서리 길이의 합",
+    "tokens": [
+      "12",
+      "a"
+    ],
+    "hint": "12a — 모서리 12개"
+  },
+  {
+    "id": "cuboid-edge-sum",
+    "label": "4(a+b+c)",
+    "prompt": "모서리 길이의 합",
+    "tokens": [
+      "4",
+      "(",
       "a",
-      "x"
+      "+b",
+      "+c",
+      ")"
     ],
-    "hint": "2ax"
+    "hint": "4(a+b+c)"
   },
   {
-    "id": "deriv-poly",
-    "label": "naₙxⁿ⁻¹",
-    "prompt": "각 항 미분",
+    "id": "half-circle-area",
+    "label": "½πr²",
+    "prompt": "반원의 넓이",
     "tokens": [
-      "n",
-      "aₙ",
-      "xⁿ⁻¹"
+      "½",
+      "π",
+      "r²"
     ],
-    "hint": "항별 미분"
+    "hint": "½πr²"
   },
   {
-    "id": "integral-x3",
-    "label": "x⁴/4",
-    "prompt": "x³의 적분",
+    "id": "quarter-circle",
+    "label": "¼πr²",
+    "prompt": "사분원의 넓이",
     "tokens": [
-      "x",
-      "⁴",
+      "¼",
+      "π",
+      "r²"
+    ],
+    "hint": "¼πr²"
+  },
+  {
+    "id": "diameter",
+    "label": "2r",
+    "prompt": "지름 공식",
+    "tokens": [
+      "2",
+      "r"
+    ],
+    "hint": "2r — 반지름의 두 배"
+  },
+  {
+    "id": "radius-from-d",
+    "label": "d/2",
+    "prompt": "지름으로 반지름",
+    "tokens": [
+      "d",
+      "/",
+      "2"
+    ],
+    "hint": "d/2"
+  },
+  {
+    "id": "circle-area-d",
+    "label": "πd²/4",
+    "prompt": "지름으로 원 넓이",
+    "tokens": [
+      "π",
+      "d²",
       "/",
       "4"
     ],
-    "hint": "x⁴/4+C"
+    "hint": "πd²/4"
   },
   {
-    "id": "integral-2x",
-    "label": "x²+C",
-    "prompt": "2x의 적분",
-    "tokens": [
-      "x",
-      "²",
-      "+",
-      "C"
-    ],
-    "hint": "x²+C"
-  },
-  {
-    "id": "integral-1",
-    "label": "x+C",
-    "prompt": "1의 적분",
-    "tokens": [
-      "x",
-      "+",
-      "C"
-    ],
-    "hint": "∫1 dx=x+C"
-  },
-  {
-    "id": "integral-cos2",
-    "label": "sinx",
-    "prompt": "cos 적분",
-    "tokens": [
-      "sin",
-      "x"
-    ],
-    "hint": "∫cos=sin"
-  },
-  {
-    "id": "integral-sin2",
-    "label": "−cosx",
-    "prompt": "sin 적분",
-    "tokens": [
-      "−",
-      "cos",
-      "x"
-    ],
-    "hint": "∫sin=−cos"
-  },
-  {
-    "id": "sin-45",
-    "label": "√2/2",
-    "prompt": "sin 45°",
-    "tokens": [
-      "√2",
-      "/",
-      "2"
-    ],
-    "hint": "√2/2"
-  },
-  {
-    "id": "cos-45",
-    "label": "√2/2",
-    "prompt": "cos 45°",
-    "tokens": [
-      "√2",
-      "/",
-      "2"
-    ],
-    "hint": "√2/2"
-  },
-  {
-    "id": "sin-60",
-    "label": "√3/2",
-    "prompt": "sin 60°",
-    "tokens": [
-      "√3",
-      "/",
-      "2"
-    ],
-    "hint": "√3/2"
-  },
-  {
-    "id": "cos-30",
-    "label": "√3/2",
-    "prompt": "cos 30°",
-    "tokens": [
-      "√3",
-      "/",
-      "2"
-    ],
-    "hint": "√3/2"
-  },
-  {
-    "id": "tan-30",
-    "label": "1/√3",
-    "prompt": "tan 30°",
-    "tokens": [
-      "1",
-      "/",
-      "√3"
-    ],
-    "hint": "1/√3"
-  },
-  {
-    "id": "tan-60",
-    "label": "√3",
-    "prompt": "tan 60°",
-    "tokens": [
-      "√",
-      "3"
-    ],
-    "hint": "√3"
-  },
-  {
-    "id": "tan-0",
-    "label": "tan0=0",
-    "prompt": "tan 0°",
-    "tokens": [
-      "tan",
-      "0",
-      "=",
-      "0"
-    ],
-    "hint": "tan0=0"
-  },
-  {
-    "id": "sin-180",
-    "label": "sin180=0",
-    "prompt": "sin 180°",
-    "tokens": [
-      "sin",
-      "180",
-      "=",
-      "0"
-    ],
-    "hint": "sin180°=0"
-  },
-  {
-    "id": "cos-180",
-    "label": "cos180=−1",
-    "prompt": "cos 180°",
-    "tokens": [
-      "cos",
-      "180",
-      "=",
-      "−1"
-    ],
-    "hint": "cos180°=−1"
-  },
-  {
-    "id": "recip-sin",
-    "label": "1/sinθ",
-    "prompt": "csc",
-    "tokens": [
-      "1",
-      "/",
-      "sinθ"
-    ],
-    "hint": "csc=1/sin"
-  },
-  {
-    "id": "gpe2",
-    "label": "U=mgh",
-    "prompt": "위치 에너지",
-    "tokens": [
-      "U",
-      "=",
-      "m",
-      "g",
-      "h"
-    ],
-    "hint": "U=mgh"
-  },
-  {
-    "id": "kinetic3",
-    "label": "E=½mv²",
-    "prompt": "운동 에너지",
-    "tokens": [
-      "E",
-      "=",
-      "½",
-      "m",
-      "v²"
-    ],
-    "hint": "E=½mv²"
-  },
-  {
-    "id": "work2",
-    "label": "W=Fd",
-    "prompt": "일",
-    "tokens": [
-      "W",
-      "=",
-      "F",
-      "d"
-    ],
-    "hint": "W=Fd"
-  },
-  {
-    "id": "power3",
-    "label": "P=W/t",
-    "prompt": "일률",
-    "tokens": [
-      "P",
-      "=",
-      "W",
-      "/",
-      "t"
-    ],
-    "hint": "P=W/t"
-  },
-  {
-    "id": "momentum2",
-    "label": "p=mv",
-    "prompt": "운동량",
-    "tokens": [
-      "p",
-      "=",
-      "m",
-      "v"
-    ],
-    "hint": "p=mv"
-  },
-  {
-    "id": "velocity-sq",
-    "label": "v₀²+2as",
-    "prompt": "등가속도 v²",
-    "tokens": [
-      "v₀²",
-      "+",
-      "2as"
-    ],
-    "hint": "v²=v₀²+2as"
-  },
-  {
-    "id": "displacement",
-    "label": "v₀t+½at²",
-    "prompt": "등가속도 변위",
-    "tokens": [
-      "v₀",
-      "t",
-      "+",
-      "½at²"
-    ],
-    "hint": "v₀t+½at²"
-  },
-  {
-    "id": "freefall",
-    "label": "½gt²",
-    "prompt": "자유낙하",
-    "tokens": [
-      "½",
-      "g",
-      "t",
-      "²"
-    ],
-    "hint": "½gt²"
-  },
-  {
-    "id": "centrip-force",
-    "label": "mv²/r",
-    "prompt": "구심력",
-    "tokens": [
-      "m",
-      "v²",
-      "/",
-      "r"
-    ],
-    "hint": "mv²/r"
-  },
-  {
-    "id": "gravity-g",
-    "label": "g≈9.8",
-    "prompt": "g 근삿값",
-    "tokens": [
-      "g",
-      "≈",
-      "9.8"
-    ],
-    "hint": "g≈9.8 m/s²"
-  },
-  {
-    "id": "ohm2",
-    "label": "V=IR",
-    "prompt": "옴의 법칙",
-    "tokens": [
-      "V",
-      "=",
-      "I",
-      "R"
-    ],
-    "hint": "V=IR"
-  },
-  {
-    "id": "charge",
-    "label": "Q=It",
-    "prompt": "전류와 시간",
-    "tokens": [
-      "Q",
-      "=",
-      "I",
-      "t"
-    ],
-    "hint": "Q=It"
-  },
-  {
-    "id": "wave2",
-    "label": "v=fλ",
-    "prompt": "파동",
-    "tokens": [
-      "v",
-      "=",
-      "f",
-      "λ"
-    ],
-    "hint": "v=fλ"
-  },
-  {
-    "id": "energy-photon2",
-    "label": "E=hf",
-    "prompt": "광자",
-    "tokens": [
-      "E",
-      "=",
-      "h",
-      "f"
-    ],
-    "hint": "E=hf"
-  },
-  {
-    "id": "snell",
-    "label": "nsinθ",
-    "prompt": "굴절",
+    "id": "sum-evens",
+    "label": "n(n+1)",
+    "prompt": "처음 n개 짝수의 합",
     "tokens": [
       "n",
-      "sin",
-      "θ"
+      "(",
+      "n",
+      "+",
+      "1",
+      ")"
     ],
-    "hint": "n₁sinθ₁=n₂sinθ₂"
+    "hint": "n(n+1)"
   },
   {
-    "id": "avg-accel",
-    "label": "(v−v₀)/t",
-    "prompt": "평균 가속도",
+    "id": "sum-odds",
+    "label": "n²",
+    "prompt": "처음 n개 홀수의 합",
+    "tokens": [
+      "n",
+      "²"
+    ],
+    "hint": "n² — 홀수의 합"
+  },
+  {
+    "id": "half-sum",
+    "label": "(a+b)/2",
+    "prompt": "두 수 합의 절반",
     "tokens": [
       "(",
-      "v",
-      "−",
-      "v₀",
+      "a",
+      "+",
+      "b",
       ")",
-      "/t"
+      "/2"
     ],
-    "hint": "(v−v₀)/t"
+    "hint": "(a+b)/2"
   },
   {
-    "id": "deriv-csc2",
-    "label": "−cotx",
-    "prompt": "csc² 적분",
+    "id": "quadruple",
+    "label": "4a",
+    "prompt": "어떤 수의 네 배",
     "tokens": [
+      "4",
+      "a"
+    ],
+    "hint": "4a"
+  },
+  {
+    "id": "quintuple",
+    "label": "5a",
+    "prompt": "어떤 수의 다섯 배",
+    "tokens": [
+      "5",
+      "a"
+    ],
+    "hint": "5a"
+  },
+  {
+    "id": "square-of-sum",
+    "label": "(a+b)²",
+    "prompt": "두 수 합의 제곱",
+    "tokens": [
+      "(",
+      "a",
+      "+",
+      "b",
+      ")",
+      "²"
+    ],
+    "hint": "(a+b)²"
+  },
+  {
+    "id": "square-of-diff",
+    "label": "(a−b)²",
+    "prompt": "두 수 차의 제곱",
+    "tokens": [
+      "(",
+      "a",
       "−",
-      "cot",
-      "x"
+      "b",
+      ")",
+      "²"
     ],
-    "hint": "∫csc²=−cot"
+    "hint": "(a−b)²"
   },
   {
-    "id": "deriv-sec-tan",
-    "label": "sectan",
-    "prompt": "sec의 도함수",
+    "id": "add-then-double",
+    "label": "2(a+b)",
+    "prompt": "합을 두 배로",
     "tokens": [
-      "sec",
-      "tan"
+      "2",
+      "(",
+      "a",
+      "+",
+      "b",
+      ")"
     ],
-    "hint": "(secx)′=secx tanx"
+    "hint": "2(a+b)"
   },
   {
-    "id": "second-deriv2",
-    "label": "d²y/dx²",
-    "prompt": "d²y/dx²",
+    "id": "subtract-product",
+    "label": "ab−cd",
+    "prompt": "두 곱의 차",
     "tokens": [
-      "d²y",
+      "a",
+      "b",
+      "−",
+      "c",
+      "d"
+    ],
+    "hint": "ab−cd"
+  },
+  {
+    "id": "fraction-mul",
+    "label": "a/b×c",
+    "prompt": "분수의 곱",
+    "tokens": [
+      "a",
       "/",
-      "dx²"
+      "b",
+      "×",
+      "c"
     ],
-    "hint": "두 번 미분"
+    "hint": "(ac)/b 일부"
   },
   {
-    "id": "normal-line",
-    "label": "−1/f′",
-    "prompt": "법선의 기울기",
+    "id": "ratio-three",
+    "label": "a:b:c",
+    "prompt": "세 수의 비",
     "tokens": [
-      "−",
+      "a",
+      ":",
+      "b",
+      ":",
+      "c"
+    ],
+    "hint": "a:b:c"
+  },
+  {
+    "id": "unit-fraction",
+    "label": "1/n",
+    "prompt": "단위분수",
+    "tokens": [
       "1",
       "/",
-      "f′"
+      "n"
     ],
-    "hint": "접선 기울기의 음역수"
+    "hint": "1/n"
+  },
+  {
+    "id": "mixed-op",
+    "label": "a×b+c",
+    "prompt": "곱하고 더하기",
+    "tokens": [
+      "a",
+      "×",
+      "b",
+      "+",
+      "c"
+    ],
+    "hint": "ab+c"
+  },
+  {
+    "id": "perimeter-tri-eq",
+    "label": "a+a+a",
+    "prompt": "정삼각형 둘레",
+    "tokens": [
+      "a",
+      "+",
+      "a",
+      "+",
+      "a"
+    ],
+    "hint": "3a"
+  },
+  {
+    "id": "cube-from-area",
+    "label": "√S/6",
+    "prompt": "정육면체 모서리",
+    "tokens": [
+      "√",
+      "S",
+      "/6"
+    ],
+    "hint": "√(S/6)"
+  },
+  {
+    "id": "stack-area",
+    "label": "S₁+S₂",
+    "prompt": "두 넓이의 합",
+    "tokens": [
+      "S₁",
+      "+",
+      "S₂"
+    ],
+    "hint": "S₁+S₂"
+  },
+  {
+    "id": "remaining-area",
+    "label": "S−s",
+    "prompt": "전체에서 뺀 넓이",
+    "tokens": [
+      "S",
+      "−",
+      "s"
+    ],
+    "hint": "S−s"
+  },
+  {
+    "id": "triangle-from-rect",
+    "label": "½ab",
+    "prompt": "직사각형의 절반 넓이",
+    "tokens": [
+      "½",
+      "a",
+      "b"
+    ],
+    "hint": "½ab"
+  },
+  {
+    "id": "count-total",
+    "label": "m×n",
+    "prompt": "행과 열의 곱",
+    "tokens": [
+      "m",
+      "×",
+      "n"
+    ],
+    "hint": "m×n"
   }
 ]

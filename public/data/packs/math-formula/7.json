@@ -1,0 +1,836 @@
+[
+  {
+    "id": "log-product",
+    "label": "loga+logb",
+    "prompt": "로그 곱셈법칙",
+    "tokens": [
+      "log",
+      "a",
+      "+",
+      "log",
+      "b"
+    ],
+    "hint": "log(ab)=log a+log b"
+  },
+  {
+    "id": "log-quotient",
+    "label": "loga−logb",
+    "prompt": "로그 나눗셈법칙",
+    "tokens": [
+      "log",
+      "a",
+      "−",
+      "log",
+      "b"
+    ],
+    "hint": "log(a/b)=log a−log b"
+  },
+  {
+    "id": "log-power",
+    "label": "nloga",
+    "prompt": "로그 거듭제곱 법칙",
+    "tokens": [
+      "n",
+      "log",
+      "a"
+    ],
+    "hint": "log aⁿ=n log a"
+  },
+  {
+    "id": "log-one",
+    "label": "log1=0",
+    "prompt": "log 1의 값",
+    "tokens": [
+      "log",
+      "1",
+      "=",
+      "0"
+    ],
+    "hint": "log 1=0"
+  },
+  {
+    "id": "arith-seq",
+    "label": "a+(n−1)d",
+    "prompt": "등차수열 일반항",
+    "tokens": [
+      "a",
+      "+",
+      "(",
+      "n",
+      "−",
+      "1",
+      ")d"
+    ],
+    "hint": "a+(n−1)d"
+  },
+  {
+    "id": "geo-seq",
+    "label": "arⁿ⁻¹",
+    "prompt": "등비수열 일반항",
+    "tokens": [
+      "a",
+      "rⁿ⁻¹"
+    ],
+    "hint": "a·rⁿ⁻¹"
+  },
+  {
+    "id": "arith-sum",
+    "label": "n½(a+l)",
+    "prompt": "등차수열의 합",
+    "tokens": [
+      "n",
+      "½",
+      "(",
+      "a",
+      "+",
+      "l",
+      ")"
+    ],
+    "hint": "항수 곱 첫끝항 평균"
+  },
+  {
+    "id": "sum-1-n",
+    "label": "n(n+1)/2",
+    "prompt": "자연수의 합",
+    "tokens": [
+      "n",
+      "(",
+      "n",
+      "+",
+      "1",
+      ")",
+      "/2"
+    ],
+    "hint": "n(n+1)/2"
+  },
+  {
+    "id": "factorial",
+    "label": "n!",
+    "prompt": "계승 정의",
+    "tokens": [
+      "n",
+      "!"
+    ],
+    "hint": "n!=n·(n−1)···1"
+  },
+  {
+    "id": "combination",
+    "label": "ₙCᵣ",
+    "prompt": "조합 기호",
+    "tokens": [
+      "ₙ",
+      "C",
+      "ᵣ"
+    ],
+    "hint": "ₙCᵣ — n개에서 r개 선택"
+  },
+  {
+    "id": "quadratic-formula",
+    "label": "−b±√",
+    "prompt": "이차방정식 근의 분자",
+    "tokens": [
+      "−",
+      "b",
+      "±",
+      "√"
+    ],
+    "hint": "−b±√(b²−4ac)"
+  },
+  {
+    "id": "quadratic-denom",
+    "label": "2a",
+    "prompt": "근의 공식 분모",
+    "tokens": [
+      "2",
+      "a"
+    ],
+    "hint": "2a"
+  },
+  {
+    "id": "axis-symmetry",
+    "label": "−b/2a",
+    "prompt": "이차함수 대칭축",
+    "tokens": [
+      "−",
+      "b",
+      "/",
+      "2a"
+    ],
+    "hint": "x=−b/2a"
+  },
+  {
+    "id": "factored-form",
+    "label": "a(x−p)",
+    "prompt": "이차함수 인수분해형",
+    "tokens": [
+      "a",
+      "(",
+      "x",
+      "−",
+      "p",
+      ")"
+    ],
+    "hint": "a(x−p)(x−q)"
+  },
+  {
+    "id": "exp-product-base",
+    "label": "aⁿbⁿ=abⁿ",
+    "prompt": "다른 밑 같은 지수",
+    "tokens": [
+      "aⁿ",
+      "bⁿ",
+      "=",
+      "abⁿ"
+    ],
+    "hint": "(ab)ⁿ"
+  },
+  {
+    "id": "exp-frac",
+    "label": "(a/b)ⁿ",
+    "prompt": "분수의 거듭제곱",
+    "tokens": [
+      "(",
+      "a",
+      "/",
+      "b",
+      ")ⁿ"
+    ],
+    "hint": "aⁿ/bⁿ"
+  },
+  {
+    "id": "root-as-exp",
+    "label": "a^½",
+    "prompt": "거듭제곱근의 지수표현",
+    "tokens": [
+      "a",
+      "^½"
+    ],
+    "hint": "√a = a^½"
+  },
+  {
+    "id": "nth-root",
+    "label": "a^¹ⁿ",
+    "prompt": "n제곱근 지수표현",
+    "tokens": [
+      "a",
+      "^¹ⁿ"
+    ],
+    "hint": "ⁿ√a = a^(1/n)"
+  },
+  {
+    "id": "log-base-change",
+    "label": "logb/loga",
+    "prompt": "로그 밑 변환",
+    "tokens": [
+      "log",
+      "b",
+      "/",
+      "log",
+      "a"
+    ],
+    "hint": "logₐb=log b/log a"
+  },
+  {
+    "id": "log-exp-inverse",
+    "label": "logaˣ=x",
+    "prompt": "로그와 지수의 역관계",
+    "tokens": [
+      "log",
+      "aˣ",
+      "=",
+      "x"
+    ],
+    "hint": "log_a aˣ=x"
+  },
+  {
+    "id": "ln-e",
+    "label": "lne=1",
+    "prompt": "ln e의 값",
+    "tokens": [
+      "ln",
+      "e",
+      "=",
+      "1"
+    ],
+    "hint": "ln e=1"
+  },
+  {
+    "id": "geo-sum-finite",
+    "label": "a(rⁿ−1)",
+    "prompt": "등비수열의 합",
+    "tokens": [
+      "a",
+      "(",
+      "rⁿ",
+      "−",
+      "1",
+      ")"
+    ],
+    "hint": "a(rⁿ−1)/(r−1)"
+  },
+  {
+    "id": "arith-common-diff",
+    "label": "aₙ−aₙ₋₁",
+    "prompt": "등차수열 공차",
+    "tokens": [
+      "aₙ",
+      "−",
+      "aₙ₋₁"
+    ],
+    "hint": "이웃 항의 차"
+  },
+  {
+    "id": "geo-common-ratio",
+    "label": "aₙ/aₙ₋₁",
+    "prompt": "등비수열 공비",
+    "tokens": [
+      "aₙ",
+      "/",
+      "aₙ₋₁"
+    ],
+    "hint": "이웃 항의 비"
+  },
+  {
+    "id": "sum-squares",
+    "label": "nn+12n+1/6",
+    "prompt": "자연수 제곱의 합",
+    "tokens": [
+      "n",
+      "n+1",
+      "2n+1",
+      "/6"
+    ],
+    "hint": "Σk² = n(n+1)(2n+1)/6"
+  },
+  {
+    "id": "sum-cubes",
+    "label": "(n(n+1)/2)²",
+    "prompt": "자연수 세제곱의 합",
+    "tokens": [
+      "(",
+      "n",
+      "(",
+      "n+1",
+      ")",
+      "/2",
+      ")²"
+    ],
+    "hint": "(Σk)²"
+  },
+  {
+    "id": "permutation",
+    "label": "ₙPᵣ",
+    "prompt": "순열 기호",
+    "tokens": [
+      "ₙ",
+      "P",
+      "ᵣ"
+    ],
+    "hint": "ₙPᵣ — 순서 있는 선택"
+  },
+  {
+    "id": "comb-formula",
+    "label": "r!(n−r)!",
+    "prompt": "조합 공식의 분모",
+    "tokens": [
+      "r",
+      "!",
+      "(",
+      "n−r",
+      ")!"
+    ],
+    "hint": "r!(n−r)!"
+  },
+  {
+    "id": "binom-coeff",
+    "label": "n!/r!",
+    "prompt": "이항계수",
+    "tokens": [
+      "n",
+      "!",
+      "/",
+      "r!"
+    ],
+    "hint": "(분모 일부) n!/(r!(n−r)!)"
+  },
+  {
+    "id": "prob-basic",
+    "label": "경우/전체",
+    "prompt": "확률의 정의",
+    "tokens": [
+      "경우",
+      "/",
+      "전체"
+    ],
+    "hint": "사건/전체"
+  },
+  {
+    "id": "prob-complement",
+    "label": "1−P",
+    "prompt": "여사건 확률",
+    "tokens": [
+      "1",
+      "−",
+      "P"
+    ],
+    "hint": "1−P(A)"
+  },
+  {
+    "id": "prob-and",
+    "label": "P×P",
+    "prompt": "독립사건 곱",
+    "tokens": [
+      "P",
+      "×",
+      "P"
+    ],
+    "hint": "P(A)·P(B)"
+  },
+  {
+    "id": "prob-or",
+    "label": "P+P",
+    "prompt": "배반사건 합",
+    "tokens": [
+      "P",
+      "+",
+      "P"
+    ],
+    "hint": "P(A)+P(B)"
+  },
+  {
+    "id": "mean-formula",
+    "label": "Σx/n",
+    "prompt": "자료의 평균",
+    "tokens": [
+      "Σx",
+      "/",
+      "n"
+    ],
+    "hint": "합 나누기 개수"
+  },
+  {
+    "id": "variance",
+    "label": "Σ(x−m)²",
+    "prompt": "분산 기호",
+    "tokens": [
+      "Σ",
+      "(",
+      "x",
+      "−",
+      "m",
+      ")²"
+    ],
+    "hint": "편차 제곱의 평균 (분자)"
+  },
+  {
+    "id": "std-dev",
+    "label": "√σ²",
+    "prompt": "표준편차",
+    "tokens": [
+      "√",
+      "σ²"
+    ],
+    "hint": "√(분산)"
+  },
+  {
+    "id": "z-score",
+    "label": "(x−m)/σ",
+    "prompt": "표준점수",
+    "tokens": [
+      "(",
+      "x",
+      "−",
+      "m",
+      ")",
+      "/σ"
+    ],
+    "hint": "(x−μ)/σ"
+  },
+  {
+    "id": "abs-value",
+    "label": "|x|",
+    "prompt": "절댓값 정의",
+    "tokens": [
+      "|",
+      "x",
+      "|"
+    ],
+    "hint": "|x| — 거리"
+  },
+  {
+    "id": "ceil-floor",
+    "label": "[x]",
+    "prompt": "가우스 기호",
+    "tokens": [
+      "[",
+      "x",
+      "]"
+    ],
+    "hint": "x를 넘지 않는 최대 정수"
+  },
+  {
+    "id": "sum-notation",
+    "label": "Σaₖ",
+    "prompt": "합 기호",
+    "tokens": [
+      "Σ",
+      "aₖ"
+    ],
+    "hint": "Σ — 합"
+  },
+  {
+    "id": "product-notation",
+    "label": "Πaₖ",
+    "prompt": "곱 기호",
+    "tokens": [
+      "Π",
+      "aₖ"
+    ],
+    "hint": "Π — 곱"
+  },
+  {
+    "id": "gcd-lcm",
+    "label": "gcd×lcm",
+    "prompt": "GCD·LCM 관계",
+    "tokens": [
+      "gcd",
+      "×",
+      "lcm"
+    ],
+    "hint": "gcd·lcm=ab"
+  },
+  {
+    "id": "mod",
+    "label": "amodb",
+    "prompt": "나머지 연산",
+    "tokens": [
+      "a",
+      "mod",
+      "b"
+    ],
+    "hint": "a를 b로 나눈 나머지"
+  },
+  {
+    "id": "exp-neg-frac",
+    "label": "a⁻½",
+    "prompt": "음의 분수 지수",
+    "tokens": [
+      "a",
+      "⁻½"
+    ],
+    "hint": "1/√a"
+  },
+  {
+    "id": "log-sqrt",
+    "label": "½loga",
+    "prompt": "√의 로그",
+    "tokens": [
+      "½",
+      "log",
+      "a"
+    ],
+    "hint": "log√a=½log a"
+  },
+  {
+    "id": "compound-interest",
+    "label": "P(1+r)ⁿ",
+    "prompt": "복리 원리합계",
+    "tokens": [
+      "P",
+      "(",
+      "1",
+      "+",
+      "r",
+      ")ⁿ"
+    ],
+    "hint": "P(1+r)ⁿ"
+  },
+  {
+    "id": "seq-recursive",
+    "label": "aₙ₊₁=aₙ+d",
+    "prompt": "등차 점화식",
+    "tokens": [
+      "aₙ₊₁",
+      "=",
+      "aₙ",
+      "+",
+      "d"
+    ],
+    "hint": "다음 항=현재+d"
+  },
+  {
+    "id": "geo-recursive",
+    "label": "aₙ₊₁=raₙ",
+    "prompt": "등비 점화식",
+    "tokens": [
+      "aₙ₊₁",
+      "=",
+      "r",
+      "aₙ"
+    ],
+    "hint": "다음 항=r·현재"
+  },
+  {
+    "id": "polynomial-deg",
+    "label": "ax²",
+    "prompt": "이차 항",
+    "tokens": [
+      "a",
+      "x²"
+    ],
+    "hint": "ax² — 최고차항"
+  },
+  {
+    "id": "vertex-y",
+    "label": "c−b²/4a",
+    "prompt": "이차함수 꼭짓점 y",
+    "tokens": [
+      "c",
+      "−",
+      "b²",
+      "/",
+      "4a"
+    ],
+    "hint": "−b²/4a+c"
+  },
+  {
+    "id": "quad-complete",
+    "label": "(x+p)²",
+    "prompt": "이차식 완전제곱",
+    "tokens": [
+      "(",
+      "x",
+      "+",
+      "p",
+      ")²"
+    ],
+    "hint": "(x+p)²+q"
+  },
+  {
+    "id": "root-sum-monic",
+    "label": "−p",
+    "prompt": "x²+px+q 근의 합",
+    "tokens": [
+      "−",
+      "p"
+    ],
+    "hint": "−p"
+  },
+  {
+    "id": "root-prod-monic",
+    "label": "αβ=q",
+    "prompt": "x²+px+q 근의 곱",
+    "tokens": [
+      "αβ",
+      "=",
+      "q"
+    ],
+    "hint": "q (단항계수 1)"
+  },
+  {
+    "id": "disc-positive",
+    "label": "b²>4ac",
+    "prompt": "서로 다른 두 실근",
+    "tokens": [
+      "b²",
+      ">",
+      "4ac"
+    ],
+    "hint": "D>0"
+  },
+  {
+    "id": "disc-zero",
+    "label": "b²=4ac",
+    "prompt": "중근 조건",
+    "tokens": [
+      "b²",
+      "=",
+      "4ac"
+    ],
+    "hint": "D=0"
+  },
+  {
+    "id": "exp-add-rule",
+    "label": "aˣaʸ=aˣʸ",
+    "prompt": "aˣaʸ",
+    "tokens": [
+      "aˣ",
+      "aʸ",
+      "=",
+      "aˣʸ"
+    ],
+    "hint": "지수를 더함"
+  },
+  {
+    "id": "exp-sub-rule",
+    "label": "aˣ/aʸ",
+    "prompt": "aˣ/aʸ",
+    "tokens": [
+      "aˣ",
+      "/",
+      "aʸ"
+    ],
+    "hint": "지수를 뺌"
+  },
+  {
+    "id": "exp-of-one",
+    "label": "1ⁿ=1",
+    "prompt": "1ⁿ의 값",
+    "tokens": [
+      "1",
+      "ⁿ",
+      "=",
+      "1"
+    ],
+    "hint": "1ⁿ=1"
+  },
+  {
+    "id": "sqrt-mul",
+    "label": "√a√b=√ab",
+    "prompt": "√a·√b",
+    "tokens": [
+      "√a",
+      "√b",
+      "=",
+      "√ab"
+    ],
+    "hint": "√a√b=√(ab)"
+  },
+  {
+    "id": "sqrt-div",
+    "label": "√a/√b",
+    "prompt": "√a/√b",
+    "tokens": [
+      "√a",
+      "/",
+      "√b"
+    ],
+    "hint": "√(a/b)"
+  },
+  {
+    "id": "log-self",
+    "label": "logₐa=1",
+    "prompt": "logₐa의 값",
+    "tokens": [
+      "logₐ",
+      "a",
+      "=",
+      "1"
+    ],
+    "hint": "logₐa=1"
+  },
+  {
+    "id": "ln-one",
+    "label": "ln1=0",
+    "prompt": "ln 1의 값",
+    "tokens": [
+      "ln",
+      "1",
+      "=",
+      "0"
+    ],
+    "hint": "ln1=0"
+  },
+  {
+    "id": "log-ten",
+    "label": "log10=1",
+    "prompt": "log 10의 값",
+    "tokens": [
+      "log",
+      "10",
+      "=",
+      "1"
+    ],
+    "hint": "log10=1"
+  },
+  {
+    "id": "arith-nth",
+    "label": "aₙ=a₁+n−1d",
+    "prompt": "등차수열 n항",
+    "tokens": [
+      "aₙ",
+      "=",
+      "a₁",
+      "+",
+      "n−1",
+      "d"
+    ],
+    "hint": "a₁+(n−1)d"
+  },
+  {
+    "id": "geo-nth",
+    "label": "aₙ=a₁rⁿ⁻¹",
+    "prompt": "등비수열 n항",
+    "tokens": [
+      "aₙ",
+      "=",
+      "a₁",
+      "rⁿ⁻¹"
+    ],
+    "hint": "a₁rⁿ⁻¹"
+  },
+  {
+    "id": "arith-sum2",
+    "label": "Sₙ=½n(a+l)",
+    "prompt": "등차수열 합",
+    "tokens": [
+      "Sₙ",
+      "=",
+      "½n",
+      "(",
+      "a+l",
+      ")"
+    ],
+    "hint": "½n(a+l)"
+  },
+  {
+    "id": "arith-mean",
+    "label": "(a+c)/2",
+    "prompt": "등차중항",
+    "tokens": [
+      "(",
+      "a",
+      "+",
+      "c",
+      ")",
+      "/2"
+    ],
+    "hint": "b=(a+c)/2"
+  },
+  {
+    "id": "geo-mean",
+    "label": "√ac",
+    "prompt": "등비중항",
+    "tokens": [
+      "√",
+      "a",
+      "c"
+    ],
+    "hint": "b=√(ac)"
+  },
+  {
+    "id": "comb-sym",
+    "label": "ₙCᵣ=ₙCₙ₋ᵣ",
+    "prompt": "ₙCᵣ=ₙCₙ₋ᵣ",
+    "tokens": [
+      "ₙCᵣ",
+      "=",
+      "ₙC",
+      "ₙ₋ᵣ"
+    ],
+    "hint": "대칭성"
+  },
+  {
+    "id": "perm-formula",
+    "label": "n!/n−r!",
+    "prompt": "순열(분모)",
+    "tokens": [
+      "n",
+      "!",
+      "/",
+      "n−r",
+      "!"
+    ],
+    "hint": "n!/(n−r)!"
+  }
+]

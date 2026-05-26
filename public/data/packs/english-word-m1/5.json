@@ -1,0 +1,252 @@
+[
+  {
+    "word": "fast",
+    "meaning": "빠른",
+    "hint": "형용사"
+  },
+  {
+    "word": "feel",
+    "meaning": "느끼다",
+    "hint": "동작"
+  },
+  {
+    "word": "find",
+    "meaning": "찾다",
+    "hint": "동작"
+  },
+  {
+    "word": "fire",
+    "meaning": "불",
+    "hint": "자연"
+  },
+  {
+    "word": "fish",
+    "meaning": "물고기",
+    "hint": "동물"
+  },
+  {
+    "word": "five",
+    "meaning": "다섯",
+    "hint": "숫자"
+  },
+  {
+    "word": "foot",
+    "meaning": "발",
+    "hint": "신체"
+  },
+  {
+    "word": "fork",
+    "meaning": "포크",
+    "hint": "집"
+  },
+  {
+    "word": "four",
+    "meaning": "넷",
+    "hint": "숫자"
+  },
+  {
+    "word": "frog",
+    "meaning": "개구리",
+    "hint": "동물"
+  },
+  {
+    "word": "gate",
+    "meaning": "대문",
+    "hint": "집"
+  },
+  {
+    "word": "girl",
+    "meaning": "소녀",
+    "hint": "사람"
+  },
+  {
+    "word": "give",
+    "meaning": "주다",
+    "hint": "동작"
+  },
+  {
+    "word": "glad",
+    "meaning": "기쁜",
+    "hint": "감정"
+  },
+  {
+    "word": "goat",
+    "meaning": "염소",
+    "hint": "동물"
+  },
+  {
+    "word": "gold",
+    "meaning": "금색",
+    "hint": "색깔"
+  },
+  {
+    "word": "good",
+    "meaning": "좋은",
+    "hint": "형용사"
+  },
+  {
+    "word": "gray",
+    "meaning": "회색",
+    "hint": "색깔"
+  },
+  {
+    "word": "grow",
+    "meaning": "자라다",
+    "hint": "동작"
+  },
+  {
+    "word": "hair",
+    "meaning": "머리카락",
+    "hint": "신체"
+  },
+  {
+    "word": "half",
+    "meaning": "절반",
+    "hint": "숫자"
+  },
+  {
+    "word": "hand",
+    "meaning": "손",
+    "hint": "신체"
+  },
+  {
+    "word": "hard",
+    "meaning": "어려운",
+    "hint": "형용사"
+  },
+  {
+    "word": "hate",
+    "meaning": "미워하다",
+    "hint": "감정"
+  },
+  {
+    "word": "head",
+    "meaning": "머리",
+    "hint": "신체"
+  },
+  {
+    "word": "hear",
+    "meaning": "듣다",
+    "hint": "동작"
+  },
+  {
+    "word": "help",
+    "meaning": "돕다",
+    "hint": "동작"
+  },
+  {
+    "word": "hero",
+    "meaning": "영웅",
+    "hint": "사람"
+  },
+  {
+    "word": "high",
+    "meaning": "높은",
+    "hint": "형용사"
+  },
+  {
+    "word": "hill",
+    "meaning": "언덕",
+    "hint": "자연"
+  },
+  {
+    "word": "hold",
+    "meaning": "잡다",
+    "hint": "동작"
+  },
+  {
+    "word": "home",
+    "meaning": "집",
+    "hint": "집"
+  },
+  {
+    "word": "hope",
+    "meaning": "바라다",
+    "hint": "동작"
+  },
+  {
+    "word": "hour",
+    "meaning": "시간",
+    "hint": "시간"
+  },
+  {
+    "word": "join",
+    "meaning": "합치다",
+    "hint": "동작"
+  },
+  {
+    "word": "jump",
+    "meaning": "뛰다",
+    "hint": "동작"
+  },
+  {
+    "word": "keep",
+    "meaning": "지키다",
+    "hint": "동작"
+  },
+  {
+    "word": "kick",
+    "meaning": "차다",
+    "hint": "동작"
+  },
+  {
+    "word": "kind",
+    "meaning": "친절한",
+    "hint": "형용사"
+  },
+  {
+    "word": "king",
+    "meaning": "왕",
+    "hint": "사람"
+  },
+  {
+    "word": "knee",
+    "meaning": "무릎",
+    "hint": "신체"
+  },
+  {
+    "word": "know",
+    "meaning": "알다",
+    "hint": "동작"
+  },
+  {
+    "word": "lake",
+    "meaning": "호수",
+    "hint": "자연"
+  },
+  {
+    "word": "lamp",
+    "meaning": "등",
+    "hint": "집"
+  },
+  {
+    "word": "last",
+    "meaning": "마지막",
+    "hint": "순서"
+  },
+  {
+    "word": "lead",
+    "meaning": "이끌다",
+    "hint": "동작"
+  },
+  {
+    "word": "leaf",
+    "meaning": "잎",
+    "hint": "자연"
+  },
+  {
+    "word": "like",
+    "meaning": "좋아하다",
+    "hint": "감정"
+  },
+  {
+    "word": "lion",
+    "meaning": "사자",
+    "hint": "동물"
+  },
+  {
+    "word": "live",
+    "meaning": "살다",
+    "hint": "동작"
+  }
+]

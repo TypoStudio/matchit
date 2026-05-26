@@ -1,0 +1,722 @@
+[
+  {
+    "id": "scale-factor",
+    "label": "k²",
+    "prompt": "닮음비와 넓이비",
+    "tokens": [
+      "k",
+      "²"
+    ],
+    "hint": "길이비 k → 넓이비 k²"
+  },
+  {
+    "id": "scale-volume",
+    "label": "k³",
+    "prompt": "닮음비와 부피비",
+    "tokens": [
+      "k",
+      "³"
+    ],
+    "hint": "길이비 k → 부피비 k³"
+  },
+  {
+    "id": "speed-from-rpm",
+    "label": "2πf",
+    "prompt": "각속도 공식",
+    "tokens": [
+      "2",
+      "π",
+      "f"
+    ],
+    "hint": "2πf"
+  },
+  {
+    "id": "heron-s",
+    "label": "½(a+b+c)",
+    "prompt": "헤론 공식의 s",
+    "tokens": [
+      "½",
+      "(",
+      "a",
+      "+b",
+      "+c",
+      ")"
+    ],
+    "hint": "반둘레 s"
+  },
+  {
+    "id": "linear-two-pt",
+    "label": "Δy/Δx",
+    "prompt": "두 점 사이 기울기",
+    "tokens": [
+      "Δy",
+      "/",
+      "Δx"
+    ],
+    "hint": "(주의: slope와 다른 맥락) y증가/x증가"
+  },
+  {
+    "id": "parallel-slope",
+    "label": "m₁=m₂",
+    "prompt": "평행선의 기울기 관계",
+    "tokens": [
+      "m₁",
+      "=",
+      "m₂"
+    ],
+    "hint": "기울기가 같다"
+  },
+  {
+    "id": "perp-slope",
+    "label": "m₁m₂=−1",
+    "prompt": "수직선의 기울기 관계",
+    "tokens": [
+      "m₁",
+      "m₂",
+      "=",
+      "−1"
+    ],
+    "hint": "곱이 −1"
+  },
+  {
+    "id": "rate",
+    "label": "a/b",
+    "prompt": "비율 공식",
+    "tokens": [
+      "a",
+      "/",
+      "b"
+    ],
+    "hint": "a/b — (퍼센트 전 단계)"
+  },
+  {
+    "id": "unit-price",
+    "label": "총액/수량",
+    "prompt": "단가 공식",
+    "tokens": [
+      "총액",
+      "/",
+      "수량"
+    ],
+    "hint": "총액/수량"
+  },
+  {
+    "id": "discount",
+    "label": "P(1−r)",
+    "prompt": "할인가 공식",
+    "tokens": [
+      "P",
+      "(",
+      "1",
+      "−",
+      "r",
+      ")"
+    ],
+    "hint": "P(1−r)"
+  },
+  {
+    "id": "line-slope-int",
+    "label": "y=mx+c",
+    "prompt": "직선 기울기절편형",
+    "tokens": [
+      "y",
+      "=",
+      "m",
+      "x",
+      "+",
+      "c"
+    ],
+    "hint": "y=mx+c"
+  },
+  {
+    "id": "linear-zero",
+    "label": "−c/m",
+    "prompt": "y=0인 x",
+    "tokens": [
+      "−",
+      "c",
+      "/",
+      "m"
+    ],
+    "hint": "−c/m"
+  },
+  {
+    "id": "linear-value",
+    "label": "ax+b",
+    "prompt": "x에서의 함숫값",
+    "tokens": [
+      "a",
+      "x",
+      "+",
+      "b"
+    ],
+    "hint": "ax+b"
+  },
+  {
+    "id": "two-point-y",
+    "label": "(y₁+y₂)/2",
+    "prompt": "두 y의 평균",
+    "tokens": [
+      "(",
+      "y₁",
+      "+y₂",
+      ")",
+      "/2"
+    ],
+    "hint": "(y₁+y₂)/2"
+  },
+  {
+    "id": "two-point-x",
+    "label": "(x₁+x₂)/2",
+    "prompt": "두 x의 평균",
+    "tokens": [
+      "(",
+      "x₁",
+      "+x₂",
+      ")",
+      "/2"
+    ],
+    "hint": "(x₁+x₂)/2"
+  },
+  {
+    "id": "distance-2d",
+    "label": "√Δx²+Δy²",
+    "prompt": "두 점 사이 거리",
+    "tokens": [
+      "√",
+      "Δx²",
+      "+",
+      "Δy²"
+    ],
+    "hint": "√(Δx²+Δy²)"
+  },
+  {
+    "id": "manhattan",
+    "label": "|Δx|+|Δy|",
+    "prompt": "격자 거리",
+    "tokens": [
+      "|Δx|",
+      "+",
+      "|Δy|"
+    ],
+    "hint": "|Δx|+|Δy|"
+  },
+  {
+    "id": "speed-avg2",
+    "label": "v=d/t",
+    "prompt": "평균 속력",
+    "tokens": [
+      "v",
+      "=",
+      "d",
+      "/",
+      "t"
+    ],
+    "hint": "v=d/t"
+  },
+  {
+    "id": "time-from-vd",
+    "label": "t=d/v",
+    "prompt": "거리와 속력으로 시간",
+    "tokens": [
+      "t",
+      "=",
+      "d",
+      "/",
+      "v"
+    ],
+    "hint": "t=d/v"
+  },
+  {
+    "id": "accel2",
+    "label": "a=Δv/Δt",
+    "prompt": "가속도",
+    "tokens": [
+      "a",
+      "=",
+      "Δv",
+      "/",
+      "Δt"
+    ],
+    "hint": "a=Δv/Δt"
+  },
+  {
+    "id": "weight2",
+    "label": "W=mg",
+    "prompt": "무게",
+    "tokens": [
+      "W",
+      "=",
+      "m",
+      "g"
+    ],
+    "hint": "W=mg"
+  },
+  {
+    "id": "kinetic2",
+    "label": "½mv²",
+    "prompt": "운동에너지",
+    "tokens": [
+      "½",
+      "m",
+      "v²"
+    ],
+    "hint": "½mv²"
+  },
+  {
+    "id": "voltage",
+    "label": "I=V/R",
+    "prompt": "옴의 법칙 변형",
+    "tokens": [
+      "I",
+      "=",
+      "V",
+      "/",
+      "R"
+    ],
+    "hint": "I=V/R"
+  },
+  {
+    "id": "resistance",
+    "label": "R=V/I",
+    "prompt": "옴의 법칙 변형",
+    "tokens": [
+      "R",
+      "=",
+      "V",
+      "/",
+      "I"
+    ],
+    "hint": "R=V/I"
+  },
+  {
+    "id": "power-elec",
+    "label": "P=VI",
+    "prompt": "전력 공식",
+    "tokens": [
+      "P",
+      "=",
+      "V",
+      "I"
+    ],
+    "hint": "P=VI"
+  },
+  {
+    "id": "cuboid-vol2",
+    "label": "V=abc",
+    "prompt": "직육면체 부피",
+    "tokens": [
+      "V",
+      "=",
+      "a",
+      "b",
+      "c"
+    ],
+    "hint": "V=abc"
+  },
+  {
+    "id": "cube-vol2",
+    "label": "V=a³",
+    "prompt": "정육면체 부피",
+    "tokens": [
+      "V",
+      "=",
+      "a",
+      "³"
+    ],
+    "hint": "V=a³"
+  },
+  {
+    "id": "cylinder-vol2",
+    "label": "V=πr²h",
+    "prompt": "원기둥 부피",
+    "tokens": [
+      "V",
+      "=",
+      "π",
+      "r²",
+      "h"
+    ],
+    "hint": "V=πr²h"
+  },
+  {
+    "id": "sphere-vol2",
+    "label": "⁴⁄₃πr³",
+    "prompt": "구의 부피",
+    "tokens": [
+      "⁴⁄₃",
+      "π",
+      "r³"
+    ],
+    "hint": "4/3·πr³"
+  },
+  {
+    "id": "triangle-area-coord",
+    "label": "½|D|",
+    "prompt": "좌표 삼각형(절반)",
+    "tokens": [
+      "½",
+      "|",
+      "D",
+      "|"
+    ],
+    "hint": "½|행렬식|"
+  },
+  {
+    "id": "poly-int-each",
+    "label": "n−2×180/n",
+    "prompt": "정다각형 한 내각",
+    "tokens": [
+      "n−2",
+      "×",
+      "180",
+      "/",
+      "n"
+    ],
+    "hint": "(n−2)·180/n"
+  },
+  {
+    "id": "poly-ext-each",
+    "label": "360/n",
+    "prompt": "정다각형 한 외각",
+    "tokens": [
+      "360",
+      "/",
+      "n"
+    ],
+    "hint": "360/n"
+  },
+  {
+    "id": "diagonal-count",
+    "label": "n(n−3)/2",
+    "prompt": "다각형 대각선 수",
+    "tokens": [
+      "n",
+      "(",
+      "n−3",
+      ")",
+      "/2"
+    ],
+    "hint": "n(n−3)/2"
+  },
+  {
+    "id": "inscribed-angle",
+    "label": "½중심각",
+    "prompt": "원주각과 중심각",
+    "tokens": [
+      "½",
+      "중심각"
+    ],
+    "hint": "원주각=½중심각"
+  },
+  {
+    "id": "chord-area",
+    "label": "부채−삼각",
+    "prompt": "부채꼴−삼각형",
+    "tokens": [
+      "부채",
+      "−",
+      "삼각"
+    ],
+    "hint": "활꼴 넓이"
+  },
+  {
+    "id": "regular-tri-area",
+    "label": "√3a²/4",
+    "prompt": "정삼각형 넓이",
+    "tokens": [
+      "√3",
+      "a²",
+      "/",
+      "4"
+    ],
+    "hint": "√3 a²/4"
+  },
+  {
+    "id": "regular-hex-area",
+    "label": "3√3a²/2",
+    "prompt": "정육각형 넓이",
+    "tokens": [
+      "3√3",
+      "a²",
+      "/",
+      "2"
+    ],
+    "hint": "3√3 a²/2"
+  },
+  {
+    "id": "mass-from-dv",
+    "label": "m=ρV",
+    "prompt": "밀도와 부피로 질량",
+    "tokens": [
+      "m",
+      "=",
+      "ρ",
+      "V"
+    ],
+    "hint": "m=ρV"
+  },
+  {
+    "id": "volume-from-dm",
+    "label": "V=m/ρ",
+    "prompt": "밀도와 질량으로 부피",
+    "tokens": [
+      "V",
+      "=",
+      "m",
+      "/",
+      "ρ"
+    ],
+    "hint": "V=m/ρ"
+  },
+  {
+    "id": "percent-change",
+    "label": "Δ/원래",
+    "prompt": "증가율(분자)",
+    "tokens": [
+      "Δ",
+      "/",
+      "원래"
+    ],
+    "hint": "변화량/원래값"
+  },
+  {
+    "id": "markup",
+    "label": "P(1+r)",
+    "prompt": "인상가",
+    "tokens": [
+      "P",
+      "(",
+      "1",
+      "+",
+      "r",
+      ")"
+    ],
+    "hint": "P(1+r)"
+  },
+  {
+    "id": "tax-included",
+    "label": "P(1+t)",
+    "prompt": "세금 포함 가격",
+    "tokens": [
+      "P",
+      "(",
+      "1+",
+      "t",
+      ")"
+    ],
+    "hint": "P(1+t)"
+  },
+  {
+    "id": "avg-of-n",
+    "label": "합/n",
+    "prompt": "n개 값의 평균",
+    "tokens": [
+      "합",
+      "/",
+      "n"
+    ],
+    "hint": "합/n"
+  },
+  {
+    "id": "internal-div",
+    "label": "m+n",
+    "prompt": "내분점 좌표(분모)",
+    "tokens": [
+      "m",
+      "+",
+      "n"
+    ],
+    "hint": "(분모) m+n"
+  },
+  {
+    "id": "external-div",
+    "label": "m−n",
+    "prompt": "외분점(분모)",
+    "tokens": [
+      "m",
+      "−",
+      "n"
+    ],
+    "hint": "(분모) m−n"
+  },
+  {
+    "id": "slope-from-angle",
+    "label": "tanθ",
+    "prompt": "기울기=tan",
+    "tokens": [
+      "tan",
+      "θ"
+    ],
+    "hint": "기울기=tanθ"
+  },
+  {
+    "id": "rect-diag2",
+    "label": "√w²+h²",
+    "prompt": "직사각형 대각선",
+    "tokens": [
+      "√",
+      "w²",
+      "+",
+      "h²"
+    ],
+    "hint": "√(w²+h²)"
+  },
+  {
+    "id": "box-diag",
+    "label": "√a²+b²+c²",
+    "prompt": "직육면체 대각선",
+    "tokens": [
+      "√",
+      "a²",
+      "+b²",
+      "+c²"
+    ],
+    "hint": "√(a²+b²+c²)"
+  },
+  {
+    "id": "frequency2",
+    "label": "f=1/T",
+    "prompt": "진동수",
+    "tokens": [
+      "f",
+      "=",
+      "1",
+      "/",
+      "T"
+    ],
+    "hint": "f=1/T"
+  },
+  {
+    "id": "period",
+    "label": "T=1/f",
+    "prompt": "주기 공식",
+    "tokens": [
+      "T",
+      "=",
+      "1",
+      "/",
+      "f"
+    ],
+    "hint": "T=1/f"
+  },
+  {
+    "id": "quadratic-eq",
+    "label": "ax²+bx+c",
+    "prompt": "이차방정식 표준형",
+    "tokens": [
+      "a",
+      "x²",
+      "+",
+      "b",
+      "x",
+      "+",
+      "c"
+    ],
+    "hint": "ax²+bx+c=0 의 좌변"
+  },
+  {
+    "id": "vertex-form",
+    "label": "a(x−h)²",
+    "prompt": "이차함수 꼭짓점형",
+    "tokens": [
+      "a",
+      "(",
+      "x",
+      "−",
+      "h",
+      ")²"
+    ],
+    "hint": "a(x−h)²+k 형태"
+  },
+  {
+    "id": "sum-of-roots",
+    "label": "−b/a",
+    "prompt": "두 근의 합",
+    "tokens": [
+      "−",
+      "b",
+      "/",
+      "a"
+    ],
+    "hint": "−b/a — 근의 합"
+  },
+  {
+    "id": "product-of-roots",
+    "label": "c/a",
+    "prompt": "두 근의 곱",
+    "tokens": [
+      "c",
+      "/",
+      "a"
+    ],
+    "hint": "c/a — 근의 곱"
+  },
+  {
+    "id": "discriminant",
+    "label": "b²−4ac",
+    "prompt": "이차방정식 판별식",
+    "tokens": [
+      "b²",
+      "−",
+      "4ac"
+    ],
+    "hint": "b²−4ac — 근의 개수 판별"
+  },
+  {
+    "id": "exp-mul",
+    "label": "aᵐaⁿ=aᵐⁿ",
+    "prompt": "같은 밑 지수 곱",
+    "tokens": [
+      "aᵐ",
+      "aⁿ",
+      "=",
+      "aᵐⁿ"
+    ],
+    "hint": "지수를 더한다"
+  },
+  {
+    "id": "exp-div",
+    "label": "aᵐ/aⁿ",
+    "prompt": "같은 밑 지수 나눗셈",
+    "tokens": [
+      "aᵐ",
+      "/",
+      "aⁿ"
+    ],
+    "hint": "지수를 뺀다"
+  },
+  {
+    "id": "exp-power",
+    "label": "(aᵐ)ⁿ",
+    "prompt": "지수의 거듭제곱 법칙",
+    "tokens": [
+      "(",
+      "aᵐ",
+      ")ⁿ"
+    ],
+    "hint": "지수를 곱한다"
+  },
+  {
+    "id": "exp-zero",
+    "label": "a⁰=1",
+    "prompt": "0제곱의 값",
+    "tokens": [
+      "a",
+      "⁰",
+      "=",
+      "1"
+    ],
+    "hint": "a⁰=1"
+  },
+  {
+    "id": "exp-neg",
+    "label": "a⁻ⁿ",
+    "prompt": "음의 지수 정의",
+    "tokens": [
+      "a",
+      "⁻ⁿ"
+    ],
+    "hint": "1/aⁿ 과 같다"
+  }
+]

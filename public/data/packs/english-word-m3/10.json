@@ -1,0 +1,502 @@
+[
+  {
+    "word": "ecosystem",
+    "meaning": "생태계",
+    "hint": "자연체계"
+  },
+  {
+    "word": "education",
+    "meaning": "교육",
+    "hint": "가르침"
+  },
+  {
+    "word": "emergency",
+    "meaning": "비상",
+    "hint": "급함"
+  },
+  {
+    "word": "enjoyable",
+    "meaning": "즐거운",
+    "hint": "재미있는"
+  },
+  {
+    "word": "equipment",
+    "meaning": "장비",
+    "hint": "기구"
+  },
+  {
+    "word": "evaporate",
+    "meaning": "증발하다",
+    "hint": "기체로변함"
+  },
+  {
+    "word": "explosion",
+    "meaning": "폭발",
+    "hint": "터짐"
+  },
+  {
+    "word": "frequency",
+    "meaning": "주파수",
+    "hint": "진동수"
+  },
+  {
+    "word": "infection",
+    "meaning": "감염",
+    "hint": "옮음"
+  },
+  {
+    "word": "interview",
+    "meaning": "면접",
+    "hint": "인터뷰"
+  },
+  {
+    "word": "invention",
+    "meaning": "발명",
+    "hint": "새로만듦"
+  },
+  {
+    "word": "mechanism",
+    "meaning": "기제",
+    "hint": "장치원리"
+  },
+  {
+    "word": "newspaper",
+    "meaning": "신문",
+    "hint": "뉴스지"
+  },
+  {
+    "word": "nutrition",
+    "meaning": "영양",
+    "hint": "양분"
+  },
+  {
+    "word": "paragraph",
+    "meaning": "문단",
+    "hint": "글덩이"
+  },
+  {
+    "word": "pollution",
+    "meaning": "오염",
+    "hint": "더러워짐"
+  },
+  {
+    "word": "president",
+    "meaning": "대통령",
+    "hint": "최고지도자"
+  },
+  {
+    "word": "procedure",
+    "meaning": "절차",
+    "hint": "순서"
+  },
+  {
+    "word": "promotion",
+    "meaning": "홍보",
+    "hint": "승진"
+  },
+  {
+    "word": "radiation",
+    "meaning": "방사선",
+    "hint": "에너지선"
+  },
+  {
+    "word": "rehearsal",
+    "meaning": "리허설",
+    "hint": "예행연습"
+  },
+  {
+    "word": "reluctant",
+    "meaning": "꺼리는",
+    "hint": "내키지않는"
+  },
+  {
+    "word": "satellite",
+    "meaning": "위성",
+    "hint": "우주물체"
+  },
+  {
+    "word": "scientist",
+    "meaning": "과학자",
+    "hint": "연구하는이"
+  },
+  {
+    "word": "sculpture",
+    "meaning": "조각",
+    "hint": "입체작품"
+  },
+  {
+    "word": "selection",
+    "meaning": "선택",
+    "hint": "고름"
+  },
+  {
+    "word": "structure",
+    "meaning": "구조",
+    "hint": "짜임새"
+  },
+  {
+    "word": "substance",
+    "meaning": "물질",
+    "hint": "성분"
+  },
+  {
+    "word": "technique",
+    "meaning": "기법",
+    "hint": "방식"
+  },
+  {
+    "word": "telescope",
+    "meaning": "망원경",
+    "hint": "멀리보는기구"
+  },
+  {
+    "word": "territory",
+    "meaning": "영토",
+    "hint": "땅"
+  },
+  {
+    "word": "treatment",
+    "meaning": "치료",
+    "hint": "고침"
+  },
+  {
+    "word": "viewpoint",
+    "meaning": "견해",
+    "hint": "입장"
+  },
+  {
+    "word": "volunteer",
+    "meaning": "자원봉사자",
+    "hint": "돕는이"
+  },
+  {
+    "word": "adventurer",
+    "meaning": "모험가",
+    "hint": "모험하는사람"
+  },
+  {
+    "word": "affordable",
+    "meaning": "저렴한",
+    "hint": "살수있는"
+  },
+  {
+    "word": "comparison",
+    "meaning": "비교",
+    "hint": "견줌"
+  },
+  {
+    "word": "conference",
+    "meaning": "회의",
+    "hint": "협의회"
+  },
+  {
+    "word": "confidence",
+    "meaning": "자신감",
+    "hint": "당당함"
+  },
+  {
+    "word": "connection",
+    "meaning": "연결",
+    "hint": "이음"
+  },
+  {
+    "word": "creativity",
+    "meaning": "창의력",
+    "hint": "새생각"
+  },
+  {
+    "word": "department",
+    "meaning": "부서",
+    "hint": "과"
+  },
+  {
+    "word": "difference",
+    "meaning": "차이",
+    "hint": "다름"
+  },
+  {
+    "word": "difficulty",
+    "meaning": "어려움",
+    "hint": "힘듦"
+  },
+  {
+    "word": "discussion",
+    "meaning": "토론",
+    "hint": "의논"
+  },
+  {
+    "word": "earthquake",
+    "meaning": "지진",
+    "hint": "땅흔들림"
+  },
+  {
+    "word": "exhibition",
+    "meaning": "전시회",
+    "hint": "전시"
+  },
+  {
+    "word": "experience",
+    "meaning": "경험",
+    "hint": "겪음"
+  },
+  {
+    "word": "experiment",
+    "meaning": "실험",
+    "hint": "시험"
+  },
+  {
+    "word": "foundation",
+    "meaning": "재단",
+    "hint": "토대"
+  },
+  {
+    "word": "friendship",
+    "meaning": "우정",
+    "hint": "친구사이"
+  },
+  {
+    "word": "ingredient",
+    "meaning": "재료",
+    "hint": "원료"
+  },
+  {
+    "word": "instrument",
+    "meaning": "기구",
+    "hint": "악기"
+  },
+  {
+    "word": "literature",
+    "meaning": "문학",
+    "hint": "글예술"
+  },
+  {
+    "word": "microscope",
+    "meaning": "현미경",
+    "hint": "작게보는기구"
+  },
+  {
+    "word": "percentage",
+    "meaning": "백분율",
+    "hint": "퍼센트"
+  },
+  {
+    "word": "politician",
+    "meaning": "정치인",
+    "hint": "정치하는이"
+  },
+  {
+    "word": "population",
+    "meaning": "인구",
+    "hint": "사람수"
+  },
+  {
+    "word": "punishment",
+    "meaning": "처벌",
+    "hint": "벌"
+  },
+  {
+    "word": "similarity",
+    "meaning": "유사성",
+    "hint": "닮음"
+  },
+  {
+    "word": "statistics",
+    "meaning": "통계",
+    "hint": "수치자료"
+  },
+  {
+    "word": "sufficient",
+    "meaning": "충분한",
+    "hint": "넉넉한"
+  },
+  {
+    "word": "technology",
+    "meaning": "기술",
+    "hint": "과학기술"
+  },
+  {
+    "word": "vocabulary",
+    "meaning": "어휘",
+    "hint": "낱말모음"
+  },
+  {
+    "word": "wavelength",
+    "meaning": "파장",
+    "hint": "파의길이"
+  },
+  {
+    "word": "agriculture",
+    "meaning": "농업",
+    "hint": "농사"
+  },
+  {
+    "word": "anniversary",
+    "meaning": "기념일",
+    "hint": "돌이키는날"
+  },
+  {
+    "word": "association",
+    "meaning": "협회",
+    "hint": "연합"
+  },
+  {
+    "word": "calculation",
+    "meaning": "계산",
+    "hint": "셈"
+  },
+  {
+    "word": "celebration",
+    "meaning": "축하",
+    "hint": "기념"
+  },
+  {
+    "word": "combination",
+    "meaning": "조합",
+    "hint": "합침"
+  },
+  {
+    "word": "competition",
+    "meaning": "경쟁",
+    "hint": "겨룸"
+  },
+  {
+    "word": "cooperation",
+    "meaning": "협력",
+    "hint": "함께함"
+  },
+  {
+    "word": "development",
+    "meaning": "개발",
+    "hint": "발전시킴"
+  },
+  {
+    "word": "electricity",
+    "meaning": "전기",
+    "hint": "전류"
+  },
+  {
+    "word": "environment",
+    "meaning": "환경",
+    "hint": "자연주변"
+  },
+  {
+    "word": "imagination",
+    "meaning": "상상",
+    "hint": "머릿그림"
+  },
+  {
+    "word": "institution",
+    "meaning": "기관",
+    "hint": "제도"
+  },
+  {
+    "word": "instruction",
+    "meaning": "지시",
+    "hint": "설명"
+  },
+  {
+    "word": "measurement",
+    "meaning": "측정",
+    "hint": "잼"
+  },
+  {
+    "word": "opportunity",
+    "meaning": "기회",
+    "hint": "좋은때"
+  },
+  {
+    "word": "partnership",
+    "meaning": "제휴",
+    "hint": "협력관계"
+  },
+  {
+    "word": "performance",
+    "meaning": "공연",
+    "hint": "수행"
+  },
+  {
+    "word": "perspective",
+    "meaning": "관점",
+    "hint": "시각"
+  },
+  {
+    "word": "temperature",
+    "meaning": "온도",
+    "hint": "따뜻함정도"
+  },
+  {
+    "word": "translation",
+    "meaning": "번역",
+    "hint": "옮김"
+  },
+  {
+    "word": "congratulate",
+    "meaning": "축하하다",
+    "hint": "기쁨전하기"
+  },
+  {
+    "word": "conversation",
+    "meaning": "대화",
+    "hint": "이야기"
+  },
+  {
+    "word": "disadvantage",
+    "meaning": "단점",
+    "hint": "불리함"
+  },
+  {
+    "word": "headquarters",
+    "meaning": "본부",
+    "hint": "본사"
+  },
+  {
+    "word": "organization",
+    "meaning": "조직",
+    "hint": "단체"
+  },
+  {
+    "word": "presentation",
+    "meaning": "발표",
+    "hint": "제시"
+  },
+  {
+    "word": "relationship",
+    "meaning": "관계",
+    "hint": "사이"
+  },
+  {
+    "word": "advertisement",
+    "meaning": "광고",
+    "hint": "알림"
+  },
+  {
+    "word": "appropriately",
+    "meaning": "적절하게",
+    "hint": "알맞게"
+  },
+  {
+    "word": "communication",
+    "meaning": "의사소통",
+    "hint": "소통"
+  },
+  {
+    "word": "pronunciation",
+    "meaning": "발음",
+    "hint": "소리냄"
+  },
+  {
+    "word": "characteristic",
+    "meaning": "특성",
+    "hint": "성질"
+  },
+  {
+    "word": "classification",
+    "meaning": "분류",
+    "hint": "나눔"
+  },
+  {
+    "word": "responsibility",
+    "meaning": "책임",
+    "hint": "맡은의무"
+  }
+]

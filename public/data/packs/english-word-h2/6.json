@@ -1,0 +1,302 @@
+[
+  {
+    "word": "clemency",
+    "meaning": "관용",
+    "hint": "형벌의자비"
+  },
+  {
+    "word": "cogitate",
+    "meaning": "숙고하다",
+    "hint": "곰곰이생각하다"
+  },
+  {
+    "word": "coincide",
+    "meaning": "일치하다",
+    "hint": "겹치다"
+  },
+  {
+    "word": "colossal",
+    "meaning": "거대한",
+    "hint": "엄청난"
+  },
+  {
+    "word": "comeback",
+    "meaning": "복귀",
+    "hint": "재기"
+  },
+  {
+    "word": "compound",
+    "meaning": "화합물",
+    "hint": "합성"
+  },
+  {
+    "word": "conquest",
+    "meaning": "정복",
+    "hint": "획득"
+  },
+  {
+    "word": "contrite",
+    "meaning": "뉘우치는",
+    "hint": "깊이반성하는"
+  },
+  {
+    "word": "coquette",
+    "meaning": "요염한여자",
+    "hint": "교태부리는여인"
+  },
+  {
+    "word": "cosmetic",
+    "meaning": "화장품",
+    "hint": "표면적인"
+  },
+  {
+    "word": "coverage",
+    "meaning": "보도",
+    "hint": "보장범위"
+  },
+  {
+    "word": "covetous",
+    "meaning": "탐내는",
+    "hint": "몹시갖고싶어하는"
+  },
+  {
+    "word": "cupidity",
+    "meaning": "탐욕",
+    "hint": "재물에대한욕심"
+  },
+  {
+    "word": "cylinder",
+    "meaning": "원통",
+    "hint": "실린더"
+  },
+  {
+    "word": "damaging",
+    "meaning": "해로운",
+    "hint": "손상시키는"
+  },
+  {
+    "word": "dazzling",
+    "meaning": "눈부신",
+    "hint": "현란한"
+  },
+  {
+    "word": "deadline",
+    "meaning": "마감",
+    "hint": "기한"
+  },
+  {
+    "word": "decadent",
+    "meaning": "퇴폐적인",
+    "hint": "타락한"
+  },
+  {
+    "word": "decisive",
+    "meaning": "결정적인",
+    "hint": "단호한"
+  },
+  {
+    "word": "decorous",
+    "meaning": "품위있는",
+    "hint": "예의바른"
+  },
+  {
+    "word": "delusion",
+    "meaning": "망상",
+    "hint": "착각"
+  },
+  {
+    "word": "demolish",
+    "meaning": "철거하다",
+    "hint": "부수다"
+  },
+  {
+    "word": "denounce",
+    "meaning": "비난하다",
+    "hint": "고발"
+  },
+  {
+    "word": "derision",
+    "meaning": "조롱",
+    "hint": "비웃음"
+  },
+  {
+    "word": "desolate",
+    "meaning": "황량한",
+    "hint": "쓸쓸한"
+  },
+  {
+    "word": "devotion",
+    "meaning": "헌신",
+    "hint": "전념"
+  },
+  {
+    "word": "diatribe",
+    "meaning": "통렬한비난",
+    "hint": "맹렬한공격연설"
+  },
+  {
+    "word": "dilatory",
+    "meaning": "꾸물대는",
+    "hint": "지연시키는"
+  },
+  {
+    "word": "disabuse",
+    "meaning": "깨우치다",
+    "hint": "오해를풀다"
+  },
+  {
+    "word": "disgrace",
+    "meaning": "불명예",
+    "hint": "수치"
+  },
+  {
+    "word": "disorder",
+    "meaning": "무질서",
+    "hint": "장애"
+  },
+  {
+    "word": "dispense",
+    "meaning": "나눠주다",
+    "hint": "면제"
+  },
+  {
+    "word": "disperse",
+    "meaning": "흩어지다",
+    "hint": "분산"
+  },
+  {
+    "word": "displace",
+    "meaning": "이동시키다",
+    "hint": "쫓아냄"
+  },
+  {
+    "word": "disposal",
+    "meaning": "처분",
+    "hint": "처리"
+  },
+  {
+    "word": "dissolve",
+    "meaning": "녹이다",
+    "hint": "해산"
+  },
+  {
+    "word": "distress",
+    "meaning": "고통",
+    "hint": "괴로움"
+  },
+  {
+    "word": "dividend",
+    "meaning": "배당금",
+    "hint": "이익"
+  },
+  {
+    "word": "doctrine",
+    "meaning": "교리",
+    "hint": "원칙"
+  },
+  {
+    "word": "dominant",
+    "meaning": "지배적인",
+    "hint": "우세한"
+  },
+  {
+    "word": "donation",
+    "meaning": "기부",
+    "hint": "기증"
+  },
+  {
+    "word": "drawback",
+    "meaning": "결점",
+    "hint": "단점"
+  },
+  {
+    "word": "duration",
+    "meaning": "지속기간",
+    "hint": "기간"
+  },
+  {
+    "word": "dwelling",
+    "meaning": "주거",
+    "hint": "거주지"
+  },
+  {
+    "word": "elegance",
+    "meaning": "우아함",
+    "hint": "고상함"
+  },
+  {
+    "word": "eligible",
+    "meaning": "자격있는",
+    "hint": "적격의"
+  },
+  {
+    "word": "eloquent",
+    "meaning": "웅변의",
+    "hint": "유창한"
+  },
+  {
+    "word": "emission",
+    "meaning": "배출",
+    "hint": "방출"
+  },
+  {
+    "word": "emphasis",
+    "meaning": "강조",
+    "hint": "역점"
+  },
+  {
+    "word": "employee",
+    "meaning": "직원",
+    "hint": "고용인"
+  },
+  {
+    "word": "empyreal",
+    "meaning": "천상의",
+    "hint": "가장높은하늘의"
+  },
+  {
+    "word": "encomium",
+    "meaning": "찬사",
+    "hint": "높이는칭송"
+  },
+  {
+    "word": "endeavor",
+    "meaning": "노력",
+    "hint": "시도"
+  },
+  {
+    "word": "engender",
+    "meaning": "야기하다",
+    "hint": "생기게하다"
+  },
+  {
+    "word": "entirely",
+    "meaning": "완전히",
+    "hint": "전적으로"
+  },
+  {
+    "word": "epidemic",
+    "meaning": "전염병",
+    "hint": "유행병"
+  },
+  {
+    "word": "ethereal",
+    "meaning": "천상의",
+    "hint": "가볍고섬세한"
+  },
+  {
+    "word": "euphoria",
+    "meaning": "행복감",
+    "hint": "극도의기쁨"
+  },
+  {
+    "word": "evacuate",
+    "meaning": "대피시키다",
+    "hint": "비우다"
+  },
+  {
+    "word": "exposure",
+    "meaning": "노출",
+    "hint": "폭로"
+  }
+]

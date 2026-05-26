@@ -1,0 +1,502 @@
+[
+  {
+    "word": "deflection",
+    "meaning": "굴절",
+    "hint": "빗나감"
+  },
+  {
+    "word": "delightful",
+    "meaning": "즐거운",
+    "hint": "유쾌한"
+  },
+  {
+    "word": "derivative",
+    "meaning": "파생의",
+    "hint": "파생물"
+  },
+  {
+    "word": "descendant",
+    "meaning": "후손",
+    "hint": "자손"
+  },
+  {
+    "word": "diffidence",
+    "meaning": "소심함",
+    "hint": "자신감부족"
+  },
+  {
+    "word": "disappoint",
+    "meaning": "실망시키다",
+    "hint": "낙담"
+  },
+  {
+    "word": "disastrous",
+    "meaning": "비참한",
+    "hint": "재앙의"
+  },
+  {
+    "word": "disclosure",
+    "meaning": "폭로",
+    "hint": "공개"
+  },
+  {
+    "word": "discomfort",
+    "meaning": "불편",
+    "hint": "불쾌"
+  },
+  {
+    "word": "disconnect",
+    "meaning": "끊다",
+    "hint": "단절"
+  },
+  {
+    "word": "discretion",
+    "meaning": "재량",
+    "hint": "신중함"
+  },
+  {
+    "word": "discursive",
+    "meaning": "산만한",
+    "hint": "두서없는"
+  },
+  {
+    "word": "dissonance",
+    "meaning": "불일치",
+    "hint": "조화안됨"
+  },
+  {
+    "word": "economical",
+    "meaning": "경제적인",
+    "hint": "절약하는"
+  },
+  {
+    "word": "electronic",
+    "meaning": "전자의",
+    "hint": "전자식"
+  },
+  {
+    "word": "enervation",
+    "meaning": "무기력",
+    "hint": "기력상실"
+  },
+  {
+    "word": "enrollment",
+    "meaning": "등록",
+    "hint": "입학"
+  },
+  {
+    "word": "enterprise",
+    "meaning": "기업",
+    "hint": "사업"
+  },
+  {
+    "word": "equivocate",
+    "meaning": "얼버무리다",
+    "hint": "애매하게말하다"
+  },
+  {
+    "word": "evanescent",
+    "meaning": "덧없는",
+    "hint": "곧사라지는"
+  },
+  {
+    "word": "exacerbate",
+    "meaning": "악화시키다",
+    "hint": "더심해짐"
+  },
+  {
+    "word": "exorbitant",
+    "meaning": "터무니없는",
+    "hint": "지나치게비싼"
+  },
+  {
+    "word": "expedition",
+    "meaning": "탐험",
+    "hint": "원정"
+  },
+  {
+    "word": "expression",
+    "meaning": "표현",
+    "hint": "표정"
+  },
+  {
+    "word": "extraction",
+    "meaning": "추출",
+    "hint": "발췌"
+  },
+  {
+    "word": "facilitate",
+    "meaning": "촉진하다",
+    "hint": "돕다"
+  },
+  {
+    "word": "fastidious",
+    "meaning": "까다로운",
+    "hint": "꼼꼼한"
+  },
+  {
+    "word": "formidable",
+    "meaning": "가공할",
+    "hint": "무시무시한"
+  },
+  {
+    "word": "fraudulent",
+    "meaning": "사기의",
+    "hint": "부정한"
+  },
+  {
+    "word": "gregarious",
+    "meaning": "사교적인",
+    "hint": "붙임성있는"
+  },
+  {
+    "word": "meticulous",
+    "meaning": "꼼꼼한",
+    "hint": "세심한"
+  },
+  {
+    "word": "accommodate",
+    "meaning": "수용하다",
+    "hint": "들이다"
+  },
+  {
+    "word": "acquisition",
+    "meaning": "습득",
+    "hint": "획득"
+  },
+  {
+    "word": "adventurous",
+    "meaning": "모험적인",
+    "hint": "대담한"
+  },
+  {
+    "word": "affirmative",
+    "meaning": "긍정의",
+    "hint": "찬성의"
+  },
+  {
+    "word": "anachronism",
+    "meaning": "시대착오",
+    "hint": "시대에안맞음"
+  },
+  {
+    "word": "approbation",
+    "meaning": "승인",
+    "hint": "공식적인찬성"
+  },
+  {
+    "word": "arbitration",
+    "meaning": "중재",
+    "hint": "조정"
+  },
+  {
+    "word": "belligerent",
+    "meaning": "호전적인",
+    "hint": "싸우려는"
+  },
+  {
+    "word": "bureaucracy",
+    "meaning": "관료제",
+    "hint": "행정조직"
+  },
+  {
+    "word": "castellated",
+    "meaning": "성같은",
+    "hint": "성가퀴있는"
+  },
+  {
+    "word": "catastrophe",
+    "meaning": "대재앙",
+    "hint": "참사"
+  },
+  {
+    "word": "circumspect",
+    "meaning": "신중한",
+    "hint": "두루살피는"
+  },
+  {
+    "word": "clandestine",
+    "meaning": "은밀한",
+    "hint": "몰래하는"
+  },
+  {
+    "word": "coalescence",
+    "meaning": "합체",
+    "hint": "하나로뭉침"
+  },
+  {
+    "word": "collaborate",
+    "meaning": "협력하다",
+    "hint": "협업"
+  },
+  {
+    "word": "commemorate",
+    "meaning": "기념하다",
+    "hint": "추모"
+  },
+  {
+    "word": "compendious",
+    "meaning": "간결한",
+    "hint": "요약된"
+  },
+  {
+    "word": "compunction",
+    "meaning": "양심의가책",
+    "hint": "뉘우치는마음"
+  },
+  {
+    "word": "confederate",
+    "meaning": "동맹의",
+    "hint": "공모자"
+  },
+  {
+    "word": "confinement",
+    "meaning": "감금",
+    "hint": "제한"
+  },
+  {
+    "word": "consecutive",
+    "meaning": "연속적인",
+    "hint": "잇따른"
+  },
+  {
+    "word": "consolidate",
+    "meaning": "통합하다",
+    "hint": "굳히다"
+  },
+  {
+    "word": "conspicuous",
+    "meaning": "눈에띄는",
+    "hint": "뚜렷한"
+  },
+  {
+    "word": "constituent",
+    "meaning": "구성원",
+    "hint": "유권자"
+  },
+  {
+    "word": "consumption",
+    "meaning": "소비",
+    "hint": "소모"
+  },
+  {
+    "word": "contaminate",
+    "meaning": "오염시키다",
+    "hint": "더럽힘"
+  },
+  {
+    "word": "contemplate",
+    "meaning": "숙고하다",
+    "hint": "심사숙고"
+  },
+  {
+    "word": "contentious",
+    "meaning": "논쟁적인",
+    "hint": "다투기좋아하는"
+  },
+  {
+    "word": "countenance",
+    "meaning": "용인하다",
+    "hint": "표정또는허용"
+  },
+  {
+    "word": "counterfeit",
+    "meaning": "위조의",
+    "hint": "가짜"
+  },
+  {
+    "word": "credibility",
+    "meaning": "신뢰성",
+    "hint": "믿을만함"
+  },
+  {
+    "word": "culmination",
+    "meaning": "정점",
+    "hint": "최고조"
+  },
+  {
+    "word": "declaration",
+    "meaning": "선언",
+    "hint": "신고"
+  },
+  {
+    "word": "deleterious",
+    "meaning": "해로운",
+    "hint": "건강에나쁜"
+  },
+  {
+    "word": "destruction",
+    "meaning": "파괴",
+    "hint": "파멸"
+  },
+  {
+    "word": "detrimental",
+    "meaning": "해로운",
+    "hint": "유해한"
+  },
+  {
+    "word": "disposition",
+    "meaning": "기질",
+    "hint": "성향"
+  },
+  {
+    "word": "disturbance",
+    "meaning": "방해",
+    "hint": "소란"
+  },
+  {
+    "word": "enforcement",
+    "meaning": "집행",
+    "hint": "시행"
+  },
+  {
+    "word": "entitlement",
+    "meaning": "자격",
+    "hint": "권리"
+  },
+  {
+    "word": "exceptional",
+    "meaning": "뛰어난",
+    "hint": "예외적"
+  },
+  {
+    "word": "expenditure",
+    "meaning": "지출",
+    "hint": "경비"
+  },
+  {
+    "word": "exploration",
+    "meaning": "탐사",
+    "hint": "탐험"
+  },
+  {
+    "word": "extemporize",
+    "meaning": "즉흥적으로하다",
+    "hint": "준비없이하다"
+  },
+  {
+    "word": "extravagant",
+    "meaning": "사치스러운",
+    "hint": "낭비하는"
+  },
+  {
+    "word": "forthcoming",
+    "meaning": "다가오는",
+    "hint": "임박한"
+  },
+  {
+    "word": "inadvertent",
+    "meaning": "무심코한",
+    "hint": "의도않은"
+  },
+  {
+    "word": "acquaintance",
+    "meaning": "아는사람",
+    "hint": "지인"
+  },
+  {
+    "word": "announcement",
+    "meaning": "발표",
+    "hint": "공지"
+  },
+  {
+    "word": "appurtenance",
+    "meaning": "부속물",
+    "hint": "딸린물건"
+  },
+  {
+    "word": "blandishment",
+    "meaning": "감언",
+    "hint": "꼬드기는말"
+  },
+  {
+    "word": "breakthrough",
+    "meaning": "돌파구",
+    "hint": "약진"
+  },
+  {
+    "word": "commensurate",
+    "meaning": "상응하는",
+    "hint": "비례하는"
+  },
+  {
+    "word": "conciliatory",
+    "meaning": "회유적인",
+    "hint": "달래려는"
+  },
+  {
+    "word": "confidential",
+    "meaning": "기밀의",
+    "hint": "비밀의"
+  },
+  {
+    "word": "conservation",
+    "meaning": "보존",
+    "hint": "보호"
+  },
+  {
+    "word": "conservative",
+    "meaning": "보수적인",
+    "hint": "신중한"
+  },
+  {
+    "word": "considerable",
+    "meaning": "상당한",
+    "hint": "꽤많은"
+  },
+  {
+    "word": "contumacious",
+    "meaning": "반항하는",
+    "hint": "명령거부하는"
+  },
+  {
+    "word": "disingenuous",
+    "meaning": "솔직하지않은",
+    "hint": "속이는듯한"
+  },
+  {
+    "word": "dissertation",
+    "meaning": "논문",
+    "hint": "학위논문"
+  },
+  {
+    "word": "effervescent",
+    "meaning": "열광적인",
+    "hint": "거품이는"
+  },
+  {
+    "word": "consternation",
+    "meaning": "경악",
+    "hint": "당황과실망"
+  },
+  {
+    "word": "deterioration",
+    "meaning": "악화",
+    "hint": "퇴보"
+  },
+  {
+    "word": "differentiate",
+    "meaning": "구별하다",
+    "hint": "차별화"
+  },
+  {
+    "word": "extraordinary",
+    "meaning": "비범한",
+    "hint": "대단한"
+  },
+  {
+    "word": "circumlocution",
+    "meaning": "완곡한표현",
+    "hint": "빙둘러말하기"
+  },
+  {
+    "word": "discrimination",
+    "meaning": "차별",
+    "hint": "구별"
+  },
+  {
+    "word": "fastidiousness",
+    "meaning": "까다로움",
+    "hint": "지나친세심함"
+  }
+]

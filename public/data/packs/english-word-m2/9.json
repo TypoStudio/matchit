@@ -1,0 +1,452 @@
+[
+  {
+    "word": "forgive",
+    "meaning": "용서하다",
+    "hint": "눈감아주다"
+  },
+  {
+    "word": "freedom",
+    "meaning": "자유",
+    "hint": "속박없음"
+  },
+  {
+    "word": "funeral",
+    "meaning": "장례",
+    "hint": "상례"
+  },
+  {
+    "word": "general",
+    "meaning": "일반적인",
+    "hint": "보통의"
+  },
+  {
+    "word": "glacier",
+    "meaning": "빙하",
+    "hint": "큰얼음덩이"
+  },
+  {
+    "word": "grammar",
+    "meaning": "문법",
+    "hint": "말규칙"
+  },
+  {
+    "word": "hallway",
+    "meaning": "복도",
+    "hint": "교실사이"
+  },
+  {
+    "word": "hamster",
+    "meaning": "햄스터",
+    "hint": "볼주머니"
+  },
+  {
+    "word": "highway",
+    "meaning": "고속도로",
+    "hint": "빠른길"
+  },
+  {
+    "word": "husband",
+    "meaning": "남편",
+    "hint": "결혼남자"
+  },
+  {
+    "word": "imagine",
+    "meaning": "상상하다",
+    "hint": "그려보다"
+  },
+  {
+    "word": "improve",
+    "meaning": "향상하다",
+    "hint": "나아지다"
+  },
+  {
+    "word": "include",
+    "meaning": "포함하다",
+    "hint": "넣다"
+  },
+  {
+    "word": "journey",
+    "meaning": "여행",
+    "hint": "긴이동"
+  },
+  {
+    "word": "jumping",
+    "meaning": "뛰기",
+    "hint": "점프"
+  },
+  {
+    "word": "ladybug",
+    "meaning": "무당벌레",
+    "hint": "점박이벌레"
+  },
+  {
+    "word": "leather",
+    "meaning": "가죽",
+    "hint": "질긴재료"
+  },
+  {
+    "word": "lobster",
+    "meaning": "바닷가재",
+    "hint": "집게달림"
+  },
+  {
+    "word": "luggage",
+    "meaning": "짐",
+    "hint": "여행가방"
+  },
+  {
+    "word": "mammoth",
+    "meaning": "매머드",
+    "hint": "털코끼리"
+  },
+  {
+    "word": "meaning",
+    "meaning": "의미",
+    "hint": "뜻"
+  },
+  {
+    "word": "measure",
+    "meaning": "측정하다",
+    "hint": "재다"
+  },
+  {
+    "word": "meeting",
+    "meaning": "회의",
+    "hint": "모임"
+  },
+  {
+    "word": "mention",
+    "meaning": "언급하다",
+    "hint": "말하다"
+  },
+  {
+    "word": "message",
+    "meaning": "메시지",
+    "hint": "전갈"
+  },
+  {
+    "word": "mistake",
+    "meaning": "실수",
+    "hint": "잘못"
+  },
+  {
+    "word": "natural",
+    "meaning": "자연의",
+    "hint": "타고난"
+  },
+  {
+    "word": "observe",
+    "meaning": "관찰하다",
+    "hint": "살펴보다"
+  },
+  {
+    "word": "octopus",
+    "meaning": "문어",
+    "hint": "다리여덟"
+  },
+  {
+    "word": "opinion",
+    "meaning": "의견",
+    "hint": "견해"
+  },
+  {
+    "word": "ostrich",
+    "meaning": "타조",
+    "hint": "못나는큰새"
+  },
+  {
+    "word": "outside",
+    "meaning": "바깥",
+    "hint": "외부"
+  },
+  {
+    "word": "partner",
+    "meaning": "동반자",
+    "hint": "짝"
+  },
+  {
+    "word": "pattern",
+    "meaning": "무늬",
+    "hint": "규칙모양"
+  },
+  {
+    "word": "peacock",
+    "meaning": "공작",
+    "hint": "화려꼬리"
+  },
+  {
+    "word": "pelican",
+    "meaning": "펠리컨",
+    "hint": "부리주머니"
+  },
+  {
+    "word": "perform",
+    "meaning": "공연하다",
+    "hint": "해내다"
+  },
+  {
+    "word": "picture",
+    "meaning": "그림",
+    "hint": "사진"
+  },
+  {
+    "word": "plastic",
+    "meaning": "플라스틱",
+    "hint": "합성재료"
+  },
+  {
+    "word": "poverty",
+    "meaning": "가난",
+    "hint": "빈곤"
+  },
+  {
+    "word": "prairie",
+    "meaning": "대초원",
+    "hint": "넓은풀밭"
+  },
+  {
+    "word": "prevent",
+    "meaning": "막다",
+    "hint": "예방하다"
+  },
+  {
+    "word": "produce",
+    "meaning": "생산하다",
+    "hint": "만들어내다"
+  },
+  {
+    "word": "product",
+    "meaning": "제품",
+    "hint": "만든것"
+  },
+  {
+    "word": "provide",
+    "meaning": "제공하다",
+    "hint": "대주다"
+  },
+  {
+    "word": "purpose",
+    "meaning": "목적",
+    "hint": "이루려는것"
+  },
+  {
+    "word": "raccoon",
+    "meaning": "너구리",
+    "hint": "눈가검정"
+  },
+  {
+    "word": "realize",
+    "meaning": "깨닫다",
+    "hint": "알아차리다"
+  },
+  {
+    "word": "recover",
+    "meaning": "회복하다",
+    "hint": "되찾다"
+  },
+  {
+    "word": "replace",
+    "meaning": "대체하다",
+    "hint": "바꾸다"
+  },
+  {
+    "word": "require",
+    "meaning": "요구하다",
+    "hint": "필요로하다"
+  },
+  {
+    "word": "respect",
+    "meaning": "존경하다",
+    "hint": "우러르다"
+  },
+  {
+    "word": "rooster",
+    "meaning": "수탉",
+    "hint": "새벽울음"
+  },
+  {
+    "word": "routine",
+    "meaning": "일과",
+    "hint": "반복일"
+  },
+  {
+    "word": "running",
+    "meaning": "달리기",
+    "hint": "뛰기"
+  },
+  {
+    "word": "sadness",
+    "meaning": "슬픔",
+    "hint": "서글픔"
+  },
+  {
+    "word": "satisfy",
+    "meaning": "만족시키다",
+    "hint": "채워주다"
+  },
+  {
+    "word": "seagull",
+    "meaning": "갈매기",
+    "hint": "바다새"
+  },
+  {
+    "word": "seaside",
+    "meaning": "해변",
+    "hint": "바닷가"
+  },
+  {
+    "word": "seaweed",
+    "meaning": "해초",
+    "hint": "바다풀"
+  },
+  {
+    "word": "service",
+    "meaning": "서비스",
+    "hint": "돌봄"
+  },
+  {
+    "word": "silence",
+    "meaning": "침묵",
+    "hint": "조용함"
+  },
+  {
+    "word": "society",
+    "meaning": "사회",
+    "hint": "공동체"
+  },
+  {
+    "word": "sparrow",
+    "meaning": "참새",
+    "hint": "작은갈색새"
+  },
+  {
+    "word": "stomach",
+    "meaning": "배",
+    "hint": "뱃속"
+  },
+  {
+    "word": "subject",
+    "meaning": "과목",
+    "hint": "공부영역"
+  },
+  {
+    "word": "success",
+    "meaning": "성공",
+    "hint": "이룸"
+  },
+  {
+    "word": "suggest",
+    "meaning": "제안하다",
+    "hint": "권하다"
+  },
+  {
+    "word": "sunrise",
+    "meaning": "일출",
+    "hint": "해뜸"
+  },
+  {
+    "word": "support",
+    "meaning": "지지하다",
+    "hint": "받쳐주다"
+  },
+  {
+    "word": "surface",
+    "meaning": "표면",
+    "hint": "겉면"
+  },
+  {
+    "word": "survive",
+    "meaning": "살아남다",
+    "hint": "견뎌내다"
+  },
+  {
+    "word": "swallow",
+    "meaning": "제비",
+    "hint": "빠른여름새"
+  },
+  {
+    "word": "tadpole",
+    "meaning": "올챙이",
+    "hint": "개구리새끼"
+  },
+  {
+    "word": "theater",
+    "meaning": "극장",
+    "hint": "공연장"
+  },
+  {
+    "word": "thought",
+    "meaning": "생각",
+    "hint": "사고"
+  },
+  {
+    "word": "traffic",
+    "meaning": "교통",
+    "hint": "차의흐름"
+  },
+  {
+    "word": "trouble",
+    "meaning": "어려움",
+    "hint": "곤란"
+  },
+  {
+    "word": "uniform",
+    "meaning": "교복",
+    "hint": "학교옷"
+  },
+  {
+    "word": "victory",
+    "meaning": "승리",
+    "hint": "이김"
+  },
+  {
+    "word": "vulture",
+    "meaning": "독수리",
+    "hint": "썩은고기먹음"
+  },
+  {
+    "word": "wedding",
+    "meaning": "결혼식",
+    "hint": "혼례"
+  },
+  {
+    "word": "whisker",
+    "meaning": "수염",
+    "hint": "고양이털"
+  },
+  {
+    "word": "activity",
+    "meaning": "활동",
+    "hint": "움직임"
+  },
+  {
+    "word": "airplane",
+    "meaning": "비행기",
+    "hint": "나는것"
+  },
+  {
+    "word": "alphabet",
+    "meaning": "알파벳",
+    "hint": "글자모음"
+  },
+  {
+    "word": "anaconda",
+    "meaning": "아나콘다",
+    "hint": "거대한뱀"
+  },
+  {
+    "word": "backpack",
+    "meaning": "배낭",
+    "hint": "등에멤"
+  },
+  {
+    "word": "backyard",
+    "meaning": "뒷마당",
+    "hint": "집뒤공간"
+  },
+  {
+    "word": "baseball",
+    "meaning": "야구",
+    "hint": "방망이경기"
+  }
+]
