@@ -6,9 +6,11 @@ const cols = ref(Number(localStorage.getItem('matchit-cols')) || 7);
 const rows = ref(Number(localStorage.getItem('matchit-rows')) || 7);
 const boardSizes = [3, 4, 5, 6, 7, 8, 9];
 const packBoardSizes: Record<string, { cols: number; rows: number }> = {
-  'english-grammar': { cols: 5, rows: 5 },
-  'math-formula': { cols: 5, rows: 5 },
+  'english-grammar': { cols: 5, rows: 7 },
+  'math-formula': { cols: 5, rows: 7 },
 };
+// 토큰(글자)이 긴 팩은 가로로 1.5배 긴 블럭 사용
+const wideBlockPacks = new Set(['english-grammar', 'math-formula']);
 const baseUrl = import.meta.env.BASE_URL;
 const localPackUrl = `${baseUrl}data/lesson-packs.json`;
 const palette = ['#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef'];
@@ -56,6 +58,7 @@ const theme = ref<ThemeName>((localStorage.getItem('matchit-theme') as ThemeName
 const blockStyle = ref<BlockStyleName>((localStorage.getItem('matchit-block-style') as BlockStyleName) || 'card');
 const showAnswer = ref(localStorage.getItem('matchit-show-answer') !== 'off');
 const answerItem = ref<LessonItem | null>(null);
+const answerSlotSize = ref(48);
 const boardEl = ref<HTMLElement | null>(null);
 const answerEl = ref<HTMLElement | null>(null);
 let answerTimer: number | undefined;
@@ -112,6 +115,8 @@ const collectableItems = computed(() =>
   lessonItems.value.filter((it) => it.tokens.length >= 2 && it.tokens.length <= Math.max(rows.value, cols.value)),
 );
 const maxValue = computed(() => board.value.reduce((max, block) => Math.max(max, block?.value ?? 0), 0));
+// 토큰(글자)이 긴 팩(영문법·수학식)은 가로로 긴 블럭 사용
+const wideBlocks = computed(() => gameKind.value === 'lesson' && wideBlockPacks.has(selectedPackId.value));
 const goalPrompt = computed(() => {
   if (gameKind.value === 'numbers') return `최고 숫자 ${formatValue(maxValue.value)}`;
   if (solveMode.value === 'collect') {
@@ -1017,6 +1022,9 @@ function showAnswerPopup(item: LessonItem, indexes: number[]) {
   // 정답이 된 보드 블럭들의 화면 위치를 먼저 기록 (제거되기 전)
   const buttons = boardEl.value?.querySelectorAll<HTMLElement>('.block-face');
   answerStartRects = indexes.map((i) => buttons?.[i]?.getBoundingClientRect() ?? null);
+  // 팝업 블럭 크기를 현재 보드 블럭 크기에 맞춤 (보드 크기에 비례)
+  const cellWidth = answerStartRects.find((r) => r)?.width;
+  answerSlotSize.value = cellWidth ? Math.round(cellWidth) : 48;
   answerItem.value = item;
   // 팝업 슬롯이 그려진 뒤, 각 슬롯을 원래 보드 위치에서 제자리로 슬라이드
   void nextTick().then(() => {
@@ -1245,11 +1253,15 @@ onMounted(async () => {
         <button
           v-for="panel in mobilePanels"
           :key="panel.id"
-          class="h-11 rounded-md border px-2 text-sm font-black"
-          :class="activeMobilePanel === panel.id ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
+          class="flex h-11 items-center justify-center gap-1 rounded-md border px-2 text-sm font-black"
+          :class="[
+            activeMobilePanel === panel.id ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]',
+            panel.id === 'game' && activeMobilePanel !== panel.id ? 'nav-game-cta' : '',
+          ]"
           type="button"
           @click="activeMobilePanel = panel.id"
         >
+          <span v-if="panel.id === 'game'" aria-hidden="true">▶</span>
           {{ panel.label }}
         </button>
       </nav>
@@ -1378,8 +1390,25 @@ onMounted(async () => {
           class="relative rounded-lg border border-[var(--line)] bg-[var(--panel)] p-3 sm:p-4"
           :class="[activeMobilePanel === 'game' ? 'app-game-panel' : 'hidden lg:block', gameFullscreen ? 'app-game-fullscreen' : '']"
         >
-          <div class="mb-3 flex items-center justify-between lg:hidden">
-            <h2 class="text-lg font-black">게임</h2>
+          <div class="mb-3 flex items-center justify-between gap-2 lg:hidden">
+            <div class="flex gap-2">
+              <button
+                class="h-10 rounded-md border px-3 text-sm font-black"
+                :class="hintIndexes.length ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'"
+                type="button"
+                @click="toggleHint"
+              >
+                힌트
+              </button>
+              <button
+                v-if="canPass"
+                class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm font-black"
+                type="button"
+                @click="passCurrent"
+              >
+                패스 →
+              </button>
+            </div>
             <div class="flex gap-2">
               <button
                 class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-4 text-sm font-black"
@@ -1401,7 +1430,7 @@ onMounted(async () => {
           <div class="mb-3 rounded-md bg-[var(--panel-strong)] p-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
-              <div class="flex flex-wrap gap-2">
+              <div class="flex flex-wrap gap-2 max-lg:hidden">
                 <button
                   class="h-10 rounded-md border px-3 text-sm font-black"
                   :class="hintIndexes.length ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]'"
@@ -1424,7 +1453,7 @@ onMounted(async () => {
                   type="button"
                   @click="gameFullscreen = !gameFullscreen"
                 >
-                  {{ gameFullscreen ? '✕ 해제' : '⛶ 전체화면' }}
+                  {{ gameFullscreen ? '✕ 해제' : '⛶' }}
                 </button>
               </div>
             </div>
@@ -1461,8 +1490,9 @@ onMounted(async () => {
             <button
               v-for="(block, index) in board"
               :key="block.id"
-              class="block-face aspect-square border-2 p-1 text-center transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-cyan-300 disabled:cursor-wait"
+              class="block-face border-2 p-1 text-center transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-cyan-300 disabled:cursor-wait"
               :class="[
+                wideBlocks ? 'aspect-[3/2]' : 'aspect-square',
                 `block-style-${blockStyle}`,
                 selectedIndexes.includes(index) ? 'block-selected' : 'border-white/70',
                 hintIndexes.includes(index) ? 'block-hint' : '',
@@ -1476,7 +1506,7 @@ onMounted(async () => {
               :disabled="isResolving"
               @pointerdown="onBlockPointerDown(index, $event)"
             >
-              <span class="block-label grid h-full place-items-center text-xl font-black sm:text-2xl">
+              <span class="block-label grid h-full place-items-center font-black" :style="{ '--len': block.token.length }">
                 {{ block.token }}
               </span>
             </button>
@@ -1582,11 +1612,11 @@ onMounted(async () => {
           <span
             v-for="(token, i) in answerItem.tokens"
             :key="i"
-            class="answer-slot block-face grid h-12 w-12 place-items-center text-lg font-black text-white"
+            class="answer-slot block-face grid place-items-center font-black text-white"
             :class="`block-style-${blockStyle}`"
-            :style="{ backgroundColor: colorForToken(token), '--block-color': colorForToken(token) }"
+            :style="{ width: `${answerSlotSize}px`, height: `${wideBlocks ? Math.round(answerSlotSize / 1.5) : answerSlotSize}px`, backgroundColor: colorForToken(token), '--block-color': colorForToken(token) }"
           >
-            {{ token }}
+            <span class="block-label grid h-full w-full place-items-center" :style="{ '--len': token.length }">{{ token }}</span>
           </span>
         </div>
         <p class="mt-4 text-xs text-[var(--muted)]">탭하거나 5초 후 닫힘 · 길게 누르면 유지</p>

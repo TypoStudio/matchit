@@ -63,6 +63,7 @@ select {
   touch-action: none; /* 모바일에서 드래그(스왑) 시 스크롤 방지 */
   user-select: none;
   -webkit-user-select: none;
+  container-type: size; /* 글자 크기를 블럭 가로·세로에 비례시키기 위함 */
 }
 
 .block-face::before,
@@ -76,6 +77,9 @@ select {
   position: relative;
   z-index: 1;
   letter-spacing: 0;
+  line-height: 1;
+  /* 블럭 가로·세로에 비례. 높이(70cqh)와 폭(글자수 분배) 둘 다 제약 → 절대 넘치지 않음 */
+  font-size: clamp(0.4rem, min(72cqh, calc(170cqw / (var(--len, 1) + 0.5))), 4rem);
 }
 
 /* 선택 표시: 패널색 갭 + accent 링 + ink 외곽선으로 모든 테마/블럭색에서 또렷하게 */
@@ -226,26 +230,6 @@ select {
     0 0 16px var(--neon-b),
     0 0 28px var(--neon-a),
     0 0 44px var(--neon-a);
-  animation: neon-flicker 3.2s infinite;
-}
-
-@keyframes neon-flicker {
-  0%,
-  18%,
-  22%,
-  25%,
-  53%,
-  57%,
-  100% {
-    opacity: 1;
-    filter: brightness(1.08);
-  }
-  20%,
-  24%,
-  55% {
-    opacity: 0.82;
-    filter: brightness(0.88);
-  }
 }
 
 .board-grid {
@@ -445,6 +429,23 @@ select {
   }
 }
 
+/* 모바일 탭의 '게임하기' 강조 (CTA 글로우 펄스) */
+.nav-game-cta {
+  border-color: var(--accent);
+  color: var(--accent);
+  animation: nav-game-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes nav-game-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--accent);
+  }
+  50% {
+    box-shadow: 0 0 11px 1px var(--accent);
+  }
+}
+
 /* 가장자리 블럭의 선택/힌트 테두리가 잘리지 않도록 여유 */
 .app-board {
   padding: 10px;
@@ -473,7 +474,7 @@ select {
   justify-content: center;
 }
 .app-game-fullscreen .board-grid {
-  width: auto;
+  width: 100%;
   height: 100%;
   max-height: 100%;
   max-width: 100%;
