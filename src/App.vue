@@ -11,6 +11,7 @@ const packBoardSizes: Record<string, { cols: number; rows: number }> = {
 };
 // 토큰(글자)이 긴 팩은 가로로 1.5배 긴 블럭 사용
 const wideBlockPacks = new Set(['english-grammar', 'math-formula']);
+const appVersion = `v${__APP_VERSION__}`;
 const baseUrl = import.meta.env.BASE_URL;
 const localPackUrl = `${baseUrl}data/lesson-packs.json`;
 const palette = ['#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef'];
@@ -50,6 +51,7 @@ const packs = ref<LessonPack[]>([]);
 const selectedPackId = ref('');
 const selectedLevel = ref(1);
 const lessonItems = ref<LessonItem[]>([]);
+const sampleItems = ref<LessonItem[]>([]); // 팩 문항 목록에 보여줄 랜덤 30개
 const mode = ref<GameMode>('single');
 const gameKind = ref<GameKind>((localStorage.getItem('matchit-game-kind') as GameKind) || 'lesson');
 const solveMode = ref<SolveMode>((localStorage.getItem('matchit-solve-mode') as SolveMode) || 'sequence');
@@ -67,11 +69,14 @@ const remoteUrl = ref(localStorage.getItem('matchit-data-url') || localPackUrl);
 const board = ref<Block[]>([]);
 const selectedIndexes = ref<number[]>([]);
 const score = ref(0);
-const best = ref(Number(localStorage.getItem('matchit-best') || 0));
+const bestKey = (kind = gameKind.value) => `matchit-best-${kind}`;
+const best = ref(Number(localStorage.getItem(bestKey()) || 0));
 const combo = ref(1);
 const moves = ref(25);
 const passes = ref(0);
 const gameOver = ref(false);
+// 레벨별 누적 점수/푼 문제수 (현재 팩 기준)
+const levelStats = ref<Record<number, { score: number; solved: number }>>({});
 const message = ref('목표 블럭을 순서대로 누르세요.');
 const loading = ref(false);
 const isResolving = ref(false);
@@ -133,6 +138,11 @@ function blockId() {
 function shuffle<T>(items: T[]) {
   return [...items].sort(() => Math.random() - 0.5);
 }
+
+function refreshSampleItems() {
+  sampleItems.value = shuffle(lessonItems.value).slice(0, 30);
+}
+watch(lessonItems, refreshSampleItems);
 
 function colorForToken(token: string) {
   const tokens = Array.from(new Set(lessonItems.value.flatMap((it) => it.tokens)));
@@ -435,6 +445,7 @@ async function loadLevel(packId: string, level: number) {
     const items = (await response.json()) as LessonItem[];
     if (!items.length) throw new Error('수준에 항목이 없습니다.');
     lessonItems.value = items;
+    loadLevelStats();
     resetGame();
   } catch (loadError) {
     error.value = loadError instanceof Error ? loadError.message : '데이터를 읽지 못했습니다.';
@@ -467,13 +478,32 @@ async function loadPacks(url = remoteUrl.value) {
 }
 
 
+function levelStatsKey() {
+  return `matchit-levelstats-${selectedPackId.value}`;
+}
+function loadLevelStats() {
+  try {
+    levelStats.value = JSON.parse(localStorage.getItem(levelStatsKey()) || '{}');
+  } catch {
+    levelStats.value = {};
+  }
+}
+function saveLevelStats() {
+  localStorage.setItem(levelStatsKey(), JSON.stringify(levelStats.value));
+}
+
 function scoreMatch(item: LessonItem, length: number) {
   const gained = length * 120 * combo.value;
   score.value += gained;
   combo.value += 1;
   lastSolved.value = item;
   best.value = Math.max(best.value, score.value);
-  localStorage.setItem('matchit-best', String(best.value));
+  localStorage.setItem(bestKey(), String(best.value));
+  // 레벨별 누적 점수/푼 문제수 기록
+  const lv = selectedLevel.value;
+  const cur = levelStats.value[lv] ?? { score: 0, solved: 0 };
+  levelStats.value = { ...levelStats.value, [lv]: { score: cur.score + gained, solved: cur.solved + 1 } };
+  saveLevelStats();
   if (mode.value !== 'endless') {
     targetIndex.value = Math.floor(Math.random() * lessonItems.value.length);
   }
@@ -709,7 +739,7 @@ async function resolveNumberClusters(preferIndex: number): Promise<boolean> {
       }
     }
     best.value = Math.max(best.value, score.value);
-    localStorage.setItem('matchit-best', String(best.value));
+    localStorage.setItem(bestKey(), String(best.value));
     message.value = clusters.length > 1 ? `${clusters.length}곳 동시 합체!` : '합체!';
 
     clearSelection();
@@ -902,8 +932,18 @@ function setSolveMode(nextMode: SolveMode) {
 function setGameKind(nextKind: GameKind) {
   gameKind.value = nextKind;
   localStorage.setItem('matchit-game-kind', nextKind);
+  best.value = Number(localStorage.getItem(bestKey(nextKind)) || 0);
   if (nextKind === 'lesson' && selectedPackId.value) applyPackDefaultSize(selectedPackId.value);
   resetGame();
+}
+
+function resetScore() {
+  score.value = 0;
+  combo.value = 1;
+  best.value = 0;
+  localStorage.setItem(bestKey(), '0');
+  levelStats.value = {};
+  saveLevelStats();
 }
 
 function requestExit() {
@@ -1100,32 +1140,65 @@ async function createShareImage() {
   gradient.addColorStop(1, '#fce7f3');
   context.fillStyle = gradient;
   context.fillRect(0, 0, width, height);
+  const subtitle = gameKind.value === 'numbers'
+    ? '숫자 더하기'
+    : `${activePack.value?.title || ''}${mode.value === 'single' ? ` · Level ${selectedLevel.value}` : ' · 연속으로'}`;
+  const solvedTotal = Object.values(levelStats.value).reduce((sum, s) => sum + (s?.solved || 0), 0);
+  const detailLabel = gameKind.value === 'numbers' ? '최고 숫자' : '푼 문제';
+  const detailValue = gameKind.value === 'numbers' ? formatValue(maxValue.value) : `${solvedTotal}`;
+
+  // 제목 + 버전 (제목 폰트로 폭을 재서 겹치지 않게)
+  context.textAlign = 'left';
+  context.textBaseline = 'alphabetic';
   context.fillStyle = '#1f2937';
-  context.font = '700 74px sans-serif';
-  context.fillText('Match It', 84, 145);
-  context.font = '600 42px sans-serif';
-  context.fillText(activePack.value?.title || 'Study Pack', 86, 220);
-  context.fillStyle = '#0f766e';
-  context.font = '800 150px sans-serif';
-  context.fillText(String(score.value), 84, 420);
+  context.font = '800 84px sans-serif';
+  context.fillText('Match It', 84, 156);
+  const titleWidth = context.measureText('Match It').width;
+  context.font = '700 40px sans-serif';
+  context.fillStyle = '#64748b';
+  context.fillText(appVersion, 84 + titleWidth + 22, 156);
+  // 게임/팩명
   context.fillStyle = '#334155';
-  context.font = '500 34px sans-serif';
-  context.fillText(`Best ${best.value}  ·  Combo x${Math.max(1, combo.value - 1)}`, 92, 490);
+  context.font = '600 48px sans-serif';
+  context.fillText(subtitle, 86, 240);
+
+  // 점수 박스
   context.fillStyle = '#ffffff';
   context.strokeStyle = '#cbd5e1';
   context.lineWidth = 4;
-  context.roundRect(84, 580, 912, 260, 34);
+  context.roundRect(84, 304, 912, 320, 36);
   context.fill();
   context.stroke();
-  context.fillStyle = '#111827';
-  context.font = '700 44px sans-serif';
-  context.fillText(lastSolved.value?.label || target.value?.label || '학습 블럭', 126, 675);
-  context.font = '500 34px sans-serif';
-  context.fillStyle = '#475569';
-  context.fillText(lastSolved.value?.hint || target.value?.hint || 'JSON 학습팩으로 확장 가능', 126, 744);
-  context.font = '600 32px sans-serif';
+  context.fillStyle = '#64748b';
+  context.font = '700 40px sans-serif';
+  context.fillText('SCORE', 134, 404);
+  context.fillStyle = '#0f766e';
+  context.font = '800 176px sans-serif';
+  context.fillText(String(score.value), 130, 566);
+
+  // 박스 아래: 최고점수 · 콤보 · 푼문제(또는 최고 숫자) 3열
+  const stats: Array<[string, string]> = [
+    ['BEST', String(best.value)],
+    ['COMBO', `x${Math.max(1, combo.value - 1)}`],
+    [detailLabel, detailValue],
+  ];
+  const colWidth = 912 / 3;
+  context.textAlign = 'center';
+  stats.forEach(([label, value], i) => {
+    const cx = 84 + colWidth * i + colWidth / 2;
+    context.fillStyle = '#94a3b8';
+    context.font = '600 34px sans-serif';
+    context.fillText(label, cx, 720);
+    context.fillStyle = '#1f2937';
+    context.font = '800 60px sans-serif';
+    context.fillText(value, cx, 790);
+  });
+  context.textAlign = 'left';
+
+  // 푸터
   context.fillStyle = '#0f172a';
-  context.fillText('정적 JSON으로 만드는 학습형 블럭 퍼즐', 126, 920);
+  context.font = '600 32px sans-serif';
+  context.fillText('typostudio.github.io/matchit', 84, 992);
   shareUrl.value = canvas.toDataURL('image/png');
 }
 
@@ -1201,6 +1274,7 @@ function restoreFromSave(s: SavedGame) {
   targetIndex.value = s.targetIndex || 0;
   gameOver.value = !!s.gameOver;
   collectTargetItem.value = lessonItems.value.find((it) => it.id === s.collectTargetId) || null;
+  best.value = Number(localStorage.getItem(bestKey()) || 0);
 }
 
 onMounted(async () => {
@@ -1235,7 +1309,10 @@ onMounted(async () => {
         <div class="flex grow items-start justify-between">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">Study Block Puzzle</p>
-            <h1 class="mt-2 text-3xl font-black sm:text-5xl">Match It</h1>
+            <h1 class="mt-2 flex items-baseline gap-2 text-3xl font-black sm:text-5xl">
+              Match It
+              <span class="text-sm font-bold text-[var(--muted)] sm:text-base">{{ appVersion }}</span>
+            </h1>
             <p class="mt-2 hidden max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base lg:block">
               화학식, 문법, 공식, 사자성어를 블럭 규칙으로 맞추는 정적 웹 게임 프로토타입.
             </p>
@@ -1529,37 +1606,56 @@ onMounted(async () => {
           class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"
           :class="activeMobilePanel === 'score' ? 'app-panel' : 'hidden lg:block'"
         >
-          <h2 class="text-lg font-black">스코어</h2>
-          <dl class="mt-4 grid grid-cols-2 gap-3">
-            <div class="rounded-md bg-[var(--panel-strong)] p-3">
-              <dt class="text-xs font-bold uppercase text-[var(--muted)]">Score</dt>
-              <dd class="mt-1 text-3xl font-black">{{ score }}</dd>
-            </div>
-            <div class="rounded-md bg-[var(--panel-strong)] p-3">
-              <dt class="text-xs font-bold uppercase text-[var(--muted)]">Best</dt>
-              <dd class="mt-1 text-3xl font-black">{{ best }}</dd>
-            </div>
-            <div class="rounded-md bg-[var(--panel-strong)] p-3">
-              <dt class="text-xs font-bold uppercase text-[var(--muted)]">Combo</dt>
-              <dd class="mt-1 text-3xl font-black">x{{ combo }}</dd>
-            </div>
-            <div class="rounded-md bg-[var(--panel-strong)] p-3">
-              <dt class="text-xs font-bold uppercase text-[var(--muted)]">{{ gameKind === 'numbers' ? '최고 숫자' : 'Moves' }}</dt>
-              <dd class="mt-1 text-3xl font-black">{{ gameKind === 'numbers' ? formatValue(maxValue) : moves }}</dd>
-            </div>
-            <div v-if="canPass" class="rounded-md bg-[var(--panel-strong)] p-3">
-              <dt class="text-xs font-bold uppercase text-[var(--muted)]">패스</dt>
-              <dd class="mt-1 text-3xl font-black">{{ passes }}</dd>
-            </div>
-          </dl>
+          <h2 class="text-lg font-black">{{ gameKind === 'lesson' ? `${activePack?.title || ''}` : '점수' }}</h2>
 
-          <button class="mt-4 h-12 w-full rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="createShareImage">
-            점수 이미지 만들기
-          </button>
+          <div class="mt-4 grid grid-cols-2 gap-2">
+            <!-- 좌측: 현재 점수 카드들 -->
+            <div class="space-y-2">
+              <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">Score</p>
+                <p class="mt-1 text-2xl font-black">{{ score }}</p>
+              </div>
+              <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">Best</p>
+                <p class="mt-1 text-2xl font-black">{{ best }}</p>
+              </div>
+              <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">Combo</p>
+                <p class="mt-1 text-2xl font-black">x{{ combo }}</p>
+              </div>
+              <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ gameKind === 'numbers' ? '최고 숫자' : 'Moves' }}</p>
+                <p class="mt-1 text-2xl font-black">{{ gameKind === 'numbers' ? formatValue(maxValue) : moves }}</p>
+              </div>
+              <div v-if="canPass" class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">패스</p>
+                <p class="mt-1 text-2xl font-black">{{ passes }}</p>
+              </div>
+            </div>
+            <!-- 우측: 레벨별 점수 / 푼 문제수 (학습 모드) -->
+            <div v-if="gameKind === 'lesson'" class="space-y-2">
+              <div
+                v-for="level in activePack?.levels"
+                :key="level"
+                class="flex h-20 flex-col justify-center rounded-md p-3"
+                :class="level === selectedLevel ? 'bg-[var(--accent)] text-[var(--accent-ink)]' : 'bg-[var(--panel-strong)]'"
+              >
+                <p class="text-xs font-bold uppercase" :class="level === selectedLevel ? '' : 'text-[var(--muted)]'">
+                  Level {{ level }} · {{ levelStats[level]?.solved || 0 }}문제
+                </p>
+                <p class="mt-1 text-2xl font-black">{{ levelStats[level]?.score || 0 }}</p>
+              </div>
+            </div>
+          </div>
 
-          <a v-if="shareUrl" :href="shareUrl" download="matchit-score.png" class="mt-3 block overflow-hidden rounded-md border border-[var(--line)] bg-[var(--panel-strong)]">
-            <img :src="shareUrl" alt="점수 공유 이미지" class="w-full" />
-          </a>
+          <div class="mt-4 grid grid-cols-2 gap-2">
+            <button class="h-12 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="createShareImage">
+              점수 공유
+            </button>
+            <button class="h-12 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="resetScore">
+              점수 초기화
+            </button>
+          </div>
 
           <div v-if="gameKind === 'numbers'" class="mt-5">
             <h3 class="text-sm font-black text-[var(--muted)]">플레이 방법</h3>
@@ -1571,9 +1667,20 @@ onMounted(async () => {
             </ul>
           </div>
           <div v-else class="mt-5">
-            <h3 class="text-sm font-black text-[var(--muted)]">팩 문항</h3>
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-black text-[var(--muted)]">팩 문항</h3>
+              <button
+                class="grid h-8 w-8 place-items-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-base"
+                type="button"
+                title="다른 문항 보기"
+                aria-label="다른 문항 보기"
+                @click="refreshSampleItems"
+              >
+                ↻
+              </button>
+            </div>
             <ul class="mt-2 space-y-2">
-              <li v-for="item in lessonItems" :key="item.id" class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">
+              <li v-for="item in sampleItems" :key="item.id" class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">
                 <p class="font-black">{{ item.label }}</p>
                 <p class="text-sm text-[var(--muted)]">{{ item.prompt }}</p>
               </li>
@@ -1639,6 +1746,20 @@ onMounted(async () => {
             나가기
           </button>
         </div>
+      </div>
+    </div>
+
+    <div
+      v-if="shareUrl"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6"
+      @click.self="shareUrl = ''"
+    >
+      <div class="flex w-full max-w-sm flex-col items-center gap-3">
+        <img :src="shareUrl" alt="점수 공유 이미지" class="w-full rounded-xl border border-white/20 shadow-2xl" />
+        <p class="text-center text-sm font-bold text-white/90">이미지를 길게 눌러 저장하세요</p>
+        <button class="h-11 w-full max-w-[12rem] rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="shareUrl = ''">
+          닫기
+        </button>
       </div>
     </div>
   </main>

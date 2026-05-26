@@ -46,5 +46,29 @@
       4,
       5
     ]
+  },
+  {
+    "id": "korean-history",
+    "title": "국사",
+    "accent": "#b45309",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "id": "world-history",
+    "title": "세계사",
+    "accent": "#7c3aed",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   }
 ]

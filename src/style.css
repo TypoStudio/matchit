@@ -82,6 +82,13 @@ select {
   font-size: clamp(0.4rem, min(72cqh, calc(170cqw / (var(--len, 1) + 0.5))), 4rem);
 }
 
+/* iOS Safari(WebKit)에서 글자가 아래로 치우치는 현상 보정 (글자 크기에 비례) */
+@supports (-webkit-touch-callout: none) {
+  .block-label {
+    transform: translateY(-0.08em);
+  }
+}
+
 /* 선택 표시: 패널색 갭 + accent 링 + ink 외곽선으로 모든 테마/블럭색에서 또렷하게 */
 .block-selected {
   transform: scale(0.9);
