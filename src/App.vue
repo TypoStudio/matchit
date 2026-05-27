@@ -185,6 +185,8 @@ const endlessFirstStage = computed(() => Math.floor(endlessStartOffset.value / S
 const endlessStageCount = computed(() => Math.max(1, Math.ceil((fullItems.value.length || lessonItems.value.length) / STAGE_SIZE)));
 // 연속(endless) + 자유(free): 한 문제씩이 아닌 "이어서 푸는" 모드
 const continuous = computed(() => mode.value !== 'single');
+// 현재 모드 한글 라벨(게임화면 표시용)
+const modeLabel = computed(() => (mode.value === 'single' ? '한문제씩' : mode.value === 'endless' ? '연속' : '자유'));
 const activeItems = computed(() => {
   if (gameKind.value !== 'lesson') return lessonItems.value;
   if (mode.value === 'single') return stageItems.value;
@@ -654,13 +656,6 @@ const stageDone = computed(() => {
   return req.length > 0 && solvedItems.value.length >= req.length;
 });
 
-watch(solvedItems, (solved) => {
-  const required = solveMode.value === 'collect' ? collectableItems.value : activeItems.value;
-  if (mode.value === 'single' && gameKind.value === 'lesson' && required.length > 0 && solved.length >= required.length) {
-    markStageCleared(selectedLevel.value, currentStage.value);
-  }
-});
-
 // 한 레벨의 스테이지 수(레벨 N = N개 스테이지). 현재 레벨은 실제 문제 수로 계산.
 function stagesInLevel(level: number) {
   if (level === selectedLevel.value) return stageCount.value;
@@ -685,12 +680,13 @@ function loadClearedStages() {
     clearedStages.value = {};
   }
 }
-function markStageCleared(level: number, stage: number) {
+function markStageCleared(level: number, stage: number, celebrate = true) {
   const done = clearedStages.value[level] || [];
   if (!done.includes(stage)) {
     clearedStages.value = { ...clearedStages.value, [level]: [...done, stage].sort((a, b) => a - b) };
     localStorage.setItem(clearedKey(), JSON.stringify(clearedStages.value));
   }
+  if (!celebrate) return; // 연속/자유: 통계만 기록하고 축하 팝업은 띄우지 않음
   const maxLevel = levels.value[levels.value.length - 1] ?? level;
   const hasNext = stage < stageCount.value || level < maxLevel;
   stageClearInfo.value = { level, stage, hasNext };
@@ -860,6 +856,56 @@ function levelOfItem(item: LessonItem): number {
   return selectedLevel.value;
 }
 
+// 아이템이 속한 (레벨, 레벨 내 로컬 스테이지). 연속/자유는 전체 풀 기준, 단일은 현재 레벨 기준.
+function stageOfItem(item: LessonItem): { level: number; stage: number } {
+  const levels = activePack.value?.levels ?? [];
+  if (fullItems.value.length) {
+    const idx = fullItems.value.findIndex((x) => x.id === item.id);
+    if (idx >= 0) {
+      let acc = 0;
+      for (let i = 0; i < fullLevelLens.value.length; i += 1) {
+        const len = fullLevelLens.value[i];
+        if (idx < acc + len) return { level: levels[i] ?? i + 1, stage: Math.floor((idx - acc) / STAGE_SIZE) + 1 };
+        acc += len;
+      }
+    }
+  }
+  const li = lessonItems.value.findIndex((x) => x.id === item.id);
+  return { level: selectedLevel.value, stage: li >= 0 ? Math.floor(li / STAGE_SIZE) + 1 : currentStage.value };
+}
+
+// (레벨, 스테이지)에 속한 문제 목록
+function itemsOfStage(level: number, stage: number): LessonItem[] {
+  const levels = activePack.value?.levels ?? [];
+  if (fullItems.value.length) {
+    const i = levels.indexOf(level);
+    if (i >= 0) {
+      let acc = 0;
+      for (let k = 0; k < i; k += 1) acc += fullLevelLens.value[k];
+      const start = acc + (stage - 1) * STAGE_SIZE;
+      const end = acc + Math.min(stage * STAGE_SIZE, fullLevelLens.value[i]);
+      return fullItems.value.slice(start, end);
+    }
+  }
+  return lessonItems.value.slice((stage - 1) * STAGE_SIZE, stage * STAGE_SIZE);
+}
+
+// 방금 푼 문제가 속한 스테이지를 다 풀었으면 클리어로 기록(연속/자유는 축하 팝업 없이 통계만).
+function maybeMarkStageCleared(item: LessonItem) {
+  if (gameKind.value !== 'lesson') return;
+  const { level, stage } = stageOfItem(item);
+  let stageList = itemsOfStage(level, stage);
+  // 모으기 모드: 보드에 담을 수 있는(토큰 길이 ≤ 보드 한 변) 문제만으로 완성 판정
+  if (solveMode.value === 'collect') {
+    const cap = Math.max(rows.value, cols.value);
+    stageList = stageList.filter((it) => it.tokens.length >= 1 && it.tokens.length <= cap);
+  }
+  if (!stageList.length) return;
+  if (stageList.every((it) => solvedItems.value.includes(it.id))) {
+    markStageCleared(level, stage, mode.value === 'single');
+  }
+}
+
 function scoreMatch(item: LessonItem, length: number) {
   let gained: number;
   let detail: string;
@@ -881,8 +927,8 @@ function scoreMatch(item: LessonItem, length: number) {
   lastSolved.value = item;
   best.value = Math.max(best.value, score.value);
   localStorage.setItem(bestKey(), String(best.value));
-  // 레벨별 누적 점수/푼 문제수 기록
-  const lv = selectedLevel.value;
+  // 레벨별 누적 점수/푼 문제수 기록 — 실제 푼 문제의 레벨에 적립(연속/자유는 레벨이 섞이므로)
+  const lv = levelOfItem(item);
   const cur = levelStats.value[lv] ?? { score: 0, solved: 0 };
   levelStats.value = { ...levelStats.value, [lv]: { score: cur.score + gained, solved: cur.solved + 1 } };
   saveLevelStats();
@@ -1025,6 +1071,7 @@ async function resolveMatch(item: LessonItem, indexes: number[]) {
   // 정답 즉시 기록 + 다음 문제를 바로 표시(애니메이션 대기 없이). 스테이지를 다 풀면 "참 잘 했어요~"
   if (gameKind.value === 'lesson' && !solvedItems.value.includes(item.id)) {
     solvedItems.value = [...solvedItems.value, item.id]; // 재할당해야 watch가 감지
+    maybeMarkStageCleared(item); // 모든 모드에서 스테이지 완성 시 클리어 기록
   }
   if (mode.value === 'endless') advanceEndlessStageIfReady();
   else if (mode.value === 'single' && !stageDone.value) pickSequenceTarget();
@@ -1159,6 +1206,7 @@ async function resolveCollect(indexes: number[], item: LessonItem) {
   // 정답 즉시 기록 + 다음 문제를 바로 표시. 스테이지를 다 풀면 "참 잘 했어요~"
   if (gameKind.value === 'lesson' && !solvedItems.value.includes(item.id)) {
     solvedItems.value = [...solvedItems.value, item.id]; // 재할당해야 watch가 감지
+    maybeMarkStageCleared(item); // 모든 모드에서 스테이지 완성 시 클리어 기록
   }
   if (mode.value === 'endless') advanceEndlessStageIfReady();
   else if (mode.value === 'single' && !stageDone.value) {
@@ -2284,11 +2332,11 @@ onBeforeUnmount(() => {
               <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
               <div class="flex items-center gap-3">
                 <div v-if="gameKind === 'lesson' && mode === 'free'" class="flex flex-col items-end leading-tight">
-                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }}</span>
+                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · {{ modeLabel }}</span>
                   <span class="text-sm font-black text-[var(--accent)]">{{ matchedCount }} / {{ clearedBlocks }}</span>
                 </div>
                 <div v-if="showProgress" class="flex flex-col items-end leading-tight">
-                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · Lv{{ mode === 'endless' ? endlessCurrentLevel : selectedLevel }} · 스테이지 {{ displayStage }}/{{ mode === 'endless' ? endlessStageCount : stageCount }}</span>
+                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · {{ modeLabel }} · Lv{{ mode === 'endless' ? endlessCurrentLevel : selectedLevel }} · 스테이지 {{ displayStage }}/{{ mode === 'endless' ? endlessStageCount : stageCount }}</span>
                   <span class="text-sm font-black text-[var(--accent)]">{{ levelProgress.current }} / {{ levelProgress.total }}</span>
                 </div>
               </div>
