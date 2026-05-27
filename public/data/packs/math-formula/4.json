@@ -1,477 +1,493 @@
 [
   {
-    "id": "add-five",
-    "label": "a+5",
-    "prompt": "5를 더한 값",
+    "id": "pythagoras",
+    "label": "c²=a²+b²",
+    "prompt": "c²=○○○",
     "tokens": [
-      "a",
+      "a²",
       "+",
-      "5"
+      "b²"
     ],
-    "hint": "a+5"
+    "name": "피타고라스 정리",
+    "vars": "a,b 직각변, c 빗변",
+    "hint": "두 직각변 제곱의 합이 빗변의 제곱과 같다"
   },
   {
-    "id": "add-twenty",
-    "label": "a+20",
-    "prompt": "20을 더한 값",
+    "id": "discriminant",
+    "label": "D=b²-4ac",
+    "prompt": "D=○○○",
     "tokens": [
-      "a",
-      "+",
-      "20"
+      "b²",
+      "-",
+      "4ac"
     ],
-    "hint": "a+20"
+    "name": "판별식",
+    "vars": "D 판별식, a,b,c 계수",
+    "hint": "이 값의 부호로 이차방정식 실근의 개수를 알 수 있다"
   },
   {
-    "id": "sub-two",
-    "label": "a−2",
-    "prompt": "2를 뺀 값",
+    "id": "cos-def",
+    "label": "cos θ=b/h",
+    "prompt": "cos θ=○/h",
     "tokens": [
-      "a",
-      "−",
-      "2"
-    ],
-    "hint": "a−2"
-  },
-  {
-    "id": "sub-ten",
-    "label": "a−10",
-    "prompt": "10을 뺀 값",
-    "tokens": [
-      "a",
-      "−",
-      "10"
-    ],
-    "hint": "a−10"
-  },
-  {
-    "id": "mul-two",
-    "label": "a×2",
-    "prompt": "2를 곱한 값",
-    "tokens": [
-      "a",
-      "×",
-      "2"
-    ],
-    "hint": "a×2"
-  },
-  {
-    "id": "mul-three",
-    "label": "a×3",
-    "prompt": "3을 곱한 값",
-    "tokens": [
-      "a",
-      "×",
-      "3"
-    ],
-    "hint": "a×3"
-  },
-  {
-    "id": "mul-ten",
-    "label": "a×10",
-    "prompt": "10을 곱한 값",
-    "tokens": [
-      "a",
-      "×",
-      "10"
-    ],
-    "hint": "a×10"
-  },
-  {
-    "id": "div-two",
-    "label": "a÷2",
-    "prompt": "2로 나눈 값",
-    "tokens": [
-      "a",
-      "÷",
-      "2"
-    ],
-    "hint": "a÷2"
-  },
-  {
-    "id": "div-ten",
-    "label": "a÷10",
-    "prompt": "10으로 나눈 값",
-    "tokens": [
-      "a",
-      "÷",
-      "10"
-    ],
-    "hint": "a÷10"
-  },
-  {
-    "id": "plus-b-plus-c",
-    "label": "a+b+c+d",
-    "prompt": "세 항 덧셈식",
-    "tokens": [
-      "a",
-      "+",
-      "b",
-      "+",
-      "c",
-      "+",
-      "d"
-    ],
-    "hint": "네 수의 합"
-  },
-  {
-    "id": "triangle-area2",
-    "label": "bh/2",
-    "prompt": "밑변·높이로 넓이",
-    "tokens": [
-      "b",
-      "h",
-      "/",
-      "2"
-    ],
-    "hint": "bh/2"
-  },
-  {
-    "id": "rect-area2",
-    "label": "w×h",
-    "prompt": "가로·세로 넓이",
-    "tokens": [
-      "w",
-      "×",
-      "h"
-    ],
-    "hint": "w×h"
-  },
-  {
-    "id": "perimeter-rect2",
-    "label": "2w+2h",
-    "prompt": "가로·세로 둘레",
-    "tokens": [
-      "2",
-      "w",
-      "+",
-      "2",
-      "h"
-    ],
-    "hint": "2w+2h"
-  },
-  {
-    "id": "square-perim2",
-    "label": "s+s+s+s",
-    "prompt": "네 변의 합",
-    "tokens": [
-      "s",
-      "+",
-      "s",
-      "+",
-      "s",
-      "+",
-      "s"
-    ],
-    "hint": "4s"
-  },
-  {
-    "id": "cube-edge-sum",
-    "label": "12a",
-    "prompt": "모서리 길이의 합",
-    "tokens": [
-      "12",
-      "a"
-    ],
-    "hint": "12a — 모서리 12개"
-  },
-  {
-    "id": "cuboid-edge-sum",
-    "label": "4(a+b+c)",
-    "prompt": "모서리 길이의 합",
-    "tokens": [
-      "4",
-      "(",
-      "a",
-      "+b",
-      "+c",
-      ")"
-    ],
-    "hint": "4(a+b+c)"
-  },
-  {
-    "id": "half-circle-area",
-    "label": "½πr²",
-    "prompt": "반원의 넓이",
-    "tokens": [
-      "½",
-      "π",
-      "r²"
-    ],
-    "hint": "½πr²"
-  },
-  {
-    "id": "quarter-circle",
-    "label": "¼πr²",
-    "prompt": "사분원의 넓이",
-    "tokens": [
-      "¼",
-      "π",
-      "r²"
-    ],
-    "hint": "¼πr²"
-  },
-  {
-    "id": "diameter",
-    "label": "2r",
-    "prompt": "지름 공식",
-    "tokens": [
-      "2",
-      "r"
-    ],
-    "hint": "2r — 반지름의 두 배"
-  },
-  {
-    "id": "radius-from-d",
-    "label": "d/2",
-    "prompt": "지름으로 반지름",
-    "tokens": [
-      "d",
-      "/",
-      "2"
-    ],
-    "hint": "d/2"
-  },
-  {
-    "id": "circle-area-d",
-    "label": "πd²/4",
-    "prompt": "지름으로 원 넓이",
-    "tokens": [
-      "π",
-      "d²",
-      "/",
-      "4"
-    ],
-    "hint": "πd²/4"
-  },
-  {
-    "id": "sum-evens",
-    "label": "n(n+1)",
-    "prompt": "처음 n개 짝수의 합",
-    "tokens": [
-      "n",
-      "(",
-      "n",
-      "+",
-      "1",
-      ")"
-    ],
-    "hint": "n(n+1)"
-  },
-  {
-    "id": "sum-odds",
-    "label": "n²",
-    "prompt": "처음 n개 홀수의 합",
-    "tokens": [
-      "n",
-      "²"
-    ],
-    "hint": "n² — 홀수의 합"
-  },
-  {
-    "id": "half-sum",
-    "label": "(a+b)/2",
-    "prompt": "두 수 합의 절반",
-    "tokens": [
-      "(",
-      "a",
-      "+",
-      "b",
-      ")",
-      "/2"
-    ],
-    "hint": "(a+b)/2"
-  },
-  {
-    "id": "quadruple",
-    "label": "4a",
-    "prompt": "어떤 수의 네 배",
-    "tokens": [
-      "4",
-      "a"
-    ],
-    "hint": "4a"
-  },
-  {
-    "id": "quintuple",
-    "label": "5a",
-    "prompt": "어떤 수의 다섯 배",
-    "tokens": [
-      "5",
-      "a"
-    ],
-    "hint": "5a"
-  },
-  {
-    "id": "square-of-sum",
-    "label": "(a+b)²",
-    "prompt": "두 수 합의 제곱",
-    "tokens": [
-      "(",
-      "a",
-      "+",
-      "b",
-      ")",
-      "²"
-    ],
-    "hint": "(a+b)²"
-  },
-  {
-    "id": "square-of-diff",
-    "label": "(a−b)²",
-    "prompt": "두 수 차의 제곱",
-    "tokens": [
-      "(",
-      "a",
-      "−",
-      "b",
-      ")",
-      "²"
-    ],
-    "hint": "(a−b)²"
-  },
-  {
-    "id": "add-then-double",
-    "label": "2(a+b)",
-    "prompt": "합을 두 배로",
-    "tokens": [
-      "2",
-      "(",
-      "a",
-      "+",
-      "b",
-      ")"
-    ],
-    "hint": "2(a+b)"
-  },
-  {
-    "id": "subtract-product",
-    "label": "ab−cd",
-    "prompt": "두 곱의 차",
-    "tokens": [
-      "a",
-      "b",
-      "−",
-      "c",
-      "d"
-    ],
-    "hint": "ab−cd"
-  },
-  {
-    "id": "fraction-mul",
-    "label": "a/b×c",
-    "prompt": "분수의 곱",
-    "tokens": [
-      "a",
-      "/",
-      "b",
-      "×",
-      "c"
-    ],
-    "hint": "(ac)/b 일부"
-  },
-  {
-    "id": "ratio-three",
-    "label": "a:b:c",
-    "prompt": "세 수의 비",
-    "tokens": [
-      "a",
-      ":",
-      "b",
-      ":",
-      "c"
-    ],
-    "hint": "a:b:c"
-  },
-  {
-    "id": "unit-fraction",
-    "label": "1/n",
-    "prompt": "단위분수",
-    "tokens": [
-      "1",
-      "/",
-      "n"
-    ],
-    "hint": "1/n"
-  },
-  {
-    "id": "mixed-op",
-    "label": "a×b+c",
-    "prompt": "곱하고 더하기",
-    "tokens": [
-      "a",
-      "×",
-      "b",
-      "+",
-      "c"
-    ],
-    "hint": "ab+c"
-  },
-  {
-    "id": "perimeter-tri-eq",
-    "label": "a+a+a",
-    "prompt": "정삼각형 둘레",
-    "tokens": [
-      "a",
-      "+",
-      "a",
-      "+",
-      "a"
-    ],
-    "hint": "3a"
-  },
-  {
-    "id": "cube-from-area",
-    "label": "√S/6",
-    "prompt": "정육면체 모서리",
-    "tokens": [
-      "√",
-      "S",
-      "/6"
-    ],
-    "hint": "√(S/6)"
-  },
-  {
-    "id": "stack-area",
-    "label": "S₁+S₂",
-    "prompt": "두 넓이의 합",
-    "tokens": [
-      "S₁",
-      "+",
-      "S₂"
-    ],
-    "hint": "S₁+S₂"
-  },
-  {
-    "id": "remaining-area",
-    "label": "S−s",
-    "prompt": "전체에서 뺀 넓이",
-    "tokens": [
-      "S",
-      "−",
-      "s"
-    ],
-    "hint": "S−s"
-  },
-  {
-    "id": "triangle-from-rect",
-    "label": "½ab",
-    "prompt": "직사각형의 절반 넓이",
-    "tokens": [
-      "½",
-      "a",
       "b"
     ],
-    "hint": "½ab"
+    "name": "코사인 정의",
+    "vars": "b 밑변, h 빗변",
+    "hint": "직각삼각형에서 밑변을 빗변으로 나누면 코사인 값이 된다"
   },
   {
-    "id": "count-total",
-    "label": "m×n",
-    "prompt": "행과 열의 곱",
+    "id": "regular-hexagon-area",
+    "label": "S=3√3/2a²",
+    "prompt": "S=○○○○a²",
+    "tokens": [
+      "3",
+      "√3",
+      "/",
+      "2"
+    ],
+    "name": "정육각형 넓이",
+    "vars": "S 넓이, a 한 변",
+    "hint": "정삼각형 여섯 개를 합치면 정육각형 넓이가 된다"
+  },
+  {
+    "id": "sin-def",
+    "label": "sin θ=a/h",
+    "prompt": "sin θ=○/h",
+    "tokens": [
+      "a"
+    ],
+    "name": "사인 정의",
+    "vars": "a 대변, h 빗변",
+    "hint": "직각삼각형에서 대변을 빗변으로 나누면 사인 값이 된다"
+  },
+  {
+    "id": "tan-def-2",
+    "label": "tan θ=a/b",
+    "prompt": "tan θ=○/b",
+    "tokens": [
+      "a"
+    ],
+    "name": "탄젠트 정의",
+    "vars": "a 대변, b 밑변",
+    "hint": "직각삼각형에서 대변을 밑변으로 나누면 탄젠트 값이 된다"
+  },
+  {
+    "id": "exp-half",
+    "label": "a^(1/2)=√a",
+    "prompt": "a^(1/2)=○",
+    "tokens": [
+      "√a"
+    ],
+    "name": "1/2 지수 법칙",
+    "vars": "a 밑",
+    "hint": "지수가 2분의 1이면 그 수의 제곱근과 같다"
+  },
+  {
+    "id": "pythagoras-hyp",
+    "label": "c=√(a²+b²)",
+    "prompt": "c=√(○○○)",
+    "tokens": [
+      "a²",
+      "+",
+      "b²"
+    ],
+    "name": "피타고라스 빗변",
+    "vars": "a b 직각변, c 빗변",
+    "hint": "직각삼각형 두 변 제곱의 합의 제곱근이 빗변이다"
+  },
+  {
+    "id": "cone-slant",
+    "label": "l=√(r²+h²)",
+    "prompt": "l=√(○○○)",
+    "tokens": [
+      "r²",
+      "+",
+      "h²"
+    ],
+    "name": "원뿔 모선 길이",
+    "vars": "r 반지름, h 높이, l 모선",
+    "hint": "반지름과 높이를 직각변으로 보아 모선을 구한다"
+  },
+  {
+    "id": "mean",
+    "label": "x̄=(1/n)Σxᵢ",
+    "prompt": "x̄=(1/n)○",
+    "tokens": [
+      "Σxᵢ"
+    ],
+    "name": "산술평균",
+    "vars": "xᵢ 자료, n 개수",
+    "hint": "모든 자료를 더한 뒤 자료 개수로 나눈 평균값"
+  },
+  {
+    "id": "variance-pop",
+    "label": "σ²=(1/n)Σ(xᵢ-x̄)²",
+    "prompt": "σ²=(1/n)Σ(xᵢ-○)²",
+    "tokens": [
+      "x̄"
+    ],
+    "name": "모분산",
+    "vars": "x̄ 평균, n 개수",
+    "hint": "각 자료가 평균에서 벗어난 정도의 제곱을 평균한 값"
+  },
+  {
+    "id": "vieta-product",
+    "label": "αβ=c/a",
+    "prompt": "αβ=○○○",
+    "tokens": [
+      "c",
+      "/",
+      "a"
+    ],
+    "name": "근과 계수 곱",
+    "vars": "α,β 두 근, a,c 계수",
+    "hint": "두 근의 곱은 상수항을 이차항 계수로 나눈 값과 같다"
+  },
+  {
+    "id": "circle-equation-origin",
+    "label": "x²+y²=r²",
+    "prompt": "x²+y²=○",
+    "tokens": [
+      "r²"
+    ],
+    "name": "원의 방정식",
+    "vars": "r 반지름, (x,y) 원 위 점",
+    "hint": "원점에서 거리가 반지름인 점들이 모여 원을 이룬다"
+  },
+  {
+    "id": "vieta-sum",
+    "label": "α+β=-b/a",
+    "prompt": "α+β=○○○",
+    "tokens": [
+      "-b",
+      "/",
+      "a"
+    ],
+    "name": "근과 계수 합",
+    "vars": "α,β 두 근, a,b 계수",
+    "hint": "두 근의 합은 일차항 계수에 부호를 바꿔 이차항으로 나눈 값이다"
+  },
+  {
+    "id": "distance-1d",
+    "label": "d=|x₂-x₁|",
+    "prompt": "d=|○○○|",
+    "tokens": [
+      "x₂",
+      "-",
+      "x₁"
+    ],
+    "name": "수직선 두 점 거리",
+    "vars": "d 거리, x₁,x₂ 좌표",
+    "hint": "두 좌표의 차이에 절댓값을 씌우면 두 점 사이 거리가 된다"
+  },
+  {
+    "id": "comb-symmetry",
+    "label": "nCr=nCₙ₋ᵣ",
+    "prompt": "nCr=○○",
+    "tokens": [
+      "nC",
+      "ₙ₋ᵣ"
+    ],
+    "name": "조합 대칭성",
+    "vars": "n 전체, r 택한 수",
+    "hint": "r개를 뽑는 경우의 수는 나머지를 뽑는 경우의 수와 같다"
+  },
+  {
+    "id": "perm-comb-rel",
+    "label": "nPr=nCr·r!",
+    "prompt": "nPr=○·r!",
+    "tokens": [
+      "nCr"
+    ],
+    "name": "순열과 조합 관계",
+    "vars": "r! 순서수",
+    "hint": "조합에 뽑은 것의 순서 수를 곱하면 순열이 된다"
+  },
+  {
+    "id": "midpoint-x",
+    "label": "x=(x₁+x₂)/2",
+    "prompt": "x=(○○○)/2",
+    "tokens": [
+      "x₁",
+      "+",
+      "x₂"
+    ],
+    "name": "중점의 x좌표",
+    "vars": "x₁ x₂ 두 점의 x",
+    "hint": "두 점의 x좌표를 더해 반으로 나눈 중점 좌표"
+  },
+  {
+    "id": "midpoint-y",
+    "label": "y=(y₁+y₂)/2",
+    "prompt": "y=(○○○)/2",
+    "tokens": [
+      "y₁",
+      "+",
+      "y₂"
+    ],
+    "name": "중점의 y좌표",
+    "vars": "y₁ y₂ 두 점의 y",
+    "hint": "두 점의 y좌표를 더해 반으로 나눈 중점 좌표"
+  },
+  {
+    "id": "quadratic-vertex",
+    "label": "y=a(x-p)²+q",
+    "prompt": "y=a(x-p)²○○",
+    "tokens": [
+      "+",
+      "q"
+    ],
+    "name": "이차함수 표준형",
+    "vars": "(p,q) 꼭짓점, a 계수",
+    "hint": "꼭짓점이 (p,q)인 포물선을 나타내는 이차함수"
+  },
+  {
+    "id": "factor-common",
+    "label": "ma+mb=m(a+b)",
+    "prompt": "ma+mb=○○○",
     "tokens": [
       "m",
-      "×",
+      "(a",
+      "+b)"
+    ],
+    "name": "공통인수 묶기",
+    "vars": "m 공통인수, a b 수",
+    "hint": "여러 항에 공통인 인수를 밖으로 묶어 인수분해한다"
+  },
+  {
+    "id": "line-point-slope",
+    "label": "y-y₁=m(x-x₁)",
+    "prompt": "y-y₁=m(○○○)",
+    "tokens": [
+      "x",
+      "-",
+      "x₁"
+    ],
+    "name": "점기울기 직선식",
+    "vars": "m 기울기, (x₁,y₁) 점",
+    "hint": "기울기와 지나는 한 점으로 직선의 방정식을 세운다"
+  },
+  {
+    "id": "factorial",
+    "label": "n!=n(n-1)···1",
+    "prompt": "n!=○(n-1)···1",
+    "tokens": [
       "n"
     ],
-    "hint": "m×n"
+    "name": "계승(팩토리얼)",
+    "vars": "n 자연수",
+    "hint": "1부터 n까지 자연수를 모두 곱한 값을 나타낸다"
+  },
+  {
+    "id": "permutation",
+    "label": "nPr=n!/(n-r)!",
+    "prompt": "nPr=n!/○○",
+    "tokens": [
+      "(n-",
+      "r)!"
+    ],
+    "name": "순열",
+    "vars": "n 전체, r 택한 수",
+    "hint": "n개 중 r개를 순서대로 뽑아 나열하는 경우의 수"
+  },
+  {
+    "id": "mult-square-minus",
+    "label": "(a-b)²=a²-2ab+b²",
+    "prompt": "(a-b)²=a²○○+b²",
+    "tokens": [
+      "-",
+      "2ab"
+    ],
+    "name": "차의 제곱",
+    "vars": "a b 임의의 수",
+    "hint": "두 수 차의 제곱을 전개한 곱셈 공식"
+  },
+  {
+    "id": "mult-diff-squares",
+    "label": "(a+b)(a-b)=a²-b²",
+    "prompt": "(a+b)(a-b)=○○○",
+    "tokens": [
+      "a²",
+      "-",
+      "b²"
+    ],
+    "name": "합·차의 곱",
+    "vars": "a b 임의의 수",
+    "hint": "두 수의 합과 차를 곱하면 제곱의 차가 된다"
+  },
+  {
+    "id": "mult-square-plus",
+    "label": "(a+b)²=a²+2ab+b²",
+    "prompt": "(a+b)²=a²+○○+b²",
+    "tokens": [
+      "2",
+      "ab"
+    ],
+    "name": "합의 제곱",
+    "vars": "a b 임의의 수",
+    "hint": "두 수 합의 제곱을 전개한 곱셈 공식"
+  },
+  {
+    "id": "circle-equation",
+    "label": "(x-a)²+(y-b)²=r²",
+    "prompt": "(x-a)²+(y-b)²=○",
+    "tokens": [
+      "r²"
+    ],
+    "name": "원의 방정식",
+    "vars": "(a,b) 중심, r 반지름",
+    "hint": "중심과 반지름으로 원 위 점이 만족하는 방정식"
+  },
+  {
+    "id": "factor-square-minus",
+    "label": "a²-2ab+b²=(a-b)²",
+    "prompt": "a²-2ab+b²=○○",
+    "tokens": [
+      "(a",
+      "-b)²"
+    ],
+    "name": "완전제곱식 인수분해",
+    "vars": "a b 임의의 수",
+    "hint": "두 수 차의 제곱 꼴을 묶어 인수분해한다"
+  },
+  {
+    "id": "factor-diff-squares",
+    "label": "a²-b²=(a+b)(a-b)",
+    "prompt": "a²-b²=○○○○",
+    "tokens": [
+      "(a+",
+      "b)",
+      "(a-",
+      "b)"
+    ],
+    "name": "제곱차 인수분해",
+    "vars": "a b 임의의 수",
+    "hint": "제곱의 차는 두 수의 합과 차의 곱으로 인수분해한다"
+  },
+  {
+    "id": "factor-square-plus",
+    "label": "a²+2ab+b²=(a+b)²",
+    "prompt": "a²+2ab+b²=○○",
+    "tokens": [
+      "(a",
+      "+b)²"
+    ],
+    "name": "완전제곱식 인수분해",
+    "vars": "a b 임의의 수",
+    "hint": "두 수 합의 제곱 꼴을 묶어 인수분해한다"
+  },
+  {
+    "id": "combination",
+    "label": "nCr=n!/(r!(n-r)!)",
+    "prompt": "nCr=n!/(○○○)",
+    "tokens": [
+      "r!",
+      "(n-",
+      "r)!"
+    ],
+    "name": "조합",
+    "vars": "n 전체, r 택한 수",
+    "hint": "n개 중 r개를 순서 없이 뽑는 경우의 수"
+  },
+  {
+    "id": "comb-pascal",
+    "label": "nCr=ₙ₋₁Cᵣ₋₁+ₙ₋₁Cᵣ",
+    "prompt": "nCr=○○+ₙ₋₁Cᵣ",
+    "tokens": [
+      "ₙ₋₁",
+      "Cᵣ₋₁"
+    ],
+    "name": "파스칼 법칙",
+    "vars": "n 전체, r 택한 수",
+    "hint": "조합을 바로 위 두 조합의 합으로 나타내는 법칙"
+  },
+  {
+    "id": "quadratic-formula-even",
+    "label": "x=(-b'±√(b'²-ac))/a",
+    "prompt": "x=(-b'±√(○○○))/a",
+    "tokens": [
+      "b'²",
+      "-",
+      "ac"
+    ],
+    "name": "짝수 근의 공식",
+    "vars": "b'=b/2, a c 계수",
+    "hint": "일차항 계수가 짝수일 때 간단해진 근의 공식"
+  },
+  {
+    "id": "quadratic-formula",
+    "label": "x=(-b±√(b²-4ac))/2a",
+    "prompt": "x=(-b±√(○○○))/2a",
+    "tokens": [
+      "b²",
+      "-",
+      "4ac"
+    ],
+    "name": "근의 공식",
+    "vars": "a b c 계수",
+    "hint": "이차방정식의 해를 계수만으로 구하는 공식"
+  },
+  {
+    "id": "factor-diff-cubes",
+    "label": "a³-b³=(a-b)(a²+ab+b²)",
+    "prompt": "a³-b³=(a-b)(○○○)",
+    "tokens": [
+      "a²",
+      "+ab",
+      "+b²"
+    ],
+    "name": "세제곱 차 인수분해",
+    "vars": "a b 임의의 수",
+    "hint": "세제곱의 차를 두 수 차와 이차식의 곱으로 인수분해한다"
+  },
+  {
+    "id": "factor-sum-cubes",
+    "label": "a³+b³=(a+b)(a²-ab+b²)",
+    "prompt": "a³+b³=(a+b)(○○○)",
+    "tokens": [
+      "a²",
+      "-ab",
+      "+b²"
+    ],
+    "name": "세제곱 합 인수분해",
+    "vars": "a b 임의의 수",
+    "hint": "세제곱의 합을 두 수 합과 이차식의 곱으로 인수분해한다"
+  },
+  {
+    "id": "mult-cube-minus",
+    "label": "(a-b)³=a³-3a²b+3ab²-b³",
+    "prompt": "(a-b)³=a³-3a²b+○○-b³",
+    "tokens": [
+      "3",
+      "ab²"
+    ],
+    "name": "차의 세제곱",
+    "vars": "a b 임의의 수",
+    "hint": "두 수 차의 세제곱을 전개한 곱셈 공식"
+  },
+  {
+    "id": "mult-cube-plus",
+    "label": "(a+b)³=a³+3a²b+3ab²+b³",
+    "prompt": "(a+b)³=a³+○○○+3ab²+b³",
+    "tokens": [
+      "3",
+      "a²",
+      "b"
+    ],
+    "name": "합의 세제곱",
+    "vars": "a b 임의의 수",
+    "hint": "두 수 합의 세제곱을 전개한 곱셈 공식"
+  },
+  {
+    "id": "exp-zero",
+    "label": "a⁰=1",
+    "prompt": "a⁰=○",
+    "tokens": [
+      "1"
+    ],
+    "name": "지수 0 법칙",
+    "vars": "a 밑(a≠0)",
+    "hint": "0이 아닌 수를 0제곱하면 항상 1이 된다"
   }
 ]

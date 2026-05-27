@@ -82,8 +82,13 @@ select {
   letter-spacing: 0;
   line-height: 1;
   white-space: nowrap; /* 글자가 세로로 줄바꿈되는 현상 방지 */
-  /* JS로 측정한 셀 크기(--cell-w/--cell-h)에 비례. 높이(0.72)·폭(글자수 분배) 둘 다 제약 → 절대 넘치지 않음 */
-  font-size: clamp(0.4rem, min(calc(var(--cell-h, 0px) * 0.72), calc(var(--cell-w, 0px) * 1.7 / (var(--len, 1) + 0.5))), 4rem);
+  /* 컨테이너쿼리(cqh/cqw)와 JS 측정값(--cell-w/--cell-h) 중 큰 쪽 사용.
+     비-Safari는 cq가 즉시 올바른 크기를 주고(측정 전에도 OK),
+     Safari(aspect-ratio + container-type:size에서 cqh=0 버그)는 JS 측정값이 보강. */
+  font-size: clamp(0.4rem, max(
+    min(72cqh, calc(170cqw / (var(--len, 1) + 0.5))),
+    min(calc(var(--cell-h, 0px) * 0.72), calc(var(--cell-w, 0px) * 1.7 / (var(--len, 1) + 0.5)))
+  ), 4rem);
 }
 
 /* iOS Safari(WebKit)에서 글자가 아래로 치우치는 현상 보정 (글자 크기에 비례) */
@@ -253,6 +258,56 @@ select {
 @keyframes level-clear-pop {
   0% { transform: scale(0.6); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
+}
+
+/* 연속 모드: 보드에 있는 답의 문제·힌트가 우→좌로 흐르는 마퀴 */
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  width: max-content;
+  animation: marquee-scroll 300s linear infinite;
+}
+.marquee-item {
+  padding-right: 2.5rem;
+  color: var(--accent);
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); } /* 목록을 2번 이어붙여 -50%에서 매끄럽게 반복 */
+}
+
+/* 연속 모드: 정답을 상단 정보 영역에 인라인으로(보드를 덮지 않음) */
+.answer-inline {
+  position: absolute;
+  inset: 0;
+  z-index: 21;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 900;
+  animation: answer-inline-pop 200ms ease-out;
+}
+@keyframes answer-inline-pop {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 정답 팝업 페이드 인/아웃 */
+.answer-fade-enter-active,
+.answer-fade-leave-active {
+  transition: opacity 240ms ease;
+}
+.answer-fade-enter-from,
+.answer-fade-leave-to {
+  opacity: 0;
 }
 
 /* 힌트는 정보 섹션 높이를 바꾸지 않고 중앙에 떠서 표시 */

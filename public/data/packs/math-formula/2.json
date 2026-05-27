@@ -1,147 +1,145 @@
 [
   {
-    "id": "cube-volume",
-    "label": "a³",
-    "prompt": "정육면체 부피 공식",
+    "id": "direct-proportion",
+    "label": "y=ax",
+    "prompt": "y=○○",
     "tokens": [
       "a",
-      "³"
+      "x"
     ],
-    "hint": "a³ — 한 변의 세제곱"
+    "name": "정비례 관계",
+    "vars": "y,x 변수, a 비례상수(a≠0)",
+    "hint": "한 변수가 커지면 다른 변수도 같은 비율로 커진다"
+  },
+  {
+    "id": "density",
+    "label": "d=m/V",
+    "prompt": "d=○/V",
+    "tokens": [
+      "m"
+    ],
+    "name": "밀도 공식",
+    "vars": "d 밀도, m 질량, V 부피",
+    "hint": "질량을 부피로 나누면 그 물질의 밀도가 된다"
+  },
+  {
+    "id": "circle-circumference",
+    "label": "l=2πr",
+    "prompt": "l=○πr",
+    "tokens": [
+      "2"
+    ],
+    "name": "원의 둘레",
+    "vars": "l 둘레, r 반지름, π 원주율",
+    "hint": "반지름에 원주율을 곱하고 두 배 하면 원의 둘레가 된다"
+  },
+  {
+    "id": "cube-surface",
+    "label": "S=6a²",
+    "prompt": "S=○a²",
+    "tokens": [
+      "6"
+    ],
+    "name": "정육면체 겉넓이",
+    "vars": "S 겉넓이, a 한 모서리",
+    "hint": "한 면의 넓이에 면이 여섯 개이므로 6을 곱한다"
+  },
+  {
+    "id": "circle-area",
+    "label": "S=πr²",
+    "prompt": "S=π○²",
+    "tokens": [
+      "r"
+    ],
+    "name": "원의 넓이",
+    "vars": "S 넓이, r 반지름, π 원주율",
+    "hint": "반지름을 제곱한 값에 원주율을 곱하면 원의 넓이가 된다"
+  },
+  {
+    "id": "cone-side",
+    "label": "S=πrl",
+    "prompt": "S=π○○",
+    "tokens": [
+      "r",
+      "l"
+    ],
+    "name": "원뿔 옆넓이",
+    "vars": "S 옆넓이, r 반지름, l 모선",
+    "hint": "원주율에 밑면 반지름과 모선을 곱하면 옆면 넓이가 된다"
   },
   {
     "id": "cuboid-volume",
-    "label": "abc",
-    "prompt": "직육면체 부피 공식",
+    "label": "V=abc",
+    "prompt": "V=○○○",
     "tokens": [
       "a",
       "b",
       "c"
     ],
-    "hint": "abc — 가로 세로 높이의 곱"
+    "name": "직육면체 부피",
+    "vars": "V 부피, a,b,c 세 모서리",
+    "hint": "가로 세로 높이 세 모서리를 모두 곱하면 부피가 된다"
   },
   {
-    "id": "pythagoras",
-    "label": "a²+b²=c²",
-    "prompt": "직각삼각형 관계식",
+    "id": "speed",
+    "label": "v=s/t",
+    "prompt": "v=○/t",
     "tokens": [
-      "a²",
-      "+",
-      "b²",
-      "=",
-      "c²"
+      "s"
     ],
-    "hint": "a²+b²=c² — 빗변은 c"
+    "name": "속력 공식",
+    "vars": "v 속력, s 거리, t 시간",
+    "hint": "이동 거리를 걸린 시간으로 나누면 속력이 된다"
   },
   {
-    "id": "commutative-add",
-    "label": "a+b=b+a",
-    "prompt": "덧셈 교환법칙",
+    "id": "inverse-proportion",
+    "label": "y=a/x",
+    "prompt": "y=○/x",
     "tokens": [
-      "a",
-      "+",
-      "b",
-      "=",
-      "b",
-      "+",
       "a"
     ],
-    "hint": "a+b=b+a — 순서를 바꿔도 같다"
+    "name": "반비례 관계",
+    "vars": "y,x 변수, a 비례상수(a≠0)",
+    "hint": "한 변수가 커질수록 다른 변수는 그만큼 작아진다"
   },
   {
-    "id": "commutative-mul",
-    "label": "ab=ba",
-    "prompt": "곱셈 교환법칙",
+    "id": "cylinder-side",
+    "label": "S=2πrh",
+    "prompt": "S=2π○○",
     "tokens": [
-      "a",
-      "b",
-      "=",
-      "b",
-      "a"
+      "r",
+      "h"
     ],
-    "hint": "ab=ba — 순서를 바꿔도 같다"
+    "name": "원기둥 옆넓이",
+    "vars": "S 옆넓이, r 반지름, h 높이",
+    "hint": "밑면 둘레에 높이를 곱하면 원기둥의 옆면 넓이가 된다"
   },
   {
-    "id": "distributive",
-    "label": "a(b+c)",
-    "prompt": "분배법칙",
+    "id": "sphere-surface",
+    "label": "S=4πr²",
+    "prompt": "S=○πr²",
     "tokens": [
-      "a",
-      "(",
-      "b",
-      "+",
-      "c",
-      ")"
+      "4"
     ],
-    "hint": "a(b+c) — 각 항에 분배"
+    "name": "구의 겉넓이",
+    "vars": "S 겉넓이, r 반지름, π 원주율",
+    "hint": "반지름 제곱에 원주율과 4를 곱하면 구의 겉넓이가 된다"
   },
   {
-    "id": "identity-add",
-    "label": "a+0=a",
-    "prompt": "덧셈 항등원",
+    "id": "cylinder-volume",
+    "label": "V=πr²h",
+    "prompt": "V=π○h",
     "tokens": [
-      "a",
-      "+",
-      "0",
-      "=",
-      "a"
+      "r²"
     ],
-    "hint": "a+0=a — 0을 더해도 그대로"
-  },
-  {
-    "id": "identity-mul",
-    "label": "a×1=a",
-    "prompt": "곱셈 항등원",
-    "tokens": [
-      "a",
-      "×",
-      "1",
-      "=",
-      "a"
-    ],
-    "hint": "a×1=a — 1을 곱해도 그대로"
-  },
-  {
-    "id": "zero-mul",
-    "label": "a×0=0",
-    "prompt": "0을 곱한 값",
-    "tokens": [
-      "a",
-      "×",
-      "0",
-      "=",
-      "0"
-    ],
-    "hint": "a×0=0 — 무엇에 0을 곱하면 0"
-  },
-  {
-    "id": "average-two",
-    "label": "½(a+b)",
-    "prompt": "두 수의 평균",
-    "tokens": [
-      "½",
-      "(",
-      "a",
-      "+",
-      "b",
-      ")"
-    ],
-    "hint": "½(a+b) — 두 수 합의 절반"
-  },
-  {
-    "id": "eq-tri-perimeter",
-    "label": "3a",
-    "prompt": "정삼각형 둘레 공식",
-    "tokens": [
-      "3",
-      "a"
-    ],
-    "hint": "3a — 한 변의 세 배"
+    "name": "원기둥 부피",
+    "vars": "V 부피, r 반지름, h 높이",
+    "hint": "밑면인 원의 넓이에 높이를 곱하면 원기둥 부피가 된다"
   },
   {
     "id": "triangle-perimeter",
-    "label": "a+b+c",
-    "prompt": "삼각형 둘레 공식",
+    "label": "l=a+b+c",
+    "prompt": "l=○○○○○",
     "tokens": [
       "a",
       "+",
@@ -149,92 +147,88 @@
       "+",
       "c"
     ],
-    "hint": "세 변의 합"
+    "name": "삼각형 둘레",
+    "vars": "l 둘레, a,b,c 세 변",
+    "hint": "세 변의 길이를 모두 더하면 삼각형의 둘레가 된다"
   },
   {
-    "id": "rectangle-diagonal",
-    "label": "√a²+b²",
-    "prompt": "직사각형 대각선 길이",
+    "id": "rhombus-area",
+    "label": "S=1/2ab",
+    "prompt": "S=○ab",
     "tokens": [
-      "√",
-      "a²",
+      "1/2"
+    ],
+    "name": "마름모 넓이",
+    "vars": "S 넓이, a,b 두 대각선",
+    "hint": "두 대각선의 길이를 곱하고 절반 하면 마름모 넓이가 된다"
+  },
+  {
+    "id": "triangle-area",
+    "label": "S=1/2ah",
+    "prompt": "S=○ah",
+    "tokens": [
+      "1/2"
+    ],
+    "name": "삼각형 넓이",
+    "vars": "S 넓이, a 밑변, h 높이",
+    "hint": "밑변에 높이를 곱한 뒤 절반 하면 삼각형의 넓이가 된다"
+  },
+  {
+    "id": "kite-area",
+    "label": "S=1/2pq",
+    "prompt": "S=○pq",
+    "tokens": [
+      "1/2"
+    ],
+    "name": "연 넓이",
+    "vars": "S 넓이, p,q 두 대각선",
+    "hint": "두 대각선을 곱하고 절반 하면 연 모양의 넓이가 된다"
+  },
+  {
+    "id": "sector-area-rl",
+    "label": "S=1/2rl",
+    "prompt": "S=1/2○○",
+    "tokens": [
+      "r",
+      "l"
+    ],
+    "name": "부채꼴 넓이",
+    "vars": "S 넓이, r 반지름, l 호",
+    "hint": "반지름에 호의 길이를 곱하고 절반 하면 넓이가 된다"
+  },
+  {
+    "id": "pyramid-volume",
+    "label": "V=1/3Sh",
+    "prompt": "V=○Sh",
+    "tokens": [
+      "1/3"
+    ],
+    "name": "각뿔 부피",
+    "vars": "V 부피, S 밑넓이, h 높이",
+    "hint": "같은 밑면 높이 기둥 부피의 삼분의 일이 각뿔 부피이다"
+  },
+  {
+    "id": "rectangle-perimeter",
+    "label": "l=2(a+b)",
+    "prompt": "l=2(○○○)",
+    "tokens": [
+      "a",
       "+",
-      "b²"
+      "b"
     ],
-    "hint": "√(a²+b²)"
+    "name": "직사각형 둘레",
+    "vars": "l 둘레, a 가로, b 세로",
+    "hint": "가로와 세로를 더한 뒤 두 배 하면 둘레가 된다"
   },
   {
-    "id": "half-of",
-    "label": "a/2",
-    "prompt": "어떤 수의 절반",
+    "id": "hemisphere-volume",
+    "label": "V=2/3πr³",
+    "prompt": "V=○πr³",
     "tokens": [
-      "a",
-      "/",
-      "2"
+      "2/3"
     ],
-    "hint": "a/2"
-  },
-  {
-    "id": "double-of",
-    "label": "2a",
-    "prompt": "어떤 수의 두 배",
-    "tokens": [
-      "2",
-      "a"
-    ],
-    "hint": "2a"
-  },
-  {
-    "id": "triple-of",
-    "label": "3a",
-    "prompt": "어떤 수의 세 배",
-    "tokens": [
-      "3",
-      "a"
-    ],
-    "hint": "3a — 세 배"
-  },
-  {
-    "id": "square-num",
-    "label": "a×a",
-    "prompt": "어떤 수의 제곱",
-    "tokens": [
-      "a",
-      "×",
-      "a"
-    ],
-    "hint": "a×a=a²"
-  },
-  {
-    "id": "cube-num",
-    "label": "a²a",
-    "prompt": "어떤 수의 세제곱",
-    "tokens": [
-      "a",
-      "²",
-      "a"
-    ],
-    "hint": "a²·a=a³"
-  },
-  {
-    "id": "reciprocal",
-    "label": "1/a",
-    "prompt": "어떤 수의 역수",
-    "tokens": [
-      "1",
-      "/",
-      "a"
-    ],
-    "hint": "1/a"
-  },
-  {
-    "id": "negative",
-    "label": "−a",
-    "prompt": "부호 바꾸기",
-    "tokens": [
-      "−",
-      "a"
-    ],
-    "hint": "−a"
+    "name": "반구의 부피",
+    "vars": "V 부피, r 반지름, π 원주율",
+    "hint": "구 부피의 절반이므로 구 공식에 2/3를 쓴다"
   }
 ]

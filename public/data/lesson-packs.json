@@ -1,7 +1,8 @@
 [
   { "id": "science-core", "title": "화학식", "accent": "#14b8a6", "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
   { "id": "korean-idiom", "title": "사자성어", "accent": "#f97316", "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
-  { "id": "math-formula", "title": "수학 공식", "accent": "#6366f1", "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+  { "id": "korean-proverb", "title": "속담", "accent": "#ca8a04", "levels": [1, 2, 3, 4, 5, 6] },
+  { "id": "math-formula", "title": "수학 공식", "accent": "#6366f1", "levels": [1, 2, 3, 4, 5, 6, 7] },
   { "id": "english-grammar", "title": "영문법", "accent": "#e11d48", "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
   { "id": "english-word-m1", "title": "영어단어 중1", "accent": "#0ea5e9", "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
   { "id": "english-word-m2", "title": "영어단어 중2", "accent": "#0ea5e9", "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },

@@ -104,6 +104,8 @@ const remoteUrl = ref(localStorage.getItem('matchit-data-url') || localPackUrl);
 const board = ref<Block[]>([]);
 const selectedIndexes = ref<number[]>([]);
 const score = ref(0);
+const matchedCount = ref(0); // 맞춘 정답 개수(누적)
+const clearedBlocks = ref(0); // 없앤 블럭 개수(누적)
 const bestKey = (kind = gameKind.value) => `matchit-best-${kind}`;
 const best = ref(Number(localStorage.getItem(bestKey()) || 0));
 const combo = ref(1);
@@ -130,6 +132,7 @@ const targetIndex = ref(0);
 const showHint = ref(false);
 const activeMobilePanel = ref<MobilePanel>('packs');
 const showExitConfirm = ref(false);
+const saveOnExit = ref(true); // 나가기 시 저장(다음에 이어서) 여부
 const gameFullscreen = ref(false);
 
 const activePack = computed(() => packs.value.find((pack) => pack.id === selectedPackId.value));
@@ -148,7 +151,7 @@ function buildWordItems(raw: Array<{ word: string; meaning: string; hint?: strin
       return {
         id: `${word}-spell`,
         label: word,
-        prompt: `${meaning} 의 철자`,
+        prompt: meaning,
         tokens: word.toLowerCase().replace(/[^a-z]/g, '').split(''),
         hint: `${word} = ${meaning}${extra}`,
       };
@@ -165,11 +168,47 @@ function buildWordItems(raw: Array<{ word: string; meaning: string; hint?: strin
 // 레벨을 10문제씩 스테이지로 분할
 const stageCount = computed(() => Math.max(1, Math.ceil(lessonItems.value.length / STAGE_SIZE)));
 const stageItems = computed(() => lessonItems.value.slice((currentStage.value - 1) * STAGE_SIZE, currentStage.value * STAGE_SIZE));
-// 한 문제씩 모드는 현재 스테이지(10문제)만, 연속 모드는 레벨 전체를 대상으로
-const activeItems = computed(() => (gameKind.value === 'lesson' && mode.value === 'single' ? stageItems.value : lessonItems.value));
+
+// 연속 모드: 팩의 모든 레벨 문제를 이어붙인 풀에서, 스테이지 번호는 레벨1부터 누적된 "전역" 번호
+const fullItems = ref<LessonItem[]>([]); // 모든 레벨 문제(이어붙임)
+const fullLevelLens = ref<number[]>([]); // 레벨별 문제 수(순서대로)
+const endlessStage = ref(1); // 전역 스테이지 번호(레벨1 스테이지1부터 누적)
+// 선택 레벨이 풀에서 시작하는 위치(이전 레벨들의 문제 수 합)
+const endlessStartOffset = computed(() => {
+  const idx = (activePack.value?.levels ?? []).indexOf(selectedLevel.value);
+  if (idx <= 0) return 0;
+  return fullLevelLens.value.slice(0, idx).reduce((s, n) => s + n, 0);
+});
+// 선택 레벨의 첫 전역 스테이지 번호(예: 레벨2면 레벨1의 1스테이지 다음인 2)
+const endlessFirstStage = computed(() => Math.floor(endlessStartOffset.value / STAGE_SIZE) + 1);
+// 전체(레벨1~끝) 전역 스테이지 수
+const endlessStageCount = computed(() => Math.max(1, Math.ceil((fullItems.value.length || lessonItems.value.length) / STAGE_SIZE)));
+// 연속(endless) + 자유(free): 한 문제씩이 아닌 "이어서 푸는" 모드
+const continuous = computed(() => mode.value !== 'single');
+const activeItems = computed(() => {
+  if (gameKind.value !== 'lesson') return lessonItems.value;
+  if (mode.value === 'single') return stageItems.value;
+  // 자유: 팩의 모든 레벨을 통틀어 전체 풀을 한꺼번에 사용
+  if (mode.value === 'free') return fullItems.value.length ? fullItems.value : lessonItems.value;
+  // 연속: 선택 레벨 시작부터 현재 전역 스테이지 끝까지(레벨 경계를 넘어 이어짐)
+  if (fullItems.value.length) {
+    return fullItems.value.slice(endlessStartOffset.value, endlessStage.value * STAGE_SIZE);
+  }
+  return lessonItems.value.slice(0, endlessStage.value * STAGE_SIZE); // 풀 로드 전 폴백
+});
+// 연속 모드 현재 "최상위 스테이지"(가장 최근 도입된 10문제 창, 전역 인덱스)
+const endlessTopStageItems = computed(() => {
+  const base = fullItems.value.length ? fullItems.value : lessonItems.value;
+  return base.slice((endlessStage.value - 1) * STAGE_SIZE, endlessStage.value * STAGE_SIZE);
+});
+// 연속 모드: 현재 스테이지가 속한 레벨(스테이지가 다음 레벨로 넘어가면 함께 바뀜)
+const endlessCurrentLevel = computed(() => {
+  const it = endlessTopStageItems.value[0];
+  return it ? levelOfItem(it) : selectedLevel.value;
+});
 
 const target = computed(() => {
-  if (mode.value === 'endless') {
+  if (continuous.value) {
     return {
       id: 'endless',
       label: 'Endless Mode',
@@ -193,13 +232,43 @@ const collectableItems = computed(() =>
 const maxValue = computed(() => board.value.reduce((max, block) => Math.max(max, block?.value ?? 0), 0));
 // 토큰(글자)이 긴 팩(영문법·수학식)은 가로로 긴 블럭 사용
 const wideBlocks = computed(() => gameKind.value === 'lesson' && wideBlockPacks.has(selectedPackId.value));
+// 현재 목표 문항(학습 모드)
+const goalItem = computed(() => {
+  if (gameKind.value !== 'lesson' || continuous.value) return null;
+  return solveMode.value === 'collect' ? collectTargetItem.value : target.value;
+});
+const goalVars = computed(() => (stageDone.value ? '' : goalItem.value?.vars || ''));
+// 연속 모드: 보드에서 지금 만들 수 있는 답들의 문제·힌트(마퀴용)
+const endlessTicker = computed(() => {
+  if (gameKind.value !== 'lesson' || !continuous.value) return [] as string[];
+  const counts = new Map<string, number>();
+  for (const b of board.value) if (b) counts.set(b.token, (counts.get(b.token) || 0) + 1);
+  const canForm = (it: LessonItem) => {
+    const need = new Map<string, number>();
+    for (const t of it.tokens) need.set(t, (need.get(t) || 0) + 1);
+    for (const [t, c] of need) if ((counts.get(t) || 0) < c) return false;
+    return true;
+  };
+  const out: string[] = [];
+  for (const it of activeItems.value) {
+    if (canForm(it)) {
+      out.push(it.name ? `${it.name}: ${it.prompt}` : it.prompt);
+      if (out.length >= 40) break;
+    }
+  }
+  return out;
+});
 const goalPrompt = computed(() => {
   if (gameKind.value === 'numbers') return `최고 숫자 ${formatValue(maxValue.value)}`;
+  if (stageDone.value) return '참 잘 했어요~ 🎉';
   if (solveMode.value === 'collect') {
-    if (mode.value === 'endless') return '보드의 식 글자들을 붙여 맞추기';
-    return collectTargetItem.value?.prompt || '로딩 중';
+    if (continuous.value) return '보드의 식 글자들을 붙여 맞추기';
+  } else if (continuous.value) {
+    return '보드의 식 글자들을 순서대로 맞추기';
   }
-  return target.value?.prompt || '로딩 중';
+  const it = goalItem.value;
+  if (!it) return '로딩 중';
+  return (it.name ? `${it.name}: ` : '') + it.prompt;
 });
 // 힌트로 강조한 실제 문항 (연속모드 가상 목표 대신 사용)
 const hintItem = ref<LessonItem | null>(null);
@@ -222,10 +291,22 @@ function refreshSampleItems() {
 }
 watch(lessonItems, refreshSampleItems);
 
+// 글자→색 인덱스 맵. 연속 모드는 전체 풀 기준(다른 레벨 글자도 제 색을 갖도록), 그 외엔 현재 레벨 기준.
+const tokenColorIndex = computed(() => {
+  const source = gameKind.value === 'lesson' && continuous.value && fullItems.value.length ? fullItems.value : lessonItems.value;
+  const m = new Map<string, number>();
+  let i = 0;
+  for (const it of source) for (const t of it.tokens) if (!m.has(t)) m.set(t, i++);
+  return m;
+});
 function colorForToken(token: string) {
-  const tokens = Array.from(new Set(lessonItems.value.flatMap((it) => it.tokens)));
-  const tokenIndex = Math.max(0, tokens.indexOf(token));
-  return palette[tokenIndex % palette.length];
+  let idx = tokenColorIndex.value.get(token);
+  if (idx === undefined) {
+    // 목록에 없으면 글자 코드 합으로 안정적 색 부여(모두 같은 색이 되는 것 방지)
+    idx = 0;
+    for (const ch of token) idx += ch.codePointAt(0) || 0;
+  }
+  return palette[idx % palette.length];
 }
 
 function makeBlock(item: LessonItem, token?: string): Block {
@@ -383,6 +464,12 @@ function chooseNextCollectTarget(): LessonItem | null {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+// 다음 모으기 목표를 표시용으로 즉시 선택(미해결 우선, 보드 지원 여부 무관)
+function pickCollectTargetForDisplay(): LessonItem | null {
+  const unsolved = collectableItems.value.filter((it) => !solvedItems.value.includes(it.id));
+  const pool = unsolved.length ? unsolved : collectableItems.value;
+  return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+}
 function pickCollectItem() {
   const unsolved = collectableItems.value.filter((it) => !solvedItems.value.includes(it.id));
   const pool = unsolved.length ? unsolved : collectableItems.value;
@@ -399,28 +486,46 @@ function scatterTokens(brd: Block[], item: LessonItem) {
 
 // 순서대로(단일) 모드: 목표가 항상 풀 수 있도록 보장.
 // 보드에 글자가 다 있는 식을 우선 목표로, 없으면 새 목표를 고르고 답 글자를 위에서 떨어뜨린다.
-function ensureSequenceTargetOnBoard() {
+// 다음 목표만 고른다(문제 즉시 갱신용). 보드 보장은 별도.
+function pickSequenceTarget() {
   if (gameKind.value !== 'lesson' || solveMode.value !== 'sequence' || mode.value !== 'single') return;
-  const items = activeItems.value; // 현재 스테이지(10문제)
+  const items = activeItems.value;
   if (!items.length) return;
-  // 이미 푼 문제는 제외해 스테이지 내 중복 출제를 막는다
   const remaining = items.filter((it) => !solvedItems.value.includes(it.id));
   const candidates = remaining.length ? remaining : items;
-  // 목표를 먼저 무작위로 고른다(보드에 이미 있는지와 무관하게 매번 달라지도록)
   const chosen = candidates[Math.floor(Math.random() * candidates.length)];
   targetIndex.value = items.indexOf(chosen);
-  // 고른 목표를 보드에서 만들 수 없으면 새 판을 만들고 안내
-  if (!canFormFromBoard(chosen)) {
-    message.value = '보드에 답이 없어 새 판을 만들었어요.';
-    const fresh = seededBlocks();
-    // 새 판에도 목표 글자가 반드시 포함되도록 보장
-    const positions = shuffle(Array.from({ length: rows.value * cols.value }, (_, i) => i));
-    chosen.tokens.forEach((token, k) => {
-      const block = makeBlock(chosen, token);
-      block.dropFrom = rows.value;
-      fresh[positions[k]] = block;
-    });
-    board.value = fresh;
+}
+// 현재 목표를 보드에서 만들 수 없으면 새 판을 만들어 보장(목표는 바꾸지 않음)
+function ensureTargetFormable() {
+  if (gameKind.value !== 'lesson' || solveMode.value !== 'sequence' || mode.value !== 'single') return;
+  const chosen = target.value;
+  if (!chosen || !chosen.tokens.length || canFormFromBoard(chosen)) return;
+  message.value = '보드에 답이 없어 새 판을 만들었어요.';
+  const fresh = seededBlocks();
+  const positions = shuffle(Array.from({ length: rows.value * cols.value }, (_, i) => i));
+  chosen.tokens.forEach((token, k) => {
+    const block = makeBlock(chosen, token);
+    block.dropFrom = rows.value;
+    fresh[positions[k]] = block;
+  });
+  board.value = fresh;
+}
+function ensureSequenceTargetOnBoard() {
+  pickSequenceTarget();
+  ensureTargetFormable();
+}
+
+// 연속 모드: 현재 최상위 스테이지를 2/3 이상 풀면 다음 스테이지 답을 섞는다(보드는 낙하 보충으로 점진 반영)
+function advanceEndlessStageIfReady() {
+  if (gameKind.value !== 'lesson' || mode.value !== 'endless') return;
+  if (endlessStage.value >= endlessStageCount.value) return; // 풀 끝까지(다음 레벨 포함)
+  const stageSlice = endlessTopStageItems.value;
+  if (!stageSlice.length) return;
+  // 현재 최상위 스테이지를 2/3 이상 맞추면 다음 스테이지(또는 다음 레벨) 답이 섞이기 시작
+  const solvedInStage = stageSlice.filter((it) => solvedItems.value.includes(it.id)).length;
+  if (solvedInStage >= Math.ceil((stageSlice.length * 2) / 3)) {
+    endlessStage.value += 1;
   }
 }
 
@@ -452,16 +557,32 @@ function seededBlocks() {
   if (!items.length) return [];
 
   if (solveMode.value === 'collect') {
-    if (mode.value !== 'endless') pickCollectItem();
+    if (!continuous.value) pickCollectItem();
     else collectTargetItem.value = null;
     return buildCollectBoard();
   }
 
   const total = rows.value * cols.value;
-  if (mode.value === 'endless') {
+  if (mode.value === 'free') {
+    // 자유: 전체 풀에서 "완성된 정답" 단위로 깔아 특정 토큰(예: 산소)이 쏠리지 않게 한다.
+    return fillAnswerBoard(items, items, total);
+  }
+  if (continuous.value) {
+    const cap = tokenCap.value;
+    const counts = new Map<string, number>();
     const newBoard: Block[] = Array.from({ length: total }, () => {
-      const item = items[Math.floor(Math.random() * items.length)];
-      return makeBlock(item);
+      for (let tries = 0; tries < 8; tries += 1) {
+        const item = items[Math.floor(Math.random() * items.length)];
+        const token = item.tokens[Math.floor(Math.random() * item.tokens.length)];
+        if ((counts.get(token) || 0) < cap) {
+          counts.set(token, (counts.get(token) || 0) + 1);
+          return makeBlock(item, token);
+        }
+      }
+      const item = items[Math.floor(Math.random() * items.length)]; // 못 찾으면 그냥 채움
+      const token = item.tokens[Math.floor(Math.random() * item.tokens.length)];
+      counts.set(token, (counts.get(token) || 0) + 1);
+      return makeBlock(item, token);
     });
     // Embed a random solution
     const randomItem = items[Math.floor(Math.random() * items.length)];
@@ -475,28 +596,62 @@ function seededBlocks() {
   return fillAnswerBoard(items, items, total);
 }
 
+// 보드 한 종류 토큰이 쏠리지 않도록 동일 토큰 상한(보드 크기에 비례, 최소 6)
+const tokenCap = computed(() => Math.max(6, Math.ceil((rows.value * cols.value) / 5)));
+
 // 정답들을 "완전한 단위"로 보드에 채운다(중복 최소화·부분 잘림 없이).
 // answerPool: 보장하려는 정답들, fillerPool: 남는 칸을 채울 글자 출처.
 function fillAnswerBoard(answerPool: LessonItem[], fillerPool: LessonItem[], total: number): Block[] {
+  const cap = tokenCap.value;
+  const counts = new Map<string, number>();
   const blocks: Block[] = [];
+  const add = (item: LessonItem, token: string) => {
+    blocks.push(makeBlock(item, token));
+    counts.set(token, (counts.get(token) || 0) + 1);
+  };
   for (const item of shuffle(answerPool)) {
     if (blocks.length + item.tokens.length > total) continue; // 안 들어가면 통째로 건너뜀
-    for (const token of item.tokens) blocks.push(makeBlock(item, token));
+    // 이미 깔린 토큰이 있는데 상한을 넘기면 이 정답은 건너뜀(첫 등장은 허용)
+    let ok = true;
+    for (const [tk, c] of tokenCounts(item.tokens)) {
+      const have = counts.get(tk) || 0;
+      if (have > 0 && have + c > cap) { ok = false; break; }
+    }
+    if (!ok) continue;
+    for (const token of item.tokens) add(item, token);
   }
   const pool = fillerPool.length ? fillerPool : answerPool;
+  let guard = 0;
   while (blocks.length < total && pool.length) {
     const item = pool[Math.floor(Math.random() * pool.length)];
-    blocks.push(makeBlock(item, item.tokens[Math.floor(Math.random() * item.tokens.length)]));
+    const token = item.tokens[Math.floor(Math.random() * item.tokens.length)];
+    // 상한 넘으면 다른 토큰을 다시 뽑되, 못 찾으면(작은 풀) 그냥 채움
+    if ((counts.get(token) || 0) >= cap && guard < total * 4) { guard += 1; continue; }
+    add(item, token);
   }
   return shuffle(blocks);
 }
 
 const solvedItems = ref<string[]>([]);
-// 현재 스테이지 진행도(푼 개수 / 총 개수) — 학습·한문제씩 모드에서만
-const showProgress = computed(() => gameKind.value === 'lesson' && mode.value === 'single');
+// 현재 스테이지 진행도(푼 개수 / 총 개수) — 한문제씩·연속 동일
+const showProgress = computed(() => gameKind.value === 'lesson' && mode.value !== 'free');
+// 표시용 현재 스테이지(한문제씩=currentStage, 연속=endlessStage)
+const displayStage = computed(() => (mode.value === 'endless' ? endlessStage.value : currentStage.value));
 const levelProgress = computed(() => {
-  const total = activeItems.value.length; // 스테이지 문제 수(=10)
-  return { current: Math.min(solvedItems.value.length + 1, total), total, levelTotal: lessonItems.value.length };
+  // 현재 스테이지 슬라이스(한문제씩=현재 레벨 스테이지, 연속=풀에서의 최상위 스테이지)
+  const slice = mode.value === 'endless'
+    ? endlessTopStageItems.value
+    : lessonItems.value.slice((displayStage.value - 1) * STAGE_SIZE, displayStage.value * STAGE_SIZE);
+  const total = slice.length || STAGE_SIZE;
+  // 스테이지당 푼 문제수(중복 제외 = 고유 id 기준)
+  const solvedInStage = slice.filter((it) => solvedItems.value.includes(it.id)).length;
+  return { current: solvedInStage, total };
+});
+// 현재 스테이지를 다 풀었는가
+const stageDone = computed(() => {
+  if (gameKind.value !== 'lesson' || mode.value !== 'single') return false;
+  const req = solveMode.value === 'collect' ? collectableItems.value : activeItems.value;
+  return req.length > 0 && solvedItems.value.length >= req.length;
 });
 
 watch(solvedItems, (solved) => {
@@ -557,9 +712,12 @@ function goNextStageAfterClear() {
     selectLevel(level + 1); // 다음 레벨(스테이지 1부터)
   }
 }
-function resetGame(keepScore = false) {
+function resetGame(keepScore = false, keepStage = false) {
+  // 진행 중인 게임은 재시작 시 복원 대상(나가기에서 미저장 선택 시 해제)
+  localStorage.setItem('matchit-resume', '1');
   // 보드를 만들기 전에 상태를 먼저 초기화(목표 선택이 이전 상태를 보지 않도록)
   solvedItems.value = [];
+  if (!keepStage) endlessStage.value = endlessFirstStage.value; // 연속: 선택 레벨의 첫 전역 스테이지부터
   targetIndex.value = 0;
   hintIndexes.value = [];
   hintItem.value = null;
@@ -577,14 +735,14 @@ function resetGame(keepScore = false) {
   shareUrl.value = '';
   lastSolved.value = null;
   showHint.value = false;
-  if (!keepScore) score.value = 0;
+  if (!keepScore) { score.value = 0; matchedCount.value = 0; clearedBlocks.value = 0; }
   if (gameKind.value === 'numbers') {
     message.value = '같은 숫자 3개 이상을 붙여 더 큰 수를 만드세요.';
   } else if (solveMode.value === 'collect') {
-    message.value = mode.value === 'endless'
+    message.value = continuous.value
       ? '블럭을 바꿔 보드의 식 글자들을 서로 붙여 맞춰보세요.'
       : '블럭을 바꿔 목표 식의 글자들을 상하좌우로 서로 붙여 맞춰보세요.';
-  } else if (mode.value === 'endless') {
+  } else if (continuous.value) {
     message.value = '아무 블럭이나 순서대로 맞춰보세요.';
   } else {
     message.value = '목표 블럭을 순서대로 누르세요.';
@@ -594,6 +752,31 @@ function resetGame(keepScore = false) {
 }
 
 // 레벨별 파일(packs/{id}/{level}.json)을 불러온다.
+// 연속 모드용: 팩의 모든 레벨 문제를 이어붙여 풀 구성(레벨별 길이도 기록)
+let fullKey = '';
+async function loadFullPool(packId: string) {
+  const key = packId + '|' + (isWordPackId(packId) ? wordDirection.value : '');
+  if (fullKey === key && fullItems.value.length) return; // 캐시
+  const pack = packs.value.find((p) => p.id === packId);
+  const all: LessonItem[] = [];
+  const lens: number[] = [];
+  for (const lv of pack?.levels ?? []) {
+    try {
+      const res = await fetch(`${baseUrl}data/packs/${packId}/${lv}.json`, { cache: 'no-store' });
+      if (!res.ok) { lens.push(0); continue; }
+      const raw = await res.json();
+      const items = !Array.isArray(raw) ? [] : isWordPackId(packId)
+        ? buildWordItems(raw as Array<{ word: string; meaning: string; hint?: string }>, wordDirection.value)
+        : (raw as LessonItem[]);
+      all.push(...items);
+      lens.push(items.length);
+    } catch { lens.push(0); }
+  }
+  fullItems.value = all;
+  fullLevelLens.value = lens;
+  fullKey = key;
+}
+
 async function loadLevel(packId: string, level: number) {
   loading.value = true;
   error.value = '';
@@ -664,12 +847,35 @@ function saveLevelStats() {
   localStorage.setItem(levelStatsKey(), JSON.stringify(levelStats.value));
 }
 
+// 연속 모드: 풀에서 해당 문제가 속한 레벨 번호
+function levelOfItem(item: LessonItem): number {
+  const levels = activePack.value?.levels ?? [];
+  const idx = fullItems.value.findIndex((x) => x.id === item.id);
+  if (idx < 0) return selectedLevel.value;
+  let acc = 0;
+  for (let i = 0; i < fullLevelLens.value.length; i += 1) {
+    acc += fullLevelLens.value[i];
+    if (idx < acc) return levels[i] ?? i + 1;
+  }
+  return selectedLevel.value;
+}
+
 function scoreMatch(item: LessonItem, length: number) {
-  // 문제당 10점 × 콤보 배수(최대 5배). 토큰 수는 점수에 미반영.
-  void length;
-  const base = 10;
-  const gained = base * Math.min(combo.value, 5);
-  const comboBonus = gained - base;
+  let gained: number;
+  let detail: string;
+  if (continuous.value) {
+    // 연속/자유: 문제당 10점(토큰 3개 초과 시 20점) × 레벨
+    const base = length > 3 ? 20 : 10;
+    const lv = levelOfItem(item);
+    gained = base * lv;
+    detail = `+${base}점 × Lv${lv}`;
+  } else {
+    // 한문제씩: 10점 × 콤보 배수(최대 5배)
+    const base = 10;
+    gained = base * Math.min(combo.value, 5);
+    const comboBonus = gained - base;
+    detail = comboBonus > 0 ? `+${base}점 + Combo ${comboBonus}점` : `+${base}점`;
+  }
   score.value += gained;
   combo.value += 1;
   lastSolved.value = item;
@@ -680,14 +886,9 @@ function scoreMatch(item: LessonItem, length: number) {
   const cur = levelStats.value[lv] ?? { score: 0, solved: 0 };
   levelStats.value = { ...levelStats.value, [lv]: { score: cur.score + gained, solved: cur.solved + 1 } };
   saveLevelStats();
-  if (mode.value !== 'endless') {
-    targetIndex.value = Math.floor(Math.random() * activeItems.value.length);
-  }
   showHint.value = false;
   hintIndexes.value = [];
-  message.value = comboBonus > 0
-    ? `${item.label} 해결 +${base}점 + Combo ${comboBonus}점`
-    : `${item.label} 해결 +${base}점`;
+  message.value = `${item.label} 해결 ${detail}`;
 }
 
 function sleep(ms: number) {
@@ -742,12 +943,46 @@ function refillTokens(count: number, removed: Set<number>): Array<{ token: strin
   if (count <= 0) return result;
   const items = activeItems.value;
   if (!items.length) return result;
+  const cap = tokenCap.value;
+  // 자유 모드: "이미 많이 깔린 문제 우선" 전략은 공통 토큰(예: 산소)을 무한 증식시키므로
+  // 대신 무작위 정답들을 완성된 단위로 균형 있게 채우되, 동일 토큰 상한을 지킨다.
+  if (mode.value === 'free') {
+    const proj = new Map<string, number>(); // 살아남는 보드 + 추가 예정 토큰 수
+    board.value.forEach((b, i) => { if (!removed.has(i) && b) proj.set(b.token, (proj.get(b.token) || 0) + 1); });
+    const base = items.filter((it) => !solvedItems.value.includes(it.id));
+    const pool = shuffle(base.length ? base : items.slice());
+    let guard = 0;
+    for (let i = 0; result.length < count && guard < pool.length * 8; i += 1, guard += 1) {
+      const item = pool[i % pool.length];
+      let ok = true; // 통째로 넣어도 상한을 넘지 않을 때만 채택
+      for (const [tk, c] of tokenCounts(item.tokens)) if ((proj.get(tk) || 0) + c > cap) { ok = false; break; }
+      if (!ok) continue;
+      for (const tk of item.tokens) {
+        if (result.length >= count) break;
+        result.push({ token: tk, item });
+        proj.set(tk, (proj.get(tk) || 0) + 1);
+      }
+    }
+    while (result.length < count) { // 부족분은 상한 무시하고 채움(작은 풀 대비)
+      const item = pool[Math.floor(Math.random() * pool.length)];
+      result.push({ token: item.tokens[Math.floor(Math.random() * item.tokens.length)], item });
+    }
+    return shuffle(result);
+  }
   // 살아남는 보드의 토큰 수(가용량)
   const avail = new Map<string, number>();
   board.value.forEach((b, i) => {
     if (!removed.has(i) && b) avail.set(b.token, (avail.get(b.token) || 0) + 1);
   });
-  const unsolved = items.filter((it) => !solvedItems.value.includes(it.id));
+  // 보드에 이미 일부 토큰이 남아있는 문제를 먼저 완성시킨다(남은 토큰을 마저 채워 제거 가능하게)
+  const presentCount = (it: LessonItem) => {
+    let n = 0;
+    for (const [tk, c] of tokenCounts(it.tokens)) n += Math.min(avail.get(tk) || 0, c);
+    return n;
+  };
+  const unsolved = items
+    .filter((it) => !solvedItems.value.includes(it.id))
+    .sort((a, b) => presentCount(b) - presentCount(a)); // 이미 많이 깔린 문제 우선
   for (const item of unsolved) {
     if (result.length >= count) break;
     const tmp = new Map(avail);
@@ -763,11 +998,18 @@ function refillTokens(count: number, removed: Set<number>): Array<{ token: strin
       for (const [k, v] of tmp) avail.set(k, v);
     }
   }
-  // 남는 칸은 정답 글자로 무작위 채움
+  // 남는 칸은 정답 글자로 무작위 채우되 동일 토큰 상한을 지킨다
   const pool = unsolved.length ? unsolved : items;
+  const proj = new Map<string, number>();
+  board.value.forEach((b, i) => { if (!removed.has(i) && b) proj.set(b.token, (proj.get(b.token) || 0) + 1); });
+  for (const r of result) proj.set(r.token, (proj.get(r.token) || 0) + 1);
+  let guard = 0;
   while (result.length < count) {
     const item = pool[Math.floor(Math.random() * pool.length)];
-    result.push({ token: item.tokens[Math.floor(Math.random() * item.tokens.length)], item });
+    const token = item.tokens[Math.floor(Math.random() * item.tokens.length)];
+    if ((proj.get(token) || 0) >= cap && guard < count * 8) { guard += 1; continue; }
+    result.push({ token, item });
+    proj.set(token, (proj.get(token) || 0) + 1);
   }
   return shuffle(result);
 }
@@ -775,29 +1017,77 @@ function refillTokens(count: number, removed: Set<number>): Array<{ token: strin
 async function resolveMatch(item: LessonItem, indexes: number[]) {
   isResolving.value = true;
   scoreMatch(item, indexes.length);
+  matchedCount.value += 1;
+  clearedBlocks.value += indexes.length;
   showAnswerPopup(item, indexes);
   clearSelection();
-  clearingIndexes.value = [...indexes];
-  await sleep(1000);
-  fadingIndexes.value = [...indexes];
-  await sleep(700);
-  clearingIndexes.value = [];
-  fadingIndexes.value = [];
-  motionPhase.value = 'fall';
-  applyGravity(indexes);
   moves.value -= 1;
-  if (mode.value === 'single' && !solvedItems.value.includes(item.id)) {
+  // 정답 즉시 기록 + 다음 문제를 바로 표시(애니메이션 대기 없이). 스테이지를 다 풀면 "참 잘 했어요~"
+  if (gameKind.value === 'lesson' && !solvedItems.value.includes(item.id)) {
     solvedItems.value = [...solvedItems.value, item.id]; // 재할당해야 watch가 감지
   }
-  // 다음 목표를 랜덤 선택하고 보드에 답이 있도록 보장 (없으면 답 글자가 떨어짐)
-  ensureSequenceTargetOnBoard();
+  if (mode.value === 'endless') advanceEndlessStageIfReady();
+  else if (mode.value === 'single' && !stageDone.value) pickSequenceTarget();
+  // 정답표시 OFF일 때만 제자리 번쩍임/페이드. ON이면 블럭이 팝업으로 이동만 하고 바로 제거.
+  if (showAnswer.value) {
+    await sleep(160);
+  } else {
+    clearingIndexes.value = [...indexes];
+    await sleep(1000);
+    fadingIndexes.value = [...indexes];
+    await sleep(700);
+    clearingIndexes.value = [];
+    fadingIndexes.value = [];
+  }
+  motionPhase.value = 'fall';
+  applyGravity(indexes);
+  // 낙하 후, 화면에 표시 중인 목표를 보드가 지원하도록 보장(목표는 유지)
+  if (!stageDone.value) ensureTargetFormable();
+  // 연속/자유 모드: 보드가 최종 상태가 됐으니 정답 팝업이 떠 있는 동안에도 다음 블럭을 선택할 수 있게 잠금 해제
+  if (continuous.value) isResolving.value = false;
   await sleep(1000);
   motionPhase.value = 'idle';
-  isResolving.value = false;
+  if (!continuous.value) isResolving.value = false;
 }
 
 function clearSelection() {
+  cancelPendingMatch();
   selectedIndexes.value = [];
+}
+
+// 부분집합 정답(예: O2 ⊂ O3) 충돌 처리용 보류 타이머
+const PENDING_MATCH_MS = 1000; // 짧은 답 자동 채택까지 추가 선택을 기다리는 시간
+let pendingMatchTimer: ReturnType<typeof setTimeout> | null = null;
+function cancelPendingMatch() {
+  if (pendingMatchTimer) {
+    clearTimeout(pendingMatchTimer);
+    pendingMatchTimer = null;
+  }
+}
+// 현재 선택이 snapshot과 동일한지(보류 중 추가 선택 여부 판별)
+function sameSelection(snap: number[]) {
+  const cur = selectedIndexes.value;
+  return cur.length === snap.length && cur.every((v, i) => v === snap[i]);
+}
+// 현재 선택을 더 긴 정답으로 확장 가능한지: 부족 토큰을 보드의 미선택 블럭으로 채울 수 있어야 함
+function hasRemainingForExtension(selected: string[], answer: string[]) {
+  const need = tokenCounts(answer);
+  const have = tokenCounts(selected);
+  const deficit = new Map<string, number>();
+  for (const [tk, c] of need) {
+    const d = c - (have.get(tk) || 0);
+    if (d > 0) deficit.set(tk, d);
+  }
+  if (!deficit.size) return false;
+  const avail = new Map<string, number>();
+  board.value.forEach((b, i) => {
+    if (!b || selectedIndexes.value.includes(i)) return;
+    avail.set(b.token, (avail.get(b.token) || 0) + 1);
+  });
+  for (const [tk, d] of deficit) {
+    if ((avail.get(tk) || 0) < d) return false;
+  }
+  return true;
 }
 
 function tokenCounts(tokens: string[]): Map<string, number> {
@@ -821,17 +1111,35 @@ async function handleSequenceClick(index: number) {
   // 자유롭게 여러 블럭 선택 (다시 누르면 해제). 정답 개수+구성이 맞으면 자동 완성
   const existing = selectedIndexes.value.indexOf(index);
   if (existing >= 0) {
+    cancelPendingMatch();
     selectedIndexes.value = selectedIndexes.value.filter((_, i) => i !== existing);
     return;
   }
+  cancelPendingMatch(); // 새 블럭 선택 → 직전 보류 취소 후 다시 판별
   selectedIndexes.value.push(index);
   const tokens = selectedBlocks.value.map((block) => block.token);
 
-  if (mode.value === 'endless') {
-    const matchedItem = lessonItems.value.find(
+  if (continuous.value) {
+    const matchedItem = activeItems.value.find(
       (item) => item.tokens.length === tokens.length && isSubset(tokens, item.tokens),
     );
-    if (matchedItem) await resolveMatch(matchedItem, [...selectedIndexes.value]);
+    if (!matchedItem) return;
+    // 더 긴 정답으로 확장 가능하면 즉시 체결하지 않고 잠시 보류(추가 선택 대기)
+    const canExtend = activeItems.value.some(
+      (item) =>
+        item.tokens.length > tokens.length &&
+        isSubset(tokens, item.tokens) &&
+        hasRemainingForExtension(tokens, item.tokens),
+    );
+    if (!canExtend) {
+      await resolveMatch(matchedItem, [...selectedIndexes.value]);
+      return;
+    }
+    const snapshot = [...selectedIndexes.value];
+    pendingMatchTimer = setTimeout(() => {
+      pendingMatchTimer = null;
+      if (!isResolving.value && sameSelection(snapshot)) void resolveMatch(matchedItem, snapshot);
+    }, PENDING_MATCH_MS);
     return;
   }
 
@@ -844,41 +1152,55 @@ async function handleSequenceClick(index: number) {
 async function resolveCollect(indexes: number[], item: LessonItem) {
   isResolving.value = true;
   scoreMatch(item, indexes.length);
+  matchedCount.value += 1;
+  clearedBlocks.value += indexes.length;
   showAnswerPopup(item, indexes);
   clearSelection();
-  clearingIndexes.value = [...indexes];
-  await sleep(1000);
-  fadingIndexes.value = [...indexes];
-  await sleep(700);
-  clearingIndexes.value = [];
-  fadingIndexes.value = [];
+  // 정답 즉시 기록 + 다음 문제를 바로 표시. 스테이지를 다 풀면 "참 잘 했어요~"
+  if (gameKind.value === 'lesson' && !solvedItems.value.includes(item.id)) {
+    solvedItems.value = [...solvedItems.value, item.id]; // 재할당해야 watch가 감지
+  }
+  if (mode.value === 'endless') advanceEndlessStageIfReady();
+  else if (mode.value === 'single' && !stageDone.value) {
+    const disp = pickCollectTargetForDisplay();
+    if (disp) collectTargetItem.value = disp;
+  }
+  // 정답표시 OFF일 때만 제자리 번쩍임/페이드. ON이면 블럭이 팝업으로 이동만 하고 바로 제거.
+  if (showAnswer.value) {
+    await sleep(160);
+  } else {
+    clearingIndexes.value = [...indexes];
+    await sleep(1000);
+    fadingIndexes.value = [...indexes];
+    await sleep(700);
+    clearingIndexes.value = [];
+    fadingIndexes.value = [];
+  }
   motionPhase.value = 'fall';
   applyGravity(indexes);
   await sleep(1000);
   motionPhase.value = 'idle';
 
-  if (mode.value === 'single' && !solvedItems.value.includes(item.id)) {
-    solvedItems.value = [...solvedItems.value, item.id]; // 재할당해야 watch가 감지
-  }
-
-  // 다음 목표는 보드가 이미 지원하는 식 중에서 선택 (블럭을 덮어쓰지 않음)
-  if (mode.value === 'endless') {
+  // 낙하 후: 표시 중인 목표가 보드에서 안 되면 보장(목표 교체 또는 새 판)
+  if (continuous.value) {
     if (!collectableItems.value.some(canFormFromBoard)) board.value = buildCollectBoard();
-  } else {
-    const next = chooseNextCollectTarget();
-    if (next) {
-      collectTargetItem.value = next;
-    } else {
-      message.value = '보드에 답이 없어 새 판을 만들었어요.';
-      pickCollectItem();
-      board.value = buildCollectBoard();
+  } else if (!stageDone.value) {
+    if (!collectTargetItem.value || !canFormFromBoard(collectTargetItem.value)) {
+      const next = chooseNextCollectTarget();
+      if (next) {
+        collectTargetItem.value = next;
+      } else {
+        message.value = '보드에 답이 없어 새 판을 만들었어요.';
+        pickCollectItem();
+        board.value = buildCollectBoard();
+      }
     }
   }
   isResolving.value = false;
 }
 
 function findCollectMatch(seeds: number[]) {
-  if (mode.value === 'endless') return findAnyTargetCluster(board.value, seeds);
+  if (continuous.value) return findAnyTargetCluster(board.value, seeds);
   const item = collectTargetItem.value;
   if (!item) return null;
   const indexes = findTargetCluster(board.value, item.tokens, seeds);
@@ -1070,7 +1392,7 @@ async function trySwap(a: number, b: number) {
 async function handleCollectClick(index: number) {
   if (isResolving.value) return;
   // 1글자 정답은 해당 블럭을 탭하면 바로 해결
-  if (mode.value !== 'endless') {
+  if (!continuous.value) {
     const t = collectTargetItem.value;
     if (t && t.tokens.length === 1 && board.value[index]?.token === t.tokens[0]) {
       swapFirstIndex.value = null;
@@ -1167,9 +1489,29 @@ function onBlockPointerDown(index: number, event: PointerEvent) {
 }
 
 function setSolveMode(nextMode: SolveMode) {
+  if (solveMode.value === nextMode) return;
   solveMode.value = nextMode;
   localStorage.setItem('matchit-solve-mode', nextMode);
-  resetGame(true);
+  // 진행 중인 판은 그대로 두고(점수·보드 유지) 전환에 필요한 상태만 갱신한다.
+  selectedIndexes.value = [];
+  swapFirstIndex.value = null;
+  hintIndexes.value = [];
+  hintItem.value = null;
+  showHint.value = false;
+  if (nextMode === 'collect') {
+    if (continuous.value) {
+      collectTargetItem.value = null; // 가상 목표(보드의 아무 답이나)
+    } else {
+      pickCollectItem();
+      // 단일 모드에서 현재 보드로 목표를 못 만들면 그때만 모으기용 보드로 재구성
+      if (collectTargetItem.value && !canFormFromBoard(collectTargetItem.value)) {
+        board.value = buildCollectBoard();
+      }
+    }
+  } else {
+    // 순서대로: 단일 모드만 목표 보장(보드에 답 있으면 재구성 안 함)
+    if (!continuous.value) ensureSequenceTargetOnBoard();
+  }
 }
 
 function setGameKind(nextKind: GameKind) {
@@ -1199,7 +1541,28 @@ function cancelExit() {
 }
 function confirmExit() {
   showExitConfirm.value = false;
+  // 모든 게임: 체크 시 현재 상태 저장(다음에 이어서 시작), 해제 시 저장 삭제
+  if (saveOnExit.value) {
+    saveGame();
+    localStorage.setItem('matchit-resume', '1');
+  } else {
+    localStorage.removeItem(SAVE_KEY);
+    localStorage.setItem('matchit-resume', '0');
+  }
   activeMobilePanel.value = 'packs';
+}
+
+// 새판: 경고 후 진행
+const showNewBoardConfirm = ref(false);
+function requestNewBoard() {
+  showNewBoardConfirm.value = true;
+}
+function cancelNewBoard() {
+  showNewBoardConfirm.value = false;
+}
+function confirmNewBoard() {
+  showNewBoardConfirm.value = false;
+  resetGame(true, true); // 새판: 점수·현재 스테이지 유지하고 보드만 새로
 }
 
 function computeHintIndexes(): number[] {
@@ -1232,7 +1595,7 @@ function computeHintIndexes(): number[] {
   // 연속모드의 가상 목표(tokens 비어있음)는 제외
   const preferred = rawPreferred && rawPreferred.tokens.length ? rawPreferred : null;
   // 단일 모드: 힌트는 반드시 현재 목표만 가리킨다(문제·답·힌트 일치 보장)
-  if (mode.value !== 'endless') {
+  if (!continuous.value) {
     if (preferred) {
       const found = tokensOnBoard(preferred);
       if (found && found.length) {
@@ -1371,7 +1734,7 @@ function showAnswerPopup(item: LessonItem, indexes: number[]) {
   window.clearTimeout(answerTimer);
   answerTimer = window.setTimeout(() => {
     answerItem.value = null;
-  }, 5000);
+  }, continuous.value ? 1600 : 5000);
 }
 function holdAnswer() {
   window.clearTimeout(answerTimer); // 누르고 있는 동안 유지
@@ -1388,17 +1751,20 @@ function applyPackDefaultSize(packId: string) {
   localStorage.setItem('matchit-rows', String(rows.value));
 }
 
-function setMode(nextMode: GameMode) {
+async function setMode(nextMode: GameMode) {
   mode.value = nextMode;
+  if (nextMode !== 'single' && gameKind.value === 'lesson') await loadFullPool(selectedPackId.value);
   resetGame(true);
 }
 
-function setWordDirection(dir: 'spell' | 'meaning') {
+async function setWordDirection(dir: 'spell' | 'meaning') {
   if (wordDirection.value === dir) return;
   wordDirection.value = dir;
   localStorage.setItem('matchit-word-direction', dir);
+  fullKey = ''; // 방향 바뀌면 전체 풀 캐시 무효화
   if (rawWordEntries.value.length) {
     lessonItems.value = buildWordItems(rawWordEntries.value, dir);
+    if (continuous.value && gameKind.value === 'lesson') await loadFullPool(selectedPackId.value);
     resetGame();
   }
 }
@@ -1406,13 +1772,16 @@ function setWordDirection(dir: 'spell' | 'meaning') {
 async function handleLevelChange() {
   if (!activePack.value) return;
   await loadLevel(selectedPackId.value, selectedLevel.value);
+  if (continuous.value && gameKind.value === 'lesson') { await loadFullPool(selectedPackId.value); resetGame(true); }
 }
 
 async function handlePackChange() {
   if (!activePack.value) return;
   selectedLevel.value = 1;
   applyPackDefaultSize(selectedPackId.value);
+  fullKey = ''; // 팩 바뀌면 전체 풀 캐시 무효화
   await loadLevel(selectedPackId.value, 1);
+  if (continuous.value && gameKind.value === 'lesson') { await loadFullPool(selectedPackId.value); resetGame(true); }
 }
 
 async function createShareImage() {
@@ -1433,7 +1802,7 @@ async function createShareImage() {
   context.fillRect(0, 0, width, height);
   const subtitle = gameKind.value === 'numbers'
     ? '숫자 더하기'
-    : `${activePack.value?.title || ''}${mode.value === 'single' ? ` · ${levelLabel(selectedLevel.value)}` : ' · 연속으로'}`;
+    : `${activePack.value?.title || ''}${mode.value === 'single' ? ` · ${levelLabel(selectedLevel.value)}` : mode.value === 'free' ? ' · 자유' : ' · 연속으로'}`;
   const solvedTotal = Object.values(levelStats.value).reduce((sum, s) => sum + (s?.solved || 0), 0);
   const detailLabel = gameKind.value === 'numbers' ? '최고 숫자' : '푼 문제';
   const detailValue = gameKind.value === 'numbers' ? formatValue(maxValue.value) : `${solvedTotal}`;
@@ -1509,11 +1878,14 @@ function saveGame() {
       packId: selectedPackId.value,
       level: selectedLevel.value,
       stage: currentStage.value,
+      endlessStage: endlessStage.value,
       cols: cols.value,
       rows: rows.value,
       board: board.value.map((b) => ({ token: b.token, value: b.value, lessonId: b.lessonId, label: b.label, color: b.color })),
       lessonItems: lessonItems.value,
       score: score.value,
+      matchedCount: matchedCount.value,
+      clearedBlocks: clearedBlocks.value,
       combo: combo.value,
       moves: moves.value,
       passes: passes.value,
@@ -1528,10 +1900,10 @@ function saveGame() {
 
 interface SavedGame {
   gameKind: GameKind; mode: GameMode; solveMode: SolveMode;
-  packId: string; level: number; stage?: number; cols?: number; rows?: number;
+  packId: string; level: number; stage?: number; endlessStage?: number; cols?: number; rows?: number;
   board: Array<{ token: string; value?: number; lessonId: string; label: string; color: string }>;
   lessonItems: LessonItem[];
-  score: number; combo: number; moves: number; passes: number;
+  score: number; matchedCount?: number; clearedBlocks?: number; combo: number; moves: number; passes: number;
   targetIndex: number; gameOver: boolean; collectTargetId: string | null;
 }
 
@@ -1562,12 +1934,15 @@ function restoreFromSave(s: SavedGame) {
     color: b.color,
   }));
   score.value = s.score || 0;
+  matchedCount.value = s.matchedCount || 0;
+  clearedBlocks.value = s.clearedBlocks || 0;
   combo.value = s.combo || 1;
   moves.value = s.moves ?? 25;
   passes.value = s.passes || 0;
   targetIndex.value = s.targetIndex || 0;
   gameOver.value = !!s.gameOver;
   collectTargetItem.value = lessonItems.value.find((it) => it.id === s.collectTargetId) || null;
+  endlessStage.value = s.endlessStage ?? 1;
   best.value = Number(localStorage.getItem(bestKey()) || 0);
   // 복원한 보드에서 현재 답을 만들 수 없으면(과거 저장 오류 등) 새 판을 만든다
   if (gameKind.value === 'lesson' && mode.value === 'single') {
@@ -1588,7 +1963,8 @@ onMounted(async () => {
   selectedLevel.value = Number(localStorage.getItem('matchit-selected-level') || 1);
   const savedPanel = localStorage.getItem('matchit-panel');
   const save = readSave();
-  const canResume = !!(save && Array.isArray(save.board) && save.board.length && savedPanel === 'game');
+  // 마지막 게임 상태로 재시작(나가기에서 '저장하고 나가기' 선택, 또는 게임 중 새로고침). 미저장 나가기는 '0'으로 해제.
+  const canResume = !!(save && Array.isArray(save.board) && save.board.length && localStorage.getItem('matchit-resume') !== '0');
 
   await loadPacks();
 
@@ -1596,6 +1972,7 @@ onMounted(async () => {
     // 게임 중이었으면 저장된 보드/상태로 복원하고 게임 화면으로
     restoreFromSave(save);
     activeMobilePanel.value = 'game';
+    if (gameKind.value === 'lesson' && continuous.value) void loadFullPool(selectedPackId.value);
   } else {
     // 평소엔 설정(학습팩) 화면으로
     activeMobilePanel.value = savedPanel === 'score' ? 'score' : 'packs';
@@ -1612,6 +1989,10 @@ onMounted(async () => {
   boardResizeObserver = new ResizeObserver(() => measureCell());
   if (boardEl.value) boardResizeObserver.observe(boardEl.value);
   watch([cols, rows, gameFullscreen, activeMobilePanel, () => board.value.length], () => nextTick(measureCell));
+  // 새로고침으로 바로 게임 화면에 들어온 경우: 레이아웃·폰트가 안정된 뒤 다시 측정
+  requestAnimationFrame(() => requestAnimationFrame(measureCell));
+  window.setTimeout(measureCell, 200);
+  if (document.fonts?.ready) document.fonts.ready.then(measureCell);
 });
 
 onBeforeUnmount(() => {
@@ -1711,12 +2092,15 @@ onBeforeUnmount(() => {
           <p v-else class="mt-2 text-sm text-[var(--muted)]">JSON 스키마를 원격으로 읽습니다. (CORS 허용 필요)</p>
 
           <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Game Mode</p>
-          <div class="mt-2 grid grid-cols-2 gap-2">
+          <div class="mt-2 grid grid-cols-3 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="mode === 'single' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMode('single')">
               한 문제씩
             </button>
             <button class="h-11 rounded-md border text-sm font-black" :class="mode === 'endless' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMode('endless')">
               연속으로
+            </button>
+            <button class="h-11 rounded-md border text-sm font-black" :class="mode === 'free' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMode('free')">
+              자유 모드
             </button>
           </div>
 
@@ -1826,6 +2210,20 @@ onBeforeUnmount(() => {
                 </svg>
               </button>
               <button
+                v-if="solveMode === 'sequence' && selectedIndexes.length"
+                class="inline-flex h-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm font-black"
+                type="button"
+                title="선택취소"
+                aria-label="선택취소"
+                @click="clearSelection"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M15 9l-6 6"/>
+                  <path d="M9 9l6 6"/>
+                </svg>
+              </button>
+              <button
                 v-if="canPass"
                 class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm font-black"
                 type="button"
@@ -1834,7 +2232,7 @@ onBeforeUnmount(() => {
                 패스 →
               </button>
             </div>
-            <div v-if="showProgress" class="flex items-center">
+            <div v-if="gameKind === 'lesson' && mode === 'single'" class="flex items-center">
               <select
                 class="h-10 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm font-black"
                 :value="currentStage"
@@ -1849,7 +2247,7 @@ onBeforeUnmount(() => {
                 type="button"
                 title="새판"
                 aria-label="새판"
-                @click="resetGame()"
+                @click="requestNewBoard"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
@@ -1884,14 +2282,29 @@ onBeforeUnmount(() => {
             <div class="flex flex-wrap items-center justify-between gap-2">
               <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
               <div class="flex items-center gap-3">
+                <div v-if="gameKind === 'lesson'" class="flex flex-col items-end leading-tight text-[10px] font-bold uppercase text-[var(--muted)]">
+                  <span>Solved <strong class="text-sm text-[var(--accent)]">{{ matchedCount }}</strong></span>
+                  <span>Blocks <strong class="text-sm text-[var(--accent)]">{{ clearedBlocks }}</strong></span>
+                </div>
                 <div v-if="showProgress" class="flex flex-col items-end leading-tight">
-                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · Lv{{ selectedLevel }} · 스테이지 {{ currentStage }}/{{ stageCount }}</span>
-                  <span class="text-sm font-black text-[var(--accent)]">{{ levelProgress.current }} / {{ levelProgress.total }} / {{ levelProgress.levelTotal }}</span>
+                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · Lv{{ mode === 'endless' ? endlessCurrentLevel : selectedLevel }} · 스테이지 {{ displayStage }}/{{ mode === 'endless' ? endlessStageCount : stageCount }}</span>
+                  <span class="text-sm font-black text-[var(--accent)]">{{ levelProgress.current }} / {{ levelProgress.total }}</span>
                 </div>
               </div>
             </div>
             <p class="mt-3 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
-            <p class="mt-1 truncate text-xl font-black">{{ goalPrompt }}</p>
+            <template v-if="gameKind === 'lesson' && continuous">
+              <div class="marquee">
+                <div v-if="endlessTicker.length" class="marquee-track">
+                  <span v-for="(t, i) in endlessTicker.concat(endlessTicker)" :key="i" class="marquee-item text-base font-black">{{ t }}</span>
+                </div>
+                <p v-else class="text-xl font-black">보드의 답을 맞춰보세요</p>
+              </div>
+            </template>
+            <template v-else>
+              <p class="mt-1 truncate text-xl font-black">{{ goalPrompt }}</p>
+              <p v-if="goalVars" class="truncate text-xs text-[var(--muted)]">{{ goalVars }}</p>
+            </template>
             <div v-if="hintText" class="hint-overlay">
               <p>💡 {{ hintText }}</p>
             </div>
@@ -2066,18 +2479,21 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
+    <Transition name="answer-fade">
     <div
       v-if="answerItem"
-      class="fixed inset-0 z-40 flex items-center justify-center bg-black/55 px-6"
-      @pointerdown="holdAnswer"
-      @pointerup="releaseAnswer"
-      @pointercancel="releaseAnswer"
+      :class="continuous
+        ? 'fixed inset-x-0 top-[4.4rem] z-40 flex justify-center px-3 pointer-events-none'
+        : 'fixed inset-0 z-40 flex items-center justify-center bg-black/55 px-6'"
+      @pointerdown="!continuous ? holdAnswer() : null"
+      @pointerup="!continuous ? releaseAnswer() : null"
+      @pointercancel="!continuous ? releaseAnswer() : null"
     >
-      <div ref="answerEl" class="rounded-2xl border border-[var(--line)] bg-[var(--panel)] p-6 text-center shadow-2xl">
-        <p class="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">정답</p>
-        <p class="mt-1 text-2xl font-black">{{ answerItem.label }}</p>
-        <p class="text-sm text-[var(--muted)]">{{ answerItem.prompt }}</p>
-        <div class="mt-4 flex flex-wrap justify-center gap-2">
+      <div ref="answerEl" :class="['rounded-2xl border border-[var(--line)] bg-[var(--panel)] shadow-2xl', continuous ? 'flex max-w-full flex-wrap items-center justify-center gap-x-2 gap-y-2 px-3 py-2' : 'p-6 text-center']">
+        <p v-if="!continuous" class="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">정답</p>
+        <p :class="continuous ? 'text-lg font-black whitespace-nowrap' : 'mt-1 text-2xl font-black'">{{ answerItem.label }}</p>
+        <p v-if="!continuous" class="text-sm text-[var(--muted)]">{{ answerItem.prompt }}</p>
+        <div :class="continuous ? 'flex gap-1.5' : 'mt-4 flex flex-wrap justify-center gap-2'">
           <span
             v-for="(token, i) in answerItem.tokens"
             :key="i"
@@ -2088,10 +2504,11 @@ onBeforeUnmount(() => {
             <span class="block-label flex h-full w-full items-center justify-center" :style="{ '--len': token.length }">{{ token }}</span>
           </span>
         </div>
-        <p v-if="answerItem.hint" class="mt-4 text-sm font-bold text-[var(--accent)]">💡 {{ answerItem.hint }}</p>
-        <p class="mt-3 text-xs text-[var(--muted)]">탭하거나 5초 후 닫힘 · 길게 누르면 유지</p>
+        <p v-if="answerItem.hint" :class="continuous ? 'w-full truncate text-center text-sm font-bold text-[var(--accent)]' : 'mt-4 text-sm font-bold text-[var(--accent)]'">💡 {{ answerItem.hint }}</p>
+        <p v-if="!continuous" class="mt-3 text-xs text-[var(--muted)]">탭하거나 5초 후 닫힘 · 길게 누르면 유지</p>
       </div>
     </div>
+    </Transition>
 
     <div
       v-if="showStageClear"
@@ -2119,13 +2536,36 @@ onBeforeUnmount(() => {
     >
       <div class="w-full max-w-xs rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-center">
         <p class="text-lg font-black">게임을 나가시겠어요?</p>
-        <p class="mt-1 text-sm text-[var(--muted)]">진행 중인 판은 사라집니다.</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">{{ saveOnExit ? '저장하면 다음에 이어서 시작합니다.' : '진행 중인 판은 사라집니다.' }}</p>
+        <label class="mt-3 flex items-center justify-center gap-2 text-sm font-bold">
+          <input type="checkbox" v-model="saveOnExit" class="h-4 w-4 accent-[var(--accent)]" />
+          저장하고 나가기
+        </label>
         <div class="mt-4 grid grid-cols-2 gap-2">
           <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="cancelExit">
             취소
           </button>
           <button class="h-11 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="confirmExit">
             나가기
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="showNewBoardConfirm"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6"
+      @click.self="cancelNewBoard"
+    >
+      <div class="w-full max-w-xs rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-center">
+        <p class="text-lg font-black">새 판을 시작할까요?</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">현재 진행 중인 판은 사라집니다.</p>
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="cancelNewBoard">
+            취소
+          </button>
+          <button class="h-11 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="confirmNewBoard">
+            새 판
           </button>
         </div>
       </div>

@@ -1,608 +1,569 @@
 [
   {
-    "id": "sphere-volume",
-    "label": "4πr³/3",
-    "prompt": "구의 부피 공식",
+    "id": "sector-arc-rad",
+    "label": "l=rθ",
+    "prompt": "l=○θ",
     "tokens": [
-      "4",
-      "π",
-      "r³",
-      "/",
-      "3"
+      "r"
     ],
-    "hint": "4πr³/3 — 반지름 세제곱"
+    "name": "부채꼴 호의 길이",
+    "vars": "l 호, r 반지름, θ 중심각",
+    "hint": "반지름에 라디안으로 잰 중심각을 곱하면 호의 길이가 된다"
   },
   {
-    "id": "sphere-area",
-    "label": "4πr²",
-    "prompt": "구의 겉넓이 공식",
+    "id": "sum-first-term",
+    "label": "a₁=S₁",
+    "prompt": "a₁=○",
     "tokens": [
-      "4",
-      "π",
-      "r",
-      "²"
+      "S₁"
     ],
-    "hint": "4πr² — 반지름 제곱의 네 배 파이"
+    "name": "첫항과 합",
+    "vars": "a₁ 첫째항, S₁ 첫째항까지 합",
+    "hint": "첫째항까지의 합은 곧 첫째항 자신과 같다"
   },
   {
-    "id": "cylinder-volume",
-    "label": "πr²h",
-    "prompt": "원기둥 부피 공식",
+    "id": "geo-mean",
+    "label": "b²=ac",
+    "prompt": "○=ac",
     "tokens": [
-      "π",
-      "r",
-      "²",
-      "h"
-    ],
-    "hint": "πr²h — 밑넓이 곱 높이"
-  },
-  {
-    "id": "cone-volume",
-    "label": "πr²h/3",
-    "prompt": "원뿔 부피 공식",
-    "tokens": [
-      "π",
-      "r²",
-      "h",
-      "/",
-      "3"
-    ],
-    "hint": "πr²h/3 — 원기둥의 1/3"
-  },
-  {
-    "id": "pyramid-volume",
-    "label": "½bh/3",
-    "prompt": "각뿔 부피 공식",
-    "tokens": [
-      "½",
-      "b",
-      "h",
-      "/",
-      "3"
-    ],
-    "hint": "밑넓이 곱 높이의 1/3"
-  },
-  {
-    "id": "prism-volume",
-    "label": "Sh",
-    "prompt": "기둥 부피 공식",
-    "tokens": [
-      "S",
-      "h"
-    ],
-    "hint": "Sh — 밑넓이 곱 높이"
-  },
-  {
-    "id": "linear-function",
-    "label": "y=ax+b",
-    "prompt": "일차함수 식",
-    "tokens": [
-      "y",
-      "=",
-      "a",
-      "x",
-      "+",
-      "b"
-    ],
-    "hint": "y=ax+b — 기울기 a 절편 b"
-  },
-  {
-    "id": "slope",
-    "label": "Δy/Δx",
-    "prompt": "기울기 공식",
-    "tokens": [
-      "Δy",
-      "/",
-      "Δx"
-    ],
-    "hint": "Δy/Δx — y변화량 나누기 x변화량"
-  },
-  {
-    "id": "proportion",
-    "label": "y=ax",
-    "prompt": "정비례 관계식",
-    "tokens": [
-      "y",
-      "=",
-      "a",
-      "x"
-    ],
-    "hint": "y=ax — x에 비례"
-  },
-  {
-    "id": "inverse-proportion",
-    "label": "y=a/x",
-    "prompt": "반비례 관계식",
-    "tokens": [
-      "y",
-      "=",
-      "a",
-      "/",
-      "x"
-    ],
-    "hint": "y=a/x — x에 반비례"
-  },
-  {
-    "id": "distance-1d",
-    "label": "|a−b|",
-    "prompt": "두 점 사이 거리(1차원)",
-    "tokens": [
-      "|",
-      "a",
-      "−",
-      "b",
-      "|"
-    ],
-    "hint": "|a−b| — 차의 절댓값"
-  },
-  {
-    "id": "midpoint-x",
-    "label": "½(x₁+x₂)",
-    "prompt": "중점의 x좌표",
-    "tokens": [
-      "½",
-      "(",
-      "x₁",
-      "+",
-      "x₂",
-      ")"
-    ],
-    "hint": "½(x₁+x₂) — 두 x좌표의 평균"
-  },
-  {
-    "id": "midpoint-y",
-    "label": "½(y₁+y₂)",
-    "prompt": "중점의 y좌표",
-    "tokens": [
-      "½",
-      "(",
-      "y₁",
-      "+",
-      "y₂",
-      ")"
-    ],
-    "hint": "½(y₁+y₂) — 두 y좌표의 평균"
-  },
-  {
-    "id": "speed",
-    "label": "v=s/t",
-    "prompt": "속력 공식",
-    "tokens": [
-      "v",
-      "=",
-      "s",
-      "/",
-      "t"
-    ],
-    "hint": "v=s/t — 거리 나누기 시간"
-  },
-  {
-    "id": "distance-phys",
-    "label": "s=vt",
-    "prompt": "거리 공식",
-    "tokens": [
-      "s",
-      "=",
-      "v",
-      "t"
-    ],
-    "hint": "s=vt — 속력 곱 시간"
-  },
-  {
-    "id": "density",
-    "label": "ρ=m/V",
-    "prompt": "밀도 공식",
-    "tokens": [
-      "ρ",
-      "=",
-      "m",
-      "/",
-      "V"
-    ],
-    "hint": "ρ=m/V — 질량 나누기 부피"
-  },
-  {
-    "id": "percent",
-    "label": "a/b×100",
-    "prompt": "백분율 공식",
-    "tokens": [
-      "a",
-      "/",
-      "b",
-      "×",
-      "100"
-    ],
-    "hint": "비율에 100을 곱함"
-  },
-  {
-    "id": "square-diff",
-    "label": "a²−b²",
-    "prompt": "제곱의 차 인수분해",
-    "tokens": [
-      "a²",
-      "−",
       "b²"
     ],
-    "hint": "a²−b²=(a+b)(a−b)"
+    "name": "등비중항",
+    "vars": "a,b,c 연속 세 항",
+    "hint": "가운데 항의 제곱이 양옆 두 항의 곱과 같다"
   },
   {
-    "id": "perfect-square-plus",
-    "label": "a²+2ab+b²",
-    "prompt": "(a+b)² 전개",
+    "id": "sigma-constant",
+    "label": "Σc=cn",
+    "prompt": "Σc=○",
     "tokens": [
-      "a²",
-      "+",
-      "2ab",
-      "+",
-      "b²"
+      "cn"
     ],
-    "hint": "(a+b)²의 전개"
+    "name": "상수의 합",
+    "vars": "c 상수, n 항수",
+    "hint": "같은 상수를 n번 더하면 상수에 n을 곱한 값이 된다"
   },
   {
-    "id": "perfect-square-minus",
-    "label": "a²−2ab+b²",
-    "prompt": "(a−b)² 전개",
+    "id": "arith-mean",
+    "label": "2b=a+c",
+    "prompt": "○=a+c",
     "tokens": [
-      "a²",
-      "−",
-      "2ab",
-      "+",
-      "b²"
+      "2b"
     ],
-    "hint": "(a−b)²의 전개"
+    "name": "등차중항",
+    "vars": "a,b,c 연속 세 항",
+    "hint": "가운데 항의 두 배가 양옆 두 항의 합과 같다"
   },
   {
-    "id": "cube-surface",
-    "label": "6a²",
-    "prompt": "정육면체 겉넓이",
+    "id": "ln-e",
+    "label": "ln e=1",
+    "prompt": "ln e=○",
     "tokens": [
-      "6",
-      "a",
-      "²"
+      "1"
     ],
-    "hint": "6a²"
+    "name": "자연로그",
+    "vars": "e 자연상수",
+    "hint": "밑이 자연상수 e인 로그에 e를 넣으면 1이 된다"
   },
   {
-    "id": "cuboid-surface",
-    "label": "2(ab+bc+ca)",
-    "prompt": "직육면체 겉넓이",
+    "id": "sector-area-2",
+    "label": "S=½r²θ",
+    "prompt": "S=○r²θ",
     "tokens": [
-      "2",
-      "(",
-      "ab",
-      "+bc",
-      "+ca",
-      ")"
+      "½"
     ],
-    "hint": "면 넓이 합의 두 배"
+    "name": "부채꼴 넓이",
+    "vars": "r 반지름, θ 중심각",
+    "hint": "반지름 제곱에 라디안 중심각을 곱하고 절반 하면 넓이가 된다"
   },
   {
-    "id": "cylinder-side",
-    "label": "2πrh",
-    "prompt": "원기둥 옆넓이",
+    "id": "geo-sum-r1",
+    "label": "Sₙ=na₁",
+    "prompt": "Sₙ=○",
     "tokens": [
-      "2",
-      "π",
-      "r",
-      "h"
+      "na₁"
     ],
-    "hint": "2πrh"
+    "name": "공비 1 등비합",
+    "vars": "a₁ 첫항, n 항수",
+    "hint": "공비가 1이면 모든 항이 같으니 첫항에 항수를 곱한다"
   },
   {
-    "id": "cylinder-surface",
-    "label": "2πr(r+h)",
-    "prompt": "원기둥 겉넓이",
+    "id": "exp-negative",
+    "label": "a⁻ⁿ=1/aⁿ",
+    "prompt": "a⁻ⁿ=○/aⁿ",
     "tokens": [
-      "2πr",
-      "(",
-      "r",
-      "+",
-      "h",
-      ")"
+      "1"
     ],
-    "hint": "2πr(r+h)"
+    "name": "음의 지수 법칙",
+    "vars": "a 밑, n 지수",
+    "hint": "음의 지수는 그 수의 거듭제곱의 역수를 뜻한다"
   },
   {
-    "id": "line-point-slope",
-    "label": "y−y₁=m",
-    "prompt": "직선의 점기울기형",
+    "id": "log10-10",
+    "label": "log 10=1",
+    "prompt": "log 10=○",
     "tokens": [
-      "y",
-      "−",
-      "y₁",
-      "=",
-      "m"
+      "1"
     ],
-    "hint": "y−y₁=m(x−x₁) 일부"
+    "name": "상용로그",
+    "vars": "밑 10",
+    "hint": "밑이 10인 로그에 10을 넣으면 1이 된다"
   },
   {
-    "id": "line-intercept",
-    "label": "y=b",
-    "prompt": "직선 y절편",
+    "id": "sector-area-rad",
+    "label": "S=1/2r²θ",
+    "prompt": "S=○r²θ",
     "tokens": [
-      "y",
-      "=",
-      "b"
+      "1/2"
     ],
-    "hint": "x=0일 때 y=b"
+    "name": "부채꼴 넓이",
+    "vars": "r 반지름, θ 중심각",
+    "hint": "반지름 제곱에 라디안 중심각을 곱하고 절반 하면 넓이가 된다"
   },
   {
-    "id": "x-intercept",
-    "label": "−b/a",
-    "prompt": "일차함수 x절편",
+    "id": "exp-power",
+    "label": "(aᵐ)ⁿ=aᵐⁿ",
+    "prompt": "(aᵐ)ⁿ=○",
     "tokens": [
-      "−",
-      "b",
-      "/",
-      "a"
+      "aᵐⁿ"
     ],
-    "hint": "y=0일 때 x"
+    "name": "지수의 거듭제곱",
+    "vars": "a 밑, m,n 지수",
+    "hint": "거듭제곱을 다시 거듭제곱하면 두 지수를 곱한다"
   },
   {
-    "id": "avg-speed",
-    "label": "총거리/총시간",
-    "prompt": "평균 속력",
+    "id": "degree-radian",
+    "label": "180°=πrad",
+    "prompt": "180°=○rad",
     "tokens": [
-      "총거리",
-      "/",
-      "총시간"
+      "π"
     ],
-    "hint": "총거리/총시간"
+    "name": "호도법 변환",
+    "vars": "π 원주율, rad 라디안",
+    "hint": "180도는 라디안으로 나타내면 파이와 같다"
   },
   {
-    "id": "accel",
-    "label": "Δv/Δt",
-    "prompt": "가속도 공식",
+    "id": "law-of-sines",
+    "label": "a/sinA=2R",
+    "prompt": "a/sinA=○",
     "tokens": [
-      "Δv",
-      "/",
-      "Δt"
+      "2R"
     ],
-    "hint": "속도변화/시간"
+    "name": "사인 법칙",
+    "vars": "a 변, A 대각, R 외접원 반지름",
+    "hint": "변을 그 대각의 사인으로 나누면 외접원 지름과 같다"
   },
   {
-    "id": "force-weight",
-    "label": "mg",
-    "prompt": "무게 공식",
+    "id": "geo-general",
+    "label": "aₙ=a₁rⁿ⁻¹",
+    "prompt": "aₙ=a₁○",
     "tokens": [
-      "m",
-      "g"
+      "rⁿ⁻¹"
     ],
-    "hint": "mg — 질량 곱 중력가속도"
+    "name": "등비수열 일반항",
+    "vars": "a₁ 첫항, r 공비, n 항수",
+    "hint": "첫항에 공비를 항 번호보다 하나 적게 곱하면 제n항이 된다"
   },
   {
-    "id": "work",
-    "label": "Fd",
-    "prompt": "일의 정의",
+    "id": "arith-common-diff",
+    "label": "d=aₙ₊₁-aₙ",
+    "prompt": "d=○-aₙ",
     "tokens": [
-      "F",
-      "d"
+      "aₙ₊₁"
     ],
-    "hint": "Fd — 힘 곱 거리"
+    "name": "등차수열 공차",
+    "vars": "aₙ 제n항, d 공차",
+    "hint": "이웃한 뒷항에서 앞항을 빼면 일정한 공차가 된다"
   },
   {
-    "id": "power-phys",
-    "label": "W/t",
-    "prompt": "일률 공식",
+    "id": "log-one",
+    "label": "log_a 1=0",
+    "prompt": "log_a 1=○",
     "tokens": [
-      "W",
-      "/",
-      "t"
+      "0"
     ],
-    "hint": "W/t — 일 나누기 시간"
+    "name": "진수가 1인 로그",
+    "vars": "a 밑",
+    "hint": "어떤 밑이든 진수가 1인 로그 값은 항상 0이다"
   },
   {
-    "id": "pressure",
-    "label": "F/A",
-    "prompt": "압력 공식",
+    "id": "log-self",
+    "label": "log_a a=1",
+    "prompt": "log_a a=○",
     "tokens": [
-      "F",
-      "/",
-      "A"
+      "1"
     ],
-    "hint": "F/A — 힘 나누기 넓이"
+    "name": "밑과 진수 같은 로그",
+    "vars": "a 밑",
+    "hint": "밑과 진수가 같은 로그 값은 항상 1이다"
   },
   {
-    "id": "ohm",
-    "label": "V=IR",
-    "prompt": "옴의 법칙",
+    "id": "geo-ratio",
+    "label": "r=aₙ₊₁/aₙ",
+    "prompt": "r=○/aₙ",
     "tokens": [
-      "V",
-      "=",
-      "I",
-      "R"
+      "aₙ₊₁"
     ],
-    "hint": "V=IR"
+    "name": "등비수열 공비",
+    "vars": "aₙ 제n항, r 공비",
+    "hint": "이웃한 뒷항을 앞항으로 나누면 일정한 공비가 된다"
   },
   {
-    "id": "frequency",
-    "label": "1/T",
-    "prompt": "진동수 공식",
+    "id": "exp-product-base",
+    "label": "(ab)ⁿ=aⁿbⁿ",
+    "prompt": "(ab)ⁿ=○○",
     "tokens": [
-      "1",
-      "/",
-      "T"
+      "aⁿ",
+      "bⁿ"
     ],
-    "hint": "1/T — 주기의 역수"
+    "name": "곱의 거듭제곱",
+    "vars": "a,b 밑, n 지수",
+    "hint": "곱을 거듭제곱하면 각 인수를 따로 거듭제곱해 곱한다"
   },
   {
-    "id": "perfect-square-sum",
-    "label": "a²−b²",
-    "prompt": "(a+b)(a−b) 전개",
+    "id": "deg-rad",
+    "label": "180°=π rad",
+    "prompt": "180°=○ rad",
     "tokens": [
-      "a²",
-      "−",
-      "b²"
+      "π"
     ],
-    "hint": "a²−b²"
+    "name": "호도법 변환",
+    "vars": "π 원주율, rad 라디안",
+    "hint": "180도를 라디안으로 바꾸면 파이와 같다"
   },
   {
-    "id": "cube-sum",
-    "label": "a+b",
-    "prompt": "a³+b³ 인수분해 일부",
+    "id": "law-sines-2r",
+    "label": "a/sin A=2R",
+    "prompt": "a/sin A=○",
     "tokens": [
-      "a",
-      "+",
-      "b"
+      "2R"
     ],
-    "hint": "(a+b)(a²−ab+b²)"
+    "name": "사인법칙 외접원",
+    "vars": "a 변, A 대각, R 외접원 반지름",
+    "hint": "변을 대각의 사인으로 나누면 외접원 지름과 같다"
   },
   {
-    "id": "cube-diff",
-    "label": "a−b",
-    "prompt": "a³−b³ 인수분해 일부",
+    "id": "exp-product",
+    "label": "aᵐ·aⁿ=aᵐ⁺ⁿ",
+    "prompt": "aᵐ·aⁿ=○○",
     "tokens": [
-      "a",
-      "−",
-      "b"
+      "aᵐ",
+      "⁺ⁿ"
     ],
-    "hint": "(a−b)(a²+ab+b²)"
+    "name": "지수 곱셈 법칙",
+    "vars": "a 밑, m n 지수",
+    "hint": "같은 밑의 거듭제곱을 곱하면 지수끼리 더한다"
   },
   {
-    "id": "simple-interest",
-    "label": "Prt",
-    "prompt": "단리 이자",
+    "id": "exp-quotient",
+    "label": "aᵐ/aⁿ=aᵐ⁻ⁿ",
+    "prompt": "aᵐ/aⁿ=○○",
     "tokens": [
-      "P",
-      "r",
-      "t"
+      "aᵐ",
+      "⁻ⁿ"
     ],
-    "hint": "Prt — 원금·이율·기간"
+    "name": "지수 나눗셈 법칙",
+    "vars": "a 밑, m n 지수",
+    "hint": "같은 밑의 거듭제곱을 나누면 지수끼리 뺀다"
   },
   {
-    "id": "celsius-fahr",
-    "label": "9C/5",
-    "prompt": "온도 변환 일부",
+    "id": "sum-term-rel",
+    "label": "aₙ=Sₙ-Sₙ₋₁",
+    "prompt": "aₙ=Sₙ-○",
     "tokens": [
-      "9",
-      "C",
-      "/",
-      "5"
+      "Sₙ₋₁"
     ],
-    "hint": "9C/5+32"
+    "name": "합과 일반항 관계",
+    "vars": "Sₙ 부분합, aₙ 일반항",
+    "hint": "부분합의 차로 수열의 일반항을 구한다(n≥2)"
   },
   {
-    "id": "cone-side",
-    "label": "πrl",
-    "prompt": "원뿔 옆넓이",
+    "id": "root-power",
+    "label": "(ⁿ√a)ᵐ=ⁿ√aᵐ",
+    "prompt": "(ⁿ√a)ᵐ=○",
     "tokens": [
-      "π",
-      "r",
-      "l"
+      "ⁿ√aᵐ"
     ],
-    "hint": "πrl"
+    "name": "거듭제곱근의 거듭제곱",
+    "vars": "a 피개근수, m n 지수",
+    "hint": "거듭제곱근을 거듭제곱하면 지수를 근호 안에 넣는다"
   },
   {
-    "id": "cone-surface",
-    "label": "πr(r+l)",
-    "prompt": "원뿔 겉넓이",
+    "id": "heron-s",
+    "label": "s=(a+b+c)/2",
+    "prompt": "s=(○○○)/2",
     "tokens": [
-      "π",
-      "r",
-      "(",
-      "r",
-      "+",
-      "l",
-      ")"
-    ],
-    "hint": "πr(r+l)"
-  },
-  {
-    "id": "hemisphere",
-    "label": "2πr³/3",
-    "prompt": "반구 부피",
-    "tokens": [
-      "2",
-      "π",
-      "r³",
-      "/",
-      "3"
-    ],
-    "hint": "2πr³/3"
-  },
-  {
-    "id": "regular-poly-int",
-    "label": "180(n−2)",
-    "prompt": "정다각형 내각의 합",
-    "tokens": [
-      "180",
-      "(",
-      "n",
-      "−",
-      "2",
-      ")"
-    ],
-    "hint": "180(n−2)"
-  },
-  {
-    "id": "poly-ext",
-    "label": "외각=360",
-    "prompt": "다각형 외각의 합",
-    "tokens": [
-      "외각",
-      "=",
-      "360"
-    ],
-    "hint": "외각의 합은 360°"
-  },
-  {
-    "id": "triangle-angle-sum",
-    "label": "내각=180",
-    "prompt": "삼각형 내각의 합",
-    "tokens": [
-      "내각",
-      "=",
-      "180"
-    ],
-    "hint": "세 각의 합 180°"
-  },
-  {
-    "id": "arc-length",
-    "label": "rθ",
-    "prompt": "부채꼴 호의 길이",
-    "tokens": [
-      "r",
-      "θ"
-    ],
-    "hint": "rθ — 라디안"
-  },
-  {
-    "id": "sector-area",
-    "label": "½r²θ",
-    "prompt": "부채꼴 넓이",
-    "tokens": [
-      "½",
-      "r",
-      "²",
-      "θ"
-    ],
-    "hint": "½r²θ"
-  },
-  {
-    "id": "mean-three",
-    "label": "(a+b+c)/3",
-    "prompt": "세 수의 평균",
-    "tokens": [
-      "(",
       "a",
       "+b",
-      "+c",
-      ")",
-      "/3"
+      "+c"
     ],
-    "hint": "세 수 합의 1/3"
+    "name": "헤론 반둘레",
+    "vars": "a b c 세 변, s 반둘레",
+    "hint": "삼각형 세 변의 합을 반으로 나눈 반둘레 값"
   },
   {
-    "id": "weighted-mid",
-    "label": "mx₂+nx₁",
-    "prompt": "내분점 x좌표 일부",
+    "id": "sigma-natural",
+    "label": "Σk=n(n+1)/2",
+    "prompt": "Σk=○○/2",
     "tokens": [
-      "m",
-      "x₂",
-      "+",
-      "n",
-      "x₁"
+      "n(n",
+      "+1)"
     ],
-    "hint": "(분자) m·n 내분"
+    "name": "자연수의 합",
+    "vars": "n 항수, k 1부터 n",
+    "hint": "1부터 n까지 자연수를 모두 더한 값을 구한다"
+  },
+  {
+    "id": "exp-quotient-base",
+    "label": "(a/b)ⁿ=aⁿ/bⁿ",
+    "prompt": "(a/b)ⁿ=○/bⁿ",
+    "tokens": [
+      "aⁿ"
+    ],
+    "name": "분수의 거듭제곱",
+    "vars": "a b 밑, n 지수",
+    "hint": "분수를 거듭제곱하면 분자와 분모를 각각 거듭제곱한다"
+  },
+  {
+    "id": "exp-frac",
+    "label": "a^(m/n)=ⁿ√aᵐ",
+    "prompt": "a^(m/n)=○",
+    "tokens": [
+      "ⁿ√aᵐ"
+    ],
+    "name": "분수 지수 법칙",
+    "vars": "a 밑, m n 지수",
+    "hint": "분수 지수는 분모를 차수로 하는 거듭제곱근으로 바꾼다"
+  },
+  {
+    "id": "arith-general",
+    "label": "aₙ=a₁+(n-1)d",
+    "prompt": "aₙ=a₁+(○)d",
+    "tokens": [
+      "n-1"
+    ],
+    "name": "등차수열 일반항",
+    "vars": "a₁ 첫항, d 공차, n 항수",
+    "hint": "첫항에 공차를 거듭 더해 n번째 항을 구한다"
+  },
+  {
+    "id": "root-nest",
+    "label": "ᵐ√(ⁿ√a)=ᵐⁿ√a",
+    "prompt": "ᵐ√(ⁿ√a)=○",
+    "tokens": [
+      "ᵐⁿ√a"
+    ],
+    "name": "이중 거듭제곱근",
+    "vars": "a 피개근수, m n 차수",
+    "hint": "근호 안의 근호는 차수를 곱한 하나의 근호로 합친다"
+  },
+  {
+    "id": "triangle-area-sin",
+    "label": "S=1/2ab·sinC",
+    "prompt": "S=1/2ab·○○",
+    "tokens": [
+      "sin",
+      "C"
+    ],
+    "name": "삼각형 넓이(사인)",
+    "vars": "a b 두 변, C 끼인각",
+    "hint": "두 변과 끼인각의 사인을 이용해 삼각형 넓이를 구한다"
+  },
+  {
+    "id": "sigma-coef",
+    "label": "Σ(c·aₖ)=cΣaₖ",
+    "prompt": "Σ(c·aₖ)=○",
+    "tokens": [
+      "cΣaₖ"
+    ],
+    "name": "시그마 상수배",
+    "vars": "c 상수, aₖ 일반항",
+    "hint": "합 기호 안의 상수배는 합 밖으로 빼낼 수 있다"
+  },
+  {
+    "id": "pythagorean-3",
+    "label": "1+cot²θ=csc²θ",
+    "prompt": "1+○○=csc²θ",
+    "tokens": [
+      "cot²",
+      "θ"
+    ],
+    "name": "피타고라스 항등식",
+    "vars": "θ 각",
+    "hint": "1에 코탄젠트 제곱을 더하면 코시컨트 제곱이 된다"
+  },
+  {
+    "id": "pythagorean-2",
+    "label": "1+tan²θ=sec²θ",
+    "prompt": "1+○○=sec²θ",
+    "tokens": [
+      "tan²",
+      "θ"
+    ],
+    "name": "피타고라스 항등식",
+    "vars": "θ 각",
+    "hint": "1에 탄젠트 제곱을 더하면 시컨트 제곱이 된다"
+  },
+  {
+    "id": "alog-identity",
+    "label": "a^(log_a b)=b",
+    "prompt": "a^(log_a b)=○",
+    "tokens": [
+      "b"
+    ],
+    "name": "로그·지수 항등식",
+    "vars": "a 밑, b 진수",
+    "hint": "밑을 로그값만큼 거듭제곱하면 원래 진수로 돌아온다"
+  },
+  {
+    "id": "neg-cos",
+    "label": "cos(-θ)=cos θ",
+    "prompt": "cos(-θ)=○○",
+    "tokens": [
+      "cos ",
+      "θ"
+    ],
+    "name": "코사인 우함수",
+    "vars": "θ 각",
+    "hint": "코사인은 각의 부호를 바꿔도 값이 변하지 않는다"
+  },
+  {
+    "id": "pythagorean-1b",
+    "label": "cos²θ+sin²θ=1",
+    "prompt": "cos²θ+○○=1",
+    "tokens": [
+      "sin²",
+      "θ"
+    ],
+    "name": "삼각함수 기본 항등식",
+    "vars": "θ 각",
+    "hint": "같은 각의 코사인 제곱과 사인 제곱의 합은 항상 1이다"
+  },
+  {
+    "id": "cos-squared",
+    "label": "cos²θ=1-sin²θ",
+    "prompt": "cos²θ=1-○○",
+    "tokens": [
+      "sin²",
+      "θ"
+    ],
+    "name": "항등식 변형(cos²)",
+    "vars": "θ 각",
+    "hint": "기본 항등식을 옮겨 코사인 제곱을 사인으로 나타낸다"
+  },
+  {
+    "id": "cot-def",
+    "label": "cot θ=1/tan θ",
+    "prompt": "cot θ=○/tan θ",
+    "tokens": [
+      "1"
+    ],
+    "name": "코탄젠트 정의",
+    "vars": "θ 각",
+    "hint": "코탄젠트는 탄젠트의 역수로 정의된다"
+  },
+  {
+    "id": "csc-def",
+    "label": "csc θ=1/sin θ",
+    "prompt": "csc θ=○/sin θ",
+    "tokens": [
+      "1"
+    ],
+    "name": "코시컨트 정의",
+    "vars": "θ 각",
+    "hint": "코시컨트는 사인의 역수로 정의된다"
+  },
+  {
+    "id": "chord-length",
+    "label": "l=2r·sin(θ/2)",
+    "prompt": "l=2r·sin(○○○)",
+    "tokens": [
+      "θ",
+      "/",
+      "2"
+    ],
+    "name": "현의 길이",
+    "vars": "r 반지름, θ 중심각",
+    "hint": "반지름과 중심각의 절반의 사인으로 현의 길이를 구한다"
+  },
+  {
+    "id": "sec-def",
+    "label": "sec θ=1/cos θ",
+    "prompt": "sec θ=○/cos θ",
+    "tokens": [
+      "1"
+    ],
+    "name": "시컨트 정의",
+    "vars": "θ 각",
+    "hint": "시컨트는 코사인의 역수로 정의된다"
+  },
+  {
+    "id": "sin2-cos2",
+    "label": "sin²θ+cos²θ=1",
+    "prompt": "sin²θ+cos²θ=○",
+    "tokens": [
+      "1"
+    ],
+    "name": "삼각함수 기본 항등식",
+    "vars": "θ 각",
+    "hint": "같은 각의 사인 제곱과 코사인 제곱의 합은 항상 1이다"
+  },
+  {
+    "id": "sin-squared",
+    "label": "sin²θ=1-cos²θ",
+    "prompt": "sin²θ=1-○○",
+    "tokens": [
+      "cos²",
+      "θ"
+    ],
+    "name": "항등식 변형(sin²)",
+    "vars": "θ 각",
+    "hint": "기본 항등식을 옮겨 사인 제곱을 코사인으로 나타낸다"
+  },
+  {
+    "id": "arith-sum-1",
+    "label": "Sₙ=n(a₁+aₙ)/2",
+    "prompt": "Sₙ=n(a₁+○)/2",
+    "tokens": [
+      "aₙ"
+    ],
+    "name": "등차수열의 합",
+    "vars": "a₁ 첫항, aₙ 끝항, n 항수",
+    "hint": "첫항과 끝항의 합에 항수를 곱하고 반으로 나눈다"
+  },
+  {
+    "id": "log-power",
+    "label": "log aⁿ=n log a",
+    "prompt": "log aⁿ=○ log a",
+    "tokens": [
+      "n"
+    ],
+    "name": "로그 거듭제곱 법칙",
+    "vars": "a 진수, n 지수",
+    "hint": "진수의 지수는 로그 앞으로 내릴 수 있다"
+  },
+  {
+    "id": "root-product",
+    "label": "ⁿ√a·ⁿ√b=ⁿ√(ab)",
+    "prompt": "ⁿ√a·ⁿ√b=○○",
+    "tokens": [
+      "ⁿ√",
+      "(ab)"
+    ],
+    "name": "거듭제곱근 곱셈",
+    "vars": "a b 피개근수, n 차수",
+    "hint": "차수가 같은 거듭제곱근끼리는 근호 안에서 곱한다"
+  },
+  {
+    "id": "neg-sin",
+    "label": "sin(-θ)=-sin θ",
+    "prompt": "sin(-θ)=-○○",
+    "tokens": [
+      "sin ",
+      "θ"
+    ],
+    "name": "사인 기함수",
+    "vars": "θ 각",
+    "hint": "사인은 각의 부호를 바꾸면 값의 부호도 바뀐다"
   }
 ]
