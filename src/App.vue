@@ -55,8 +55,8 @@ const gameKinds: Array<{ id: GameKind; label: string }> = [
 
 const mobilePanels = [
   { id: 'packs', label: '학습팩' },
-  { id: 'game', label: '게임하기' },
   { id: 'score', label: '점수' },
+  { id: 'game', label: '게임하기' },
 ] as const;
 
 type MobilePanel = (typeof mobilePanels)[number]['id'];
@@ -2024,13 +2024,14 @@ onBeforeUnmount(() => {
         </div>
       </header>
 
-      <nav class="grid grid-cols-3 gap-2 lg:hidden" aria-label="모바일 화면 전환">
+      <nav class="flex gap-2 lg:hidden" aria-label="모바일 화면 전환">
         <button
           v-for="panel in mobilePanels"
           :key="panel.id"
-          class="flex h-11 items-center justify-center gap-1 rounded-md border px-2 text-sm font-black"
+          class="flex h-11 items-center justify-center gap-1 rounded-md border px-4 text-sm font-black"
           :class="[
             activeMobilePanel === panel.id ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel)]',
+            panel.id === 'game' ? 'ml-auto' : '',
             panel.id === 'game' && activeMobilePanel !== panel.id ? 'nav-game-cta' : '',
           ]"
           type="button"
@@ -2282,9 +2283,9 @@ onBeforeUnmount(() => {
             <div class="flex flex-wrap items-center justify-between gap-2">
               <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
               <div class="flex items-center gap-3">
-                <div v-if="gameKind === 'lesson'" class="flex flex-col items-end leading-tight text-[10px] font-bold uppercase text-[var(--muted)]">
-                  <span>Solved <strong class="text-sm text-[var(--accent)]">{{ matchedCount }}</strong></span>
-                  <span>Blocks <strong class="text-sm text-[var(--accent)]">{{ clearedBlocks }}</strong></span>
+                <div v-if="gameKind === 'lesson' && mode === 'free'" class="flex flex-col items-end leading-tight">
+                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }}</span>
+                  <span class="text-sm font-black text-[var(--accent)]">{{ matchedCount }} / {{ clearedBlocks }}</span>
                 </div>
                 <div v-if="showProgress" class="flex flex-col items-end leading-tight">
                   <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · Lv{{ mode === 'endless' ? endlessCurrentLevel : selectedLevel }} · 스테이지 {{ displayStage }}/{{ mode === 'endless' ? endlessStageCount : stageCount }}</span>
