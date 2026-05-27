@@ -43,9 +43,9 @@ const boardPresets: Array<{ cols: number; rows: number; wide?: boolean }> = [
   { cols: 7, rows: 9, wide: true },
 ];
 
-const solveModes: Array<{ id: SolveMode; label: string }> = [
-  { id: 'sequence', label: '순서대로 선택' },
-  { id: 'collect', label: '블럭 모으기' },
+const solveModes: Array<{ id: SolveMode; label: string; desc: string }> = [
+  { id: 'sequence', label: '선택하기', desc: '해답 블럭을 하나씩 선택. 순서무관.' },
+  { id: 'collect', label: '모으기', desc: '블럭을 드래그하여 모으기. 한 블럭 해답은 선택하기.' },
 ];
 
 const gameKinds: Array<{ id: GameKind; label: string }> = [
@@ -187,6 +187,8 @@ const endlessStageCount = computed(() => Math.max(1, Math.ceil((fullItems.value.
 const continuous = computed(() => mode.value !== 'single');
 // 현재 모드 한글 라벨(게임화면 표시용)
 const modeLabel = computed(() => (mode.value === 'single' ? '한문제씩' : mode.value === 'endless' ? '연속' : '자유'));
+// 선택된 해법모드 설명(버튼 아래 표시)
+const solveModeDesc = computed(() => solveModes.find((s) => s.id === solveMode.value)?.desc ?? '');
 const activeItems = computed(() => {
   if (gameKind.value !== 'lesson') return lessonItems.value;
   if (mode.value === 'single') return stageItems.value;
@@ -928,9 +930,11 @@ function scoreMatch(item: LessonItem, length: number) {
   best.value = Math.max(best.value, score.value);
   localStorage.setItem(bestKey(), String(best.value));
   // 레벨별 누적 점수/푼 문제수 기록 — 실제 푼 문제의 레벨에 적립(연속/자유는 레벨이 섞이므로)
+  // 푼 문제수는 고유 기준: 아직 풀지 않은 문제일 때만 +1(점수는 매 정답마다 누적)
+  const isNewSolve = gameKind.value === 'lesson' && !solvedItems.value.includes(item.id);
   const lv = levelOfItem(item);
   const cur = levelStats.value[lv] ?? { score: 0, solved: 0 };
-  levelStats.value = { ...levelStats.value, [lv]: { score: cur.score + gained, solved: cur.solved + 1 } };
+  levelStats.value = { ...levelStats.value, [lv]: { score: cur.score + gained, solved: cur.solved + (isNewSolve ? 1 : 0) } };
   saveLevelStats();
   showHint.value = false;
   hintIndexes.value = [];
@@ -2178,6 +2182,7 @@ onBeforeUnmount(() => {
               {{ solve.label }}
             </button>
           </div>
+          <p class="mt-2 text-sm text-[var(--muted)]">{{ solveModeDesc }}</p>
 
           <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">ANSWER</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
