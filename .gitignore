@@ -12,3 +12,5 @@ agentdb.rvf*
 *.cjs
 scripts/
 .tmp-words/
+# 루트 packs/는 별도 저장소(TypoStudio/matchit-packs)용 — 메인 repo에서 추적 안 함
+/packs/

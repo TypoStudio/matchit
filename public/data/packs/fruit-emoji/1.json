@@ -1,0 +1,12 @@
+[
+  { "id": "apple-3", "label": "사과 3개", "prompt": "🍎 ×3", "tokens": ["🍎", "🍎", "🍎"], "hint": "🍎 사과 3개를 모으세요" },
+  { "id": "strawberry-3", "label": "딸기 3개", "prompt": "🍓 ×3", "tokens": ["🍓", "🍓", "🍓"], "hint": "🍓 딸기 3개를 모으세요" },
+  { "id": "grape-3", "label": "포도 3개", "prompt": "🍇 ×3", "tokens": ["🍇", "🍇", "🍇"], "hint": "🍇 포도 3개를 모으세요" },
+  { "id": "orange-3", "label": "오렌지 3개", "prompt": "🍊 ×3", "tokens": ["🍊", "🍊", "🍊"], "hint": "🍊 오렌지 3개를 모으세요" },
+  { "id": "banana-3", "label": "바나나 3개", "prompt": "🍌 ×3", "tokens": ["🍌", "🍌", "🍌"], "hint": "🍌 바나나 3개를 모으세요" },
+  { "id": "apple-4", "label": "사과 4개", "prompt": "🍎 ×4", "tokens": ["🍎", "🍎", "🍎", "🍎"], "hint": "🍎 사과 4개를 모으세요" },
+  { "id": "strawberry-4", "label": "딸기 4개", "prompt": "🍓 ×4", "tokens": ["🍓", "🍓", "🍓", "🍓"], "hint": "🍓 딸기 4개를 모으세요" },
+  { "id": "grape-4", "label": "포도 4개", "prompt": "🍇 ×4", "tokens": ["🍇", "🍇", "🍇", "🍇"], "hint": "🍇 포도 4개를 모으세요" },
+  { "id": "orange-4", "label": "오렌지 4개", "prompt": "🍊 ×4", "tokens": ["🍊", "🍊", "🍊", "🍊"], "hint": "🍊 오렌지 4개를 모으세요" },
+  { "id": "banana-4", "label": "바나나 4개", "prompt": "🍌 ×4", "tokens": ["🍌", "🍌", "🍌", "🍌"], "hint": "🍌 바나나 4개를 모으세요" }
+]

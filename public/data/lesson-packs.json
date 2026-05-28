@@ -1,4 +1,5 @@
 [
+  { "id": "fruit-emoji", "title": "과일 모으기", "accent": "#f97316", "random": true, "levels": [1, 2] },
   { "id": "science-core", "title": "화학식", "accent": "#14b8a6", "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
   { "id": "korean-idiom", "title": "사자성어", "accent": "#f97316", "levels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
   { "id": "korean-proverb", "title": "속담", "accent": "#ca8a04", "levels": [1, 2, 3, 4, 5, 6] },

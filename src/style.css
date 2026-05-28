@@ -199,53 +199,39 @@ select {
   text-shadow: none;
 }
 
-.block-style-neon {
-  --neon-a: #a855f7;
-  --neon-b: #38bdf8;
-  border-radius: 14px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.28), transparent 70%),
-    linear-gradient(160deg, #0b0820, #060414) !important;
+/* 투명: 블럭 채움 없이 글자/이모지만 표시. 글자색은 테마색(--ink)을 따른다. */
+.block-style-transparent {
+  border-radius: 12px;
+  background: transparent !important;
   border-color: transparent !important;
-  box-shadow:
-    0 0 5px rgba(168, 85, 247, 0.45),
-    0 0 12px rgba(56, 189, 248, 0.22),
-    0 14px 26px rgba(2, 6, 23, 0.55);
+  box-shadow: none;
 }
 
-.block-style-neon::before {
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  background: linear-gradient(135deg, var(--neon-a), var(--neon-b));
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  filter: drop-shadow(0 0 2px var(--neon-a)) drop-shadow(0 0 4px var(--neon-b));
-}
-
-.block-style-neon::after {
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle at 50% 120%, rgba(56, 189, 248, 0.35), transparent 60%);
-}
-
-.block-style-neon .block-label {
-  border-radius: 10px;
-  color: #ffffff;
+.block-style-transparent .block-label {
+  color: var(--ink);
   -webkit-text-stroke: 0;
-  text-shadow:
-    0 0 2px #fff,
-    0 0 6px var(--neon-a),
-    0 0 12px var(--neon-b);
+  text-shadow: none;
+  /* 투명 블럭: 채움이 없으므로 글자/이모지를 블럭 크기만큼 크게 */
+  font-size: clamp(0.5rem, max(
+    min(96cqh, calc(150cqw / (var(--len, 1) + 0.1))),
+    min(calc(var(--cell-h, 0px) * 0.96), calc(var(--cell-w, 0px) * 1.5 / (var(--len, 1) + 0.1)))
+  ), 6rem);
+}
+
+/* 특수블럭(폭탄): 강조 테두리 + 우상단 아이콘 배지 */
+.has-power {
+  z-index: 3;
+  border-width: 0;
+  outline: none;
 }
 
 /* Block Design 미리보기: 버튼이 작아 radius/인셋을 줄임 */
-.block-preview.block-style-jelly,
-.block-preview.block-style-neon {
+.block-preview.block-style-jelly {
   border-radius: 6px;
+}
+.block-preview.block-style-transparent {
+  border-radius: 6px;
+  border: 1px dashed var(--line);
 }
 .block-preview.block-style-card { border-radius: 5px; }
 .block-preview.block-style-card::before { border-top-width: 2px; }
@@ -389,11 +375,11 @@ select {
 .block-clear-jelly,
 .block-clear-card,
 .block-clear-tile,
-.block-clear-neon,
+.block-clear-transparent,
 .block-fade-jelly,
 .block-fade-card,
 .block-fade-tile,
-.block-fade-neon {
+.block-fade-transparent {
   z-index: 2;
 }
 
@@ -439,18 +425,27 @@ select {
   filter: grayscale(1) brightness(1.15);
 }
 
-.block-clear-neon {
-  animation: neon-clear 1000ms ease-in-out infinite alternate;
+.block-clear-transparent {
+  animation: transparent-clear 1000ms ease-in-out infinite alternate;
 }
 
-.block-fade-neon {
+.block-fade-transparent {
   opacity: 0;
-  transform: scale(0.62);
+  transform: scale(0.5);
   transition:
     opacity 700ms ease,
-    transform 700ms ease,
-    filter 700ms ease;
-  filter: brightness(1.4) saturate(1.3);
+    transform 700ms ease;
+}
+
+@keyframes transparent-clear {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.18);
+    opacity: 0.55;
+  }
 }
 
 @keyframes jelly-clear {
@@ -498,39 +493,6 @@ select {
   }
 }
 
-@keyframes neon-clear {
-  0% {
-    filter: brightness(1.1) saturate(1.1);
-    box-shadow:
-      inset 0 0 0 2px rgba(244, 114, 182, 0.72),
-      inset 0 0 18px rgba(34, 211, 238, 0.38),
-      0 0 8px rgba(34, 211, 238, 0.95),
-      0 0 18px rgba(34, 211, 238, 0.65),
-      0 0 34px rgba(244, 114, 182, 0.48),
-      0 16px 28px rgba(2, 6, 23, 0.5);
-  }
-  50% {
-    filter: brightness(1.6) saturate(1.5);
-    box-shadow:
-      inset 0 0 0 2px rgba(244, 114, 182, 0.9),
-      inset 0 0 26px rgba(34, 211, 238, 0.7),
-      0 0 12px rgba(34, 211, 238, 1),
-      0 0 32px rgba(244, 114, 182, 0.85),
-      0 0 56px rgba(34, 211, 238, 0.5),
-      0 16px 28px rgba(2, 6, 23, 0.5);
-  }
-  100% {
-    filter: brightness(1.05) saturate(1.05);
-    box-shadow:
-      inset 0 0 0 2px rgba(244, 114, 182, 0.72),
-      inset 0 0 18px rgba(34, 211, 238, 0.38),
-      0 0 8px rgba(34, 211, 238, 0.95),
-      0 0 18px rgba(34, 211, 238, 0.65),
-      0 0 34px rgba(244, 114, 182, 0.48),
-      0 16px 28px rgba(2, 6, 23, 0.5);
-  }
-}
-
 /* 모바일 탭의 '게임하기' 강조 (CTA 글로우 펄스) */
 .nav-game-cta {
   border-color: var(--accent);
@@ -551,6 +513,65 @@ select {
 /* 가장자리 블럭의 선택/힌트 테두리가 잘리지 않도록 여유 */
 .app-board {
   padding: 10px;
+  position: relative;
+}
+
+/* 폭탄 발동 이펙트 빔/폭발 (보드 위 오버레이) */
+.fx-beam {
+  position: absolute;
+  z-index: 9;
+  pointer-events: none;
+  border-radius: 8px;
+  mix-blend-mode: screen;
+}
+/* 가로/세로: 얇은 코어 라인이 두께로 부풀었다 사라지는 충격 라인 */
+.fx-row {
+  background: linear-gradient(180deg, transparent, rgba(253, 224, 71, 0.9), #fff, rgba(253, 224, 71, 0.9), transparent);
+  box-shadow: 0 0 18px 6px rgba(253, 224, 71, 0.7);
+  transform-origin: center;
+  animation: fx-line-h 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.fx-col {
+  background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.9), #fff, rgba(103, 232, 249, 0.9), transparent);
+  box-shadow: 0 0 18px 6px rgba(103, 232, 249, 0.7);
+  transform-origin: center;
+  animation: fx-line-v 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+/* 영역: 채운 원이 아니라 바깥으로 퍼지는 충격파 링 */
+.fx-blast {
+  border-radius: 50%;
+  background: transparent;
+  border: 6px solid #fff;
+  box-shadow:
+    0 0 30px 10px rgba(251, 146, 60, 0.7),
+    inset 0 0 20px 4px rgba(251, 146, 60, 0.6);
+  transform-origin: center;
+  animation: fx-ring 600ms ease-out forwards;
+}
+/* 전체: 보드 전체 화이트 플래시 */
+.fx-all {
+  background: #fff;
+  border-radius: 14px;
+  animation: fx-flash 620ms ease-out forwards;
+}
+@keyframes fx-line-h {
+  0% { transform: scaleY(0.15); opacity: 0.4; }
+  35% { transform: scaleY(1.4); opacity: 1; }
+  100% { transform: scaleY(0.6); opacity: 0; }
+}
+@keyframes fx-line-v {
+  0% { transform: scaleX(0.15); opacity: 0.4; }
+  35% { transform: scaleX(1.4); opacity: 1; }
+  100% { transform: scaleX(0.6); opacity: 0; }
+}
+@keyframes fx-ring {
+  0% { transform: scale(0.3); opacity: 1; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+@keyframes fx-flash {
+  0% { opacity: 0; }
+  20% { opacity: 0.92; }
+  100% { opacity: 0; }
 }
 
 /* 데스크탑 전체화면: 게임 영역을 화면 전체로 */
