@@ -1347,7 +1347,10 @@ async function resolveCollect(indexes: number[], item: LessonItem, swapCandidate
   }
   // 정답표시 OFF일 때만 제자리 번쩍임/페이드. ON이면 블럭이 팝업으로 이동만 하고 바로 제거.
   if (showAnswer.value) {
-    await sleep(160);
+    // 셀을 페이드시킨 뒤 제거해야 leave 애니메이션에서 좌상단으로 튀는 잔상이 안 보임
+    fadingIndexes.value = [...removeIdx];
+    await sleep(360);
+    fadingIndexes.value = [];
   } else {
     clearingIndexes.value = [...removeIdx];
     await sleep(1000);
@@ -1601,7 +1604,10 @@ async function cascadeClear() {
     for (const sp of specials) board.value[sp.keepIndex] = { ...board.value[sp.keepIndex]!, power: sp.power, token: powerToken(sp.power) };
     if (showAnswer.value) {
       showAnswerPopup(round[0].item, round[0].indexes);
-      await sleep(160);
+      // 셀을 페이드시킨 뒤 제거해야 leave 애니메이션에서 좌상단으로 튀는 잔상이 안 보임
+      fadingIndexes.value = [...idx];
+      await sleep(360);
+      fadingIndexes.value = [];
     } else {
       clearingIndexes.value = [...idx];
       await sleep(600);
@@ -2188,7 +2194,8 @@ function setShowAnswer(on: boolean) {
 function showAnswerPopup(item: LessonItem, indexes: number[]) {
   if (gameKind.value !== 'lesson' || !showAnswer.value) return;
   // 정답이 된 보드 블럭들의 화면 위치를 먼저 기록 (제거되기 전)
-  const buttons = boardEl.value?.querySelectorAll<HTMLElement>('.block-face');
+  // 보드 셀만 잡는다(정답 팝업 슬롯·드래그 고스트도 .block-face라 좁히지 않으면 인덱스가 어긋남)
+  const buttons = boardEl.value?.querySelectorAll<HTMLElement>('.block-face[data-cell]');
   // 각 정답 슬롯(item.tokens 순서)을 같은 글자의 보드 셀에서 출발시킨다(가까운 순 아님)
   const remaining = [...indexes];
   const colors: string[] = [];
