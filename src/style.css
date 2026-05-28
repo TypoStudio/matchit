@@ -109,7 +109,6 @@ select {
     0 0 0 3px var(--panel),
     0 0 0 7px var(--accent),
     0 16px 30px rgba(17, 24, 39, 0.38);
-  animation: block-selected-pulse 900ms ease-in-out infinite alternate;
 }
 
 /* 힌트: 제거 가능한 조합을 흰 점선 테두리로 강조 */
@@ -118,31 +117,6 @@ select {
   outline: 3px dashed #ffffff;
   outline-offset: 3px;
   box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.55);
-  animation: block-hint-pulse 700ms ease-in-out infinite alternate;
-}
-
-@keyframes block-hint-pulse {
-  from {
-    outline-offset: 2px;
-  }
-  to {
-    outline-offset: 5px;
-  }
-}
-
-@keyframes block-selected-pulse {
-  from {
-    box-shadow:
-      0 0 0 3px var(--panel),
-      0 0 0 6px var(--accent),
-      0 16px 30px rgba(17, 24, 39, 0.38);
-  }
-  to {
-    box-shadow:
-      0 0 0 3px var(--panel),
-      0 0 0 9px var(--accent),
-      0 18px 34px rgba(17, 24, 39, 0.45);
-  }
 }
 
 .block-style-jelly {
@@ -218,11 +192,10 @@ select {
   ), 6rem);
 }
 
-/* 특수블럭(폭탄): 강조 테두리 + 우상단 아이콘 배지 */
+/* 특수블럭(폭탄): 강한 흰색 외곽 + accent 글로우로 한눈에 구분 */
 .has-power {
   z-index: 3;
   border-width: 0;
-  outline: none;
 }
 
 /* Block Design 미리보기: 버튼이 작아 radius/인셋을 줄임 */
@@ -325,172 +298,25 @@ select {
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
-.block-move,
-.block-enter-active,
-.block-leave-active {
-  transition:
-    transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    opacity 360ms ease,
-    filter 360ms ease;
-}
-
-.board-grid.is-falling .block-move,
-.board-grid.is-falling .block-enter-active {
-  transition:
-    transform 1000ms cubic-bezier(0.18, 0.84, 0.24, 1),
-    opacity 480ms ease,
-    filter 480ms ease;
-}
-
-.board-grid.is-swapping .block-move {
-  transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* 숫자 모드: 사라질 때 크기 축소 없이 (회전/스케일 제거) */
-.board-grid.numbers-board .block-leave-active {
-  transition: opacity 150ms ease;
-}
-.board-grid.numbers-board .block-leave-to {
-  transform: none;
-  opacity: 0;
-}
-
-.block-enter-from {
-  opacity: 0;
-  transform: translateY(calc(var(--drop, 1) * -116%)) scale(0.92);
-  filter: brightness(1.22);
-}
-
-.block-leave-to {
-  opacity: 0;
-  transform: scale(0.55) rotate(8deg);
-  filter: brightness(1.4);
-}
-
+/* leave는 즉시 — leave-active가 적용되는 순간부터 opacity:0이라 작아진 잔상이 보이지 않는다 */
 .block-leave-active {
   position: absolute;
   z-index: 0;
-}
-
-.block-clear-jelly,
-.block-clear-card,
-.block-clear-tile,
-.block-clear-transparent,
-.block-fade-jelly,
-.block-fade-card,
-.block-fade-tile,
-.block-fade-transparent {
-  z-index: 2;
-}
-
-.block-clear-jelly {
-  animation: jelly-clear 1000ms ease-in-out infinite alternate;
-}
-
-.block-fade-jelly {
   opacity: 0;
-  transform: translateY(12px) scale(0.56) skewX(-3deg);
-  transition:
-    opacity 700ms ease,
-    transform 700ms ease,
-    filter 700ms ease;
-  filter: blur(1.5px) brightness(1.25) saturate(1.1);
 }
 
-.block-clear-card {
-  animation: card-clear 1000ms ease-in-out infinite alternate;
+/* 낙하 효과: 살아남은 위 블럭은 아래로 이동(FLIP), 새 블럭은 위에서 등장 */
+.block-move,
+.block-enter-active {
+  transition: transform 600ms cubic-bezier(0.18, 0.84, 0.24, 1);
 }
-
-.block-fade-card {
-  opacity: 0;
-  transform: translateY(10px) rotate(-9deg) scale(0.72);
-  transition:
-    opacity 700ms ease,
-    transform 700ms ease,
-    filter 700ms ease;
-  filter: brightness(1.2) contrast(1.2);
+.block-enter-from {
+  /* --drop = 그 컬럼에서 비워진 칸 수. 빈 칸이 많을수록 더 위에서 떨어진다 */
+  transform: translateY(calc(var(--drop, 1) * -116%));
 }
-
-.block-clear-tile {
-  animation: tile-clear 1000ms steps(2, end) infinite alternate;
-}
-
-.block-fade-tile {
-  opacity: 0;
-  transform: scale(0.5) rotate(4deg);
-  transition:
-    opacity 700ms ease,
-    transform 700ms ease,
-    filter 700ms ease;
-  filter: grayscale(1) brightness(1.15);
-}
-
-.block-clear-transparent {
-  animation: transparent-clear 1000ms ease-in-out infinite alternate;
-}
-
-.block-fade-transparent {
-  opacity: 0;
-  transform: scale(0.5);
-  transition:
-    opacity 700ms ease,
-    transform 700ms ease;
-}
-
-@keyframes transparent-clear {
-  from {
-    transform: scale(1);
-    opacity: 1;
-  }
-  to {
-    transform: scale(1.18);
-    opacity: 0.55;
-  }
-}
-
-@keyframes jelly-clear {
-  from {
-    transform: scale(1) translateY(0);
-    filter: brightness(1) saturate(1);
-    box-shadow: 0 14px 28px rgba(17, 24, 39, 0.16);
-  }
-  to {
-    transform: scale(1.06) translateY(-3px);
-    filter: brightness(1.45) saturate(1.35);
-    box-shadow:
-      0 0 0 4px rgba(255, 255, 255, 0.75),
-      0 0 30px rgba(255, 255, 255, 0.45);
-  }
-}
-
-@keyframes card-clear {
-  from {
-    transform: scale(1) rotate(0deg);
-    filter: brightness(1) contrast(1);
-    box-shadow:
-      inset 0 -5px 0 rgba(15, 23, 42, 0.12),
-      0 10px 20px rgba(17, 24, 39, 0.12);
-  }
-  to {
-    transform: scale(1.05) rotate(-2deg);
-    filter: brightness(1.32) contrast(1.08);
-    box-shadow:
-      inset 0 -5px 0 rgba(15, 23, 42, 0.12),
-      0 0 0 4px rgba(255, 255, 255, 0.85),
-      0 0 24px rgba(15, 23, 42, 0.16);
-  }
-}
-
-@keyframes tile-clear {
-  from {
-    transform: scale(1);
-    filter: grayscale(0) brightness(1);
-  }
-  to {
-    transform: scale(1.03) translateY(-1px);
-    filter: grayscale(1) brightness(1.35);
-    box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.35);
-  }
+.board-grid.is-falling .block-move,
+.board-grid.is-falling .block-enter-active {
+  transition: transform 800ms cubic-bezier(0.18, 0.84, 0.24, 1);
 }
 
 /* 모바일 탭의 '게임하기' 강조 (CTA 글로우 펄스) */
@@ -514,64 +340,6 @@ select {
 .app-board {
   padding: 10px;
   position: relative;
-}
-
-/* 폭탄 발동 이펙트 빔/폭발 (보드 위 오버레이) */
-.fx-beam {
-  position: absolute;
-  z-index: 9;
-  pointer-events: none;
-  border-radius: 8px;
-  mix-blend-mode: screen;
-}
-/* 가로/세로: 얇은 코어 라인이 두께로 부풀었다 사라지는 충격 라인 */
-.fx-row {
-  background: linear-gradient(180deg, transparent, rgba(253, 224, 71, 0.9), #fff, rgba(253, 224, 71, 0.9), transparent);
-  box-shadow: 0 0 18px 6px rgba(253, 224, 71, 0.7);
-  transform-origin: center;
-  animation: fx-line-h 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-.fx-col {
-  background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.9), #fff, rgba(103, 232, 249, 0.9), transparent);
-  box-shadow: 0 0 18px 6px rgba(103, 232, 249, 0.7);
-  transform-origin: center;
-  animation: fx-line-v 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-/* 영역: 채운 원이 아니라 바깥으로 퍼지는 충격파 링 */
-.fx-blast {
-  border-radius: 50%;
-  background: transparent;
-  border: 6px solid #fff;
-  box-shadow:
-    0 0 30px 10px rgba(251, 146, 60, 0.7),
-    inset 0 0 20px 4px rgba(251, 146, 60, 0.6);
-  transform-origin: center;
-  animation: fx-ring 600ms ease-out forwards;
-}
-/* 전체: 보드 전체 화이트 플래시 */
-.fx-all {
-  background: #fff;
-  border-radius: 14px;
-  animation: fx-flash 620ms ease-out forwards;
-}
-@keyframes fx-line-h {
-  0% { transform: scaleY(0.15); opacity: 0.4; }
-  35% { transform: scaleY(1.4); opacity: 1; }
-  100% { transform: scaleY(0.6); opacity: 0; }
-}
-@keyframes fx-line-v {
-  0% { transform: scaleX(0.15); opacity: 0.4; }
-  35% { transform: scaleX(1.4); opacity: 1; }
-  100% { transform: scaleX(0.6); opacity: 0; }
-}
-@keyframes fx-ring {
-  0% { transform: scale(0.3); opacity: 1; }
-  100% { transform: scale(1.25); opacity: 0; }
-}
-@keyframes fx-flash {
-  0% { opacity: 0; }
-  20% { opacity: 0.92; }
-  100% { opacity: 0; }
 }
 
 /* 데스크탑 전체화면: 게임 영역을 화면 전체로 */

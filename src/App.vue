@@ -112,7 +112,6 @@ function measureCell() {
   }
 }
 let answerTimer: number | undefined;
-let answerStartRects: Array<DOMRect | null> = [];
 const remoteUrl = ref(localStorage.getItem('matchit-data-url') || localPackUrl);
 const board = ref<Block[]>([]);
 const selectedIndexes = ref<number[]>([]);
@@ -130,8 +129,6 @@ const levelStats = ref<Record<number, { score: number; solved: number }>>({});
 const message = ref('목표 블럭을 순서대로 누르세요.');
 const loading = ref(false);
 const isResolving = ref(false);
-const clearingIndexes = ref<number[]>([]);
-const fadingIndexes = ref<number[]>([]);
 const hintIndexes = ref<number[]>([]);
 // 숫자 모드: 사라지는 블럭이 합쳐지는 칸으로 모이는 인라인 트랜스폼 (index -> style)
 const gatherStyles = ref<Map<number, Record<string, string>>>(new Map());
@@ -777,8 +774,6 @@ function resetGame(keepScore = false, keepStage = false) {
   board.value = seededBlocks();
   selectedIndexes.value = [];
   swapFirstIndex.value = null;
-  clearingIndexes.value = [];
-  fadingIndexes.value = [];
   draggedIndex.value = null;
   motionPhase.value = 'idle';
   combo.value = 1;
@@ -1207,12 +1202,6 @@ async function resolveMatch(item: LessonItem, indexes: number[]) {
   if (showAnswer.value) {
     await sleep(160);
   } else {
-    clearingIndexes.value = [...indexes];
-    await sleep(1000);
-    fadingIndexes.value = [...indexes];
-    await sleep(700);
-    clearingIndexes.value = [];
-    fadingIndexes.value = [];
   }
   motionPhase.value = 'fall';
   applyGravity(indexes);
@@ -1347,17 +1336,9 @@ async function resolveCollect(indexes: number[], item: LessonItem, swapCandidate
   }
   // 정답표시 OFF일 때만 제자리 번쩍임/페이드. ON이면 블럭이 팝업으로 이동만 하고 바로 제거.
   if (showAnswer.value) {
-    // 셀을 페이드시킨 뒤 제거해야 leave 애니메이션에서 좌상단으로 튀는 잔상이 안 보임
-    fadingIndexes.value = [...removeIdx];
-    await sleep(360);
-    fadingIndexes.value = [];
+    // 정답팝업으로 슬라이드되는 동안 잠깐 대기. fade는 적용하지 않음(복제된 슬롯이 팝업으로 이동, 원본은 leave로 사라짐)
+    await sleep(160);
   } else {
-    clearingIndexes.value = [...removeIdx];
-    await sleep(1000);
-    fadingIndexes.value = [...removeIdx];
-    await sleep(700);
-    clearingIndexes.value = [];
-    fadingIndexes.value = [];
   }
   motionPhase.value = 'fall';
   applyGravity(removeIdx);
@@ -1467,7 +1448,6 @@ async function detonate(startIndexes: number[]) {
   const queue = [...startIndexes];
   while (queue.length) {
     const i = queue.shift()!;
-    if (board.value[i]?.power) pushBeam(board.value[i]!.power!, i); // 발동 폭탄마다 빔/폭발 이펙트
     for (const c of getPowerArea(i)) {
       if (!toRemove.has(c)) {
         toRemove.add(c);
@@ -1484,15 +1464,6 @@ async function detonate(startIndexes: number[]) {
   message.value = `💥 ${idx.length}개 제거!`;
   clearSelection();
   swapFirstIndex.value = null;
-  // 빔 스윕 연출 → 제거 → 낙하
-  await sleep(420);
-  clearingIndexes.value = [...idx];
-  await sleep(360);
-  fadingIndexes.value = [...idx];
-  await sleep(420);
-  clearingIndexes.value = [];
-  fadingIndexes.value = [];
-  effectBeams.value = [];
   motionPhase.value = 'fall';
   applyGravity(idx);
   await sleep(1000);
@@ -1505,42 +1476,6 @@ async function detonate(startIndexes: number[]) {
 // 폭탄 블럭의 외형(토큰 자체를 폭탄 아이콘으로 교체)
 function powerToken(power: PowerKind): string {
   return power === 'row' ? '↔️' : power === 'col' ? '↕️' : power === 'area' ? '💣' : '🌈';
-}
-
-// 발동 이펙트 빔(보드 위 오버레이). 셀 크기·간격(0.5rem=8px)으로 위치 계산.
-const GRID_GAP = 8;
-const effectBeams = ref<Array<{ id: number; cls: string; style: Record<string, string> }>>([]);
-let beamSeq = 0;
-// 빔/폭발 위치는 산식이 아니라 실제 셀 DOM 좌표 기준(보드 컨테이너 상대)으로 계산해야 정확하다.
-function pushBeam(power: PowerKind, index: number) {
-  const cell = boardEl.value?.querySelector<HTMLElement>(`[data-cell="${index}"]`);
-  if (!cell || !boardEl.value) return;
-  const cr = cell.getBoundingClientRect();
-  const br = boardEl.value.getBoundingClientRect();
-  const top = cr.top - br.top;
-  const left = cr.left - br.left;
-  const w = cr.width;
-  const h = cr.height;
-  let cls = 'fx-row';
-  let style: Record<string, string> = {};
-  if (power === 'row') {
-    style = { top: `${top + h / 4}px`, height: `${h / 2}px`, left: '0', right: '0' };
-  } else if (power === 'col') {
-    cls = 'fx-col';
-    style = { left: `${left + w / 4}px`, width: `${w / 2}px`, top: '0', bottom: '0' };
-  } else if (power === 'area') {
-    cls = 'fx-blast';
-    style = {
-      top: `${top - h - GRID_GAP}px`,
-      left: `${left - w - GRID_GAP}px`,
-      width: `${w * 3 + GRID_GAP * 2}px`,
-      height: `${h * 3 + GRID_GAP * 2}px`,
-    };
-  } else {
-    cls = 'fx-all';
-    style = { inset: '0' };
-  }
-  effectBeams.value = [...effectBeams.value, { id: (beamSeq += 1), cls, style }];
 }
 
 // 정답표시 OFF: 보드의 모든 완성 덩어리를 동시에 제거 → 한 번에 낙하(여러 답 동시 깨짐)
@@ -1563,12 +1498,6 @@ async function resolveCollectBatch(matches: Array<{ indexes: number[]; item: Les
   // 특수블럭은 제거하지 않고 교체 칸에 남긴다(블럭 자체를 폭탄으로 교체)
   for (const sp of specials) board.value[sp.keepIndex] = { ...board.value[sp.keepIndex]!, power: sp.power, token: powerToken(sp.power) };
   clearSelection();
-  clearingIndexes.value = [...all];
-  await sleep(1000);
-  fadingIndexes.value = [...all];
-  await sleep(700);
-  clearingIndexes.value = [];
-  fadingIndexes.value = [];
   motionPhase.value = 'fall';
   applyGravity(all);
   if (mode.value === 'endless') advanceEndlessStageIfReady();
@@ -1604,17 +1533,9 @@ async function cascadeClear() {
     for (const sp of specials) board.value[sp.keepIndex] = { ...board.value[sp.keepIndex]!, power: sp.power, token: powerToken(sp.power) };
     if (showAnswer.value) {
       showAnswerPopup(round[0].item, round[0].indexes);
-      // 셀을 페이드시킨 뒤 제거해야 leave 애니메이션에서 좌상단으로 튀는 잔상이 안 보임
-      fadingIndexes.value = [...idx];
-      await sleep(360);
-      fadingIndexes.value = [];
+      // 정답팝업으로 슬라이드되는 동안 잠깐 대기. fade는 적용하지 않음(슬라이드 복제본이 팝업으로 이동, 원본은 leave로 사라짐)
+      await sleep(160);
     } else {
-      clearingIndexes.value = [...idx];
-      await sleep(600);
-      fadingIndexes.value = [...idx];
-      await sleep(400);
-      clearingIndexes.value = [];
-      fadingIndexes.value = [];
     }
     motionPhase.value = 'fall';
     applyGravity(idx);
@@ -2193,45 +2114,18 @@ function setShowAnswer(on: boolean) {
 
 function showAnswerPopup(item: LessonItem, indexes: number[]) {
   if (gameKind.value !== 'lesson' || !showAnswer.value) return;
-  // 정답이 된 보드 블럭들의 화면 위치를 먼저 기록 (제거되기 전)
-  // 보드 셀만 잡는다(정답 팝업 슬롯·드래그 고스트도 .block-face라 좁히지 않으면 인덱스가 어긋남)
-  const buttons = boardEl.value?.querySelectorAll<HTMLElement>('.block-face[data-cell]');
-  // 각 정답 슬롯(item.tokens 순서)을 같은 글자의 보드 셀에서 출발시킨다(가까운 순 아님)
+  // 슬롯 색을 실제 매치된 보드 블럭 색과 일치
   const remaining = [...indexes];
-  const colors: string[] = [];
-  answerStartRects = item.tokens.map((token) => {
+  const colors: string[] = item.tokens.map((token) => {
     let pos = remaining.findIndex((idx) => board.value[idx]?.token === token);
-    if (pos < 0) pos = 0; // 같은 글자가 없으면(예외) 남은 것 중 앞에서
+    if (pos < 0) pos = 0;
     const idx = remaining.splice(pos, 1)[0];
-    colors.push(idx != null ? (board.value[idx]?.color ?? colorForToken(token)) : colorForToken(token));
-    return idx != null ? (buttons?.[idx]?.getBoundingClientRect() ?? null) : null;
+    return idx != null ? (board.value[idx]?.color ?? colorForToken(token)) : colorForToken(token);
   });
-  answerSlotColors.value = colors; // 팝업 색을 실제 보드 블럭 색과 일치
-  // 팝업 블럭 크기를 현재 보드 블럭 크기에 맞춤 (보드 크기에 비례)
-  const cellWidth = answerStartRects.find((r) => r)?.width;
-  answerSlotSize.value = cellWidth ? Math.round(cellWidth) : 48;
+  answerSlotColors.value = colors;
+  // 팝업 블럭 크기를 보드 셀 크기에 맞춤
+  answerSlotSize.value = cellW.value ? Math.round(cellW.value) : 48;
   answerItem.value = item;
-  // 팝업 슬롯이 그려진 뒤, 각 슬롯을 원래 보드 위치에서 제자리로 슬라이드
-  void nextTick().then(() => {
-    const slots = answerEl.value?.querySelectorAll<HTMLElement>('.answer-slot');
-    if (!slots) return;
-    slots.forEach((el, i) => {
-      const start = answerStartRects[i];
-      if (!start) return;
-      const end = el.getBoundingClientRect();
-      const dx = start.left - end.left;
-      const dy = start.top - end.top;
-      const sx = end.width ? start.width / end.width : 1;
-      const sy = end.height ? start.height / end.height : 1;
-      el.animate(
-        [
-          { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})` },
-          { transform: 'translate(0, 0) scale(1, 1)' },
-        ],
-        { duration: 440, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
-      );
-    });
-  });
   window.clearTimeout(answerTimer);
   answerTimer = window.setTimeout(() => {
     answerItem.value = null;
@@ -2870,14 +2764,12 @@ onBeforeUnmount(() => {
             <button
               v-for="(block, index) in board"
               :key="block.id"
-              class="block-face border-2 p-1 text-center transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-cyan-300 disabled:cursor-wait"
+              class="block-face border-2 p-1 text-center focus:outline-none focus:ring-4 focus:ring-cyan-300 disabled:cursor-wait"
               :class="[
                 wideBlocks ? 'aspect-[3/2]' : 'aspect-square',
                 `block-style-${blockStyle}`,
                 selectedIndexes.includes(index) ? 'block-selected' : 'border-white/70',
                 hintIndexes.includes(index) ? 'block-hint' : '',
-                clearingIndexes.includes(index) ? `block-clear-${blockStyle}` : '',
-                fadingIndexes.includes(index) ? `block-fade-${blockStyle}` : '',
                 draggedIndex === index ? 'opacity-60' : '',
                 block.power ? 'has-power' : '',
               ]"
@@ -2892,7 +2784,6 @@ onBeforeUnmount(() => {
               </span>
             </button>
           </TransitionGroup>
-          <div v-for="fx in effectBeams" :key="fx.id" class="fx-beam" :class="fx.cls" :style="fx.style"></div>
           </div>
 
           <div
