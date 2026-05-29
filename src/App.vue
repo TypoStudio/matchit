@@ -3095,7 +3095,7 @@ onBeforeUnmount(() => {
                   <span class="text-sm font-black text-[var(--accent)]">{{ matchedCount }} / {{ clearedBlocks }}</span>
                 </div>
                 <div v-if="showProgress" class="flex flex-col items-end leading-tight">
-                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · {{ modeLabel }} · Lv{{ mode === 'endless' ? endlessCurrentLevel : selectedLevel }} · 스테이지 {{ displayStage }}/{{ mode === 'endless' ? endlessStageCount : stageCount }}</span>
+                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · {{ modeLabel }} · {{ levelLabel(mode === 'endless' ? endlessCurrentLevel : selectedLevel) }} · 스테이지 {{ displayStage }}/{{ mode === 'endless' ? endlessStageCount : stageCount }}</span>
                   <span class="text-sm font-black text-[var(--accent)]">{{ levelProgress.current }} / {{ levelProgress.total }}</span>
                 </div>
               </div>

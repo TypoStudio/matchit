@@ -114,9 +114,10 @@ select {
 /* 힌트: 제거 가능한 조합을 흰 점선 테두리로 강조 */
 .block-hint {
   z-index: 4;
-  outline: 3px dashed #ffffff;
+  /* 테마색(--ink)으로 점선·글로우 → 밝은/어두운 테마 모두에서 보임 */
+  outline: 3px dashed var(--ink);
   outline-offset: 3px;
-  box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 12px 3px color-mix(in srgb, var(--ink) 45%, transparent);
 }
 
 .block-style-jelly {
@@ -325,6 +326,19 @@ select {
   50% {
     box-shadow: 0 0 11px 1px var(--accent);
   }
+}
+
+/* 게임 영역(보드·목표·점수 등) 전체에서 텍스트 선택/콜아웃 차단.
+   자식까지 !important로 강제해 탭·드래그 시 보이지 않는 선택이 생기지 않게 함. (설정 패널의 입력칸은 제외) */
+.app-board,
+.app-board *,
+.app-game-panel,
+.app-game-panel *,
+.app-game-fullscreen,
+.app-game-fullscreen * {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none;
 }
 
 /* 가장자리 블럭의 선택/힌트 테두리가 잘리지 않도록 여유 */
