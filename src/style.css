@@ -346,21 +346,25 @@ select {
   overflow: hidden;
   background: var(--panel);
   padding: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 .app-game-fullscreen .app-board {
   flex: 1;
   min-height: 0;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  container-type: size;
 }
+/* 보드 폭을 가로·세로 가용 공간 중 작은 쪽에 맞춰 항상 정사각 셀 유지 (세로로 늘어나지 않음) */
 .app-game-fullscreen .board-grid {
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
+  width: min(100cqw, calc(100cqh * var(--board-ar, 1)));
+  height: auto;
   max-width: 100%;
-  aspect-ratio: 1 / 1;
+  max-height: 100%;
   margin: 0 auto;
 }
 
@@ -400,6 +404,9 @@ select {
     background: var(--panel);
     padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
       max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
   }
   .app-board {
     flex: 1;
@@ -408,5 +415,14 @@ select {
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    container-type: size;
+  }
+  /* 보드 폭을 가로·세로 가용 공간 중 작은 쪽에 맞춤 → 좁은 높이에서도 다 보이고, 긴 화면에서도 세로로 늘어나지 않음 */
+  .app-board .board-grid {
+    width: min(100cqw, calc(100cqh * var(--board-ar, 1)));
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
   }
 }

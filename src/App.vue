@@ -291,6 +291,18 @@ const collectableItems = computed(() =>
 const maxValue = computed(() => board.value.reduce((max, block) => Math.max(max, block?.value ?? 0), 0));
 // 토큰(글자)이 긴 팩(영문법·수학식)은 가로로 긴 블럭 사용
 const wideBlocks = computed(() => gameKind.value === 'lesson' && packWide.value[selectedPackId.value] === true);
+// 보드 종횡비(가로/세로) — 셀 모양(정사각 또는 3:2 넓은 블럭)을 반영. 높이 제약 화면에서 contain 맞춤에 사용.
+const boardAspect = computed(() => {
+  const cw = wideBlocks.value ? 3 : 1;
+  const ch = wideBlocks.value ? 2 : 1;
+  return `${cols.value * cw} / ${rows.value * ch}`;
+});
+// 종횡비 숫자값(가로/세로) — 높이 제약 화면에서 width = min(가로, 세로×비율) 계산용
+const boardAspectNum = computed(() => {
+  const cw = wideBlocks.value ? 3 : 1;
+  const ch = wideBlocks.value ? 2 : 1;
+  return (cols.value * cw) / (rows.value * ch);
+});
 // 현재 목표 문항(학습 모드)
 const goalItem = computed(() => {
   if (gameKind.value !== 'lesson' || continuous.value) return null;
@@ -3121,13 +3133,13 @@ onBeforeUnmount(() => {
             v-else
             name="block"
             tag="div"
-            class="board-grid grid gap-2 max-lg:w-full"
+            class="board-grid grid gap-2"
             :class="{
               'is-swapping': motionPhase === 'swap',
               'is-falling': motionPhase === 'fall',
               'numbers-board': gameKind === 'numbers',
             }"
-            :style="{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`, '--cell-w': `${cellW}px`, '--cell-h': `${cellH}px` }"
+            :style="{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`, aspectRatio: boardAspect, '--board-ar': boardAspectNum, '--cell-w': `${cellW}px`, '--cell-h': `${cellH}px` }"
           >
             <button
               v-for="(block, index) in board"
