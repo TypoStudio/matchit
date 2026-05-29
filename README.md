@@ -2,6 +2,9 @@
 
 학습 개념을 블럭 퍼즐 규칙으로 맞추는 Vue 3 + TypeScript + Tailwind CSS 정적 게임입니다.
 
+🎮 **플레이**: <https://typostudio.github.io/matchit/>
+📦 **학습팩 저장소**: <https://github.com/TypoStudio/matchit-packs> · 카탈로그 <https://typostudio.github.io/matchit-packs/packs.json>
+
 ## 기능
 
 - **출제 모드**: 한문제씩 / 연속 / 자유, 순서 선택·줄맞춤·모으기 풀이 방식
@@ -77,9 +80,4 @@ npm run build    # dist/ 정적 산출물
 | `random` | `true`면 보드를 정답 유도 없이 완전 무작위로 채움(모으기형) |
 | `levels` | `[{level,label,items}]`(단일 파일) 또는 `[{level,label,file}]`(레벨파일) |
 
-> 팩 작성·배포 상세와 폴더 구성은 [matchit-packs/README.md](packs/README.md)를 참고하세요. 새 팩/한자 데이터 생성 스크립트는 [scripts/](scripts/)에 있습니다.
-
-## 데이터 생성 스크립트
-
-- [scripts/build-hanja-pack.py](scripts/build-hanja-pack.py) — 한국어문회 배정한자 `.xls` → 급수별 한자 팩(레벨=급수, 라벨=급수명, 힌트=뜻·음).
-- [scripts/classify-math.py](scripts/classify-math.py) — 수학 공식을 교육과정 과목별(중등·공통수학·수학Ⅰ·수학Ⅱ·미적분·기하·확률과통계)로 재분류.
+> 전체 학습팩 목록·작성·배포 상세는 [matchit-packs 저장소](https://github.com/TypoStudio/matchit-packs#readme)를 참고하세요.
