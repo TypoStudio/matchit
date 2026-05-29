@@ -335,7 +335,9 @@ select {
 .app-game-panel,
 .app-game-panel *,
 .app-game-fullscreen,
-.app-game-fullscreen * {
+.app-game-fullscreen *,
+.answer-popup,
+.answer-popup * {
   -webkit-user-select: none !important;
   user-select: none !important;
   -webkit-touch-callout: none;

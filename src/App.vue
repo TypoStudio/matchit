@@ -3289,6 +3289,7 @@ onBeforeUnmount(() => {
     <Transition name="answer-fade">
     <div
       v-if="answerItem"
+      class="answer-popup"
       :class="continuous
         ? 'fixed inset-x-0 top-[4.4rem] z-40 flex justify-center px-3 pointer-events-none'
         : 'fixed inset-0 z-40 flex items-center justify-center bg-black/55 px-6'"
