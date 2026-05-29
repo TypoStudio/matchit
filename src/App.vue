@@ -4,17 +4,12 @@ import type { Block, BlockStyleName, GameKind, GameMode, LessonItem, LessonPack,
 
 const cols = ref(Number(localStorage.getItem('matchit-cols')) || 7);
 const rows = ref(Number(localStorage.getItem('matchit-rows')) || 7);
-const packBoardSizes: Record<string, { cols: number; rows: number }> = {
-  'english-grammar': { cols: 5, rows: 7 },
-  'math-formula': { cols: 5, rows: 7 },
-};
-// 토큰(글자)이 긴 팩은 가로로 1.5배 긴 블럭 사용
-const wideBlockPacks = new Set(['english-grammar', 'math-formula']);
-// 영어 단어 팩(학년별): 철자/뜻 양방향 모드. id가 english-word 로 시작.
-const isWordPackId = (id: string) => id.startsWith('english-word');
 const appVersion = `v${__APP_VERSION__}`;
 const baseUrl = import.meta.env.BASE_URL;
-const localPackUrl = `${baseUrl}data/lesson-packs.json`;
+// 기본 학습팩 카탈로그. 로컬 개발에선 같은 저장소의 packs/, 배포 후엔 matchit-packs(GitHub Pages).
+const PACK_CATALOG_URL = import.meta.env.PROD
+  ? 'https://typostudio.github.io/matchit-packs/packs.json'
+  : '/packs/packs.json';
 const palette = [
   '#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef', '#eab308',
   '#3b82f6', '#ef4444', '#10b981', '#a855f7', '#f43f5e', '#0ea5e9', '#65a30d', '#fb923c',
@@ -65,16 +60,25 @@ const packs = ref<LessonPack[]>([]);
 const selectedPackId = ref('');
 const selectedLevel = ref(1);
 const lessonItems = ref<LessonItem[]>([]); // 현재 레벨 파일의 문제
+const currentRaw = ref<unknown[]>([]); // 현재 레벨의 원본 배열(방향 전환 시 재구성용)
 const rawWordEntries = ref<Array<{ word: string; meaning: string; hint?: string }>>([]); // 현재 레벨 영어단어 원본
 const wordDirection = ref<'spell' | 'meaning'>((localStorage.getItem('matchit-word-direction') as 'spell' | 'meaning') || 'spell');
 // 외부/통합 팩: 한 파일에 들어온 레벨 문항을 메모리에 보관(packId -> level -> 원본 문항 배열)
 const inlineLevels = ref<Record<string, Record<number, unknown[]>>>({});
 const packBases = ref<Record<string, string>>({}); // packId -> 외부 레벨 파일 기준 URL
+const packLevelFiles = ref<Record<string, Record<number, string>>>({}); // packId -> level -> 레벨 파일 URL
+const packLevelLabels = ref<Record<string, Record<number, string>>>({}); // packId -> level -> 표시 라벨
 const packFormats = ref<Record<string, 'word' | 'lesson'>>({}); // packId -> 문항 형식(명시/감지된 경우)
 const packRandoms = ref<Record<string, boolean>>({}); // packId -> 완전 무작위 채움 여부
-// word 형식 여부: 외부 팩은 packFormats 우선, 없으면 기존 id 규칙
+// 메타정보로 구동(하드코딩 제거): 보드 사이즈·넓은 블럭·블럭 디자인·양방향·방향 라벨
+const packBoards = ref<Record<string, { cols: number; rows: number }>>({}); // packId -> 기본 보드 사이즈
+const packWide = ref<Record<string, boolean>>({}); // packId -> 가로로 긴 블럭
+const packBlockStyles = ref<Record<string, BlockStyleName>>({}); // packId -> 기본 블럭 디자인
+const packBidi = ref<Record<string, boolean>>({}); // packId -> 양방향(출제 방향 토글) 지원
+const packDirections = ref<Record<string, { asis?: string; reverse?: string }>>({}); // packId -> 방향 버튼 라벨
+// word 형식 여부: 메타(format)로만 판단
 function isWordFmt(packId: string) {
-  return packFormats.value[packId] ? packFormats.value[packId] === 'word' : isWordPackId(packId);
+  return packFormats.value[packId] === 'word';
 }
 const STAGE_SIZE = 10; // 한 스테이지의 문제 수
 const currentStage = ref(1); // 현재 스테이지(1-based)
@@ -112,7 +116,12 @@ function measureCell() {
   }
 }
 let answerTimer: number | undefined;
-const remoteUrl = ref(localStorage.getItem('matchit-data-url') || localPackUrl);
+// 사용자가 추가한 외부 학습팩 URL 목록(로컬 저장만). 기본 카탈로그와 합쳐서 보여준다.
+const extraPacks = ref<string[]>(readExtraPacks());
+const showPackManager = ref(false); // 추가팩 관리 팝업
+const newPackUrl = ref('');
+const showResetScoreConfirm = ref(false); // 점수 초기화 확인 팝업
+const showClearDataConfirm = ref(false); // 로컬 데이터 삭제 확인 팝업
 const board = ref<Block[]>([]);
 const selectedIndexes = ref<number[]>([]);
 const score = ref(0);
@@ -146,13 +155,17 @@ const saveOnExit = ref(true); // 나가기 시 저장(다음에 이어서) 여�
 const gameFullscreen = ref(false);
 
 const activePack = computed(() => packs.value.find((pack) => pack.id === selectedPackId.value));
-const isWordPack = computed(() => isWordFmt(selectedPackId.value));
+// 양방향(출제 방향 토글) 지원: 단어팩이거나 메타에 bidirectional 지정된 팩
+const isBidi = computed(() => isWordFmt(selectedPackId.value) || packBidi.value[selectedPackId.value] === true);
+// 방향 버튼 라벨: 'spell' 버튼 = 원본 그대로(asis), 'meaning' 버튼 = 역방향(reverse)
+const dirLabelAsis = computed(() => isWordFmt(selectedPackId.value) ? '뜻 → 철자' : (packDirections.value[selectedPackId.value]?.asis ?? '문제 → 답'));
+const dirLabelReverse = computed(() => isWordFmt(selectedPackId.value) ? '단어 → 뜻' : (packDirections.value[selectedPackId.value]?.reverse ?? '답 → 문제'));
 const isRandomPack = computed(() => packRandoms.value[selectedPackId.value] === true);
 // 특수블럭(폭탄): 자유모드 + 모으기(collect) + 학습팩에서만 생성·발동
 const specialEnabled = computed(() => mode.value === 'free' && solveMode.value === 'collect' && gameKind.value === 'lesson');
 const levels = computed(() => activePack.value?.levels ?? []);
 function levelLabel(level: number) {
-  return `Lv ${level}`;
+  return packLevelLabels.value[selectedPackId.value]?.[level] ?? `Lv ${level}`;
 }
 // GA4 이벤트 전송 — pack/level/mode/solve_mode/game_kind를 공통 주입
 function track(name: string, params: Record<string, unknown> = {}) {
@@ -189,6 +202,23 @@ function buildWordItems(raw: Array<{ word: string; meaning: string; hint?: strin
       hint: `${word} = ${meaning}${extra}`,
     };
   });
+}
+// 일반(lesson) 팩 역방향: 답(label)을 문제로 보여주고, 원래 문제(prompt)를 정답 블럭으로.
+function reverseLessonItems(raw: LessonItem[]): LessonItem[] {
+  return raw.map((it) => ({
+    ...it,
+    id: `${it.id}-rev`,
+    label: it.prompt,
+    prompt: it.label,
+    tokens: [...String(it.prompt).replace(/\s/g, '')],
+  }));
+}
+// 팩 형식·방향에 맞춰 원본 배열 → 표시용 LessonItem 배열
+function buildLevelItems(packId: string, raw: unknown[], dir: 'spell' | 'meaning'): LessonItem[] {
+  if (!raw.length) return [];
+  if (isWordFmt(packId)) return buildWordItems(raw as Array<{ word: string; meaning: string; hint?: string }>, dir);
+  if (packBidi.value[packId] && dir === 'meaning') return reverseLessonItems(raw as LessonItem[]);
+  return raw as LessonItem[];
 }
 // 레벨을 10문제씩 스테이지로 분할
 const stageCount = computed(() => Math.max(1, Math.ceil(lessonItems.value.length / STAGE_SIZE)));
@@ -260,7 +290,7 @@ const collectableItems = computed(() =>
 );
 const maxValue = computed(() => board.value.reduce((max, block) => Math.max(max, block?.value ?? 0), 0));
 // 토큰(글자)이 긴 팩(영문법·수학식)은 가로로 긴 블럭 사용
-const wideBlocks = computed(() => gameKind.value === 'lesson' && wideBlockPacks.has(selectedPackId.value));
+const wideBlocks = computed(() => gameKind.value === 'lesson' && packWide.value[selectedPackId.value] === true);
 // 현재 목표 문항(학습 모드)
 const goalItem = computed(() => {
   if (gameKind.value !== 'lesson' || continuous.value) return null;
@@ -313,6 +343,49 @@ function blockId() {
 
 function shuffle<T>(items: T[]) {
   return [...items].sort(() => Math.random() - 0.5);
+}
+
+// 레벨 문제를 무작위 순서로 출제하되, 그 순서를 localStorage에 저장해 재시작 시 동일하게 복원.
+function orderKey(packId: string, level: number) {
+  return `matchit-order-${packId}-${level}`;
+}
+function stableItemKey(it: unknown, i: number): string {
+  const o = it as { id?: unknown; word?: unknown };
+  return String(o?.id ?? o?.word ?? i);
+}
+function applyStoredOrder(packId: string, level: number, raw: unknown[]): unknown[] {
+  if (raw.length <= 1) return raw.slice();
+  const keyOf = new Map<unknown, string>();
+  raw.forEach((it, i) => keyOf.set(it, stableItemKey(it, i)));
+  const byKey = new Map<string, unknown>();
+  for (const it of raw) {
+    const k = keyOf.get(it) as string;
+    if (!byKey.has(k)) byKey.set(k, it);
+  }
+  let savedKeys: string[] | null = null;
+  try {
+    const v = JSON.parse(localStorage.getItem(orderKey(packId, level)) || 'null');
+    if (Array.isArray(v)) savedKeys = v.map(String);
+  } catch { savedKeys = null; }
+
+  let ordered: unknown[];
+  if (savedKeys) {
+    const used = new Set<string>();
+    ordered = [];
+    for (const k of savedKeys) {
+      const it = byKey.get(k);
+      if (it !== undefined && !used.has(k)) { ordered.push(it); used.add(k); }
+    }
+    const rest = raw.filter((it) => !used.has(keyOf.get(it) as string)); // 저장 이후 추가된 문제
+    if (rest.length) ordered.push(...shuffle(rest));
+    if (!ordered.length) ordered = shuffle(raw);
+  } else {
+    ordered = shuffle(raw);
+  }
+  try {
+    localStorage.setItem(orderKey(packId, level), JSON.stringify(ordered.map((it) => keyOf.get(it) as string)));
+  } catch { /* 저장 용량 초과 등은 무시 */ }
+  return ordered;
 }
 
 function refreshSampleItems() {
@@ -762,6 +835,8 @@ function goNextStageAfterClear() {
   }
 }
 function resetGame(keepScore = false, keepStage = false) {
+  // 진행 중인 매치/스왑/낙하 async를 즉시 무효화 — 새 보드 위로 잔여 갱신이 흘러들지 않게
+  abortInflight();
   // 진행 중인 게임은 재시작 시 복원 대상(나가기에서 미저장 선택 시 해제)
   localStorage.setItem('matchit-resume', '1');
   stageStartAt = Date.now(); // 새 보드 = 스테이지 체류시간 측정 시작점
@@ -803,8 +878,9 @@ function resetGame(keepScore = false, keepStage = false) {
 async function fetchLevelRaw(packId: string, level: number): Promise<unknown[]> {
   const inline = inlineLevels.value[packId]?.[level];
   if (inline) return inline;
+  const fileUrl = packLevelFiles.value[packId]?.[level]; // 레벨별 명시 파일 URL
   const base = packBases.value[packId];
-  const url = base ? `${base}${level}.json` : `${baseUrl}data/packs/${packId}/${level}.json`;
+  const url = fileUrl ?? (base ? `${base}${level}.json` : `${baseUrl}data/packs/${packId}/${level}.json`);
   const res = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const raw = await res.json();
@@ -820,7 +896,8 @@ function detectFormat(items: unknown[]): 'word' | 'lesson' {
 // 연속 모드용: 팩의 모든 레벨 문제를 이어붙여 풀 구성(레벨별 길이도 기록)
 let fullKey = '';
 async function loadFullPool(packId: string) {
-  const key = packId + '|' + (isWordFmt(packId) ? wordDirection.value : '');
+  const dirKey = isWordFmt(packId) || packBidi.value[packId] ? wordDirection.value : '';
+  const key = packId + '|' + dirKey;
   if (fullKey === key && fullItems.value.length) return; // 캐시
   const pack = packs.value.find((p) => p.id === packId);
   const all: LessonItem[] = [];
@@ -828,9 +905,8 @@ async function loadFullPool(packId: string) {
   for (const lv of pack?.levels ?? []) {
     try {
       const raw = await fetchLevelRaw(packId, lv);
-      const items = !raw.length ? [] : isWordFmt(packId)
-        ? buildWordItems(raw as Array<{ word: string; meaning: string; hint?: string }>, wordDirection.value)
-        : (raw as LessonItem[]);
+      const ordered = applyStoredOrder(packId, lv, raw); // 레벨별 저장된 무작위 순서 적용
+      const items = buildLevelItems(packId, ordered, wordDirection.value);
       all.push(...items);
       lens.push(items.length);
     } catch { lens.push(0); }
@@ -846,13 +922,10 @@ async function loadLevel(packId: string, level: number) {
   try {
     const raw = await fetchLevelRaw(packId, level);
     if (!Array.isArray(raw) || !raw.length) throw new Error('문제가 없습니다.');
-    if (isWordFmt(packId)) {
-      rawWordEntries.value = raw as Array<{ word: string; meaning: string; hint?: string }>;
-      lessonItems.value = buildWordItems(rawWordEntries.value, wordDirection.value);
-    } else {
-      rawWordEntries.value = [];
-      lessonItems.value = raw as LessonItem[];
-    }
+    const ordered = applyStoredOrder(packId, level, raw); // 무작위 순서(저장된 순서 있으면 복원)
+    currentRaw.value = ordered;
+    rawWordEntries.value = isWordFmt(packId) ? (ordered as Array<{ word: string; meaning: string; hint?: string }>) : [];
+    lessonItems.value = buildLevelItems(packId, ordered, wordDirection.value);
     loadClearedStages();
     loadLevelStats();
     currentStage.value = firstUnclearedStage(level); // 첫 미클리어 스테이지부터
@@ -876,16 +949,14 @@ function selectLevel(level: number) {
 //  (a) 팩 목록 배열  [{id,title,accent,levels:[1,2]}, ...]  (levels가 [{level,items}]면 통합 인라인)
 //  (b) 통합 단일 팩 객체  {id,title,levels:[{level,items}] | [1,2]}
 //  (c) 문항 배열만  [{word,meaning,...}] | [LessonItem]  → 1레벨짜리 임시 팩으로 래핑
-function ingestPackData(data: unknown): LessonPack[] {
-  inlineLevels.value = {};
-  packBases.value = {};
-  packFormats.value = {};
-  packRandoms.value = {};
+//  (d) 카탈로그 항목  {id,title,accent,base,levels:N}  → base + {level}.json 지연 로드
+// sourceUrl: 이 데이터를 가져온 URL(상대 base를 절대 URL로 해석하는 기준).
+function ingestPackData(data: unknown, sourceUrl: string): LessonPack[] {
   let rawPacks: Array<Record<string, unknown>>;
   if (Array.isArray(data)) {
     const first = data[0] as Record<string, unknown> | undefined;
     if (first && (first.levels !== undefined || (first.id && first.title))) {
-      rawPacks = data as Array<Record<string, unknown>>; // (a) 팩 목록
+      rawPacks = data as Array<Record<string, unknown>>; // (a) 팩 목록 / (d) 카탈로그
     } else {
       rawPacks = [{ id: 'custom', title: '불러온 문제', levels: [{ level: 1, items: data }] }]; // (c) 문항 배열
     }
@@ -902,48 +973,168 @@ function ingestPackData(data: unknown): LessonPack[] {
     const levelsRaw = p.levels;
     let levelNums: number[];
     if (Array.isArray(levelsRaw) && levelsRaw.length && typeof levelsRaw[0] === 'object') {
-      // 인라인 레벨 [{level, items}]
-      const map: Record<number, unknown[]> = {};
-      for (const lv of levelsRaw as Array<{ level: number; items?: unknown[] }>) {
-        map[Number(lv.level)] = Array.isArray(lv.items) ? lv.items : [];
+      // 레벨 객체 배열: { level, label?, items?(인라인) | file?(외부 파일) }
+      const inlineMap: Record<number, unknown[]> = {};
+      const fileMap: Record<number, string> = {};
+      const labelMap: Record<number, string> = {};
+      for (const lv of levelsRaw as Array<{ level: number; label?: string; items?: unknown[]; file?: string }>) {
+        const n = Number(lv.level);
+        if (Array.isArray(lv.items)) inlineMap[n] = lv.items;
+        else if (typeof lv.file === 'string') fileMap[n] = new URL(lv.file, sourceUrl).href;
+        if (typeof lv.label === 'string') labelMap[n] = lv.label;
       }
-      inlineLevels.value[id] = map;
-      levelNums = Object.keys(map).map(Number).sort((a, b) => a - b);
-      packFormats.value[id] = (p.format as 'word' | 'lesson') || detectFormat(map[levelNums[0]] ?? []);
+      if (Object.keys(inlineMap).length) inlineLevels.value[id] = inlineMap;
+      if (Object.keys(fileMap).length) packLevelFiles.value[id] = fileMap;
+      if (Object.keys(labelMap).length) packLevelLabels.value[id] = labelMap;
+      levelNums = [...new Set([...Object.keys(inlineMap), ...Object.keys(fileMap)].map(Number))].sort((a, b) => a - b);
+      const fmt = p.format === 'word' || p.format === 'lesson' ? (p.format as 'word' | 'lesson') : undefined;
+      if (fmt) packFormats.value[id] = fmt;
+      else if (levelNums.length && inlineMap[levelNums[0]]) packFormats.value[id] = detectFormat(inlineMap[levelNums[0]]);
     } else {
-      // 숫자 배열 = 외부 base 또는 기존 상대경로 참조
-      levelNums = Array.isArray(levelsRaw) ? (levelsRaw as number[]).map(Number) : [1];
-      if (typeof p.base === 'string') packBases.value[id] = p.base;
+      // 레벨수(숫자) 또는 레벨 번호 배열 → base + {level}.json 로 지연 로드
+      if (typeof levelsRaw === 'number') {
+        levelNums = Array.from({ length: levelsRaw }, (_, i) => i + 1);
+      } else if (Array.isArray(levelsRaw)) {
+        levelNums = (levelsRaw as number[]).map(Number);
+      } else {
+        levelNums = [1];
+      }
+      // 레벨 파일 기준 경로: base가 있으면 그것, 없으면 이 팩 파일과 같은 디렉터리. 절대 URL로 변환.
+      const base = typeof p.base === 'string' ? p.base : './';
+      packBases.value[id] = new URL(base, sourceUrl).href;
       if (p.format === 'word' || p.format === 'lesson') packFormats.value[id] = p.format;
     }
     if (p.random === true) packRandoms.value[id] = true;
+    // 메타 구동 옵션(하드코딩 대체)
+    if (p.board && typeof p.board === 'object') {
+      const b = p.board as { cols?: number; rows?: number };
+      if (b.cols && b.rows) packBoards.value[id] = { cols: Number(b.cols), rows: Number(b.rows) };
+    }
+    if (p.wide === true) packWide.value[id] = true;
+    if (typeof p.blockStyle === 'string') packBlockStyles.value[id] = p.blockStyle as BlockStyleName;
+    if (p.bidirectional === true) packBidi.value[id] = true;
+    if (p.directions && typeof p.directions === 'object') {
+      packDirections.value[id] = p.directions as { asis?: string; reverse?: string };
+    }
     result.push({ id, title: String(p.title ?? id), accent, levels: levelNums });
   }
   return result;
 }
 
-async function loadPacks(url = remoteUrl.value) {
+// 한 소스(URL)에서 학습팩들을 불러온다.
+//  - 카탈로그(포인터 배열 [{name,url,levels}])면 각 항목의 url(개별 팩)을 병렬로 가져와 정규화.
+//  - 그 외(단일 팩 / 팩 목록 / 문항 배열)면 그대로 정규화.
+// 개별 팩은 '파일 1개짜리(인라인 levels)' 또는 '메타 + 하위 레벨파일(levels 번호 배열)' 구조를 모두 인식.
+async function loadSource(srcUrl: string): Promise<LessonPack[]> {
+  const res = await fetch(srcUrl, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  const isCatalog = Array.isArray(data) && data.length > 0
+    && data.every((e) => e && typeof e === 'object' && typeof (e as { url?: unknown }).url === 'string');
+  if (!isCatalog) return ingestPackData(data, srcUrl);
+
+  const entries = data as Array<{ name?: string; url: string }>;
+  const defs = await Promise.all(entries.map(async (e) => {
+    const packUrl = new URL(e.url, srcUrl).href;
+    try {
+      const r = await fetch(packUrl, { cache: 'no-store' });
+      if (!r.ok) throw new Error(String(r.status));
+      return { name: e.name, packUrl, def: await r.json() };
+    } catch {
+      return null;
+    }
+  }));
+  const out: LessonPack[] = [];
+  for (const d of defs) {
+    if (!d) continue;
+    const ps = ingestPackData(d.def, d.packUrl);
+    if (d.name && ps[0]) ps[0].title = d.name; // 목록 표시 이름은 카탈로그 우선
+    out.push(...ps);
+  }
+  return out;
+}
+
+// 기본 카탈로그 + 사용자가 추가한 외부팩을 불러온다.
+// 표시 순서: 추가팩 → 기본팩, 각 그룹은 이름 가나다순. 같은 id는 추가팩 우선.
+async function loadPacks() {
   loading.value = true;
   error.value = '';
-  try {
-    const response = await fetch(url, { cache: 'no-store' });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    const normalized = ingestPackData(data);
-    if (!normalized.length) throw new Error('팩이 비어 있습니다.');
-    packs.value = normalized;
-    if (!selectedPackId.value || !normalized.some((p) => p.id === selectedPackId.value)) {
-      selectedPackId.value = normalized[0].id;
-      selectedLevel.value = normalized[0].levels[0] ?? 1;
+  inlineLevels.value = {};
+  packBases.value = {};
+  packLevelFiles.value = {};
+  packLevelLabels.value = {};
+  packFormats.value = {};
+  packRandoms.value = {};
+  packBoards.value = {};
+  packWide.value = {};
+  packBlockStyles.value = {};
+  packBidi.value = {};
+  packDirections.value = {};
+  let failures = 0;
+
+  const catalogUrl = new URL(PACK_CATALOG_URL, window.location.href).href;
+  const defaultPacks = await loadSource(catalogUrl).catch(() => { failures++; return [] as LessonPack[]; });
+  const addedPacks: LessonPack[] = [];
+  for (const raw of extraPacks.value) {
+    try {
+      addedPacks.push(...await loadSource(new URL(raw, window.location.href).href));
+    } catch {
+      failures++;
     }
-    localStorage.setItem('matchit-data-url', url);
+  }
+
+  const byName = (a: LessonPack, b: LessonPack) => a.title.localeCompare(b.title, 'ko');
+  addedPacks.sort(byName);
+  defaultPacks.sort(byName);
+  const merged: LessonPack[] = [];
+  const seen = new Set<string>();
+  for (const p of [...addedPacks, ...defaultPacks]) {
+    if (seen.has(p.id)) continue; // 추가팩 우선
+    seen.add(p.id);
+    merged.push(p);
+  }
+
+  try {
+    if (!merged.length) throw new Error('학습팩을 불러오지 못했습니다.');
+    packs.value = merged;
+    if (!selectedPackId.value || !merged.some((p) => p.id === selectedPackId.value)) {
+      selectedPackId.value = merged[0].id;
+      selectedLevel.value = merged[0].levels[0] ?? 1;
+    }
     if (gameKind.value === 'lesson') applyPackDefaultSize(selectedPackId.value);
     await loadLevel(selectedPackId.value, selectedLevel.value);
+    error.value = failures ? `일부 학습팩을 불러오지 못했습니다 (${failures}건)` : '';
   } catch (loadError) {
     error.value = loadError instanceof Error ? loadError.message : '데이터를 읽지 못했습니다.';
   } finally {
     loading.value = false;
   }
+}
+
+// --- 추가 학습팩 URL 관리(목록만 로컬 저장) ---
+function readExtraPacks(): string[] {
+  try {
+    const a = JSON.parse(localStorage.getItem('matchit-extra-packs') || '[]');
+    return Array.isArray(a) ? a.filter((x): x is string => typeof x === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+function saveExtraPacks() {
+  localStorage.setItem('matchit-extra-packs', JSON.stringify(extraPacks.value));
+}
+async function addExtraPack() {
+  const url = newPackUrl.value.trim();
+  newPackUrl.value = '';
+  if (!url || extraPacks.value.includes(url)) return;
+  extraPacks.value.push(url);
+  saveExtraPacks();
+  await loadPacks();
+}
+async function removeExtraPack(url: string) {
+  extraPacks.value = extraPacks.value.filter((u: string) => u !== url);
+  saveExtraPacks();
+  await loadPacks();
 }
 
 
@@ -1062,6 +1253,58 @@ function sleep(ms: number) {
   return new Promise((resolve) => {
     window.setTimeout(resolve, ms);
   });
+}
+
+// 진행 중인 매치/스왑/낙하 async를 일괄 무효화하는 토큰. 모드/레벨/팩 변경 시 abortInflight()를 호출하면 토큰이 증가해
+// 그 이전에 시작된 async는 await 후 token 비교에서 빠져나가 board.value 갱신을 멈춘다.
+let runId = 0;
+const isAlive = (id: number) => id === runId;
+function abortInflight() {
+  runId += 1;
+  isResolving.value = false;
+  motionPhase.value = 'idle';
+}
+
+// 애니메이션 속도 — 1.0이 기본, 값이 커질수록 느려진다(0.5 = 2배 빠름, 2.0 = 절반 속도)
+const ANIM_SPEED = 1.5;
+// 각 애니메이션 phase 기본 시간(ms). ANIM_SPEED를 곱해 실제 시간 산출 — animMs()로 통일
+const ANIM = {
+  vanish: 360,        // 매치 셀이 scale 0으로 사라지는 시간 (vanishCells)
+  morph: 360,         // 폭탄 영향 셀이 폭탄 외형으로 변신해 보여주는 시간
+  fall: 1000,         // applyGravity 후 낙하 대기 (긴)
+  fallShort: 700,     // cascadeClear 라운드 사이 낙하 대기 (짧은)
+  popupSlide: 440,    // 정답팝업 슬롯이 보드 → 자기 자리로 슬라이드
+  popupHold: 160,     // 정답표시 ON에서 팝업 슬라이드 출발 직후 대기
+  swap: 340,          // 블럭 교환(swap) 대기
+  gather: 120,        // 숫자모드 수렴 효과 대기
+  gatherStep: 85,     // 숫자모드 블럭이 한 칸 이동하는 시간(합쳐지는 모션)
+  fallCss: 600,       // CSS .block-move/.block-enter-active 기본 transition
+  fallCssFalling: 800,// CSS .is-falling 시 transition
+};
+const animMs = (n: number) => Math.round(n * ANIM_SPEED);
+
+// 정답표시 OFF용 사라짐: 매치된 셀들이 제자리에서 scale 0 + opacity 0으로 축소되어 사라진다
+async function vanishCells(indexes: number[]) {
+  if (!boardEl.value) return;
+  const cells = indexes
+    .map((i) => boardEl.value!.querySelector(`.block-face[data-cell="${i}"]:not(.block-leave-active)`) as HTMLElement | null)
+    .filter((c): c is HTMLElement => !!c);
+  const dur = animMs(ANIM.vanish);
+  // 시작 상태(scale 1)를 먼저 고정해 커밋해야 트랜지션이 일관되게 발생한다.
+  // (transition과 끝값을 같은 프레임에 설정하면 일부 블럭이 애니메이션 없이 즉시 사라진다)
+  cells.forEach((c) => {
+    c.style.transition = 'none';
+    c.style.transformOrigin = 'center';
+    c.style.transform = 'scale(1)';
+    c.style.opacity = '1';
+  });
+  void boardEl.value.offsetHeight; // 강제 리플로우로 시작 상태 커밋
+  cells.forEach((c) => {
+    c.style.transition = `transform ${dur}ms ease, opacity ${dur}ms ease`;
+    c.style.transform = 'scale(0)';
+    c.style.opacity = '0';
+  });
+  await sleep(dur);
 }
 
 function applyGravity(indexes: number[]) {
@@ -1185,6 +1428,7 @@ function refillTokens(count: number, removed: Set<number>): Array<{ token: strin
 
 async function resolveMatch(item: LessonItem, indexes: number[]) {
   isResolving.value = true;
+  const myRun = runId;
   scoreMatch(item, indexes.length);
   matchedCount.value += 1;
   clearedBlocks.value += indexes.length;
@@ -1200,16 +1444,19 @@ async function resolveMatch(item: LessonItem, indexes: number[]) {
   else if (mode.value === 'single' && !stageDone.value) pickSequenceTarget();
   // 정답표시 OFF일 때만 제자리 번쩍임/페이드. ON이면 블럭이 팝업으로 이동만 하고 바로 제거.
   if (showAnswer.value) {
-    await sleep(160);
+    await sleep(animMs(ANIM.popupHold));
   } else {
+    await vanishCells(indexes);
   }
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'fall';
   applyGravity(indexes);
   // 낙하 후, 화면에 표시 중인 목표를 보드가 지원하도록 보장(목표는 유지)
   if (!stageDone.value) ensureTargetFormable();
   // 연속/자유 모드: 보드가 최종 상태가 됐으니 정답 팝업이 떠 있는 동안에도 다음 블럭을 선택할 수 있게 잠금 해제
   if (continuous.value) isResolving.value = false;
-  await sleep(1000);
+  await sleep(animMs(ANIM.fall));
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'idle';
   if (!continuous.value) isResolving.value = false;
 }
@@ -1315,15 +1562,17 @@ async function handleSequenceClick(index: number) {
 
 async function resolveCollect(indexes: number[], item: LessonItem, swapCandidates: number[] = []) {
   isResolving.value = true;
+  const myRun = runId;
   scoreMatch(item, indexes.length);
   matchedCount.value += 1;
   clearedBlocks.value += indexes.length;
-  showAnswerPopup(item, indexes);
   clearSelection();
   // 스왑으로 만든 매치면 교체 칸에 특수블럭 생성(해당 칸은 제거하지 않고 남김)
   const sp = analyzeSpecial(indexes, swapCandidates);
   const removeIdx = sp ? indexes.filter((i) => i !== sp.keepIndex) : indexes;
   if (sp) board.value[sp.keepIndex] = { ...board.value[sp.keepIndex]!, power: sp.power, token: powerToken(sp.power) };
+  // 폭탄 자리(keepIndex)는 슬라이드/숨김 대상에서 제외 — 폭탄 블럭이 그 자리에 남아야 보임
+  showAnswerPopup(item, removeIdx);
   // 정답 즉시 기록 + 다음 문제를 바로 표시. 스테이지를 다 풀면 "참 잘 했어요~"
   if (gameKind.value === 'lesson' && !solvedItems.value.includes(item.id)) {
     solvedItems.value = [...solvedItems.value, item.id]; // 재할당해야 watch가 감지
@@ -1337,12 +1586,15 @@ async function resolveCollect(indexes: number[], item: LessonItem, swapCandidate
   // 정답표시 OFF일 때만 제자리 번쩍임/페이드. ON이면 블럭이 팝업으로 이동만 하고 바로 제거.
   if (showAnswer.value) {
     // 정답팝업으로 슬라이드되는 동안 잠깐 대기. fade는 적용하지 않음(복제된 슬롯이 팝업으로 이동, 원본은 leave로 사라짐)
-    await sleep(160);
+    await sleep(animMs(ANIM.popupHold));
   } else {
+    await vanishCells(removeIdx);
   }
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'fall';
   applyGravity(removeIdx);
-  await sleep(1000);
+  await sleep(animMs(ANIM.fall));
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'idle';
 
   // 연속 블럭깨기: 연속/자유 모드에서 낙하 후 정답 조건이 된 덩어리를 자동으로 연쇄 제거
@@ -1441,20 +1693,37 @@ function getPowerArea(index: number): number[] {
 }
 
 // 특수블럭 발동: 효과 범위 제거(범위 안 다른 특수블럭은 연쇄) → 낙하
-async function detonate(startIndexes: number[]) {
+// extraRemove: 폭발과 함께 제거할 추가 칸(예: 스왑으로 완성된 정답 글자들)
+async function detonate(startIndexes: number[], extraRemove: number[] = []) {
   isResolving.value = true;
+  const myRun = runId;
   hintIndexes.value = [];
-  const toRemove = new Set<number>();
+  const toRemove = new Set<number>(extraRemove);
   const queue = [...startIndexes];
+  // 영향 범위 셀이 어떤 폭탄의 외형(token/color)으로 바뀔지 기록 — 첫 영향 폭탄 우선
+  const morph = new Map<number, { token: string; color: string }>();
   while (queue.length) {
     const i = queue.shift()!;
+    const det = board.value[i];
+    const morphTo = det ? { token: det.token, color: det.color } : null;
     for (const c of getPowerArea(i)) {
       if (!toRemove.has(c)) {
         toRemove.add(c);
         if (board.value[c]?.power && !queue.includes(c)) queue.push(c); // 연쇄
       }
+      // 시작 폭탄 자신은 자기 외형 유지, 나머지 영향 받은 셀을 폭탄 외형으로 교체
+      if (morphTo && c !== i && !morph.has(c)) morph.set(c, morphTo);
     }
     toRemove.add(i);
+  }
+  // 영향 범위 블럭들을 폭탄 모양으로 교체해 잠시 보여줌
+  if (morph.size) {
+    board.value = board.value.map((b, i) => {
+      const m = morph.get(i);
+      return m && b ? { ...b, token: m.token, color: m.color } : b;
+    });
+    await sleep(animMs(ANIM.morph));
+    if (!isAlive(myRun)) return;
   }
   const idx = [...toRemove];
   score.value += idx.length * 10;
@@ -1464,9 +1733,13 @@ async function detonate(startIndexes: number[]) {
   message.value = `💥 ${idx.length}개 제거!`;
   clearSelection();
   swapFirstIndex.value = null;
+  // 폭탄 외형으로 변신한 셀들도 같은 축소+페이드 효과로 사라짐
+  await vanishCells(idx);
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'fall';
   applyGravity(idx);
-  await sleep(1000);
+  await sleep(animMs(ANIM.fall));
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'idle';
   if (autoChain.value && continuous.value) await cascadeClear();
   ensureCollectAfterClear();
@@ -1481,6 +1754,7 @@ function powerToken(power: PowerKind): string {
 // 정답표시 OFF: 보드의 모든 완성 덩어리를 동시에 제거 → 한 번에 낙하(여러 답 동시 깨짐)
 async function resolveCollectBatch(matches: Array<{ indexes: number[]; item: LessonItem }>, swapCandidates: number[] = []) {
   isResolving.value = true;
+  const myRun = runId;
   const all: number[] = [];
   const specials: Array<{ keepIndex: number; power: PowerKind }> = [];
   for (const m of matches) {
@@ -1498,10 +1772,13 @@ async function resolveCollectBatch(matches: Array<{ indexes: number[]; item: Les
   // 특수블럭은 제거하지 않고 교체 칸에 남긴다(블럭 자체를 폭탄으로 교체)
   for (const sp of specials) board.value[sp.keepIndex] = { ...board.value[sp.keepIndex]!, power: sp.power, token: powerToken(sp.power) };
   clearSelection();
+  await vanishCells(all);
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'fall';
   applyGravity(all);
   if (mode.value === 'endless') advanceEndlessStageIfReady();
-  await sleep(1000);
+  await sleep(animMs(ANIM.fall));
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'idle';
   if (autoChain.value && continuous.value) await cascadeClear();
   ensureCollectAfterClear();
@@ -1510,7 +1787,9 @@ async function resolveCollectBatch(matches: Array<{ indexes: number[]; item: Les
 
 // 연속 블럭깨기: 보드에서 완성된(연결된) 정답 덩어리를 찾아 자동 제거 → 낙하 → 반복
 async function cascadeClear() {
+  const myRun = runId;
   for (let guard = 0; guard < 30; guard += 1) {
+    if (!isAlive(myRun)) return;
     // 정답표시 OFF면 한 라운드의 모든 완성 덩어리를 동시에, ON이면 하나씩(팝업)
     const round = showAnswer.value
       ? (findAnyTargetCluster(board.value) ? [findAnyTargetCluster(board.value)!] : [])
@@ -1532,14 +1811,20 @@ async function cascadeClear() {
     }
     for (const sp of specials) board.value[sp.keepIndex] = { ...board.value[sp.keepIndex]!, power: sp.power, token: powerToken(sp.power) };
     if (showAnswer.value) {
-      showAnswerPopup(round[0].item, round[0].indexes);
-      // 정답팝업으로 슬라이드되는 동안 잠깐 대기. fade는 적용하지 않음(슬라이드 복제본이 팝업으로 이동, 원본은 leave로 사라짐)
-      await sleep(160);
+      // round[0]에 폭탄이 생성됐다면 그 keepIndex는 슬라이드/숨김에서 제외
+      const firstSp = specials.find((sp) => round[0].indexes.includes(sp.keepIndex));
+      const popupIdx = firstSp ? round[0].indexes.filter((i) => i !== firstSp.keepIndex) : round[0].indexes;
+      showAnswerPopup(round[0].item, popupIdx);
+      // 정답팝업으로 슬라이드되는 동안 잠깐 대기
+      await sleep(animMs(ANIM.popupHold));
     } else {
+      await vanishCells(idx);
     }
+    if (!isAlive(myRun)) return;
     motionPhase.value = 'fall';
     applyGravity(idx);
-    await sleep(700);
+    await sleep(animMs(ANIM.fallShort));
+    if (!isAlive(myRun)) return;
     motionPhase.value = 'idle';
   }
   if (mode.value === 'endless') advanceEndlessStageIfReady();
@@ -1634,7 +1919,7 @@ async function resolveNumberClusters(preferIndex: number): Promise<boolean> {
     clearSelection();
     // 가까운 칸부터 차례로, 연결 경로를 따라 칸칸이 최종 합체 칸까지 이동한 뒤 사라진다
     const gatherOrder = [...removedAll].sort((a, b) => depthOf.get(a)! - depthOf.get(b)!);
-    const perCell = 85;
+    const perCell = animMs(ANIM.gatherStep);
     for (const cell of gatherOrder) {
       const path: number[] = [];
       let cursor = cell;
@@ -1664,11 +1949,11 @@ async function resolveNumberClusters(preferIndex: number): Promise<boolean> {
       hidden.set(cell, { transform: hidden.get(cell)!.transform, opacity: '0', transition: 'none' });
       gatherStyles.value = hidden;
     }
-    await sleep(120);
+    await sleep(animMs(ANIM.gather));
     gatherStyles.value = new Map();
     motionPhase.value = 'fall';
     applyGravity(removedAll);
-    await sleep(1000);
+    await sleep(animMs(ANIM.fall));
     motionPhase.value = 'idle';
 
     firstPass = false;
@@ -1693,11 +1978,12 @@ function checkNumberGameOver() {
 
 async function numberSwap(a: number, b: number) {
   isResolving.value = true;
+  const myRun = runId;
   motionPhase.value = 'swap';
   const next = [...board.value];
   [next[a], next[b]] = [next[b], next[a]];
   board.value = next;
-  await sleep(340);
+  await sleep(animMs(ANIM.swap));
   motionPhase.value = 'idle';
 
   // 옮긴 칸(b) 우선, 보드 전체의 3개 이상 연결 덩어리를 연쇄로 합침
@@ -1712,26 +1998,28 @@ async function numberSwap(a: number, b: number) {
 
 async function trySwap(a: number, b: number) {
   if (a === b) return;
-  // 인접만 교환 옵션: 상하좌우 이웃이 아니면 교환 불가
+  hintIndexes.value = [];
+  // 숫자더하기는 인접 옵션 설정과 무관하게 항상 자유 교환
+  if (gameKind.value === 'numbers') {
+    await numberSwap(a, b);
+    return;
+  }
+  // 학습 모드: 인접만 교환 옵션이 켜져 있으면 상하좌우 이웃만 허용
   if (adjacentSwap.value && !cellNeighbors(a).includes(b)) {
     message.value = '인접한 블럭끼리만 바꿀 수 있어요.';
     swapFirstIndex.value = null;
     selectedIndexes.value = [];
     return;
   }
-  hintIndexes.value = [];
-  if (gameKind.value === 'numbers') {
-    await numberSwap(a, b);
-    return;
-  }
   isResolving.value = true;
-  // 어떤 두 블럭이든 자유롭게 교환해 배치 (완성하지 못해도 되돌리지 않음)
+  const myRun = runId;
   motionPhase.value = 'swap';
   const next = [...board.value];
   [next[a], next[b]] = [next[b], next[a]];
   board.value = next;
   moves.value -= 1;
-  await sleep(340);
+  await sleep(animMs(ANIM.swap));
+  if (!isAlive(myRun)) return;
   motionPhase.value = 'idle';
 
   // 특수블럭을 스왑하면 옮겨진 위치에서 발동
@@ -1747,7 +2035,22 @@ async function trySwap(a: number, b: number) {
           if (otherColor) board.value[d] = { ...board.value[d]!, color: otherColor };
         }
       }
-      await detonate(dets);
+      // 스왑으로 답이 완성됐으면 정답으로 인정하고, 그 글자들도 폭발과 함께 제거
+      const clusters = continuous.value
+        ? findAllTargetClusters(board.value)
+        : (() => { const m = findCollectMatch([a, b]); return m ? [m] : []; })();
+      const credited = clusters.filter((m) => m.indexes.includes(a) || m.indexes.includes(b));
+      const extra: number[] = [];
+      for (const m of credited) {
+        scoreMatch(m.item, m.indexes.length);
+        matchedCount.value += 1;
+        if (gameKind.value === 'lesson' && !solvedItems.value.includes(m.item.id)) {
+          solvedItems.value = [...solvedItems.value, m.item.id];
+          maybeMarkStageCleared(m.item);
+        }
+        extra.push(...m.indexes);
+      }
+      await detonate(dets, extra);
       return;
     }
   }
@@ -1860,7 +2163,22 @@ function onPointerUp(event: PointerEvent) {
 
   if (pointerMoved && swapEnabled.value) {
     const el = (document.elementFromPoint(event.clientX, event.clientY) as HTMLElement | null)?.closest('[data-cell]') as HTMLElement | null;
-    const to = el ? Number(el.dataset.cell) : -1;
+    let to = el ? Number(el.dataset.cell) : -1;
+    // 직접 셀에 못 떨어졌으면(보드 사이 여백) 보드 안에서 가장 가까운 셀로 대체
+    if (to < 0) {
+      const br = boardEl.value?.getBoundingClientRect();
+      if (br && event.clientX >= br.left && event.clientX <= br.right && event.clientY >= br.top && event.clientY <= br.bottom) {
+        const cells = boardEl.value?.querySelectorAll('.block-face[data-cell]') as NodeListOf<HTMLElement> | undefined;
+        let bestDist = Infinity;
+        cells?.forEach((c) => {
+          const r = c.getBoundingClientRect();
+          const dx = event.clientX - (r.left + r.width / 2);
+          const dy = event.clientY - (r.top + r.height / 2);
+          const d = dx * dx + dy * dy;
+          if (d < bestDist) { bestDist = d; to = Number(c.dataset.cell); }
+        });
+      }
+    }
     if (to >= 0 && to !== from) {
       void trySwap(from, to);
     } else {
@@ -1932,6 +2250,14 @@ function resetScore() {
   saveLevelStats();
   clearedStages.value = {};
   localStorage.setItem(clearedKey(), '{}');
+}
+
+// 이 기기에 저장된 모든 게임 데이터(진행도·순서·설정·추가팩 등) 삭제 후 새로고침
+function clearLocalData() {
+  Object.keys(localStorage)
+    .filter((k) => k.startsWith('matchit'))
+    .forEach((k) => localStorage.removeItem(k));
+  location.reload();
 }
 
 function requestExit() {
@@ -2114,18 +2440,45 @@ function setShowAnswer(on: boolean) {
 
 function showAnswerPopup(item: LessonItem, indexes: number[]) {
   if (gameKind.value !== 'lesson' || !showAnswer.value) return;
-  // 슬롯 색을 실제 매치된 보드 블럭 색과 일치
+  // 사라질 보드 셀의 시작 좌표를 기록 — leave 중인 element는 배제(자동 연쇄에서 이전 라운드 잔류로 인덱스 어긋남 방지)
+  const cellAt = (i: number) =>
+    (boardEl.value?.querySelector(`.block-face[data-cell="${i}"]:not(.block-leave-active)`) as HTMLElement | null) ?? null;
   const remaining = [...indexes];
-  const colors: string[] = item.tokens.map((token) => {
+  const colors: string[] = [];
+  const startRects: Array<DOMRect | null> = item.tokens.map((token) => {
     let pos = remaining.findIndex((idx) => board.value[idx]?.token === token);
     if (pos < 0) pos = 0;
     const idx = remaining.splice(pos, 1)[0];
-    return idx != null ? (board.value[idx]?.color ?? colorForToken(token)) : colorForToken(token);
+    colors.push(idx != null ? (board.value[idx]?.color ?? colorForToken(token)) : colorForToken(token));
+    return idx != null ? (cellAt(idx)?.getBoundingClientRect() ?? null) : null;
   });
   answerSlotColors.value = colors;
-  // 팝업 블럭 크기를 보드 셀 크기에 맞춤
-  answerSlotSize.value = cellW.value ? Math.round(cellW.value) : 48;
+  // 팝업 슬롯 크기를 보드 셀 크기에 맞춤(트랜지션 시작 크기와 일치)
+  const startW = startRects.find((r) => r)?.width;
+  answerSlotSize.value = startW ? Math.round(startW) : (cellW.value ? Math.round(cellW.value) : 48);
   answerItem.value = item;
+  // 슬라이드 출발과 동시에 원본 보드 셀들을 즉시 숨김(applyGravity의 leave 대기 사이에 잔상이 보이는 문제 방지).
+  // key 기반 element 재사용 안 되므로 leave element에 그대로 박혀 사라짐, 같은 자리에 들어오는 새 enter block은 영향 없음.
+  const originCells = indexes.map((i) => cellAt(i)).filter((c): c is HTMLElement => !!c);
+  originCells.forEach((c) => { c.style.opacity = '0'; });
+  // 팝업 슬롯이 렌더된 다음 frame에 보드 셀 시작 위치 → 자기 자리로 슬라이드
+  void nextTick().then(() => {
+    const slots = answerEl.value?.querySelectorAll('.answer-slot') as NodeListOf<HTMLElement> | undefined;
+    if (!slots) return;
+    slots.forEach((el, i) => {
+      const start = startRects[i];
+      if (!start) return;
+      const end = el.getBoundingClientRect();
+      const dx = start.left - end.left;
+      const dy = start.top - end.top;
+      const sx = end.width ? start.width / end.width : 1;
+      const sy = end.height ? start.height / end.height : 1;
+      el.animate(
+        [{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})` }, { transform: 'translate(0, 0) scale(1, 1)' }],
+        { duration: animMs(ANIM.popupSlide), easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+      );
+    });
+  });
   window.clearTimeout(answerTimer);
   answerTimer = window.setTimeout(() => {
     answerItem.value = null;
@@ -2139,11 +2492,16 @@ function releaseAnswer() {
 }
 
 function applyPackDefaultSize(packId: string) {
-  const size = packBoardSizes[packId] ?? { cols: 7, rows: 7 };
+  const size = packBoards.value[packId] ?? { cols: 7, rows: 7 };
   cols.value = size.cols;
   rows.value = size.rows;
   localStorage.setItem('matchit-cols', String(cols.value));
   localStorage.setItem('matchit-rows', String(rows.value));
+  const style = packBlockStyles.value[packId];
+  if (style) {
+    blockStyle.value = style;
+    localStorage.setItem('matchit-block-style', style);
+  }
 }
 
 async function setMode(nextMode: GameMode) {
@@ -2159,8 +2517,8 @@ async function setWordDirection(dir: 'spell' | 'meaning') {
   wordDirection.value = dir;
   localStorage.setItem('matchit-word-direction', dir);
   fullKey = ''; // 방향 바뀌면 전체 풀 캐시 무효화
-  if (rawWordEntries.value.length) {
-    lessonItems.value = buildWordItems(rawWordEntries.value, dir);
+  if (currentRaw.value.length) {
+    lessonItems.value = buildLevelItems(selectedPackId.value, currentRaw.value, dir);
     if (continuous.value && gameKind.value === 'lesson') await loadFullPool(selectedPackId.value);
     resetGame();
   }
@@ -2359,6 +2717,8 @@ function restoreFromSave(s: SavedGame) {
 }
 
 onMounted(async () => {
+  // CSS의 --anim-speed를 JS의 ANIM_SPEED와 동기화(낙하 등 CSS 트랜지션이 같은 값으로 스케일됨)
+  document.documentElement.style.setProperty('--anim-speed', String(ANIM_SPEED));
   selectedPackId.value = localStorage.getItem('matchit-selected-pack-id') || '';
   selectedLevel.value = Number(localStorage.getItem('matchit-selected-level') || 1);
   const savedPanel = localStorage.getItem('matchit-panel');
@@ -2482,15 +2842,15 @@ onBeforeUnmount(() => {
             </div>
           </div>
 
-          <label class="mt-4 block text-xs font-bold uppercase text-[var(--muted)]" for="remote">JSON URL</label>
-          <div class="mt-1 flex gap-2">
-            <input id="remote" v-model="remoteUrl" class="min-w-0 flex-1 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm" />
-            <button class="h-11 rounded-md bg-[var(--accent)] px-3 text-sm font-black text-[var(--accent-ink)]" type="button" @click="loadPacks(remoteUrl)">
+          <div class="mt-3 flex gap-2">
+            <button class="h-10 flex-1 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showPackManager = true">
+              추가팩 관리{{ extraPacks.length ? ` (${extraPacks.length})` : '' }}
+            </button>
+            <button class="h-10 rounded-md bg-[var(--accent)] px-3 text-sm font-black text-[var(--accent-ink)]" type="button" title="목록 새로고침" @click="loadPacks()">
               ↻
             </button>
           </div>
           <p v-if="error" class="mt-2 text-sm font-semibold text-rose-600">{{ error }}</p>
-          <p v-else class="mt-2 text-sm text-[var(--muted)]">JSON 스키마를 원격으로 읽습니다. (CORS 허용 필요)</p>
 
           <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Game Mode</p>
           <div class="mt-2 grid grid-cols-3 gap-2">
@@ -2505,14 +2865,14 @@ onBeforeUnmount(() => {
             </button>
           </div>
 
-          <template v-if="isWordPack">
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Word Mode</p>
+          <template v-if="isBidi">
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">출제 방향</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="wordDirection === 'spell' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setWordDirection('spell')">
-              뜻 → 철자
+              {{ dirLabelAsis }}
             </button>
             <button class="h-11 rounded-md border text-sm font-black" :class="wordDirection === 'meaning' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setWordDirection('meaning')">
-              영단어 → 뜻
+              {{ dirLabelReverse }}
             </button>
           </div>
           </template>
@@ -2614,6 +2974,14 @@ onBeforeUnmount(() => {
               </button>
             </div>
           </div>
+
+          <button
+            class="mt-6 h-11 w-full rounded-md border border-rose-500/60 bg-[var(--panel-strong)] text-sm font-black text-rose-500"
+            type="button"
+            @click="showClearDataConfirm = true"
+          >
+            로컬 데이터 삭제
+          </button>
 
         </aside>
 
@@ -2726,11 +3094,11 @@ onBeforeUnmount(() => {
                 <div v-if="endlessTicker.length" class="marquee-track">
                   <span v-for="(t, i) in endlessTicker.concat(endlessTicker)" :key="i" class="marquee-item text-base font-black">{{ t }}</span>
                 </div>
-                <p v-else class="text-xl font-black">보드의 답을 맞춰보세요</p>
+                <p v-else class="text-2xl font-black sm:text-3xl">보드의 답을 맞춰보세요</p>
               </div>
             </template>
             <template v-else>
-              <p class="mt-1 truncate text-xl font-black">{{ goalPrompt }}</p>
+              <p class="mt-1 truncate text-3xl font-black sm:text-4xl">{{ goalPrompt }}</p>
               <p v-if="goalVars" class="truncate text-xs text-[var(--muted)]">{{ goalVars }}</p>
             </template>
             <div v-if="hintText" class="hint-overlay">
@@ -2764,7 +3132,7 @@ onBeforeUnmount(() => {
             <button
               v-for="(block, index) in board"
               :key="block.id"
-              class="block-face border-2 p-1 text-center focus:outline-none focus:ring-4 focus:ring-cyan-300 disabled:cursor-wait"
+              class="block-face border-2 p-1 text-center focus:outline-none disabled:cursor-wait"
               :class="[
                 wideBlocks ? 'aspect-[3/2]' : 'aspect-square',
                 `block-style-${blockStyle}`,
@@ -2848,7 +3216,7 @@ onBeforeUnmount(() => {
             <button class="h-12 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="createShareImage">
               점수 공유
             </button>
-            <button class="h-12 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="resetScore">
+            <button class="h-12 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showResetScoreConfirm = true">
               점수 초기화
             </button>
           </div>
@@ -2995,6 +3363,78 @@ onBeforeUnmount(() => {
             새 판
           </button>
         </div>
+      </div>
+    </div>
+
+    <div
+      v-if="showResetScoreConfirm"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6"
+      @click.self="showResetScoreConfirm = false"
+    >
+      <div class="w-full max-w-xs rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-center">
+        <p class="text-lg font-black">점수를 초기화할까요?</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">최고 점수·레벨별 점수·클리어 기록이 사라집니다.</p>
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showResetScoreConfirm = false">
+            취소
+          </button>
+          <button class="h-11 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="resetScore(); showResetScoreConfirm = false">
+            초기화
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="showClearDataConfirm"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6"
+      @click.self="showClearDataConfirm = false"
+    >
+      <div class="w-full max-w-xs rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-center">
+        <p class="text-lg font-black">로컬 데이터를 삭제할까요?</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">진행도·출제 순서·설정·추가팩 등 이 기기에 저장된 모든 게임 데이터가 사라지고 새로고침됩니다.</p>
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showClearDataConfirm = false">
+            취소
+          </button>
+          <button class="h-11 rounded-md bg-rose-500 text-sm font-black text-white" type="button" @click="clearLocalData">
+            삭제
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="showPackManager"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6"
+      @click.self="showPackManager = false"
+    >
+      <div class="w-full max-w-md rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5">
+        <p class="text-lg font-black">추가팩 관리</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">학습팩 JSON URL을 추가하면 목록에 합쳐집니다. (목록은 이 기기에만 저장)</p>
+        <div class="mt-3 flex gap-2">
+          <input
+            v-model="newPackUrl"
+            placeholder="https://.../pack.json"
+            class="min-w-0 flex-1 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm"
+            @keydown.enter="addExtraPack"
+          />
+          <button class="h-11 rounded-md bg-[var(--accent)] px-4 text-sm font-black text-[var(--accent-ink)]" type="button" @click="addExtraPack">
+            추가
+          </button>
+        </div>
+        <ul v-if="extraPacks.length" class="mt-3 max-h-56 space-y-1 overflow-y-auto">
+          <li v-for="url in extraPacks" :key="url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
+            <span class="min-w-0 flex-1 truncate text-xs">{{ url }}</span>
+            <button class="shrink-0 rounded px-2 text-sm font-black text-rose-500" type="button" title="삭제" @click="removeExtraPack(url)">
+              ✕
+            </button>
+          </li>
+        </ul>
+        <p v-else class="mt-3 text-sm text-[var(--muted)]">추가된 팩이 없습니다.</p>
+        <button class="mt-4 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showPackManager = false">
+          닫기
+        </button>
       </div>
     </div>
 

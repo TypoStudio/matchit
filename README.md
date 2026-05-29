@@ -1,146 +1,85 @@
 # Match It
 
-학습 개념을 블럭 퍼즐 규칙으로 맞추는 Vue 3 + TypeScript + Tailwind CSS 정적 게임 프로토타입입니다.
+학습 개념을 블럭 퍼즐 규칙으로 맞추는 Vue 3 + TypeScript + Tailwind CSS 정적 게임입니다.
 
 ## 기능
 
-- 순서 선택 모드: 목표식이나 문장 구조에 맞춰 블럭을 순서대로 눌러 제거
-- 줄맞춤 모드: 이웃 블럭을 교환해 같은 개념 3개 이상을 가로/세로로 맞춰 제거
-- JSON 학습팩 로딩: 기본값은 `public/data/lesson-packs.json`, 화면에서 원격 URL로 교체 가능
-- 테마 전환: Paper, Night, Lab
-- 점수 이미지 생성: 캔버스로 공유용 PNG 생성
+- **출제 모드**: 한문제씩 / 연속 / 자유, 순서 선택·줄맞춤·모으기 풀이 방식
+- **학습팩 카탈로그**: 시작 시 별도 저장소([matchit-packs](https://github.com/TypoStudio/matchit-packs))의 `packs.json` 목록을 불러옴 (한자·영어단어·영문법·국어·과학·수학·역사 등)
+- **출제 방향(양방향)**: 단어팩(뜻↔철자)·한자(한자↔훈음) 등 메타가 허용한 팩에서 방향 토글
+- **무작위 출제 순서**: 레벨 문제를 무작위로 섞고, 그 순서를 기기에 저장해 재시작 시 복원
+- **팩별 화면 구성**: 메타로 보드 사이즈·블럭 디자인·넓은 블럭을 팩마다 지정(하드코딩 없음)
+- **추가팩 관리**: 사용자가 외부 팩 URL을 추가/삭제(목록은 기기에만 저장)
+- **로컬 데이터 삭제**: 진행도·순서·설정을 한 번에 초기화
+- 테마 전환, 점수 이미지(PNG) 공유
 
-## 실행
+## 실행 / 빌드
 
 ```bash
 npm install
-npm run dev
+npm run dev      # 개발 서버 (http://localhost:5174)
+npm run build    # dist/ 정적 산출물
 ```
 
-## 빌드
+`dist`를 GitHub Pages 등 정적 호스팅에 올립니다. 배포 시 base는 `/matchit/`(프로덕션), 개발 시 `/`.
 
-```bash
-npm run build
-```
+## 학습팩 로딩 구조
 
-`dist` 폴더를 GitHub Pages, Cloudflare Pages, Netlify 같은 정적 호스팅에 올리면 됩니다.
+학습팩은 게임 본체와 분리된 **[matchit-packs](https://github.com/TypoStudio/matchit-packs)** 저장소에서 서빙됩니다.
 
-## 데이터팩 스키마
+- 기본 카탈로그 URL: 프로덕션은 `https://typostudio.github.io/matchit-packs/packs.json`, 로컬 개발은 같은 저장소의 `packs/packs.json`([src/App.vue](src/App.vue)의 `PACK_CATALOG_URL`).
+- 화면의 **추가팩 관리**에서 다른 팩/카탈로그 JSON URL을 더할 수 있고, 그 목록은 `localStorage`(`matchit-extra-packs`)에만 저장됩니다.
+- 표시 순서: **추가팩 → 기본팩**, 각 그룹 이름 가나다순.
 
-데이터는 **마스터 파일 + 레벨별 파일** 두 단계로 구성됩니다.
+### 카탈로그 `packs.json`
 
-### 1. 마스터 파일 `public/data/lesson-packs.json`
-
-각 팩의 메타데이터와 사용 가능한 **레벨 목록**만 담습니다 (문항은 포함하지 않음).
+이름·URL·레벨수만 가지는 포인터 목록입니다.
 
 ```json
 [
-  {
-    "id": "science-core",
-    "title": "화학식",
-    "accent": "#14b8a6",
-    "levels": [1, 2, 3, 4, 5]
-  }
+  { "name": "한자능력시험", "url": "language/hanja-grade/pack.json", "levels": 16 }
 ]
 ```
 
-### 2. 레벨 파일 `public/data/packs/{pack-id}/{level}.json`
+### 개별 팩 `pack.json`
 
-해당 팩·레벨의 문항(`LessonItem`) 배열입니다. 레벨이 올라갈수록 난이도가 높아집니다.
+**단일 파일형**(모든 레벨 인라인) 또는 **메타 + 레벨파일형**(각 레벨이 외부 파일 참조) 둘 다 인식합니다.
+
+```jsonc
+// 메타 + 레벨파일형: levels는 {level, label, file} 객체 배열
+{ "id": "hanja-grade", "title": "한자능력시험", "accent": "#dc2626",
+  "bidirectional": true,
+  "directions": { "asis": "한자 → 훈음", "reverse": "훈음 → 한자" },
+  "board": { "cols": 5, "rows": 5 },
+  "blockStyle": "card",
+  "levels": [ { "level": 1, "label": "8급", "file": "./1.json" } ] }
+```
+
+레벨 파일(`{level}.json`)은 문항(`LessonItem`) 배열입니다.
 
 ```json
 [
-  {
-    "id": "water",
-    "label": "물",
-    "prompt": "물 만들기",
-    "tokens": ["H", "H", "O"],
-    "hint": "H2O — 수소 2개와 산소 1개"
-  }
+  { "id": "water", "label": "물", "prompt": "물 만들기", "tokens": ["H","H","O"], "hint": "H2O" }
 ]
 ```
+
+### 팩 메타 필드
 
 | 필드 | 설명 |
 | --- | --- |
-| `id` | 팩 안에서 고유한 식별자 (ascii kebab-case) |
-| `label` | 문항 이름 (예: `물`) |
-| `prompt` | 화면에 보여줄 문제 (예: `물 만들기`) |
-| `tokens` | 정답을 이루는 블럭 토큰 배열 (예: `["H","H","O"]`) |
-| `hint` | 힌트 |
+| `id` / `title` / `accent` | 식별자 / 표시 이름 / 강조색 |
+| `format` | `"word"`(단어팩 `word`/`meaning`/`hint`) 또는 `"lesson"`(LessonItem). 생략 시 자동 판별 |
+| `bidirectional` | `true`면 출제 방향 토글 노출. lesson 팩 역방향은 답↔문제를 뒤집음. 단어팩은 자동 양방향 |
+| `directions` | 방향 버튼 라벨 `{ "asis": "...", "reverse": "..." }`(lesson 양방향용) |
+| `board` | 기본 보드 사이즈 `{ "cols": n, "rows": n }`(미지정 7×7). 모으기 모드는 토큰 길이 ≤ 보드 한 변 |
+| `wide` | `true`면 가로로 긴 블럭(토큰이 긴 팩) |
+| `blockStyle` | 기본 블럭 디자인 `jelly`/`card`/`tile`/`transparent` |
+| `random` | `true`면 보드를 정답 유도 없이 완전 무작위로 채움(모으기형) |
+| `levels` | `[{level,label,items}]`(단일 파일) 또는 `[{level,label,file}]`(레벨파일) |
 
-- 화면의 **JSON URL** 입력으로 마스터 파일을 원격 주소로 교체할 수 있습니다. 원격 JSON은 정적 파일 URL이 CORS를 허용해야 합니다.
-- 한 레벨 파일은 100문항 규모이며, 새 팩·레벨 추가 방법은 `AGENT_GUIDE.md`를 참고하세요.
+> 팩 작성·배포 상세와 폴더 구성은 [matchit-packs/README.md](packs/README.md)를 참고하세요. 새 팩/한자 데이터 생성 스크립트는 [scripts/](scripts/)에 있습니다.
 
-## 외부 저장소 / 단일 파일로 팩 올리기
+## 데이터 생성 스크립트
 
-화면의 **JSON URL** 입력칸은 위 마스터 파일 외에도 아래 3가지 형태를 모두 자동 인식합니다. 이 저장소를 건드리지 않고 **별도 저장소·CDN**에 팩을 올려 불러올 수 있습니다.
-
-### 형태 1 — 통합 단일 파일 (메타 + 모든 레벨을 한 파일에)
-
-`levels`를 `{ level, items }` 배열로 주면 문항을 같은 파일에 인라인으로 담습니다. 레벨별 파일을 따로 만들 필요가 없습니다.
-
-```json
-{
-  "id": "my-vocab",
-  "title": "내 단어장",
-  "accent": "#0ea5e9",
-  "format": "word",
-  "levels": [
-    { "level": 1, "items": [
-      { "word": "go", "meaning": "가다", "hint": "동작" },
-      { "word": "run", "meaning": "달리다" }
-    ] },
-    { "level": 2, "items": [ { "word": "eat", "meaning": "먹다" } ] }
-  ]
-}
-```
-
-### 형태 2 — 여러 팩 목록 (외부 base 참조)
-
-팩 배열을 주되, 각 팩에 `base`(레벨 파일 기준 URL)를 지정하면 레벨 파일을 외부에서 읽어옵니다. `base + {level}.json` 로 요청합니다.
-
-```json
-[
-  {
-    "id": "my-vocab",
-    "title": "내 단어장",
-    "accent": "#0ea5e9",
-    "format": "word",
-    "base": "https://USER.github.io/REPO/my-vocab/",
-    "levels": [1, 2, 3]
-  }
-]
-```
-→ 레벨 1은 `https://USER.github.io/REPO/my-vocab/1.json` 에서 로드됩니다. `levels`를 형태 1처럼 `{level,items}` 배열로 줘서 인라인으로 섞어도 됩니다.
-
-### 형태 3 — 문항 배열만 직접 지정
-
-URL이 문항 배열(`[{word,meaning}, ...]` 또는 `LessonItem` 배열)을 직접 가리키면, 1레벨짜리 임시 팩으로 자동 래핑되어 바로 플레이됩니다.
-
-```json
-[
-  { "word": "go", "meaning": "가다", "hint": "동작" },
-  { "word": "run", "meaning": "달리다" }
-]
-```
-
-### 필드
-
-| 필드 | 위치 | 설명 |
-| --- | --- | --- |
-| `id` | 팩 | 고유 식별자 (ascii kebab-case) |
-| `title` | 팩 | 화면에 표시할 팩 이름 |
-| `accent` | 팩 | 강조색 (생략 시 기본값) |
-| `format` | 팩 | `"word"`(단어팩: `word`/`meaning`/`hint`) 또는 `"lesson"`(LessonItem). 생략 시 문항 키로 자동 판별 |
-| `base` | 팩 | 레벨 파일을 외부에서 읽을 때의 기준 URL (끝에 `/` 포함). 생략 시 인라인 또는 이 저장소의 `data/packs/{id}/` |
-| `random` | 팩 | `true`면 보드/낙하 블럭을 정답 유도 없이 완전 무작위로 채움(같은 토큰을 모으는 매치형 팩에 적합) |
-| `levels` | 팩 | 숫자 배열(`[1,2,3]`=파일 참조) 또는 `[{level,items}]`(인라인) |
-
-### 호스팅 (별도 저장소)
-
-브라우저 `fetch` 가 되려면 **CORS 허용 + JSON 직접 서빙**이 필요합니다. 권장 순서:
-
-- **별도 GitHub Pages** (권장): 저장소를 Pages로 배포하면 `https://USER.github.io/REPO/packs.json`. CORS 허용·무료.
-- **Cloudflare Pages / Netlify** 등 정적 호스팅: 모두 가능.
-- **raw.githubusercontent.com** / **GitHub Gist raw**: CORS 허용됨. 단 캐시 갱신이 느릴 수 있음.
-- ⚠️ **GitHub Wiki는 부적합** — 페이지가 HTML로 렌더링되고 raw JSON을 CORS·`application/json`으로 서빙하지 않습니다.
+- [scripts/build-hanja-pack.py](scripts/build-hanja-pack.py) — 한국어문회 배정한자 `.xls` → 급수별 한자 팩(레벨=급수, 라벨=급수명, 힌트=뜻·음).
+- [scripts/classify-math.py](scripts/classify-math.py) — 수학 공식을 교육과정 과목별(중등·공통수학·수학Ⅰ·수학Ⅱ·미적분·기하·확률과통계)로 재분류.
