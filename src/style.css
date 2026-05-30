@@ -120,6 +120,29 @@ select {
   box-shadow: 0 0 12px 3px color-mix(in srgb, var(--ink) 45%, transparent);
 }
 
+/* 조각 더하기 모드: 더할수록 금이 가는 효과(data-adds 1·2), 3번째에 깨짐(block-shatter) */
+.block-cracks {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+/* 빗금은 블럭 대각선 전체를 가로지르는 선(--crack-a: 블럭별 랜덤 각도, 두께는 얇게 일정) */
+.block-cracks[data-adds='1'] {
+  background: linear-gradient(var(--crack-a, 120deg), transparent 48%, rgba(0, 0, 0, 0.45) 49%, rgba(0, 0, 0, 0.45) 51%, transparent 52%);
+}
+.block-cracks[data-adds='2'] {
+  background:
+    linear-gradient(var(--crack-a, 120deg), transparent 48%, rgba(0, 0, 0, 0.5) 49%, rgba(0, 0, 0, 0.5) 51%, transparent 52%),
+    linear-gradient(calc(var(--crack-a, 120deg) + 72deg), transparent 48%, rgba(0, 0, 0, 0.5) 49%, rgba(0, 0, 0, 0.5) 51%, transparent 52%),
+    rgba(0, 0, 0, 0.07);
+}
+@keyframes block-shatter {
+  0% { transform: scale(1) rotate(0); opacity: 1; filter: brightness(1); }
+  30% { transform: scale(1.1) rotate(3deg); filter: brightness(1.6); }
+  100% { transform: scale(0.2) rotate(-14deg); opacity: 0; }
+}
+
 .block-style-jelly {
   border-radius: min(32%, 18px);
   background:

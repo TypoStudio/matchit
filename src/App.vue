@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { Block, BlockStyleName, GameKind, GameMode, LessonItem, LessonPack, PowerKind, SolveMode, ThemeName } from './types';
+import { messages, type Locale, type MessageKey } from './locales';
+
+// 화면 라벨 언어팩(src/locales). locale 값만 바꾸면 다른 언어로 확장.
+const locale = ref<Locale>('ko');
+function t(key: MessageKey): string {
+  return messages[locale.value][key];
+}
 
 const cols = ref(Number(localStorage.getItem('matchit-cols')) || 7);
 const rows = ref(Number(localStorage.getItem('matchit-rows')) || 7);
@@ -10,6 +17,10 @@ const baseUrl = import.meta.env.BASE_URL;
 const PACK_CATALOG_URL = import.meta.env.PROD
   ? 'https://typostudio.github.io/matchit-packs/packs.json'
   : '/packs/packs.json';
+// 기본 목록에서 뺀 과일 맞추기 — 꾸러미 추가에서 한 번에 넣을 수 있게.
+const FRUIT_PACK_URL = import.meta.env.PROD
+  ? 'https://typostudio.github.io/matchit-packs/arcade/fruit-emoji/pack.json'
+  : '/packs/arcade/fruit-emoji/pack.json';
 const palette = [
   '#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef', '#eab308',
   '#3b82f6', '#ef4444', '#10b981', '#a855f7', '#f43f5e', '#0ea5e9', '#65a30d', '#fb923c',
@@ -17,16 +28,16 @@ const palette = [
 ];
 
 const themes: Array<{ id: ThemeName; label: string }> = [
-  { id: 'paper', label: 'Paper' },
-  { id: 'midnight', label: 'Night' },
-  { id: 'lab', label: 'Lab' },
+  { id: 'paper', label: t('themePaper') },
+  { id: 'midnight', label: t('themeNight') },
+  { id: 'lab', label: t('themeLab') },
 ];
 
 const blockStyles: Array<{ id: BlockStyleName; label: string }> = [
-  { id: 'jelly', label: 'Jelly' },
-  { id: 'card', label: 'Card' },
-  { id: 'tile', label: 'Tile' },
-  { id: 'transparent', label: '투명' },
+  { id: 'jelly', label: t('designJelly') },
+  { id: 'card', label: t('designCard') },
+  { id: 'tile', label: t('designTile') },
+  { id: 'transparent', label: t('designTransparent') },
 ];
 const blockPreviewColors = ['#f97316', '#3b82f6'];
 const boardPresets: Array<{ cols: number; rows: number; wide?: boolean }> = [
@@ -39,19 +50,19 @@ const boardPresets: Array<{ cols: number; rows: number; wide?: boolean }> = [
 ];
 
 const solveModes: Array<{ id: SolveMode; label: string; desc: string }> = [
-  { id: 'sequence', label: '선택하기', desc: '해답 블럭을 하나씩 선택. 순서무관.' },
-  { id: 'collect', label: '모으기', desc: '블럭을 드래그하여 모으기. 한 블럭 해답은 선택하기.' },
+  { id: 'sequence', label: t('solveSequence'), desc: t('solveSequenceDesc') },
+  { id: 'collect', label: t('solveCollect'), desc: t('solveCollectDesc') },
 ];
 
 const gameKinds: Array<{ id: GameKind; label: string }> = [
-  { id: 'lesson', label: '학습 매칭' },
-  { id: 'numbers', label: '숫자 더하기' },
+  { id: 'lesson', label: t('kindLesson') },
+  { id: 'numbers', label: t('kindNumbers') },
 ];
 
 const mobilePanels = [
-  { id: 'packs', label: '학습팩' },
-  { id: 'score', label: '점수' },
-  { id: 'game', label: '게임하기' },
+  { id: 'packs', label: t('panelPacks') },
+  { id: 'score', label: t('panelScore') },
+  { id: 'game', label: t('panelGame') },
 ] as const;
 
 type MobilePanel = (typeof mobilePanels)[number]['id'];
@@ -171,6 +182,8 @@ let answerTimer: number | undefined;
 const extraPacks = ref<string[]>(readExtraPacks());
 const showPackManager = ref(false); // 추가팩 관리 팝업
 const newPackUrl = ref('');
+const extraPackNames = ref<Record<string, string>>({}); // 추가 꾸러미 url -> 읽어온 이름
+const packMgrError = ref('');
 const showResetScoreConfirm = ref(false); // 점수 초기화 확인 팝업
 const showClearDataConfirm = ref(false); // 로컬 데이터 삭제 확인 팝업
 const board = ref<Block[]>([]);
@@ -186,6 +199,28 @@ const passes = ref(0);
 const gameOver = ref(false);
 // 레벨별 누적 점수/푼 문제수 (현재 팩 기준)
 const levelStats = ref<Record<number, { score: number; solved: number }>>({});
+// 숫자 더하기 누적 통계(전 생애): 누적 점수·최고 수 기록·최고 이음·합친 횟수
+function readNumStats() {
+  try {
+    const v = JSON.parse(localStorage.getItem('matchit-numstats') || '{}');
+    return { total: Number(v.total) || 0, bestMax: Number(v.bestMax) || 0, bestCombo: Number(v.bestCombo) || 0, merges: Number(v.merges) || 0, breaks: Number(v.breaks) || 0 };
+  } catch {
+    return { total: 0, bestMax: 0, bestCombo: 0, merges: 0, breaks: 0 };
+  }
+}
+const numStats = ref(readNumStats());
+function saveNumStats() {
+  localStorage.setItem('matchit-numstats', JSON.stringify(numStats.value));
+}
+// 합체/더하기 1회 기록(점수 증가량 gain, 이번에 만든 값 madeValue)
+function recordNumMerge(gain: number, madeValue: number) {
+  const s = numStats.value;
+  s.total += gain;
+  s.merges += 1;
+  if (combo.value > s.bestCombo) s.bestCombo = combo.value;
+  if (madeValue > s.bestMax) s.bestMax = madeValue;
+  saveNumStats();
+}
 const message = ref('목표 블럭을 순서대로 누르세요.');
 const loading = ref(false);
 const isResolving = ref(false);
@@ -292,7 +327,7 @@ const endlessStageCount = computed(() => Math.max(1, Math.ceil((fullItems.value.
 // 연속(endless) + 자유(free): 한 문제씩이 아닌 "이어서 푸는" 모드
 const continuous = computed(() => mode.value !== 'single');
 // 현재 모드 한글 라벨(게임화면 표시용)
-const modeLabel = computed(() => (mode.value === 'single' ? '한문제씩' : mode.value === 'endless' ? '연속' : '자유'));
+const modeLabel = computed(() => (mode.value === 'single' ? t('modeSingle') : mode.value === 'endless' ? t('modeEndless') : t('modeFree')));
 // 선택된 해법모드 설명(버튼 아래 표시)
 const solveModeDesc = computed(() => solveModes.find((s) => s.id === solveMode.value)?.desc ?? '');
 const activeItems = computed(() => {
@@ -666,7 +701,7 @@ function ensureTargetFormable() {
   if (gameKind.value !== 'lesson' || solveMode.value !== 'sequence' || mode.value !== 'single') return;
   const chosen = target.value;
   if (!chosen || !chosen.tokens.length || canFormFromBoard(chosen)) return;
-  message.value = '보드에 답이 없어 새 판을 만들었어요.';
+  message.value = t('msgNewBoard');
   const fresh = seededBlocks();
   const positions = shuffle(Array.from({ length: rows.value * cols.value }, (_, i) => i));
   chosen.tokens.forEach((token, k) => {
@@ -924,16 +959,16 @@ function resetGame(keepScore = false, keepStage = false) {
   if (!keepScore) { score.value = 0; matchedCount.value = 0; clearedBlocks.value = 0; }
   if (gameKind.value === 'numbers') {
     message.value = mergeMode.value === 'add'
-      ? '블럭을 끌어다 다른 블럭에 더하세요.'
-      : '같은 숫자 3개 이상을 붙여 더 큰 수를 만드세요.';
+      ? t('numStartAdd')
+      : t('numStartSwap');
   } else if (solveMode.value === 'collect') {
     message.value = continuous.value
-      ? '블럭을 바꿔 보드의 식 글자들을 서로 붙여 맞춰보세요.'
-      : '블럭을 바꿔 목표 식의 글자들을 상하좌우로 서로 붙여 맞춰보세요.';
+      ? t('msgCollectCont')
+      : t('msgCollectSingle');
   } else if (continuous.value) {
-    message.value = '아무 블럭이나 순서대로 맞춰보세요.';
+    message.value = t('msgSeqFree');
   } else {
-    message.value = '목표 블럭을 순서대로 누르세요.';
+    message.value = t('msgSeqGoal');
   }
   // 초기 목표를 랜덤으로 고르고 보드에 답이 있도록 보장
   ensureSequenceTargetOnBoard();
@@ -1140,9 +1175,12 @@ async function loadPacks() {
   const catalogUrl = new URL(PACK_CATALOG_URL, window.location.href).href;
   const defaultPacks = await loadSource(catalogUrl).catch(() => { failures++; return [] as LessonPack[]; });
   const addedPacks: LessonPack[] = [];
+  extraPackNames.value = {};
   for (const raw of extraPacks.value) {
     try {
-      addedPacks.push(...await loadSource(new URL(raw, window.location.href).href));
+      const list = await loadSource(new URL(raw, window.location.href).href);
+      addedPacks.push(...list);
+      extraPackNames.value[raw] = list.map((p) => p.title).join(', ');
     } catch {
       failures++;
     }
@@ -1190,14 +1228,30 @@ function saveExtraPacks() {
 }
 async function addExtraPack() {
   const url = newPackUrl.value.trim();
+  if (!url || extraPacks.value.includes(url)) { newPackUrl.value = ''; return; }
+  packMgrError.value = '';
+  // 추가 전에 파일을 읽어 유효한 꾸러미인지 검증
+  try {
+    const list = await loadSource(new URL(url, window.location.href).href);
+    if (!list.length) throw new Error('empty');
+  } catch {
+    packMgrError.value = t('packInvalid');
+    return;
+  }
   newPackUrl.value = '';
-  if (!url || extraPacks.value.includes(url)) return;
   extraPacks.value.push(url);
   saveExtraPacks();
   await loadPacks();
 }
 async function removeExtraPack(url: string) {
   extraPacks.value = extraPacks.value.filter((u: string) => u !== url);
+  saveExtraPacks();
+  await loadPacks();
+}
+// 과일 맞추기 꾸러미를 한 번에 추가
+async function addFruitPack() {
+  if (extraPacks.value.includes(FRUIT_PACK_URL)) return;
+  extraPacks.value.push(FRUIT_PACK_URL);
   saveExtraPacks();
   await loadPacks();
 }
@@ -1311,7 +1365,7 @@ function scoreMatch(item: LessonItem, length: number) {
   track('item_solved', { item_id: item.id, word: item.label, length, gained, solved_level: lv, is_new: isNewSolve });
   showHint.value = false;
   hintIndexes.value = [];
-  message.value = `${item.label} 해결 ${detail}`;
+  message.value = `${item.label} ${t('wordSolved')} ${detail}`;
 }
 
 function sleep(ms: number) {
@@ -1679,7 +1733,7 @@ function ensureCollectAfterClear() {
       if (next) {
         collectTargetItem.value = next;
       } else {
-        message.value = '보드에 답이 없어 새 판을 만들었어요.';
+        message.value = t('msgNewBoard');
         pickCollectItem();
         board.value = buildCollectBoard();
       }
@@ -1795,7 +1849,7 @@ async function detonate(startIndexes: number[], extraRemove: number[] = []) {
   best.value = Math.max(best.value, score.value);
   localStorage.setItem(bestKey(), String(best.value));
   clearedBlocks.value += idx.length;
-  message.value = `💥 ${idx.length}개 제거!`;
+  message.value = `💥 ${idx.length}${t('bombRemovedSuffix')}`;
   clearSelection();
   swapFirstIndex.value = null;
   // 폭탄 외형으로 변신한 셀들도 같은 축소+페이드 효과로 사라짐
@@ -1931,7 +1985,14 @@ function findAllMergeClusters(brd: Block[]): number[][] {
 }
 
 function recolorBlock(block: Block, val: number): Block {
-  return { ...block, value: val, token: formatValue(val), label: String(val), color: colorForValue(val) };
+  return { ...block, value: val, token: formatValue(val), label: String(val), color: colorForValue(val), adds: 0 };
+}
+
+// 조각별 금(빗금) 각도 — id로 결정해 블럭마다 다르게(랜덤처럼), 다시 그려도 고정
+function crackAngle(id: string): number {
+  let h = 0;
+  for (let i = 0; i < id.length; i += 1) h = (h * 31 + id.charCodeAt(i)) % 180;
+  return h;
 }
 
 // 3개 이상 연결된 덩어리를 모두 합치고, 낙하 후 새로 생긴 덩어리도 연쇄로 합침
@@ -1953,6 +2014,7 @@ async function resolveNumberClusters(preferIndex: number): Promise<boolean> {
       const mergedValue = value * comp.length;
       const keep = firstPass && comp.includes(preferIndex) ? preferIndex : Math.max(...comp);
       score.value += mergedValue * combo.value;
+      recordNumMerge(mergedValue * combo.value, mergedValue);
       combo.value += 1;
       // keep 에서 BFS: 각 칸의 부모(한 칸 가까운 이웃)와 깊이를 구함 → 연결 경로를 따라 모임
       const inComp = new Set(comp);
@@ -1979,7 +2041,7 @@ async function resolveNumberClusters(preferIndex: number): Promise<boolean> {
     }
     best.value = Math.max(best.value, score.value);
     localStorage.setItem(bestKey(), String(best.value));
-    message.value = clusters.length > 1 ? `${clusters.length}곳 동시 합체!` : '합체!';
+    message.value = clusters.length > 1 ? `${clusters.length}${t('mergedManySuffix')}` : t('merged');
 
     clearSelection();
     // 가까운 칸부터 차례로, 연결 경로를 따라 칸칸이 최종 합체 칸까지 이동한 뒤 사라진다
@@ -2037,7 +2099,7 @@ function checkNumberGameOver() {
   const canStillMerge = [...counts.values()].some((count) => count >= 3);
   if (!canStillMerge) {
     gameOver.value = true;
-    message.value = `게임 오버! 더 합칠 수 없습니다. 점수 ${score.value}`;
+    message.value = `${t('gameOverNoMergePrefix')} ${score.value}`;
     track('game_over', { score: score.value, best: best.value });
   }
 }
@@ -2056,7 +2118,7 @@ async function numberSwap(a: number, b: number) {
   const merged = await resolveNumberClusters(b);
   if (!merged) {
     combo.value = 1;
-    message.value = '같은 숫자 3개 이상을 붙여보세요.';
+    message.value = t('msgMerge3');
   }
   isResolving.value = false;
   checkNumberGameOver();
@@ -2067,6 +2129,13 @@ async function numberAdd(a: number, b: number) {
   const av = board.value[a]?.value;
   const bv = board.value[b]?.value;
   if (av === undefined || bv === undefined) return;
+  // 작은 수에 큰 수를 더하지 못하게: 끌어온 수가 대상 수보다 크면 막음
+  if (av > bv) {
+    message.value = t('cantAddBigger');
+    swapFirstIndex.value = null;
+    selectedIndexes.value = [];
+    return;
+  }
   isResolving.value = true;
   combo.value = 1; // 이번 더하기 액션의 콤보 시작(이어지는 자동 합체에서 증가)
   motionPhase.value = 'swap';
@@ -2083,21 +2152,37 @@ async function numberAdd(a: number, b: number) {
   await sleep(dur);
 
   const sum = av + bv;
+  const newAdds = (board.value[b]?.adds ?? 0) + 1; // b에 더해진 횟수
   const next = board.value.slice();
-  next[b] = recolorBlock(next[b]!, sum);
+  next[b] = { ...recolorBlock(next[b]!, sum), adds: newAdds };
   board.value = next;
   const hidden = new Map(gatherStyles.value);
   hidden.set(a, { ...(hidden.get(a) || {}), opacity: '0', transition: 'none' });
   gatherStyles.value = hidden;
   score.value += sum;
+  recordNumMerge(sum, sum);
   best.value = Math.max(best.value, score.value);
   localStorage.setItem(bestKey(), String(best.value));
-  message.value = `합! ${formatValue(av)} + ${formatValue(bv)} = ${formatValue(sum)}`;
+  // 3번 더했어도, 합쳐진 수가 이웃의 같은 수와 3개 이상 합체될 수 있으면 깨지지 않고 합체를 우선한다
+  const bWillCluster = findAllMergeClusters(board.value).some((c) => c.includes(b));
+  const breakNow = newAdds >= 3 && !bWillCluster;
+  message.value = breakNow
+    ? `${t('addBang')} ${formatValue(av)} + ${formatValue(bv)} ${t('blockBroke')}`
+    : `${t('addBang')} ${formatValue(av)} + ${formatValue(bv)} = ${formatValue(sum)}`;
 
   await sleep(animMs(ANIM.gather));
+  if (breakNow) {
+    numStats.value.breaks += 1; // 깨진 횟수 기억
+    saveNumStats();
+    // 3번 더했고 합체도 안 되면 산산이 깨진다
+    const sh = new Map(gatherStyles.value);
+    sh.set(b, { animation: 'block-shatter 320ms ease-in forwards', zIndex: '8' });
+    gatherStyles.value = sh;
+    await sleep(320);
+  }
   gatherStyles.value = new Map();
   motionPhase.value = 'fall';
-  applyGravity([a]);
+  applyGravity(breakNow ? [a, b] : [a]); // 깨지면 b칸도 비우고 리필
   await sleep(animMs(ANIM.fall));
   motionPhase.value = 'idle';
 
@@ -2117,7 +2202,7 @@ async function trySwap(a: number, b: number) {
   }
   // 학습 모드: 인접만 교환 옵션이 켜져 있으면 상하좌우 이웃만 허용
   if (adjacentSwap.value && !cellNeighbors(a).includes(b)) {
-    message.value = '인접한 블럭끼리만 바꿀 수 있어요.';
+    message.value = t('msgAdjOnly');
     swapFirstIndex.value = null;
     selectedIndexes.value = [];
     return;
@@ -2173,14 +2258,14 @@ async function trySwap(a: number, b: number) {
       await resolveCollectBatch(all, [a, b]);
       return;
     }
-    message.value = '블럭을 옮겨 식의 글자들을 서로 붙여보세요.';
+    message.value = t('msgMoveJoin');
     isResolving.value = false;
     return;
   }
 
   const match = findCollectMatch([a, b]);
   if (!match) {
-    message.value = '블럭을 옮겨 식의 글자들을 서로 붙여보세요.';
+    message.value = t('msgMoveJoin');
     isResolving.value = false;
     return;
   }
@@ -2361,6 +2446,8 @@ function resetScore() {
   saveLevelStats();
   clearedStages.value = {};
   localStorage.setItem(clearedKey(), '{}');
+  numStats.value = { total: 0, bestMax: 0, bestCombo: 0, merges: 0, breaks: 0 };
+  saveNumStats();
 }
 
 // 이 기기에 저장된 모든 게임 데이터(진행도·순서·설정·추가팩 등) 삭제 후 새로고침
@@ -2467,7 +2554,7 @@ function toggleHint() {
   const hint = computeHintIndexes();
   hintIndexes.value = hint;
   if (hint.length) track('hint_used', { item_id: hintItem.value?.id, word: hintItem.value?.label });
-  else message.value = '표시할 조합이 없어요.';
+  else message.value = t('msgNoCombo');
 }
 
 // 모르면 다음 문제로 넘어가기 (학습 한 문제씩 모드)
@@ -2485,14 +2572,14 @@ function passCurrent() {
     if (next) {
       collectTargetItem.value = next;
     } else {
-      message.value = '보드에 답이 없어 새 판을 만들었어요.';
+      message.value = t('msgNewBoard');
       pickCollectItem();
       board.value = buildCollectBoard();
     }
   } else {
     ensureSequenceTargetOnBoard();
   }
-  message.value = '패스 — 다음 문제!';
+  message.value = t('msgPass');
 }
 
 function handleBlockClick(index: number) {
@@ -2673,10 +2760,10 @@ async function createShareImage() {
   context.fillStyle = gradient;
   context.fillRect(0, 0, width, height);
   const subtitle = gameKind.value === 'numbers'
-    ? '숫자 더하기'
-    : `${activePack.value?.title || ''}${mode.value === 'single' ? ` · ${levelLabel(selectedLevel.value)}` : mode.value === 'free' ? ' · 자유' : ' · 연속으로'}`;
+    ? t('kindNumbers')
+    : `${activePack.value?.title || ''}${mode.value === 'single' ? ` · ${levelLabel(selectedLevel.value)}` : ` · ${modeLabel.value}`}`;
   const solvedTotal = Object.values(levelStats.value).reduce((sum, s) => sum + (s?.solved || 0), 0);
-  const detailLabel = gameKind.value === 'numbers' ? '최고 숫자' : '푼 문제';
+  const detailLabel = gameKind.value === 'numbers' ? t('statMaxNumber') : '푼 문제';
   const detailValue = gameKind.value === 'numbers' ? formatValue(maxValue.value) : `${solvedTotal}`;
 
   // 제목 + 버전 (제목 폰트로 폭을 재서 겹치지 않게)
@@ -2684,8 +2771,8 @@ async function createShareImage() {
   context.textBaseline = 'alphabetic';
   context.fillStyle = '#1f2937';
   context.font = '800 84px sans-serif';
-  context.fillText('Match It', 84, 156);
-  const titleWidth = context.measureText('Match It').width;
+  context.fillText(t('appName'), 84, 156);
+  const titleWidth = context.measureText(t('appName')).width;
   context.font = '700 40px sans-serif';
   context.fillStyle = '#64748b';
   context.fillText(appVersion, 84 + titleWidth + 22, 156);
@@ -2703,15 +2790,15 @@ async function createShareImage() {
   context.stroke();
   context.fillStyle = '#64748b';
   context.font = '700 40px sans-serif';
-  context.fillText('SCORE', 134, 404);
+  context.fillText(t('statScore'), 134, 404);
   context.fillStyle = '#0f766e';
   context.font = '800 176px sans-serif';
   context.fillText(String(score.value), 130, 566);
 
   // 박스 아래: 최고점수 · 콤보 · 푼문제(또는 최고 숫자) · 블럭(보드 크기) 4열
   const stats: Array<[string, string]> = [
-    ['BEST', String(best.value)],
-    ['COMBO', `x${Math.max(1, combo.value - 1)}`],
+    [t('statBest'), String(best.value)],
+    [t('statCombo'), `x${Math.max(1, combo.value - 1)}`],
     [detailLabel, detailValue],
     ['블럭', `${cols.value}×${rows.value}`],
   ];
@@ -2889,17 +2976,17 @@ onBeforeUnmount(() => {
       <header class="flex flex-col gap-4 border-b border-[var(--line)] pb-5 lg:flex-row lg:items-start lg:justify-between">
         <div class="flex grow items-start justify-between">
           <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">Study Block Puzzle</p>
+            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">{{ t('appTagline') }}</p>
             <h1 class="mt-2 flex items-baseline gap-2 text-3xl font-black sm:text-5xl">
-              Match It
+              {{ t('appName') }}
               <span class="text-sm font-bold text-[var(--muted)] sm:text-base">{{ appVersion }}</span>
             </h1>
             <p class="mt-2 hidden max-w-2xl text-sm leading-6 text-[var(--muted)] sm:text-base lg:block">
-              블럭 맞추기로 여러가지 문제를 풀어보세요.
+              {{ t('appDesc') }}
             </p>
           </div>
           <div class="flex items-center gap-2">
-            <label for="theme-select" class="text-xs font-bold uppercase text-[var(--muted)]">Theme</label>
+            <label for="theme-select" class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrTheme') }}</label>
             <select id="theme-select" v-model="theme" class="h-9 rounded-md border border-[var(--line)] bg-[var(--panel)] px-2 text-xs font-bold" @change="setTheme(($event.target as HTMLSelectElement).value as ThemeName)">
               <option v-for="item in themes" :key="item.id" :value="item.id">{{ item.label }}</option>
             </select>
@@ -2907,7 +2994,7 @@ onBeforeUnmount(() => {
         </div>
       </header>
 
-      <nav class="flex gap-2 lg:hidden" aria-label="모바일 화면 전환">
+      <nav class="flex gap-2 lg:hidden" :aria-label="t('ariaSwitchPanel')">
         <button
           v-for="panel in mobilePanels"
           :key="panel.id"
@@ -2930,7 +3017,7 @@ onBeforeUnmount(() => {
           class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"
           :class="activeMobilePanel === 'packs' ? 'app-panel' : 'hidden lg:block'"
         >
-          <p class="text-xs font-bold uppercase text-[var(--muted)]">Game</p>
+          <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrGame') }}</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button
               v-for="kind in gameKinds"
@@ -2946,50 +3033,50 @@ onBeforeUnmount(() => {
 
           <template v-if="gameKind === 'lesson'">
           <div class="mt-5 flex items-center justify-between gap-3">
-            <h2 class="text-lg font-black">학습팩</h2>
-            <span class="rounded bg-[var(--panel-strong)] px-2 py-1 text-xs font-bold text-[var(--muted)]">{{ packs.length }} packs</span>
+            <h2 class="text-lg font-black">{{ t('hdrPack') }}</h2>
+            <span class="rounded bg-[var(--panel-strong)] px-2 py-1 text-xs font-bold text-[var(--muted)]">{{ packs.length }} {{ t('packsUnit') }}</span>
           </div>
 
           <div class="mt-4 grid grid-cols-[2fr_1fr] gap-2">
             <div>
-              <label class="block text-xs font-bold uppercase text-[var(--muted)]" for="pack">Pack</label>
+              <label class="block text-xs font-bold uppercase text-[var(--muted)]" for="pack">{{ t('hdrPack') }}</label>
               <select id="pack" v-model="selectedPackId" class="mt-1 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3" @change="handlePackChange">
                 <option v-for="pack in packs" :key="pack.id" :value="pack.id">{{ pack.title }}</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs font-bold uppercase text-[var(--muted)]" for="level">Level</label>
+              <label class="block text-xs font-bold uppercase text-[var(--muted)]" for="level">{{ t('hdrLevel') }}</label>
               <select id="level" v-model="selectedLevel" class="mt-1 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3" @change="handleLevelChange">
-                <option v-for="level in levels" :key="level" :value="level">{{ levelLabel(level) }}{{ isLevelCleared(level) ? ' ✓' : '' }}</option>
+                <option v-for="level in levels" :key="level" :value="level">{{ levelLabel(level) }}{{ isLevelCleared(level) ? ' ✅' : '' }}</option>
               </select>
             </div>
           </div>
 
           <div class="mt-3 flex gap-2">
             <button class="h-10 flex-1 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showPackManager = true">
-              추가팩 관리{{ extraPacks.length ? ` (${extraPacks.length})` : '' }}
+              {{ t('btnManagePacks') }}{{ extraPacks.length ? ` (${extraPacks.length})` : '' }}
             </button>
-            <button class="h-10 rounded-md bg-[var(--accent)] px-3 text-sm font-black text-[var(--accent-ink)]" type="button" title="목록 새로고침" @click="loadPacks()">
+            <button class="h-10 rounded-md bg-[var(--accent)] px-3 text-sm font-black text-[var(--accent-ink)]" type="button" :title="t('btnRefresh')" @click="loadPacks()">
               ↻
             </button>
           </div>
           <p v-if="error" class="mt-2 text-sm font-semibold text-rose-600">{{ error }}</p>
 
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Game Mode</p>
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrGameMode') }}</p>
           <div class="mt-2 grid grid-cols-3 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="mode === 'single' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMode('single')">
-              한 문제씩
+              {{ t('modeSingle') }}
             </button>
             <button class="h-11 rounded-md border text-sm font-black" :class="mode === 'endless' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMode('endless')">
-              연속으로
+              {{ t('modeEndless') }}
             </button>
             <button class="h-11 rounded-md border text-sm font-black" :class="mode === 'free' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMode('free')">
-              자유 모드
+              {{ t('modeFree') }}
             </button>
           </div>
 
           <template v-if="isBidi">
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">출제 방향</p>
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrDirection') }}</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="wordDirection === 'spell' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setWordDirection('spell')">
               {{ dirLabelAsis }}
@@ -3000,7 +3087,7 @@ onBeforeUnmount(() => {
           </div>
           </template>
 
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Solve Mode</p>
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrSolveMode') }}</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button
               v-for="solve in solveModes"
@@ -3016,59 +3103,59 @@ onBeforeUnmount(() => {
           <p class="mt-2 text-sm text-[var(--muted)]">{{ solveModeDesc }}</p>
 
           <template v-if="swapEnabled">
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Nearby Swap</p>
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrNearbySwap') }}</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="adjacentSwap ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setAdjacentSwap(true)">
-              ON
+              {{ t('on') }}
             </button>
             <button class="h-11 rounded-md border text-sm font-black" :class="!adjacentSwap ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setAdjacentSwap(false)">
-              OFF
+              {{ t('off') }}
             </button>
           </div>
-          <p class="mt-2 text-sm text-[var(--muted)]">인접한 블럭끼리만 바꿀 수 있어요.</p>
+          <p class="mt-2 text-sm text-[var(--muted)]">{{ t('nearbySwapDesc') }}</p>
           </template>
 
           <template v-if="solveMode === 'collect' && continuous">
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">Chain Clear</p>
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrChainClear') }}</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="autoChain ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setAutoChain(true)">
-              ON
+              {{ t('on') }}
             </button>
             <button class="h-11 rounded-md border text-sm font-black" :class="!autoChain ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setAutoChain(false)">
-              OFF
+              {{ t('off') }}
             </button>
           </div>
-          <p class="mt-2 text-sm text-[var(--muted)]">블럭이 떨어진 뒤 정답이 되면 자동으로 깨집니다.</p>
+          <p class="mt-2 text-sm text-[var(--muted)]">{{ t('chainClearDesc') }}</p>
           </template>
 
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">ANSWER</p>
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrAnswer') }}</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="showAnswer ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setShowAnswer(true)">
-              ON
+              {{ t('on') }}
             </button>
             <button class="h-11 rounded-md border text-sm font-black" :class="!showAnswer ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setShowAnswer(false)">
-              OFF
+              {{ t('off') }}
             </button>
           </div>
-          <p class="mt-2 text-sm text-[var(--muted)]">문제해결 후 정답을 보여줍니다.</p>
+          <p class="mt-2 text-sm text-[var(--muted)]">{{ t('answerDesc') }}</p>
 
           </template>
 
           <template v-if="gameKind === 'numbers'">
-          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">합치기 모드</p>
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrMergeMode') }}</p>
           <div class="mt-2 grid grid-cols-2 gap-2">
             <button class="h-11 rounded-md border text-sm font-black" :class="mergeMode === 'swap' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMergeMode('swap')">
-              블럭 교체
+              {{ t('mergeSwap') }}
             </button>
             <button class="h-11 rounded-md border text-sm font-black" :class="mergeMode === 'add' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMergeMode('add')">
-              블럭 더하기
+              {{ t('mergeAdd') }}
             </button>
           </div>
-          <p class="mt-2 text-sm text-[var(--muted)]">{{ mergeMode === 'add' ? '블럭을 끌어다 다른 블럭에 더합니다.' : '블럭을 바꿔 같은 숫자 3개 이상을 붙여 합칩니다.' }}</p>
+          <p class="mt-2 text-sm text-[var(--muted)]">{{ mergeMode === 'add' ? t('mergeAddDesc') : t('mergeSwapDesc') }}</p>
           </template>
 
           <div class="mt-5">
-            <p class="text-xs font-bold uppercase text-[var(--muted)]">Board Size (Width x Height)</p>
+            <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrBoardSize') }}</p>
             <div class="mt-2 grid grid-cols-2 gap-2">
               <button
                 v-for="preset in boardPresets"
@@ -3087,7 +3174,7 @@ onBeforeUnmount(() => {
           </div>
 
           <div class="mt-5">
-            <p class="text-xs font-bold uppercase text-[var(--muted)]">Block Design</p>
+            <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrBlockDesign') }}</p>
             <div class="mt-2 grid grid-cols-2 gap-2">
               <button
                 v-for="style in blockStyles"
@@ -3111,12 +3198,13 @@ onBeforeUnmount(() => {
             </div>
           </div>
 
+          <hr class="mt-6 mb-4" />
           <button
-            class="mt-6 h-11 w-full rounded-md border border-rose-500/60 bg-[var(--panel-strong)] text-sm font-black text-rose-500"
+            class="h-11 w-full rounded-md border border-rose-500/60 bg-[var(--panel-strong)] text-sm font-black text-rose-500"
             type="button"
             @click="showClearDataConfirm = true"
           >
-            로컬 데이터 삭제
+            {{ t('btnClearData') }}
           </button>
 
         </aside>
@@ -3131,8 +3219,8 @@ onBeforeUnmount(() => {
                 class="inline-flex h-10 items-center justify-center rounded-md border px-3 font-black"
                 :class="hintIndexes.length ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'"
                 type="button"
-                title="힌트"
-                aria-label="힌트"
+                :title="t('titleHint')"
+                :aria-label="t('titleHint')"
                 @click="toggleHint"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3145,8 +3233,8 @@ onBeforeUnmount(() => {
                 v-if="solveMode === 'sequence' && selectedIndexes.length"
                 class="inline-flex h-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm font-black"
                 type="button"
-                title="선택취소"
-                aria-label="선택취소"
+                :title="t('titleDeselect')"
+                :aria-label="t('titleDeselect')"
                 @click="clearSelection"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3161,7 +3249,7 @@ onBeforeUnmount(() => {
                 type="button"
                 @click="passCurrent"
               >
-                패스 →
+                {{ t('btnPass') }}
               </button>
             </div>
             <div v-if="gameKind === 'lesson' && mode === 'single'" class="flex items-center">
@@ -3170,15 +3258,15 @@ onBeforeUnmount(() => {
                 :value="currentStage"
                 @change="onStageSelect"
               >
-                <option v-for="n in stageCount" :key="n" :value="n">스테이지 {{ n }}{{ (clearedStages[selectedLevel] || []).includes(n) ? ' ✓' : '' }}</option>
+                <option v-for="n in stageCount" :key="n" :value="n">{{ n }} {{ t('stageWord') }}{{ (clearedStages[selectedLevel] || []).includes(n) ? ' ✅' : '' }}</option>
               </select>
             </div>
             <div class="flex gap-2">
               <button
                 class="inline-flex h-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 font-black"
                 type="button"
-                title="새판"
-                aria-label="새판"
+                :title="t('titleNewBoard')"
+                :aria-label="t('titleNewBoard')"
                 @click="requestNewBoard"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3192,13 +3280,13 @@ onBeforeUnmount(() => {
                 type="button"
                 @click="gameFullscreen = !gameFullscreen"
               >
-                {{ gameFullscreen ? '✕ 해제' : '⛶' }}
+                {{ gameFullscreen ? t('fullscreenExit') : '⛶' }}
               </button>
               <button
                 class="inline-flex h-10 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 font-black lg:hidden"
                 type="button"
-                title="나가기"
-                aria-label="나가기"
+                :title="t('titleExit')"
+                :aria-label="t('titleExit')"
                 @click="requestExit"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3212,19 +3300,19 @@ onBeforeUnmount(() => {
 
           <div class="relative mb-3 rounded-md bg-[var(--panel-strong)] p-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <p class="text-xs font-bold uppercase text-[var(--muted)]">Score <strong class="text-base">{{ score }}</strong></p>
+              <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('statScore') }} <strong class="text-base">{{ score }}</strong></p>
               <div class="flex items-center gap-3">
                 <div v-if="gameKind === 'lesson' && mode === 'free'" class="flex flex-col items-end leading-tight">
                   <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · {{ modeLabel }}</span>
                   <span class="text-sm font-black text-[var(--accent)]">{{ matchedCount }} / {{ clearedBlocks }}</span>
                 </div>
                 <div v-if="showProgress" class="flex flex-col items-end leading-tight">
-                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · {{ modeLabel }} · {{ levelLabel(mode === 'endless' ? endlessCurrentLevel : selectedLevel) }} · 스테이지 {{ displayStage }}/{{ mode === 'endless' ? endlessStageCount : stageCount }}</span>
+                  <span class="text-[10px] font-bold uppercase text-[var(--muted)]">{{ activePack?.title }} · {{ modeLabel }} · {{ levelLabel(mode === 'endless' ? endlessCurrentLevel : selectedLevel) }} · {{ t('stageWord') }} {{ displayStage }}/{{ mode === 'endless' ? endlessStageCount : stageCount }}</span>
                   <span class="text-sm font-black text-[var(--accent)]">{{ levelProgress.current }} / {{ levelProgress.total }}</span>
                 </div>
               </div>
             </div>
-            <p class="mt-3 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
+            <p class="mt-3 text-xs font-bold uppercase text-[var(--muted)]">{{ t('hdrCurrentGoal') }}</p>
             <template v-if="gameKind === 'lesson' && continuous">
               <div
                 v-if="endlessTicker.length"
@@ -3240,7 +3328,7 @@ onBeforeUnmount(() => {
               >
                 <span class="goal-prompt text-3xl font-black sm:text-4xl">{{ endlessTicker.join('       ·       ') }}</span>
               </div>
-              <p v-else class="mt-1 text-2xl font-black sm:text-3xl">보드의 답을 맞춰보세요</p>
+              <p v-else class="mt-1 text-2xl font-black sm:text-3xl">{{ t('boardAnswerHere') }}</p>
             </template>
             <template v-else>
               <div
@@ -3266,7 +3354,7 @@ onBeforeUnmount(() => {
           <div class="mb-3 flex flex-wrap items-center justify-between gap-3 lg:flex max-lg:hidden">
             <div>
               <p class="text-sm font-bold text-[var(--muted)]">{{ message }}</p>
-              <p class="text-xs text-[var(--muted)]">선택: {{ selectedText || '-' }}</p>
+              <p class="text-xs text-[var(--muted)]">{{ t('selectedLabel') }}: {{ selectedText || '-' }}</p>
             </div>
           </div>
 
@@ -3307,6 +3395,7 @@ onBeforeUnmount(() => {
               <span class="block-label flex h-full w-full items-center justify-center font-black" :style="{ '--len': [...block.token].length }">
                 {{ block.token }}
               </span>
+              <span v-if="block.adds && mergeMode === 'add'" class="block-cracks" :data-adds="block.adds" :style="{ '--crack-a': `${crackAngle(block.id)}deg` }" aria-hidden="true"></span>
             </button>
           </TransitionGroup>
           </div>
@@ -3315,7 +3404,7 @@ onBeforeUnmount(() => {
             v-if="gameKind === 'numbers' && gameOver"
             class="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 rounded-lg bg-black/60 px-4 text-center backdrop-blur-sm"
           >
-            <p class="text-4xl font-black text-white">게임 오버</p>
+            <p class="text-4xl font-black text-white">{{ t('gameOverWord') }}</p>
             <p class="text-lg font-bold text-white/90">점수 {{ score }} · 최고 {{ best }}</p>
             <button class="mt-2 h-12 rounded-md bg-[var(--accent)] px-6 text-sm font-black text-[var(--accent-ink)]" type="button" @click="resetGame()">
               새 판 시작
@@ -3327,29 +3416,27 @@ onBeforeUnmount(() => {
           class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"
           :class="activeMobilePanel === 'score' ? 'app-panel' : 'hidden lg:block'"
         >
-          <h2 class="text-lg font-black">{{ gameKind === 'lesson' ? `${activePack?.title || ''}` : '점수' }}</h2>
-
-          <div class="mt-4 grid grid-cols-2 gap-2">
+          <div class="grid grid-cols-2 gap-2">
             <!-- 좌측: 현재 점수 카드들 -->
             <div class="space-y-2">
               <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
-                <p class="text-xs font-bold uppercase text-[var(--muted)]">Score</p>
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('statScore') }}</p>
                 <p class="mt-1 text-2xl font-black">{{ score }}</p>
               </div>
               <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
-                <p class="text-xs font-bold uppercase text-[var(--muted)]">Best</p>
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('statBest') }}</p>
                 <p class="mt-1 text-2xl font-black">{{ best }}</p>
               </div>
               <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
-                <p class="text-xs font-bold uppercase text-[var(--muted)]">Combo</p>
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('statCombo') }}</p>
                 <p class="mt-1 text-2xl font-black">x{{ combo }}</p>
               </div>
               <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
-                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ gameKind === 'numbers' ? '최고 숫자' : 'Moves' }}</p>
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ gameKind === 'numbers' ? t('statMaxNumber') : t('statMoves') }}</p>
                 <p class="mt-1 text-2xl font-black">{{ gameKind === 'numbers' ? formatValue(maxValue) : moves }}</p>
               </div>
               <div v-if="canPass" class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
-                <p class="text-xs font-bold uppercase text-[var(--muted)]">패스</p>
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('statPass') }}</p>
                 <p class="mt-1 text-2xl font-black">{{ passes }}</p>
               </div>
             </div>
@@ -3362,39 +3449,73 @@ onBeforeUnmount(() => {
                 :class="level === selectedLevel ? 'bg-[var(--accent)] text-[var(--accent-ink)]' : 'bg-[var(--panel-strong)]'"
               >
                 <p class="text-xs font-bold uppercase" :class="level === selectedLevel ? '' : 'text-[var(--muted)]'">
-                  {{ levelLabel(level) }}{{ isLevelCleared(level) ? ' ✓' : '' }} · 스테이지 {{ (clearedStages[level]?.length || 0) }}/{{ level }}
+                  {{ levelLabel(level) }}{{ isLevelCleared(level) ? ' ✓' : '' }} · {{ t('stageWord') }} {{ (clearedStages[level]?.length || 0) }}/{{ level }}
                 </p>
                 <p class="mt-1 text-2xl font-black">{{ levelStats[level]?.score || 0 }}</p>
               </div>
             </div>
+            <!-- 우측: 숫자 더하기 누적 통계 -->
+            <div v-else-if="gameKind === 'numbers'" class="space-y-2">
+              <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('cumScore') }}</p>
+                <p class="mt-1 text-2xl font-black">{{ numStats.total }}</p>
+              </div>
+              <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('cumBestMax') }}</p>
+                <p class="mt-1 text-2xl font-black">{{ formatValue(numStats.bestMax) }}</p>
+              </div>
+              <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('cumBestCombo') }}</p>
+                <p class="mt-1 text-2xl font-black">x{{ numStats.bestCombo }}</p>
+              </div>
+              <div class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('cumMerges') }}</p>
+                <p class="mt-1 text-2xl font-black">{{ numStats.merges }}</p>
+              </div>
+              <div v-if="mergeMode === 'add'" class="flex h-20 flex-col justify-center rounded-md bg-[var(--panel-strong)] p-3">
+                <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('cumBreaks') }}</p>
+                <p class="mt-1 text-2xl font-black">{{ numStats.breaks }}</p>
+              </div>
+            </div>
           </div>
 
-          <div class="mt-4 grid grid-cols-2 gap-2">
+          <div class="mt-4 grid grid-cols-[2fr_1fr_1fr] gap-2">
             <button class="h-12 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="createShareImage">
-              점수 공유
+              {{ t('btnShareScore') }}
             </button>
-            <button class="h-12 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showResetScoreConfirm = true">
-              점수 초기화
+            <button class="inline-flex h-12 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] font-black" type="button" :title="t('btnResetScore')" :aria-label="t('btnResetScore')" @click="showResetScoreConfirm = true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
             </button>
+            <a href="https://www.buymeacoffee.com/typ0s2d10" target="_blank" rel="noopener" class="inline-flex h-12 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-xl" :title="t('btnCoffee')" :aria-label="t('btnCoffee')">
+              ☕
+            </a>
           </div>
-
           <div v-if="gameKind === 'numbers'" class="mt-5">
-            <h3 class="text-sm font-black text-[var(--muted)]">플레이 방법</h3>
-            <ul class="mt-2 space-y-2 text-sm text-[var(--muted)]">
-              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">같은 숫자 3개 이상을 상하좌우로 붙이면 합쳐집니다.</li>
-              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">합쳐진 수는 모은 개수만큼 커집니다 (2+2+2 = 6).</li>
-              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">연쇄로 더 합쳐질수록 콤보 점수가 올라갑니다.</li>
-              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">더 합칠 수 있는 숫자가 없으면 게임 오버.</li>
+            <h3 class="text-sm font-black text-[var(--muted)]">{{ t('howToPlay') }}</h3>
+            <ul v-if="mergeMode === 'add'" class="mt-2 space-y-2 text-sm text-[var(--muted)]">
+              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">{{ t('numRuleAdd1') }}</li>
+              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">{{ t('numRuleAdd2') }}</li>
+              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">{{ t('numRuleAdd3') }}</li>
+              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">{{ t('numRuleAdd4') }}</li>
+            </ul>
+            <ul v-else class="mt-2 space-y-2 text-sm text-[var(--muted)]">
+              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">{{ t('numRule1') }}</li>
+              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">{{ t('numRule2') }}</li>
+              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">{{ t('numRule3') }}</li>
+              <li class="rounded-md border border-[var(--line)] bg-[var(--panel-strong)] p-3">{{ t('numRule4') }}</li>
             </ul>
           </div>
           <div v-else class="mt-5">
             <div class="flex items-center justify-between">
-              <h3 class="text-sm font-black text-[var(--muted)]">팩 문항</h3>
+              <h3 class="text-sm font-black text-[var(--muted)]">{{ t('sampleHdr') }}</h3>
               <button
                 class="grid h-8 w-8 place-items-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-base"
                 type="button"
-                title="다른 문항 보기"
-                aria-label="다른 문항 보기"
+                :title="t('titleOtherItems')"
+                :aria-label="t('titleOtherItems')"
                 @click="refreshSampleItems"
               >
                 ↻
@@ -3413,7 +3534,9 @@ onBeforeUnmount(() => {
       <footer class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-[var(--line)] pt-4 text-xs text-[var(--muted)]">
         <span>© 2026 TypoStudio</span>
         <span aria-hidden="true">·</span>
-        <a href="https://github.com/TypoStudio/matchit" target="_blank" rel="noopener" class="font-bold text-[var(--accent)] underline">GitHub</a>
+        <a href="https://github.com/TypoStudio/matchit" target="_blank" rel="noopener" aria-label="GitHub">
+          <img src="https://img.shields.io/badge/GitHub-TypoStudio%2Fmatchit-181717?logo=github&logoColor=white" alt="GitHub" class="h-5" loading="lazy" />
+        </a>
       </footer>
     </div>
 
@@ -3443,7 +3566,7 @@ onBeforeUnmount(() => {
       @pointercancel="!continuous ? releaseAnswer() : null"
     >
       <div ref="answerEl" :class="['rounded-2xl border border-[var(--line)] bg-[var(--panel)] shadow-2xl', continuous ? 'flex max-w-full flex-wrap items-center justify-center gap-x-2 gap-y-2 px-3 py-2' : 'p-6 text-center']">
-        <p v-if="!continuous" class="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">정답</p>
+        <p v-if="!continuous" class="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">{{ t('answerLabel') }}</p>
         <p :class="continuous ? 'text-lg font-black whitespace-nowrap' : 'mt-1 text-2xl font-black'">{{ answerItem.label }}</p>
         <p v-if="!continuous" class="text-sm text-[var(--muted)]">{{ answerItem.prompt }}</p>
         <div :class="continuous ? 'flex gap-1.5' : 'mt-4 flex flex-wrap justify-center gap-2'">
@@ -3458,7 +3581,7 @@ onBeforeUnmount(() => {
           </span>
         </div>
         <p v-if="answerItem.hint" :class="continuous ? 'w-full truncate text-center text-sm font-bold text-[var(--accent)]' : 'mt-4 text-sm font-bold text-[var(--accent)]'">💡 {{ answerItem.hint }}</p>
-        <p v-if="!continuous" class="mt-3 text-xs text-[var(--muted)]">탭하거나 5초 후 닫힘 · 길게 누르면 유지</p>
+        <p v-if="!continuous" class="mt-3 text-xs text-[var(--muted)]">{{ t('answerHelp') }}</p>
       </div>
     </div>
     </Transition>
@@ -3469,14 +3592,14 @@ onBeforeUnmount(() => {
     >
       <div class="level-clear-pop w-full max-w-xs rounded-2xl border border-[var(--accent)] bg-[var(--panel)] p-6 text-center shadow-2xl">
         <p class="text-5xl">🎉</p>
-        <p class="mt-2 text-2xl font-black text-[var(--accent)]">스테이지 클리어!</p>
-        <p class="mt-1 text-sm font-bold">{{ levelLabel(stageClearInfo.level) }} · 스테이지 {{ stageClearInfo.stage }} 완료!</p>
+        <p class="mt-2 text-2xl font-black text-[var(--accent)]">{{ t('stageClearTitle') }}</p>
+        <p class="mt-1 text-sm font-bold">{{ levelLabel(stageClearInfo.level) }} · {{ t('stageWord') }} {{ stageClearInfo.stage }} {{ t('doneSuffix') }}</p>
         <div class="mt-5 grid gap-2" :class="stageClearInfo.hasNext ? 'grid-cols-2' : 'grid-cols-1'">
           <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showStageClear = false">
-            계속
+            {{ t('btnContinue') }}
           </button>
           <button v-if="stageClearInfo.hasNext" class="h-11 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="goNextStageAfterClear">
-            다음 →
+            {{ t('btnNext') }}
           </button>
         </div>
       </div>
@@ -3488,18 +3611,18 @@ onBeforeUnmount(() => {
       @click.self="cancelExit"
     >
       <div class="w-full max-w-xs rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-center">
-        <p class="text-lg font-black">게임을 나가시겠어요?</p>
-        <p class="mt-1 text-sm text-[var(--muted)]">{{ saveOnExit ? '저장하면 다음에 이어서 시작합니다.' : '진행 중인 판은 사라집니다.' }}</p>
+        <p class="text-lg font-black">{{ t('exitTitle') }}</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">{{ saveOnExit ? t('exitSaveYes') : t('exitSaveNo') }}</p>
         <label class="mt-3 flex items-center justify-center gap-2 text-sm font-bold">
           <input type="checkbox" v-model="saveOnExit" class="h-4 w-4 accent-[var(--accent)]" />
-          저장하고 나가기
+          {{ t('exitSaveLabel') }}
         </label>
         <div class="mt-4 grid grid-cols-2 gap-2">
           <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="cancelExit">
-            취소
+            {{ t('btnCancel') }}
           </button>
           <button class="h-11 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="confirmExit">
-            나가기
+            {{ t('btnExit') }}
           </button>
         </div>
       </div>
@@ -3511,14 +3634,14 @@ onBeforeUnmount(() => {
       @click.self="cancelNewBoard"
     >
       <div class="w-full max-w-xs rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-center">
-        <p class="text-lg font-black">새 판을 시작할까요?</p>
-        <p class="mt-1 text-sm text-[var(--muted)]">현재 진행 중인 판은 사라집니다.</p>
+        <p class="text-lg font-black">{{ t('newBoardTitle') }}</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">{{ t('newBoardBody') }}</p>
         <div class="mt-4 grid grid-cols-2 gap-2">
           <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="cancelNewBoard">
-            취소
+            {{ t('btnCancel') }}
           </button>
           <button class="h-11 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="confirmNewBoard">
-            새 판
+            {{ t('btnNewBoard') }}
           </button>
         </div>
       </div>
@@ -3530,14 +3653,14 @@ onBeforeUnmount(() => {
       @click.self="showResetScoreConfirm = false"
     >
       <div class="w-full max-w-xs rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-center">
-        <p class="text-lg font-black">점수를 초기화할까요?</p>
-        <p class="mt-1 text-sm text-[var(--muted)]">최고 점수·레벨별 점수·클리어 기록이 사라집니다.</p>
+        <p class="text-lg font-black">{{ t('resetTitle') }}</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">{{ t('resetBody') }}</p>
         <div class="mt-4 grid grid-cols-2 gap-2">
           <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showResetScoreConfirm = false">
-            취소
+            {{ t('btnCancel') }}
           </button>
           <button class="h-11 rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="resetScore(); showResetScoreConfirm = false">
-            초기화
+            {{ t('btnReset') }}
           </button>
         </div>
       </div>
@@ -3549,14 +3672,14 @@ onBeforeUnmount(() => {
       @click.self="showClearDataConfirm = false"
     >
       <div class="w-full max-w-xs rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5 text-center">
-        <p class="text-lg font-black">로컬 데이터를 삭제할까요?</p>
-        <p class="mt-1 text-sm text-[var(--muted)]">진행도·출제 순서·설정·추가팩 등 이 기기에 저장된 모든 게임 데이터가 사라지고 새로고침됩니다.</p>
+        <p class="text-lg font-black">{{ t('clearTitle') }}</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">{{ t('clearBody') }}</p>
         <div class="mt-4 grid grid-cols-2 gap-2">
           <button class="h-11 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showClearDataConfirm = false">
-            취소
+            {{ t('btnCancel') }}
           </button>
           <button class="h-11 rounded-md bg-rose-500 text-sm font-black text-white" type="button" @click="clearLocalData">
-            삭제
+            {{ t('btnDelete') }}
           </button>
         </div>
       </div>
@@ -3568,8 +3691,16 @@ onBeforeUnmount(() => {
       @click.self="showPackManager = false"
     >
       <div class="w-full max-w-md rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5">
-        <p class="text-lg font-black">추가팩 관리</p>
-        <p class="mt-1 text-sm text-[var(--muted)]">학습팩 JSON URL을 추가하면 목록에 합쳐집니다. (목록은 이 기기에만 저장)</p>
+        <p class="text-lg font-black">{{ t('packMgrTitle') }}</p>
+        <p class="mt-1 text-sm text-[var(--muted)]">{{ t('packMgrDesc') }}</p>
+        <button
+          v-if="!extraPacks.includes(FRUIT_PACK_URL)"
+          class="mt-3 h-8 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-xs font-black"
+          type="button"
+          @click="addFruitPack"
+        >
+          {{ t('btnAddFruit') }}
+        </button>
         <div class="mt-3 flex gap-2">
           <input
             v-model="newPackUrl"
@@ -3578,20 +3709,24 @@ onBeforeUnmount(() => {
             @keydown.enter="addExtraPack"
           />
           <button class="h-11 rounded-md bg-[var(--accent)] px-4 text-sm font-black text-[var(--accent-ink)]" type="button" @click="addExtraPack">
-            추가
+            {{ t('btnAdd') }}
           </button>
         </div>
+        <p v-if="packMgrError" class="mt-2 text-sm font-semibold text-rose-600">{{ packMgrError }}</p>
         <ul v-if="extraPacks.length" class="mt-3 max-h-56 space-y-1 overflow-y-auto">
           <li v-for="url in extraPacks" :key="url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
-            <span class="min-w-0 flex-1 truncate text-xs">{{ url }}</span>
-            <button class="shrink-0 rounded px-2 text-sm font-black text-rose-500" type="button" title="삭제" @click="removeExtraPack(url)">
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-black">{{ extraPackNames[url] || '…' }}</p>
+              <p class="truncate text-[10px] text-[var(--muted)]">{{ url }}</p>
+            </div>
+            <button class="shrink-0 rounded px-2 text-sm font-black text-rose-500" type="button" :title="t('titleRemove')" @click="removeExtraPack(url)">
               ✕
             </button>
           </li>
         </ul>
-        <p v-else class="mt-3 text-sm text-[var(--muted)]">추가된 팩이 없습니다.</p>
+        <p v-else class="mt-3 text-sm text-[var(--muted)]">{{ t('noExtraPacks') }}</p>
         <button class="mt-4 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showPackManager = false">
-          닫기
+          {{ t('btnClose') }}
         </button>
       </div>
     </div>
@@ -3602,10 +3737,10 @@ onBeforeUnmount(() => {
       @click.self="shareUrl = ''"
     >
       <div class="flex w-full max-w-sm flex-col items-center gap-3">
-        <img :src="shareUrl" alt="점수 공유 이미지" class="w-full rounded-xl border border-white/20 shadow-2xl" />
-        <p class="text-center text-sm font-bold text-white/90">이미지를 길게 눌러 저장하세요</p>
+        <img :src="shareUrl" :alt="t('shareAlt')" class="w-full rounded-xl border border-white/20 shadow-2xl" />
+        <p class="text-center text-sm font-bold text-white/90">{{ t('shareHelp') }}</p>
         <button class="h-11 w-full max-w-[12rem] rounded-md bg-[var(--accent)] text-sm font-black text-[var(--accent-ink)]" type="button" @click="shareUrl = ''">
-          닫기
+          {{ t('btnClose') }}
         </button>
       </div>
     </div>

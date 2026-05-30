@@ -47,4 +47,5 @@ export interface Block {
   value?: number;
   dropFrom?: number;
   power?: PowerKind; // 자유모드 모으기에서 생성되는 특수블럭
+  adds?: number; // 조각 더하기 모드: 더해진 횟수(금이 감) — 3이면 깨짐
 }
