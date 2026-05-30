@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>개인정보 처리방침 — 이어맞추기</title>
+  <meta name="robots" content="index,follow" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0; padding: 2rem 1rem 4rem;
+      background: #14161c; color: #e7e3d8;
+      font-family: 'Noto Sans KR', system-ui, sans-serif; line-height: 1.7;
+    }
+    main { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 1.6rem; font-weight: 900; margin-bottom: .3rem; }
+    h2 { font-size: 1.15rem; font-weight: 800; margin: 2rem 0 .6rem; color: #ffd479; }
+    p, li { font-size: .95rem; color: #cfcabb; }
+    ul { padding-left: 1.2rem; }
+    a { color: #ffd479; }
+    table { width: 100%; border-collapse: collapse; margin: .6rem 0; }
+    th, td { border: 1px solid #2c2f38; padding: .5rem .7rem; text-align: left; font-size: .9rem; vertical-align: top; }
+    th { background: #1c1f27; }
+    .muted { color: #8a8676; font-size: .85rem; }
+    .back { display: inline-block; margin-bottom: 1.5rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="./">← 이어맞추기로 돌아가기</a>
+    <h1>개인정보 처리방침</h1>
+    <p class="muted">서비스명: 이어맞추기 (Match-it) · 운영: TypoStudio</p>
+
+    <p>이어맞추기(이하 “서비스”)는 이용자의 개인정보를 중요하게 생각하며, 아래와 같이 수집·이용·보관합니다. 서비스는
+      점수 랭킹과 기기 간 저장을 위해 Google의 Firebase(인증·데이터베이스) 및 Google Analytics를 사용합니다.</p>
+
+    <h2>1. 수집하는 정보</h2>
+    <table>
+      <tr><th>구분</th><th>항목</th><th>수집 시점</th></tr>
+      <tr>
+        <td>구글 로그인</td>
+        <td>구글 계정의 이메일, 표시 이름(닉네임으로 사용), 계정 식별자(UID)</td>
+        <td>이용자가 “구글로 로그인”을 선택한 경우에만</td>
+      </tr>
+      <tr>
+        <td>익명 이용</td>
+        <td>자동 발급되는 익명 식별자(UID) — 개인을 식별하지 않음</td>
+        <td>로그인 없이 점수를 기록할 때</td>
+      </tr>
+      <tr>
+        <td>게임 기록</td>
+        <td>닉네임, 점수, 레벨, 학습 꾸러미, 클리어 기록, 게임 설정(테마·모드 등)</td>
+        <td>게임 진행 중</td>
+      </tr>
+      <tr>
+        <td>자동 수집</td>
+        <td>접속 기기·브라우저 정보, 쿠키 및 유사 식별자, 이용 통계</td>
+        <td>서비스 접속 시 (Google Analytics)</td>
+      </tr>
+    </table>
+    <p class="muted">※ 이메일·프로필 정보는 로그인 인증을 위해 Firebase Authentication에 보관되며, 서비스의 랭킹/저장
+      데이터베이스(Cloud Firestore)에는 닉네임과 식별자(UID)만 저장됩니다. 비밀번호 등 민감정보는 수집하지 않습니다.</p>
+
+    <h2>2. 이용 목적</h2>
+    <ul>
+      <li>게임별·레벨별 점수 랭킹 제공</li>
+      <li>개인 설정 및 진행 상황 저장과 기기 간 동기화(로그인 시)</li>
+      <li>서비스 운영·개선 및 이용 통계 분석</li>
+    </ul>
+
+    <h2>3. 보관 및 파기</h2>
+    <ul>
+      <li>로그인 이용자의 데이터는 계정이 유지되는 동안 보관하며, 삭제 요청 시 지체 없이 파기합니다.</li>
+      <li>익명 이용 기록은 브라우저(로컬) 및 서버에 보관되며, 브라우저 데이터를 삭제하면 로컬 기록은 사라집니다.</li>
+    </ul>
+
+    <h2>4. 제3자 처리(위탁)</h2>
+    <p>서비스는 아래 Google LLC의 서비스를 이용하여 데이터를 저장·처리합니다. 데이터는 Google 인프라에 저장될 수 있습니다.</p>
+    <ul>
+      <li>Firebase Authentication — 로그인·계정 인증</li>
+      <li>Cloud Firestore — 점수·설정·기록 저장</li>
+      <li>Google Analytics — 이용 통계 분석</li>
+    </ul>
+    <p class="muted">Google 개인정보처리방침: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">https://policies.google.com/privacy</a></p>
+
+    <h2>5. 쿠키</h2>
+    <p>서비스는 통계 분석을 위해 Google Analytics 쿠키를 사용합니다. 브라우저 설정에서 쿠키 저장을 거부할 수 있으나,
+      일부 기능 이용에 제한이 있을 수 있습니다.</p>
+
+    <h2>6. 이용자의 권리</h2>
+    <ul>
+      <li>닉네임은 점수 화면에서 언제든 변경할 수 있습니다.</li>
+      <li>로그아웃으로 계정 연결을 해제할 수 있습니다.</li>
+      <li>계정 및 저장 데이터의 삭제를 원하시면 아래 연락처로 요청해 주세요.</li>
+    </ul>
+
+    <h2>7. 문의처</h2>
+    <p>개인정보 관련 문의: <a href="mailto:typ0s2d10@gmail.com">typ0s2d10@gmail.com</a></p>
+
+    <h2>8. 시행일 및 변경</h2>
+    <p>본 방침은 <strong>2026년 5월 30일</strong>부터 시행합니다. 내용이 변경될 경우 본 페이지를 통해 공지합니다.</p>
+  </main>
+</body>
+</html>

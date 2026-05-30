@@ -2,6 +2,10 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { Block, BlockStyleName, GameKind, GameMode, LessonItem, LessonPack, PowerKind, SolveMode, ThemeName } from './types';
 import { messages, type Locale, type MessageKey } from './locales';
+import { ensureUid, submitBest, fetchTop, fetchRank, boardId, type ScoreRow,
+  onAuth, loginWithGoogleIdToken, loginWithGooglePopup, logout,
+  saveUserStore, loadUserStore, GOOGLE_CLIENT_ID } from './firebase';
+import type { User } from 'firebase/auth';
 
 // 화면 라벨 언어팩(src/locales). locale 값만 바꾸면 다른 언어로 확장.
 const locale = ref<Locale>('ko');
@@ -264,6 +268,158 @@ function track(name: string, params: Record<string, unknown> = {}) {
     ...params,
   });
 }
+// ── 익명 점수 랭킹(Firebase) ─────────────────────────────────
+// 랭킹 단위: 게임 × 레벨. 게임 = 학습꾸러미 id(숫자 더하기는 꾸러미와 무관하게 'numbers'로 합침).
+const rankGameId = computed(() => (gameKind.value === 'numbers' ? 'numbers' : selectedPackId.value));
+const rankGameTitle = computed(() => (gameKind.value === 'numbers' ? t('kindNumbers') : (activePack.value?.title ?? selectedPackId.value)));
+const rankBoard = computed(() => boardId(rankGameId.value, selectedLevel.value));
+
+// 닉네임(선택) — 익명 식별자(uid)는 Firebase가 발급
+const nickname = ref(localStorage.getItem('matchit-nickname') || '');
+const showLeaderboard = ref(false);
+const lbRows = ref<ScoreRow[]>([]);
+const lbLoading = ref(false);
+const lbError = ref('');
+const myRank = ref(0);
+const myUid = ref('');
+let lastSubmitted = -1; // 이번 보드에서 마지막으로 제출한 점수(중복 쓰기 방지)
+let submitTimer: ReturnType<typeof setTimeout> | null = null;
+
+async function submitScoreNow() {
+  const sc = score.value;
+  if (sc <= 0 || sc <= lastSubmitted) return;
+  if (gameKind.value !== 'numbers' && !selectedPackId.value) return;
+  try {
+    const uid = await ensureUid();
+    myUid.value = uid;
+    const did = await submitBest({
+      board: rankBoard.value, uid, nickname: nickname.value, score: sc,
+      packId: rankGameId.value, packTitle: rankGameTitle.value,
+      level: selectedLevel.value, gameKind: gameKind.value,
+    });
+    lastSubmitted = sc;
+    if (did && showLeaderboard.value) void loadLeaderboard();
+  } catch (e) {
+    console.warn('점수 제출 실패', e); // 게임 진행은 막지 않음
+  }
+}
+// 점수가 오르면 디바운스 후 자동으로 최고점 제출(트랜잭션이 기존값과 비교해 더 클 때만 기록)
+watch(score, (v: number) => {
+  if (v <= lastSubmitted) return; // 새판 리셋(0) 등은 무시
+  if (submitTimer) clearTimeout(submitTimer);
+  submitTimer = setTimeout(() => { void submitScoreNow(); }, 1500);
+});
+// 게임/레벨이 바뀌면 제출 기준 초기화 + 보고 있던 순위표 갱신
+watch([rankGameId, selectedLevel], () => {
+  lastSubmitted = -1;
+  if (showLeaderboard.value) void loadLeaderboard();
+});
+
+async function loadLeaderboard() {
+  lbLoading.value = true;
+  lbError.value = '';
+  try {
+    myUid.value = await ensureUid();
+    const [rows, rank] = await Promise.all([
+      fetchTop(rankBoard.value, 10),
+      fetchRank(rankBoard.value, score.value),
+    ]);
+    lbRows.value = rows;
+    myRank.value = rank;
+  } catch (e) {
+    lbError.value = '순위표를 불러오지 못했어요.';
+    console.warn(e);
+  } finally {
+    lbLoading.value = false;
+  }
+}
+function openRankTab() {
+  showLeaderboard.value = true;
+  void loadLeaderboard();
+}
+function saveNickname() {
+  nickname.value = nickname.value.trim().slice(0, 16);
+  localStorage.setItem('matchit-nickname', nickname.value);
+  lastSubmitted = -1; // 닉네임 바꾸면 기존 기록에도 반영되도록 재제출 허용
+  void submitScoreNow();
+  scheduleSync();
+  if (showLeaderboard.value) void loadLeaderboard();
+}
+
+// ── 구글 로그인 + 클라우드 세이브 ────────────────────────────
+const authUser = ref<User | null>(null);
+const isSignedIn = computed(() => !!authUser.value && !authUser.value.isAnonymous);
+
+// One Tap 자동 프롬프트(클라이언트 ID가 설정된 경우에만). 미설정 시 '구글로 로그인' 버튼으로 대체.
+function initGoogleOneTap() {
+  if (!GOOGLE_CLIENT_ID) return;
+  const s = document.createElement('script');
+  s.src = 'https://accounts.google.com/gsi/client';
+  s.async = true;
+  s.onload = () => {
+    const g = (window as unknown as { google?: any }).google;
+    if (!g?.accounts?.id) return;
+    g.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      use_fedcm_for_prompt: true,
+      callback: (resp: { credential?: string }) => {
+        if (resp.credential) void onGoogleCredential(resp.credential);
+      },
+    });
+    g.accounts.id.prompt(); // 비로그인 시 우측 상단 카드 자동 표시
+  };
+  document.head.appendChild(s);
+}
+async function onGoogleCredential(idToken: string) {
+  try { await loginWithGoogleIdToken(idToken); } // 이후 onAuth 콜백이 동기화 처리
+  catch (e) { console.warn('구글 로그인 실패', e); }
+}
+async function signInGoogle() {
+  try { await loginWithGooglePopup(); }
+  catch (e) { console.warn('구글 로그인 실패', e); }
+}
+async function signOutGoogle() {
+  sessionStorage.removeItem('matchit-synced'); // 다음 로그인 때 다시 복원되도록
+  await logout();
+  location.reload(); // 익명으로 되돌리고 로컬 상태 재초기화
+}
+
+// matchit-* localStorage 전체를 한 객체로 — 설정·진행기록·점수가 모두 담김
+function snapshotLocal(): Record<string, string> {
+  const o: Record<string, string> = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith('matchit-')) o[k] = localStorage.getItem(k) ?? '';
+  }
+  return o;
+}
+let syncTimer: ReturnType<typeof setTimeout> | null = null;
+function scheduleSync() {
+  if (!isSignedIn.value) return; // 클라우드 저장은 구글 로그인 시에만
+  if (syncTimer) clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => { void saveUserStore(authUser.value!.uid, snapshotLocal()); }, 3000);
+}
+// 로그인 시: 클라우드에 저장본이 있으면 로컬에 복원(내용이 바뀌면 1회 새로고침), 없으면 현재 로컬을 업로드
+async function syncDown(uid: string) {
+  try {
+    const store = await loadUserStore(uid);
+    if (!store) { await saveUserStore(uid, snapshotLocal()); return; }
+    let changed = false;
+    for (const [k, v] of Object.entries(store)) {
+      const val = String(v);
+      if (localStorage.getItem(k) !== val) { localStorage.setItem(k, val); changed = true; }
+    }
+    if (changed && sessionStorage.getItem('matchit-synced') !== uid) {
+      sessionStorage.setItem('matchit-synced', uid);
+      location.reload();
+    } else {
+      sessionStorage.setItem('matchit-synced', uid);
+    }
+  } catch (e) {
+    console.warn('클라우드 복원 실패', e);
+  }
+}
+
 let stageStartAt = Date.now(); // 현재 스테이지 시작 시각(체류시간 계산용)
 // 영어단어 원본을 방향(철자/뜻)에 따라 LessonItem으로 변환
 function buildWordItems(raw: Array<{ word: string; meaning: string; hint?: string }>, dir: 'spell' | 'meaning'): LessonItem[] {
@@ -2962,6 +3118,33 @@ onMounted(async () => {
     if (gameKind.value === 'lesson') nextTick(startGoalMarquee);
     else stopGoalMarquee();
   }, { immediate: true });
+
+  // 인증 상태: 구글 로그인되면 닉네임을 계정 이름으로 채우고 클라우드 복원
+  let prevSignedIn = false;
+  onAuth((user: User | null) => {
+    authUser.value = user;
+    const signedIn = !!user && !user.isAnonymous;
+    if (signedIn && !prevSignedIn) {
+      if (!nickname.value && user!.displayName) {
+        nickname.value = user!.displayName.slice(0, 16);
+        localStorage.setItem('matchit-nickname', nickname.value);
+      }
+      void syncDown(user!.uid).then(() => { if (showLeaderboard.value) void loadLeaderboard(); });
+    }
+    prevSignedIn = signedIn;
+  });
+  initGoogleOneTap();
+
+  // 설정·진행기록이 바뀌면 클라우드로 디바운스 업로드(구글 로그인 시에만 동작)
+  watch([score, best, theme, blockStyle, solveMode, mergeMode, gameKind, wordDirection,
+    adjacentSwap, autoChain, showAnswer, cols, rows, nickname, selectedPackId, selectedLevel], scheduleSync);
+  watch([levelStats, clearedStages, numStats, extraPacks], scheduleSync, { deep: true });
+  // 페이지를 떠날 때 마지막 상태를 즉시 저장
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden' && isSignedIn.value) {
+      void saveUserStore(authUser.value!.uid, snapshotLocal());
+    }
+  });
 });
 
 onBeforeUnmount(() => {
@@ -3416,6 +3599,24 @@ onBeforeUnmount(() => {
           class="rounded-lg border border-[var(--line)] bg-[var(--panel)] p-4"
           :class="activeMobilePanel === 'score' ? 'app-panel' : 'hidden lg:block'"
         >
+          <!-- 점수 / 순위표 탭 -->
+          <div class="mb-3 grid grid-cols-2 gap-1 rounded-md bg-[var(--panel-strong)] p-1">
+            <button
+              type="button"
+              class="h-9 rounded-md text-sm font-black"
+              :class="!showLeaderboard ? 'bg-[var(--accent)] text-[var(--accent-ink)]' : 'text-[var(--muted)]'"
+              @click="showLeaderboard = false"
+            >내 점수</button>
+            <button
+              type="button"
+              class="h-9 rounded-md text-sm font-black"
+              :class="showLeaderboard ? 'bg-[var(--accent)] text-[var(--accent-ink)]' : 'text-[var(--muted)]'"
+              @click="openRankTab"
+            >순위표</button>
+          </div>
+
+          <!-- 내 점수 탭 -->
+          <div v-show="!showLeaderboard">
           <div class="grid grid-cols-2 gap-2">
             <!-- 좌측: 현재 점수 카드들 -->
             <div class="space-y-2">
@@ -3493,6 +3694,7 @@ onBeforeUnmount(() => {
               ☕
             </a>
           </div>
+
           <div v-if="gameKind === 'numbers'" class="mt-5">
             <h3 class="text-sm font-black text-[var(--muted)]">{{ t('howToPlay') }}</h3>
             <ul v-if="mergeMode === 'add'" class="mt-2 space-y-2 text-sm text-[var(--muted)]">
@@ -3528,11 +3730,68 @@ onBeforeUnmount(() => {
               </li>
             </ul>
           </div>
+          </div>
+          <!-- /내 점수 탭 -->
+
+          <!-- 순위표 탭 -->
+          <div v-show="showLeaderboard">
+            <div class="mb-2 flex items-center justify-between gap-2">
+              <span v-if="isSignedIn" class="truncate text-xs text-[var(--muted)]">
+                {{ authUser?.displayName || '구글 계정' }}님 · 점수·설정 저장됨
+              </span>
+              <span v-else class="text-xs text-[var(--muted)]">로그인하면 점수·설정이 저장돼요</span>
+              <button
+                class="h-8 shrink-0 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-xs font-bold"
+                type="button"
+                @click="isSignedIn ? signOutGoogle() : signInGoogle()"
+              >
+                {{ isSignedIn ? '로그아웃' : '구글로 로그인' }}
+              </button>
+            </div>
+            <input
+              v-model="nickname"
+              type="text"
+              maxlength="16"
+              placeholder="닉네임(선택)"
+              class="h-10 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm"
+              @change="saveNickname"
+              @keyup.enter="saveNickname"
+            />
+
+            <div class="mt-3">
+              <p class="mb-2 text-xs font-bold text-[var(--muted)]">
+                {{ rankGameTitle }} · {{ levelLabel(selectedLevel) }} · 상위 10
+                <span class="ml-1 opacity-60">({{ rankGameId }})</span>
+              </p>
+              <p v-if="lbLoading" class="text-sm text-[var(--muted)]">불러오는 중…</p>
+              <p v-else-if="lbError" class="text-sm text-red-400">{{ lbError }}</p>
+              <template v-else>
+                <ol v-if="lbRows.length" class="space-y-1">
+                  <li
+                    v-for="(row, i) in lbRows"
+                    :key="row.uid"
+                    class="flex items-center justify-between rounded-md px-3 py-2 text-sm"
+                    :class="row.uid === myUid ? 'bg-[var(--accent)] font-black text-[var(--accent-ink)]' : 'bg-[var(--panel-strong)]'"
+                  >
+                    <span class="flex min-w-0 items-center gap-2">
+                      <span class="w-5 shrink-0 text-right font-black">{{ i + 1 }}</span>
+                      <span class="truncate">{{ row.nickname || '익명' }}</span>
+                    </span>
+                    <span class="shrink-0 font-black">{{ row.score }}</span>
+                  </li>
+                </ol>
+                <p v-else class="text-sm text-[var(--muted)]">아직 기록이 없어요. 첫 기록을 남겨보세요!</p>
+                <p v-if="myRank > 0" class="mt-2 text-xs text-[var(--muted)]">내 순위: {{ myRank }}위 (지금 점수 {{ score }})</p>
+              </template>
+            </div>
+          </div>
         </aside>
       </section>
 
       <footer class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-[var(--line)] pt-4 text-xs text-[var(--muted)]">
         <span>© 2026 TypoStudio</span>
+        <span aria-hidden="true">·</span>
+        <a :href="`${baseUrl}privacy.html`" target="_blank" rel="noopener">개인정보 처리방침</a>
         <span aria-hidden="true">·</span>
         <a href="https://github.com/TypoStudio/matchit" target="_blank" rel="noopener" aria-label="GitHub">
           <img src="https://img.shields.io/badge/GitHub-TypoStudio%2Fmatchit-181717?logo=github&logoColor=white" alt="GitHub" class="h-5" loading="lazy" />
