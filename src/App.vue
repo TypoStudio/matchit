@@ -276,6 +276,40 @@ const rankBoard = computed(() => boardId(rankGameId.value, selectedLevel.value))
 
 // 닉네임(선택) — 익명 식별자(uid)는 Firebase가 발급
 const nickname = ref(localStorage.getItem('matchit-nickname') || '');
+
+// 닉네임 미입력 시 자동 배정용 사자성어(답이 숫자·수식일 때 대체)
+const NICK_IDIOMS = [
+  '새옹지마', '대기만성', '일석이조', '우공이산', '형설지공', '죽마고우', '다다익선', '동고동락',
+  '사필귀정', '고진감래', '권선징악', '인과응보', '일취월장', '청출어람', '화룡점정', '자업자득',
+  '유비무환', '온고지신', '막상막하', '일사천리', '천고마비', '설상가상', '금상첨화', '표리부동',
+  '사면초가', '와신상담', '백전백승', '동문서답', '좌충우돌', '임기응변', '일망타진', '괄목상대',
+];
+// 숫자·수학 기호로만 이뤄진 답인지(닉네임으로 부적절)
+function isNumericAnswer(s: string): boolean {
+  return /^[\s\d+\-*/=().,^×÷√%·∙xX]+$/.test(s);
+}
+// 처음 시도한(현재 로드된) 꾸러미 문제들의 정답 중 하나를 랜덤으로 고른다.
+function pickAnswerFromCurrent(): string {
+  const pool = lessonItems.value.length ? lessonItems.value : fullItems.value;
+  const answers = pool
+    .map((it) => (it.tokens?.length ? it.tokens.join('') : it.label))
+    .map((a) => (a || '').trim())
+    .filter(Boolean);
+  if (!answers.length) return '';
+  return answers[Math.floor(Math.random() * answers.length)];
+}
+// 닉네임이 비어 있으면 자동 배정(정답 기반, 숫자/수식이면 사자성어) 후 저장.
+function ensureNickname(): string {
+  if (nickname.value) return nickname.value;
+  let nick = pickAnswerFromCurrent();
+  if (gameKind.value === 'numbers' || !nick || isNumericAnswer(nick)) {
+    nick = NICK_IDIOMS[Math.floor(Math.random() * NICK_IDIOMS.length)];
+  }
+  nickname.value = nick.slice(0, 16);
+  localStorage.setItem('matchit-nickname', nickname.value);
+  return nickname.value;
+}
+
 const showLeaderboard = ref(false);
 const lbRows = ref<ScoreRow[]>([]);
 const lbLoading = ref(false);
@@ -293,7 +327,7 @@ async function submitScoreNow() {
     const uid = await ensureUid();
     myUid.value = uid;
     const did = await submitBest({
-      board: rankBoard.value, uid, nickname: nickname.value, score: sc,
+      board: rankBoard.value, uid, nickname: ensureNickname(), score: sc,
       packId: rankGameId.value, packTitle: rankGameTitle.value,
       level: selectedLevel.value, gameKind: gameKind.value,
     });
