@@ -374,6 +374,9 @@ function openRankTab() {
 function saveNickname() {
   nickname.value = nickname.value.trim().slice(0, 16);
   localStorage.setItem('matchit-nickname', nickname.value);
+  // 사용자가 직접 정한 닉네임은 로그인해도 구글 이름으로 덮어쓰지 않음(비우면 해제)
+  if (nickname.value) localStorage.setItem('matchit-nickname-manual', '1');
+  else localStorage.removeItem('matchit-nickname-manual');
   lastSubmitted = -1; // 닉네임 바꾸면 기존 기록에도 반영되도록 재제출 허용
   void submitScoreNow();
   scheduleSync();
@@ -383,6 +386,32 @@ function saveNickname() {
 // ── 구글 로그인 + 클라우드 세이브 ────────────────────────────
 const authUser = ref<User | null>(null);
 const isSignedIn = computed(() => !!authUser.value && !authUser.value.isAnonymous);
+// 구글 프로필 이름: link 직후엔 user.displayName이 비고 providerData에만 있을 수 있음
+function googleName(user: User): string {
+  return user.displayName || user.providerData.find((p) => p?.displayName)?.displayName || '';
+}
+const authName = computed(() => (authUser.value ? googleName(authUser.value) || '구글 계정' : ''));
+
+// 인증 상태 반영(onAuth 콜백 + 로그인 결과 양쪽에서 호출).
+// 익명→구글 link 시 onAuthStateChanged가 안 뜨므로 로그인 함수 반환값으로도 직접 갱신한다.
+let prevSignedIn = false;
+function handleAuthUser(user: User | null) {
+  authUser.value = user;
+  const signedIn = !!user && !user.isAnonymous;
+  if (signedIn && !prevSignedIn) {
+    // 사용자가 닉네임을 직접 정한 적 없으면, 로그인 시 구글 프로필 이름으로 설정
+    const manual = localStorage.getItem('matchit-nickname-manual') === '1';
+    const profileName = googleName(user!);
+    if (!manual && profileName) {
+      nickname.value = profileName.slice(0, 16);
+      localStorage.setItem('matchit-nickname', nickname.value);
+      lastSubmitted = -1; // 새 닉네임으로 기존 랭킹 기록 갱신
+      void submitScoreNow();
+    }
+    void syncDown(user!.uid).then(() => { if (showLeaderboard.value) void loadLeaderboard(); });
+  }
+  prevSignedIn = signedIn;
+}
 
 // One Tap 자동 프롬프트(클라이언트 ID가 설정된 경우에만). 미설정 시 '구글로 로그인' 버튼으로 대체.
 function initGoogleOneTap() {
@@ -405,11 +434,11 @@ function initGoogleOneTap() {
   document.head.appendChild(s);
 }
 async function onGoogleCredential(idToken: string) {
-  try { await loginWithGoogleIdToken(idToken); } // 이후 onAuth 콜백이 동기화 처리
+  try { handleAuthUser(await loginWithGoogleIdToken(idToken)); }
   catch (e) { console.warn('구글 로그인 실패', e); }
 }
 async function signInGoogle() {
-  try { await loginWithGooglePopup(); }
+  try { handleAuthUser(await loginWithGooglePopup()); }
   catch (e) { console.warn('구글 로그인 실패', e); }
 }
 async function signOutGoogle() {
@@ -3154,19 +3183,7 @@ onMounted(async () => {
   }, { immediate: true });
 
   // 인증 상태: 구글 로그인되면 닉네임을 계정 이름으로 채우고 클라우드 복원
-  let prevSignedIn = false;
-  onAuth((user: User | null) => {
-    authUser.value = user;
-    const signedIn = !!user && !user.isAnonymous;
-    if (signedIn && !prevSignedIn) {
-      if (!nickname.value && user!.displayName) {
-        nickname.value = user!.displayName.slice(0, 16);
-        localStorage.setItem('matchit-nickname', nickname.value);
-      }
-      void syncDown(user!.uid).then(() => { if (showLeaderboard.value) void loadLeaderboard(); });
-    }
-    prevSignedIn = signedIn;
-  });
+  onAuth(handleAuthUser);
   initGoogleOneTap();
 
   // 설정·진행기록이 바뀌면 클라우드로 디바운스 업로드(구글 로그인 시에만 동작)
@@ -3771,7 +3788,7 @@ onBeforeUnmount(() => {
           <div v-show="showLeaderboard">
             <div class="mb-2 flex items-center justify-between gap-2">
               <span v-if="isSignedIn" class="truncate text-xs text-[var(--muted)]">
-                {{ authUser?.displayName || '구글 계정' }}님 · 점수·설정 저장됨
+                {{ authName }}님 · 점수·설정 저장됨
               </span>
               <span v-else class="text-xs text-[var(--muted)]">로그인하면 점수·설정이 저장돼요</span>
               <button
