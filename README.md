@@ -1,9 +1,27 @@
 # 이어맞추기
 
-배움거리를 조각 퍼즐로 바꿔 푸는 Vue 3 + TypeScript + Tailwind CSS 정적 게임입니다. *(코드·배포 경로는 `matchit`을 그대로 씁니다.)*
+[![버전](https://img.shields.io/github/package-json/v/TypoStudio/matchit?color=2f8f74&label=version)](https://github.com/TypoStudio/matchit)
+[![배포](https://img.shields.io/github/actions/workflow/status/TypoStudio/matchit/deploy.yml?label=deploy&logo=githubpages&logoColor=white)](https://typostudio.github.io/matchit/)
+[![GitHub stars](https://img.shields.io/github/stars/TypoStudio/matchit?logo=github&label=stars)](https://github.com/TypoStudio/matchit/stargazers)
+[![last commit](https://img.shields.io/github/last-commit/TypoStudio/matchit)](https://github.com/TypoStudio/matchit/commits)  
+![Vue](https://img.shields.io/badge/Vue-3-42b883?logo=vuedotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06b6d4?logo=tailwindcss&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646cff?logo=vite&logoColor=white)
 
-🎮 **놀러가기**: <https://typostudio.github.io/matchit/>
-📦 **배움꾸러미 저장소**: <https://github.com/TypoStudio/matchit-packs> · 목록 <https://typostudio.github.io/matchit-packs/packs.json>
+배움거리를 조각 퍼즐로 바꿔 푸는 Vue 3 + TypeScript + Tailwind CSS 정적 게임입니다.
+
+- 🎮 **놀러가기**: https://typostudio.github.io/matchit/  
+- 📦 **배움꾸러미 저장소**: https://github.com/TypoStudio/matchit-packs/  
+- 꾸러미 목록: https://typostudio.github.io/matchit-packs/packs.json  
+
+## 스크린샷
+
+![데스크탑 화면](docs/screenshot-desktop.png)
+
+| 모바일 — 설정 | 모바일 — 놀이 |
+| --- | --- |
+| <img src="docs/screenshot-mobile.png" width="320" alt="모바일 설정 화면"> | <img src="docs/screenshot-game.png" width="320" alt="모바일 놀이 화면"> |
 
 ## 게임 소개
 
