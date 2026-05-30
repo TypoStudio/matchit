@@ -115,6 +115,7 @@ export interface ScoreRow {
   packTitle: string;
   level: number;
   gameKind: string;
+  verified?: boolean; // 구글 로그인 계정 여부(순위표 인증 뱃지)
 }
 
 // Firestore 문서 ID로 안전한 보드 키. game = packId(또는 'numbers'), level 결합.
@@ -137,6 +138,7 @@ export async function submitBest(row: ScoreRow & { board: string }): Promise<boo
       packTitle: row.packTitle,
       level: row.level,
       gameKind: row.gameKind,
+      verified: row.verified ?? false,
       updatedAt: serverTimestamp(),
     });
     return true;

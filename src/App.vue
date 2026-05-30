@@ -330,6 +330,7 @@ async function submitScoreNow() {
       board: rankBoard.value, uid, nickname: ensureNickname(), score: sc,
       packId: rankGameId.value, packTitle: rankGameTitle.value,
       level: selectedLevel.value, gameKind: gameKind.value,
+      verified: isSignedIn.value,
     });
     lastSubmitted = sc;
     if (did && showLeaderboard.value) void loadLeaderboard();
@@ -3824,9 +3825,15 @@ onBeforeUnmount(() => {
                     class="flex items-center justify-between rounded-md px-3 py-2 text-sm"
                     :class="row.uid === myUid ? 'bg-[var(--accent)] font-black text-[var(--accent-ink)]' : 'bg-[var(--panel-strong)]'"
                   >
-                    <span class="flex min-w-0 items-center gap-2">
+                    <span class="flex min-w-0 items-center gap-1.5">
                       <span class="w-5 shrink-0 text-right font-black">{{ i + 1 }}</span>
                       <span class="truncate">{{ row.nickname || '익명' }}</span>
+                      <span
+                        v-if="row.verified"
+                        class="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-sky-500 text-[10px] font-black leading-none text-white"
+                        title="구글 로그인 인증"
+                        aria-label="구글 로그인 인증"
+                      >✓</span>
                     </span>
                     <span class="shrink-0 font-black">{{ row.score }}</span>
                   </li>
