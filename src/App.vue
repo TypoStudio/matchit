@@ -95,6 +95,8 @@ const storedBlockStyle = localStorage.getItem('matchit-block-style');
 const blockStyle = ref<BlockStyleName>(storedBlockStyle === 'neon' ? 'transparent' : ((storedBlockStyle as BlockStyleName) || 'jelly')); // neon은 transparent로 마이그레이션
 // 모으기 옵션: 인접한 블럭만 교환 / 연속(자유) 모드에서 낙하 후 정답 자동 깨짐(연쇄)
 const adjacentSwap = ref(localStorage.getItem('matchit-adjacent-swap') === 'on');
+// 숫자 더하기 게임 합치기 모드: 'swap'=블럭 교체(기존), 'add'=블럭 더하기(두 수 합)
+const mergeMode = ref<'swap' | 'add'>((localStorage.getItem('matchit-merge-mode') as 'swap' | 'add') || 'swap');
 const autoChain = ref(localStorage.getItem('matchit-auto-chain') === 'on');
 const showAnswer = ref(localStorage.getItem('matchit-show-answer') !== 'off');
 const answerItem = ref<LessonItem | null>(null);
@@ -102,6 +104,55 @@ const answerSlotSize = ref(48);
 const answerSlotColors = ref<string[]>([]); // 각 정답 슬롯 색(날아온 보드 블럭과 동일)
 const boardEl = ref<HTMLElement | null>(null);
 const answerEl = ref<HTMLElement | null>(null);
+// 한문제씩 모드: 목표 문장이 길면 좌우로 자동 마퀴 + 수동 가로 스크롤
+const goalScrollEl = ref<HTMLElement | null>(null);
+let marqueeRaf = 0;
+let marqueePauseUntil = 0;
+function stopGoalMarquee() {
+  if (marqueeRaf) cancelAnimationFrame(marqueeRaf);
+  marqueeRaf = 0;
+}
+function pauseGoalMarquee() {
+  marqueePauseUntil = Date.now() + 2500; // 사용자가 스크롤하면 잠시 자동 마퀴 멈춤
+}
+// 마우스로 목표 문장을 잡아끌어 좌우 스크롤(터치는 네이티브 pan 사용)
+let goalDragging = false;
+let goalDragX = 0;
+let goalDragScroll = 0;
+function goalDragStart(e: PointerEvent) {
+  pauseGoalMarquee();
+  if (e.pointerType !== 'mouse') return;
+  const el = goalScrollEl.value;
+  if (!el) return;
+  goalDragging = true;
+  goalDragX = e.clientX;
+  goalDragScroll = el.scrollLeft;
+  el.setPointerCapture(e.pointerId);
+}
+function goalDragMove(e: PointerEvent) {
+  if (!goalDragging) return;
+  const el = goalScrollEl.value;
+  if (el) el.scrollLeft = goalDragScroll - (e.clientX - goalDragX);
+}
+function goalDragEnd() {
+  goalDragging = false;
+}
+function startGoalMarquee() {
+  stopGoalMarquee();
+  const el = goalScrollEl.value;
+  if (!el) return;
+  let dir = 1;
+  const tick = () => {
+    if (!goalScrollEl.value) { marqueeRaf = 0; return; }
+    marqueeRaf = requestAnimationFrame(tick);
+    const max = el.scrollWidth - el.clientWidth;
+    if (max <= 1 || Date.now() < marqueePauseUntil) return; // 넘치지 않거나 조작 중이면 정지
+    el.scrollLeft += dir * 0.5;
+    if (el.scrollLeft >= max - 0.5) { dir = -1; marqueePauseUntil = Date.now() + 1000; }
+    else if (el.scrollLeft <= 0.5) { dir = 1; marqueePauseUntil = Date.now() + 1000; }
+  };
+  marqueeRaf = requestAnimationFrame(tick);
+}
 // 셀 실제 픽셀 크기(글자 크기 계산용). Safari의 container-type:size + aspect-ratio 버그를 피해 JS로 측정.
 const cellW = ref(0);
 const cellH = ref(0);
@@ -872,7 +923,9 @@ function resetGame(keepScore = false, keepStage = false) {
   showHint.value = false;
   if (!keepScore) { score.value = 0; matchedCount.value = 0; clearedBlocks.value = 0; }
   if (gameKind.value === 'numbers') {
-    message.value = '같은 숫자 3개 이상을 붙여 더 큰 수를 만드세요.';
+    message.value = mergeMode.value === 'add'
+      ? '블럭을 끌어다 다른 블럭에 더하세요.'
+      : '같은 숫자 3개 이상을 붙여 더 큰 수를 만드세요.';
   } else if (solveMode.value === 'collect') {
     message.value = continuous.value
       ? '블럭을 바꿔 보드의 식 글자들을 서로 붙여 맞춰보세요.'
@@ -1975,6 +2028,7 @@ async function resolveNumberClusters(preferIndex: number): Promise<boolean> {
 
 function checkNumberGameOver() {
   if (gameKind.value !== 'numbers') return;
+  if (mergeMode.value === 'add') return; // 더하기 모드는 항상 합칠 수 있어 게임오버 없음
   // 자유 스왑이므로, 같은 값이 3개 이상인 숫자가 하나라도 있으면 아직 합칠 수 있다
   const counts = new Map<number, number>();
   for (const block of board.value) {
@@ -2008,12 +2062,57 @@ async function numberSwap(a: number, b: number) {
   checkNumberGameOver();
 }
 
+// 블럭 더하기: a 블럭을 b 칸으로 끌어가 b = a+b 로 만들고 a는 흡수(제거 후 리필)
+async function numberAdd(a: number, b: number) {
+  const av = board.value[a]?.value;
+  const bv = board.value[b]?.value;
+  if (av === undefined || bv === undefined) return;
+  isResolving.value = true;
+  combo.value = 1; // 이번 더하기 액션의 콤보 시작(이어지는 자동 합체에서 증가)
+  motionPhase.value = 'swap';
+  const dCol = (b % cols.value) - (a % cols.value);
+  const dRow = Math.floor(b / cols.value) - Math.floor(a / cols.value);
+  const dur = animMs(ANIM.gatherStep) * 2;
+  const styleMap = new Map(gatherStyles.value);
+  styleMap.set(a, {
+    transform: `translate(calc(${dCol} * (100% + 0.5rem)), calc(${dRow} * (100% + 0.5rem)))`,
+    zIndex: '7',
+    transition: `transform ${dur}ms linear`,
+  });
+  gatherStyles.value = styleMap;
+  await sleep(dur);
+
+  const sum = av + bv;
+  const next = board.value.slice();
+  next[b] = recolorBlock(next[b]!, sum);
+  board.value = next;
+  const hidden = new Map(gatherStyles.value);
+  hidden.set(a, { ...(hidden.get(a) || {}), opacity: '0', transition: 'none' });
+  gatherStyles.value = hidden;
+  score.value += sum;
+  best.value = Math.max(best.value, score.value);
+  localStorage.setItem(bestKey(), String(best.value));
+  message.value = `합! ${formatValue(av)} + ${formatValue(bv)} = ${formatValue(sum)}`;
+
+  await sleep(animMs(ANIM.gather));
+  gatherStyles.value = new Map();
+  motionPhase.value = 'fall';
+  applyGravity([a]);
+  await sleep(animMs(ANIM.fall));
+  motionPhase.value = 'idle';
+
+  // 더하기 후에도 같은 숫자 3개 이상이 붙으면 자동으로 합체(연쇄) — 교체 모드와 동일
+  await resolveNumberClusters(b);
+  isResolving.value = false;
+}
+
 async function trySwap(a: number, b: number) {
   if (a === b) return;
   hintIndexes.value = [];
-  // 숫자더하기는 인접 옵션 설정과 무관하게 항상 자유 교환
+  // 숫자더하기는 인접 옵션 설정과 무관하게 항상 자유 교환/더하기
   if (gameKind.value === 'numbers') {
-    await numberSwap(a, b);
+    if (mergeMode.value === 'add') await numberAdd(a, b);
+    else await numberSwap(a, b);
     return;
   }
   // 학습 모드: 인접만 교환 옵션이 켜져 있으면 상하좌우 이웃만 허용
@@ -2419,6 +2518,11 @@ function setBlockStyle(nextStyle: BlockStyleName) {
   track('set_block_style', { style: nextStyle });
 }
 
+function setMergeMode(m: 'swap' | 'add') {
+  mergeMode.value = m;
+  localStorage.setItem('matchit-merge-mode', m);
+  if (m === 'add') gameOver.value = false; // 더하기 모드는 게임오버 없음
+}
 function setAdjacentSwap(on: boolean) {
   adjacentSwap.value = on;
   localStorage.setItem('matchit-adjacent-swap', on ? 'on' : 'off');
@@ -2765,10 +2869,17 @@ onMounted(async () => {
   requestAnimationFrame(() => requestAnimationFrame(measureCell));
   window.setTimeout(measureCell, 200);
   if (document.fonts?.ready) document.fonts.ready.then(measureCell);
+
+  // 목표 마퀴(모든 학습 모드): 문제·티커·모드·화면 전환 시 재시작(아니면 정지)
+  watch([goalPrompt, endlessTicker, mode, gameKind, activeMobilePanel], () => {
+    if (gameKind.value === 'lesson') nextTick(startGoalMarquee);
+    else stopGoalMarquee();
+  }, { immediate: true });
 });
 
 onBeforeUnmount(() => {
   boardResizeObserver?.disconnect();
+  stopGoalMarquee();
 });
 </script>
 
@@ -2943,6 +3054,19 @@ onBeforeUnmount(() => {
 
           </template>
 
+          <template v-if="gameKind === 'numbers'">
+          <p class="mt-5 text-xs font-bold uppercase text-[var(--muted)]">합치기 모드</p>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <button class="h-11 rounded-md border text-sm font-black" :class="mergeMode === 'swap' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMergeMode('swap')">
+              블럭 교체
+            </button>
+            <button class="h-11 rounded-md border text-sm font-black" :class="mergeMode === 'add' ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]'" type="button" @click="setMergeMode('add')">
+              블럭 더하기
+            </button>
+          </div>
+          <p class="mt-2 text-sm text-[var(--muted)]">{{ mergeMode === 'add' ? '블럭을 끌어다 다른 블럭에 더합니다.' : '블럭을 바꿔 같은 숫자 3개 이상을 붙여 합칩니다.' }}</p>
+          </template>
+
           <div class="mt-5">
             <p class="text-xs font-bold uppercase text-[var(--muted)]">Board Size (Width x Height)</p>
             <div class="mt-2 grid grid-cols-2 gap-2">
@@ -3102,15 +3226,36 @@ onBeforeUnmount(() => {
             </div>
             <p class="mt-3 text-xs font-bold uppercase text-[var(--muted)]">Current Goal</p>
             <template v-if="gameKind === 'lesson' && continuous">
-              <div class="marquee">
-                <div v-if="endlessTicker.length" class="marquee-track">
-                  <span v-for="(t, i) in endlessTicker.concat(endlessTicker)" :key="i" class="marquee-item text-base font-black">{{ t }}</span>
-                </div>
-                <p v-else class="text-2xl font-black sm:text-3xl">보드의 답을 맞춰보세요</p>
+              <div
+                v-if="endlessTicker.length"
+                ref="goalScrollEl"
+                class="goal-scroll mt-1"
+                @pointerdown="goalDragStart"
+                @pointermove="goalDragMove"
+                @pointerup="goalDragEnd"
+                @pointercancel="goalDragEnd"
+                @pointerleave="goalDragEnd"
+                @wheel.passive="pauseGoalMarquee"
+                @touchstart.passive="pauseGoalMarquee"
+              >
+                <span class="goal-prompt text-3xl font-black sm:text-4xl">{{ endlessTicker.join('       ·       ') }}</span>
               </div>
+              <p v-else class="mt-1 text-2xl font-black sm:text-3xl">보드의 답을 맞춰보세요</p>
             </template>
             <template v-else>
-              <p class="mt-1 truncate text-3xl font-black sm:text-4xl">{{ goalPrompt }}</p>
+              <div
+                ref="goalScrollEl"
+                class="goal-scroll mt-1"
+                @pointerdown="goalDragStart"
+                @pointermove="goalDragMove"
+                @pointerup="goalDragEnd"
+                @pointercancel="goalDragEnd"
+                @pointerleave="goalDragEnd"
+                @wheel.passive="pauseGoalMarquee"
+                @touchstart.passive="pauseGoalMarquee"
+              >
+                <span class="goal-prompt text-3xl font-black sm:text-4xl">{{ goalPrompt }}</span>
+              </div>
               <p v-if="goalVars" class="truncate text-xs text-[var(--muted)]">{{ goalVars }}</p>
             </template>
             <div v-if="hintText" class="hint-overlay">

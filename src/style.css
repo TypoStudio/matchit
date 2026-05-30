@@ -121,7 +121,7 @@ select {
 }
 
 .block-style-jelly {
-  border-radius: 18px;
+  border-radius: min(32%, 18px);
   background:
     radial-gradient(circle at 26% 18%, rgba(255, 255, 255, 0.82), transparent 26%),
     linear-gradient(145deg, rgba(255, 255, 255, 0.35), rgba(0, 0, 0, 0.12));
@@ -129,18 +129,18 @@ select {
 
 .block-style-jelly::after {
   inset: 8%;
-  border-radius: 14px;
+  border-radius: min(28%, 14px);
   border: 1px solid rgba(255, 255, 255, 0.42);
 }
 
 .block-style-jelly .block-label {
-  border-radius: 14px;
+  border-radius: min(28%, 14px);
   background: rgba(255, 255, 255, 0.18);
   text-shadow: 0 2px 8px rgba(15, 23, 42, 0.35);
 }
 
 .block-style-card {
-  border-radius: 10px;
+  border-radius: min(22%, 10px);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.78)),
     currentColor;
@@ -156,12 +156,12 @@ select {
 }
 
 .block-style-card .block-label {
-  border-radius: 7px;
+  border-radius: min(18%, 7px);
   color: #172033;
 }
 
 .block-style-tile {
-  border-radius: 4px;
+  border-radius: min(12%, 4px);
   background: #ffffff !important;
   border-color: #111827 !important;
   color: #111827;
@@ -169,14 +169,14 @@ select {
 }
 
 .block-style-tile .block-label {
-  border-radius: 2px;
+  border-radius: min(10%, 2px);
   color: #111827;
   text-shadow: none;
 }
 
 /* 투명: 블럭 채움 없이 글자/이모지만 표시. 글자색은 테마색(--ink)을 따른다. */
 .block-style-transparent {
-  border-radius: 12px;
+  border-radius: min(24%, 12px);
   background: transparent !important;
   border-color: transparent !important;
   box-shadow: none;
@@ -206,6 +206,11 @@ select {
 .block-preview.block-style-transparent {
   border-radius: 6px;
   border: 1px dashed var(--line);
+}
+/* 타일 미리보기는 흰 배경이라 밝은 테마에서 묻힘 → 연한 테두리로 윤곽 표시 */
+.block-preview.block-style-tile {
+  border-radius: 4px;
+  border: 1px solid var(--line);
 }
 .block-preview.block-style-card { border-radius: 5px; }
 .block-preview.block-style-card::before { border-top-width: 2px; }
@@ -328,6 +333,19 @@ select {
   }
 }
 
+/* 앱 전체 텍스트 선택/콜아웃 차단 — 게임 중 깃허브 링크 등 아무 텍스트나 선택되는 것 방지.
+   입력칸(추가팩 URL 등)만 예외로 선택·편집 허용. */
+.app-main {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.app-main input,
+.app-main textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 /* 게임 영역(보드·목표·점수 등) 전체에서 텍스트 선택/콜아웃 차단.
    자식까지 !important로 강제해 탭·드래그 시 보이지 않는 선택이 생기지 않게 함. (설정 패널의 입력칸은 제외) */
 .app-board,
@@ -341,6 +359,26 @@ select {
   -webkit-user-select: none !important;
   user-select: none !important;
   -webkit-touch-callout: none;
+}
+
+/* 한문제씩 목표 문장: 길면 좌우 자동 마퀴 + 손으로 가로 스크롤 (말줄임표 대신) */
+.goal-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  scrollbar-width: none;
+  cursor: grab;
+}
+.goal-scroll:active {
+  cursor: grabbing;
+}
+.goal-scroll::-webkit-scrollbar {
+  display: none;
+}
+.goal-scroll .goal-prompt {
+  display: inline-block;
 }
 
 /* 가장자리 블럭의 선택/힌트 테두리가 잘리지 않도록 여유 */
