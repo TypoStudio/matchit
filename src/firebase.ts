@@ -19,7 +19,7 @@ export const GOOGLE_CLIENT_ID = '143238657788-bq1toerl6vkfdq88nc40plfpmfelmbnj.a
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAcqVtHkxYv21GVnOjend6GHjRWJIagAGg',
-  authDomain: 'match-it-typostudio.firebaseapp.com',
+  authDomain: 'match-it-typostudio.web.app',
   projectId: 'match-it-typostudio',
   storageBucket: 'match-it-typostudio.firebasestorage.app',
   messagingSenderId: '143238657788',
