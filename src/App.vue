@@ -25,6 +25,10 @@ const PACK_CATALOG_URL = import.meta.env.PROD
 const EXTRA_CATALOG_URL = import.meta.env.PROD
   ? 'https://typostudio.github.io/matchit-packs/extra.json'
   : '/packs/extra.json';
+// 'URL로 추가' 사용 예시(샘플): 과일 모으기 — 버튼을 누르면 입력칸에 채워진다.
+const SAMPLE_PACK_URL = import.meta.env.PROD
+  ? 'https://typostudio.github.io/matchit-packs/arcade/fruit-emoji/pack.json'
+  : '/packs/arcade/fruit-emoji/pack.json';
 const palette = [
   '#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef', '#eab308',
   '#3b82f6', '#ef4444', '#10b981', '#a855f7', '#f43f5e', '#0ea5e9', '#65a30d', '#fb923c',
@@ -73,8 +77,8 @@ const mobilePanels = [
 type MobilePanel = (typeof mobilePanels)[number]['id'];
 
 const packs = ref<LessonPack[]>([]);
-const selectedPackId = ref('');
-const selectedLevel = ref(1);
+const selectedPackId = ref(localStorage.getItem('matchit-selected-pack-id') || '');
+const selectedLevel = ref(Number(localStorage.getItem('matchit-selected-level')) || 1);
 const lessonItems = ref<LessonItem[]>([]); // 현재 레벨 파일의 문제
 const currentRaw = ref<unknown[]>([]); // 현재 레벨의 원본 배열(방향 전환 시 재구성용)
 const rawWordEntries = ref<Array<{ word: string; meaning: string; hint?: string }>>([]); // 현재 레벨 영어단어 원본
@@ -1493,7 +1497,8 @@ async function loadExtraCatalog() {
     if (!Array.isArray(data)) return;
     extraCatalog.value = (data as Array<{ name?: string; url?: unknown }>)
       .filter((e): e is { name?: string; url: string } => !!e && typeof e.url === 'string')
-      .map((e) => ({ name: String(e.name ?? e.url), url: new URL(e.url, url).href }));
+      .map((e) => ({ name: String(e.name ?? e.url), url: new URL(e.url, url).href }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'ko')); // 추가 목록 가나다순
   } catch {
     /* 추가 목록 로드 실패는 무시(기본 목록은 정상 동작) */
   }
@@ -3438,7 +3443,7 @@ onBeforeUnmount(() => {
               <button
                 v-for="preset in boardPresets"
                 :key="`${preset.cols}x${preset.rows}`"
-                class="h-11 rounded-md border text-sm font-black"
+                class="h-11 rounded-md border font-black"
                 :class="[
                   preset.wide ? 'hidden min-[900px]:block' : '',
                   cols === preset.cols && rows === preset.rows ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]' : 'border-[var(--line)] bg-[var(--panel-strong)]',
@@ -3785,7 +3790,7 @@ onBeforeUnmount(() => {
                 <path d="M3 3v5h5"/>
               </svg>
             </button>
-            <a href="https://www.buymeacoffee.com/typ0s2d10" target="_blank" rel="noopener" class="inline-flex h-12 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-xl" :title="t('btnCoffee')" :aria-label="t('btnCoffee')">
+            <a href="https://www.buymeacoffee.com/typ0s2d10" target="_blank" rel="noopener" class="inline-flex h-12 items-center justify-center rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-2xl" :title="t('btnCoffee')" :aria-label="t('btnCoffee')">
               ☕
             </a>
           </div>
@@ -4096,6 +4101,9 @@ onBeforeUnmount(() => {
                 {{ t('btnAdd') }}
               </button>
             </div>
+            <button type="button" class="mt-2 text-xs font-bold text-[var(--accent)] underline underline-offset-2" @click="newPackUrl = SAMPLE_PACK_URL">
+              {{ t('sampleFruit') }}
+            </button>
             <p v-if="packMgrError" class="mt-2 text-sm font-semibold text-rose-600">{{ packMgrError }}</p>
             <ul v-if="customAddedPacks.length" class="mt-2 max-h-56 space-y-1 overflow-y-auto">
               <li v-for="url in customAddedPacks" :key="url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
