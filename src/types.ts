@@ -1,7 +1,7 @@
 export type SolveMode = 'sequence' | 'collect';
 export type GameMode = 'single' | 'endless' | 'free';
 export type GameKind = 'lesson' | 'synthesis' | 'numbers';
-export type ThemeName = 'paper' | 'midnight' | 'lab';
+export type ThemeName = 'paper' | 'midnight' | 'lab' | 'pixel';
 export type BlockStyleName = 'jelly' | 'card' | 'tile' | 'transparent';
 
 export interface LessonItem {

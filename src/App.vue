@@ -35,6 +35,7 @@ const themes: Array<{ id: ThemeName; label: string }> = [
   { id: 'paper', label: t('themePaper') },
   { id: 'midnight', label: t('themeNight') },
   { id: 'lab', label: t('themeLab') },
+  { id: 'pixel', label: t('themeGame') },
 ];
 
 const blockStyles: Array<{ id: BlockStyleName; label: string }> = [
@@ -3248,7 +3249,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main :class="['app-main min-h-screen px-4 py-5 text-[var(--ink)] sm:px-6 lg:px-8', `theme-${theme}`]" style="background: var(--page)">
+  <main :class="['app-main min-h-screen px-4 py-5 text-[var(--ink)] sm:px-6 lg:px-8', `theme-${theme}`]" style="background-color: var(--page)">
     <div class="app-shell mx-auto flex max-w-7xl flex-col gap-5">
       <header class="flex flex-col gap-4 border-b border-[var(--line)] pb-5 lg:flex-row lg:items-start lg:justify-between">
         <div class="flex grow items-start justify-between">
