@@ -3072,7 +3072,7 @@ function saveGame() {
       endlessStage: endlessStage.value,
       cols: cols.value,
       rows: rows.value,
-      board: board.value.map((b) => ({ token: b.token, value: b.value, lessonId: b.lessonId, label: b.label, color: b.color, power: b.power })),
+      board: board.value.map((b) => ({ token: b.token, value: b.value, lessonId: b.lessonId, label: b.label, color: b.color, power: b.power, adds: b.adds })),
       lessonItems: lessonItems.value,
       score: score.value,
       matchedCount: matchedCount.value,
@@ -3092,7 +3092,7 @@ function saveGame() {
 interface SavedGame {
   gameKind: GameKind; mode: GameMode; solveMode: SolveMode;
   packId: string; level: number; stage?: number; endlessStage?: number; cols?: number; rows?: number;
-  board: Array<{ token: string; value?: number; lessonId: string; label: string; color: string; power?: PowerKind }>;
+  board: Array<{ token: string; value?: number; lessonId: string; label: string; color: string; power?: PowerKind; adds?: number }>;
   lessonItems: LessonItem[];
   score: number; matchedCount?: number; clearedBlocks?: number; combo: number; moves: number; passes: number;
   targetIndex: number; gameOver: boolean; collectTargetId: string | null;
@@ -3124,6 +3124,7 @@ function restoreFromSave(s: SavedGame) {
     label: b.label,
     color: b.color,
     power: b.power,
+    adds: b.adds,
   }));
   score.value = s.score || 0;
   matchedCount.value = s.matchedCount || 0;
