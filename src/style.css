@@ -389,6 +389,15 @@ select {
   }
 }
 
+/* 전자잉크(update: slow)·모션 최소화에서만: 깜빡임 대신 색으로 강조(잔상 방지) */
+@media (update: slow), (prefers-reduced-motion: reduce) {
+  .nav-game-cta {
+    animation: none;
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+}
+
 /* 앱 전체 텍스트 선택/콜아웃 차단 — 게임 중 깃허브 링크 등 아무 텍스트나 선택되는 것 방지.
    입력칸(추가팩 URL 등)만 예외로 선택·편집 허용. */
 .app-main {
