@@ -316,12 +316,12 @@ const lbLoading = ref(false);
 const lbError = ref('');
 const myRank = ref(0);
 const myUid = ref('');
-let lastSubmitted = -1; // 이번 보드에서 마지막으로 제출한 점수(중복 쓰기 방지)
-let submitTimer: ReturnType<typeof setTimeout> | null = null;
+const lastSubmitted = ref(-1); // 이번 보드에서 마지막으로 제출한 점수(중복 쓰기 방지·버튼 비활성 판정)
+let autoSubmitTimer: ReturnType<typeof setInterval> | null = null; // 10분 주기 자동 제출
 
 async function submitScoreNow() {
   const sc = score.value;
-  if (sc <= 0 || sc <= lastSubmitted) return;
+  if (sc <= 0 || sc <= lastSubmitted.value) return;
   if (gameKind.value !== 'numbers' && !selectedPackId.value) return;
   try {
     const uid = await ensureUid();
@@ -332,21 +332,16 @@ async function submitScoreNow() {
       level: selectedLevel.value, gameKind: gameKind.value,
       verified: isSignedIn.value,
     });
-    lastSubmitted = sc;
+    lastSubmitted.value = sc;
     if (did && showLeaderboard.value) void loadLeaderboard();
   } catch (e) {
     console.warn('점수 제출 실패', e); // 게임 진행은 막지 않음
   }
 }
-// 점수가 오르면 디바운스 후 자동으로 최고점 제출(트랜잭션이 기존값과 비교해 더 클 때만 기록)
-watch(score, (v: number) => {
-  if (v <= lastSubmitted) return; // 새판 리셋(0) 등은 무시
-  if (submitTimer) clearTimeout(submitTimer);
-  submitTimer = setTimeout(() => { void submitScoreNow(); }, 1500);
-});
+// 점수 제출은 매 상승마다 하지 않고 게임 완료(스테이지 클리어·게임오버)·페이지 이탈·로그인 시점에 일괄로 한다.
 // 게임/레벨이 바뀌면 제출 기준 초기화 + 보고 있던 순위표 갱신
 watch([rankGameId, selectedLevel], () => {
-  lastSubmitted = -1;
+  lastSubmitted.value = -1;
   if (showLeaderboard.value) void loadLeaderboard();
 });
 
@@ -372,13 +367,19 @@ function openRankTab() {
   showLeaderboard.value = true;
   void loadLeaderboard();
 }
+// 수동 제출(데스크탑 등 나가기 시점이 없을 때) — 항상 재시도 후 순위표 갱신
+async function submitScoreManual() {
+  lastSubmitted.value = -1;
+  await submitScoreNow();
+  if (showLeaderboard.value) void loadLeaderboard();
+}
 function saveNickname() {
   nickname.value = nickname.value.trim().slice(0, 16);
   localStorage.setItem('matchit-nickname', nickname.value);
   // 사용자가 직접 정한 닉네임은 로그인해도 구글 이름으로 덮어쓰지 않음(비우면 해제)
   if (nickname.value) localStorage.setItem('matchit-nickname-manual', '1');
   else localStorage.removeItem('matchit-nickname-manual');
-  lastSubmitted = -1; // 닉네임 바꾸면 기존 기록에도 반영되도록 재제출 허용
+  lastSubmitted.value = -1; // 닉네임 바꾸면 기존 기록에도 반영되도록 재제출 허용
   void submitScoreNow();
   scheduleSync();
   if (showLeaderboard.value) void loadLeaderboard();
@@ -406,7 +407,7 @@ function handleAuthUser(user: User | null) {
     if (!manual && profileName) {
       nickname.value = profileName.slice(0, 16);
       localStorage.setItem('matchit-nickname', nickname.value);
-      lastSubmitted = -1; // 새 닉네임으로 기존 랭킹 기록 갱신
+      lastSubmitted.value = -1; // 새 닉네임으로 기존 랭킹 기록 갱신
       void submitScoreNow();
     }
     void syncDown(user!.uid).then(() => { if (showLeaderboard.value) void loadLeaderboard(); });
@@ -1129,6 +1130,7 @@ function markStageCleared(level: number, stage: number, celebrate = true) {
     if (!wasLevelCleared && isLevelCleared(level)) track('level_complete', { level });
     stageStartAt = Date.now();
   }
+  void submitScoreNow(); // 게임 완료(스테이지 클리어) 시 최고점 제출
   if (!celebrate) return; // 연속/자유: 통계만 기록하고 축하 팝업은 띄우지 않음
   const maxLevel = levels.value[levels.value.length - 1] ?? level;
   const hasNext = stage < stageCount.value || level < maxLevel;
@@ -2321,6 +2323,8 @@ function checkNumberGameOver() {
     gameOver.value = true;
     message.value = `${t('gameOverNoMergePrefix')} ${score.value}`;
     track('game_over', { score: score.value, best: best.value });
+    lastSubmitted.value = -1; // 이미 제출했더라도 게임오버 점수는 무조건 재등록
+    void submitScoreNow();
   }
 }
 
@@ -3191,17 +3195,20 @@ onMounted(async () => {
   watch([score, best, theme, blockStyle, solveMode, mergeMode, gameKind, wordDirection,
     adjacentSwap, autoChain, showAnswer, cols, rows, nickname, selectedPackId, selectedLevel], scheduleSync);
   watch([levelStats, clearedStages, numStats, extraPacks], scheduleSync, { deep: true });
-  // 페이지를 떠날 때 마지막 상태를 즉시 저장
+  // 페이지를 떠날 때(새로고침·탭전환·종료) 최고점 제출 + 마지막 상태 저장
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden' && isSignedIn.value) {
-      void saveUserStore(authUser.value!.uid, snapshotLocal());
-    }
+    if (document.visibilityState !== 'hidden') return;
+    void submitScoreNow(); // 익명 포함 최고점 제출
+    if (isSignedIn.value) void saveUserStore(authUser.value!.uid, snapshotLocal());
   });
+  // 10분마다 점수 변동이 있으면 자동 제출(submitScoreNow가 직전 제출보다 클 때만 기록)
+  autoSubmitTimer = setInterval(() => { void submitScoreNow(); }, 600000);
 });
 
 onBeforeUnmount(() => {
   boardResizeObserver?.disconnect();
   stopGoalMarquee();
+  if (autoSubmitTimer) clearInterval(autoSubmitTimer);
 });
 </script>
 
@@ -3815,6 +3822,14 @@ onBeforeUnmount(() => {
                 {{ rankGameTitle }} · {{ levelLabel(selectedLevel) }} · 상위 10
                 <span class="ml-1 opacity-60">({{ rankGameId }})</span>
               </p>
+              <button
+                class="mb-2 h-9 w-full rounded-md border border-[var(--accent)] bg-[var(--accent)] px-3 text-xs font-black text-[var(--accent-ink)] disabled:opacity-40"
+                type="button"
+                :disabled="score <= 0 || score <= lastSubmitted"
+                @click="submitScoreManual"
+              >
+                현재 점수 제출 ({{ score }})
+              </button>
               <p v-if="lbLoading" class="text-sm text-[var(--muted)]">불러오는 중…</p>
               <p v-else-if="lbError" class="text-sm text-red-400">{{ lbError }}</p>
               <template v-else>

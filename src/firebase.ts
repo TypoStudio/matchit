@@ -2,14 +2,15 @@
 // 랭킹 단위는 "게임 × 레벨". 게임 = 학습꾸러미 id(숫자 더하기는 'numbers'로 합침).
 // 한 사람(익명 uid)당 게임·레벨마다 최고점 1행만 보관(덮어쓰기).
 import { initializeApp } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
 import {
   getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider,
   signInWithCredential, linkWithCredential, signInWithPopup, linkWithPopup,
   signOut, type User,
 } from 'firebase/auth';
 import {
-  getFirestore, doc, collection, query, orderBy, limit, where,
-  getDocs, getDoc, setDoc, runTransaction, getCountFromServer, serverTimestamp,
+  getFirestore, doc, collection, collectionGroup, query, orderBy, limit, where,
+  getDocs, getDoc, setDoc, deleteDoc, runTransaction, getCountFromServer, serverTimestamp,
 } from 'firebase/firestore';
 
 // One Tap(자동 로그인 프롬프트)용 OAuth 웹 클라이언트 ID.
@@ -28,6 +29,24 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+// App Check: 정식 우리 도메인의 앱에서 온 요청인지 reCAPTCHA Enterprise 토큰으로 검증.
+// 콘솔 외부(브라우저 콘솔/스크립트)의 Firestore 직접 호출을 차단해 부정 점수 등록을 막음.
+// 사이트 키는 공개돼도 되는 값(apiKey와 동일 성격). enterprise.js 로드·execute 호출은
+// SDK가 내부에서 자동 처리하므로 별도 스크립트 태그가 필요 없음.
+const RECAPTCHA_ENTERPRISE_SITE_KEY = '6LckPgQtAAAAAK3pzWB-vvL6L9IeiOGrPuSsDcrX';
+// 로컬 개발(localhost)에서는 디버그 토큰을 사용. .env.local의 VITE_APPCHECK_DEBUG_TOKEN에
+// 콘솔(App Check > 앱 > 디버그 토큰 관리)에 등록한 토큰 값을 그대로 넣어 고정한다.
+// (값을 지정하지 않으면 SDK가 매번 새 토큰을 생성해 콘솔 등록값과 어긋나 403이 난다.)
+if (import.meta.env.DEV) {
+  (self as unknown as { FIREBASE_APPCHECK_DEBUG_TOKEN?: boolean | string }).FIREBASE_APPCHECK_DEBUG_TOKEN =
+    import.meta.env.VITE_APPCHECK_DEBUG_TOKEN || true;
+}
+initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_ENTERPRISE_SITE_KEY),
+  isTokenAutoRefreshEnabled: true,
+});
+
 const db = getFirestore(app);
 const auth = getAuth(app);
 
@@ -52,6 +71,40 @@ export function onAuth(cb: (user: User | null) => void) {
   return onAuthStateChanged(auth, cb);
 }
 
+// 익명으로 쌓은 순위표 기록을 이미 가입된 구글 계정(uid 다름)으로 이전한다.
+// 익명 상태에서 읽고 지운 뒤 전환하고, 새 uid로 재등록 → 중복 제거 + 점수 보존.
+// (전환 후엔 익명 uid 문서를 지울 권한이 없으므로 반드시 전환 전에 삭제한다.)
+async function switchAndMigrate(anonUser: User, signIn: () => Promise<User>): Promise<User> {
+  // 1) 익명 상태에서 기록 읽고 삭제. 인덱스/권한 문제로 실패해도 로그인은 절대 막지 않음.
+  let saved: { board: string; row: ScoreRow }[] = [];
+  let deleted = false;
+  try {
+    const q = query(collectionGroup(db, 'scores'), where('uid', '==', anonUser.uid));
+    const snap = await getDocs(q);
+    saved = snap.docs.map((d) => ({ board: d.ref.parent.parent!.id, row: d.data() as ScoreRow }));
+    await Promise.all(snap.docs.map((d) => deleteDoc(d.ref)));
+    deleted = true;
+  } catch (e) {
+    console.warn('익명 기록 이전 준비 실패(로그인은 계속)', e);
+    saved = [];
+  }
+  // 2) 전환
+  let user: User;
+  try {
+    user = await signIn();
+  } catch (e) {
+    // 전환 실패(아직 익명 상태): 지운 기록이 있으면 원래대로 복구
+    if (deleted) await Promise.all(saved.map(({ board, row }) => submitBest({ ...row, board }))).catch(() => {});
+    throw e;
+  }
+  // 3) 전환 성공: 새 uid·인증 뱃지로 재등록(트랜잭션이 기존값보다 클 때만 점수 갱신)
+  if (saved.length) {
+    await Promise.all(saved.map(({ board, row }) =>
+      submitBest({ ...row, uid: user.uid, verified: true, board }))).catch(() => {});
+  }
+  return user;
+}
+
 // One Tap에서 받은 구글 ID 토큰으로 로그인. 익명 세션이 있으면 link로 승계 시도.
 export async function loginWithGoogleIdToken(idToken: string): Promise<User> {
   const credential = GoogleAuthProvider.credential(idToken);
@@ -63,8 +116,8 @@ export async function loginWithGoogleIdToken(idToken: string): Promise<User> {
     } catch (e) {
       const code = (e as { code?: string }).code;
       if (code === 'auth/credential-already-in-use' || code === 'auth/email-already-in-use') {
-        const res = await signInWithCredential(auth, credential); // 이미 가입된 계정으로 전환
-        return res.user;
+        // 이미 가입된 계정으로 전환: 익명 기록을 새 계정으로 이전해 중복 방지
+        return switchAndMigrate(cur, async () => (await signInWithCredential(auth, credential)).user);
       }
       throw e;
     }
@@ -84,8 +137,8 @@ export async function loginWithGooglePopup(): Promise<User> {
     } catch (e) {
       const code = (e as { code?: string }).code;
       if (code === 'auth/credential-already-in-use' || code === 'auth/email-already-in-use') {
-        const res = await signInWithPopup(auth, provider);
-        return res.user;
+        // 이미 가입된 계정으로 전환: 익명 기록을 새 계정으로 이전해 중복 방지
+        return switchAndMigrate(cur, async () => (await signInWithPopup(auth, provider)).user);
       }
       throw e;
     }
