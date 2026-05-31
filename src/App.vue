@@ -17,14 +17,14 @@ const cols = ref(Number(localStorage.getItem('matchit-cols')) || 7);
 const rows = ref(Number(localStorage.getItem('matchit-rows')) || 7);
 const appVersion = `v${__APP_VERSION__}`;
 const baseUrl = import.meta.env.BASE_URL;
-// 기본 학습팩 카탈로그. 로컬 개발에선 같은 저장소의 packs/, 배포 후엔 matchit-packs(GitHub Pages).
+// 기본 학습팩 카탈로그(항상 표시). 로컬 개발에선 같은 저장소의 packs/, 배포 후엔 matchit-packs(GitHub Pages).
 const PACK_CATALOG_URL = import.meta.env.PROD
   ? 'https://typostudio.github.io/matchit-packs/packs.json'
   : '/packs/packs.json';
-// 기본 목록에서 뺀 과일 맞추기 — 꾸러미 추가에서 한 번에 넣을 수 있게.
-const FRUIT_PACK_URL = import.meta.env.PROD
-  ? 'https://typostudio.github.io/matchit-packs/arcade/fruit-emoji/pack.json'
-  : '/packs/arcade/fruit-emoji/pack.json';
+// 추가 꾸러미 목록(선택해서 꾸러미 목록에 넣는 후보). packs 레포의 두 번째 카탈로그.
+const EXTRA_CATALOG_URL = import.meta.env.PROD
+  ? 'https://typostudio.github.io/matchit-packs/extra.json'
+  : '/packs/extra.json';
 const palette = [
   '#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef', '#eab308',
   '#3b82f6', '#ef4444', '#10b981', '#a855f7', '#f43f5e', '#0ea5e9', '#65a30d', '#fb923c',
@@ -183,7 +183,12 @@ function measureCell() {
 }
 let answerTimer: number | undefined;
 // 사용자가 추가한 외부 학습팩 URL 목록(로컬 저장만). 기본 카탈로그와 합쳐서 보여준다.
-const extraPacks = ref<string[]>(readExtraPacks());
+const extraPacks = ref<string[]>(readExtraPacks()); // 꾸러미 목록에 더한 추가 꾸러미 URL(절대)
+const extraCatalog = ref<{ name: string; url: string }[]>([]); // 추가 꾸러미 목록(선택 후보), url은 절대경로
+// URL로 직접 더한(추가 목록에 없는) 꾸러미 — 관리 UI에서 따로 보여주기 위함
+const customAddedPacks = computed(() =>
+  extraPacks.value.filter((u: string) => !extraCatalog.value.some((c: { url: string }) => c.url === u)),
+);
 const showPackManager = ref(false); // 추가팩 관리 팝업
 const newPackUrl = ref('');
 const extraPackNames = ref<Record<string, string>>({}); // 추가 꾸러미 url -> 읽어온 이름
@@ -1477,10 +1482,31 @@ async function removeExtraPack(url: string) {
   saveExtraPacks();
   await loadPacks();
 }
-// 과일 맞추기 꾸러미를 한 번에 추가
-async function addFruitPack() {
-  if (extraPacks.value.includes(FRUIT_PACK_URL)) return;
-  extraPacks.value.push(FRUIT_PACK_URL);
+// 추가 꾸러미 목록(extra.json) 로드 — 선택 후보만(레벨까지 받지 않음).
+async function loadExtraCatalog() {
+  try {
+    const url = new URL(EXTRA_CATALOG_URL, window.location.href).href;
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+    extraCatalog.value = (data as Array<{ name?: string; url?: unknown }>)
+      .filter((e): e is { name?: string; url: string } => !!e && typeof e.url === 'string')
+      .map((e) => ({ name: String(e.name ?? e.url), url: new URL(e.url, url).href }));
+  } catch {
+    /* 추가 목록 로드 실패는 무시(기본 목록은 정상 동작) */
+  }
+}
+function isExtraAdded(url: string): boolean {
+  return extraPacks.value.includes(url);
+}
+// 추가 목록 항목 토글: 켜면 꾸러미 목록에 더하고, 끄면 뺀다.
+async function toggleExtra(url: string) {
+  if (isExtraAdded(url)) {
+    await removeExtraPack(url);
+    return;
+  }
+  extraPacks.value.push(url);
   saveExtraPacks();
   await loadPacks();
 }
@@ -3162,6 +3188,7 @@ onMounted(async () => {
   const canResume = !!(save && Array.isArray(save.board) && save.board.length && localStorage.getItem('matchit-resume') !== '0');
 
   await loadPacks();
+  void loadExtraCatalog(); // 추가 꾸러미 목록은 비동기로 채움(기본 목록 로딩을 막지 않음)
 
   if (canResume && save) {
     // 게임 중이었으면 저장된 보드/상태로 복원하고 게임 화면으로
@@ -4033,15 +4060,27 @@ onBeforeUnmount(() => {
       <div class="w-full max-w-md rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5">
         <p class="text-lg font-black">{{ t('packMgrTitle') }}</p>
         <p class="mt-1 text-sm text-[var(--muted)]">{{ t('packMgrDesc') }}</p>
-        <button
-          v-if="!extraPacks.includes(FRUIT_PACK_URL)"
-          class="mt-3 h-8 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-xs font-black"
-          type="button"
-          @click="addFruitPack"
-        >
-          {{ t('btnAddFruit') }}
-        </button>
-        <div class="mt-3 flex gap-2">
+
+        <!-- 추가 꾸러미 목록: 켜면 꾸러미 목록에 더해지고, 끄면 빠짐 -->
+        <p class="mt-4 text-xs font-bold uppercase text-[var(--muted)]">{{ t('extraCatalogHdr') }}</p>
+        <ul v-if="extraCatalog.length" class="mt-2 max-h-48 space-y-1 overflow-y-auto">
+          <li v-for="item in extraCatalog" :key="item.url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
+            <span class="min-w-0 flex-1 truncate text-sm font-black">{{ item.name }}</span>
+            <button
+              class="shrink-0 rounded-md px-3 py-1 text-xs font-black"
+              :class="isExtraAdded(item.url) ? 'border border-[var(--line)] text-[var(--muted)]' : 'bg-[var(--accent)] text-[var(--accent-ink)]'"
+              type="button"
+              @click="toggleExtra(item.url)"
+            >
+              {{ isExtraAdded(item.url) ? t('btnAdded') : t('btnAdd') }}
+            </button>
+          </li>
+        </ul>
+        <p v-else class="mt-2 text-sm text-[var(--muted)]">{{ t('extraCatalogEmpty') }}</p>
+
+        <!-- URL로 직접 추가: 바로 꾸러미 목록에 더해짐 -->
+        <p class="mt-4 text-xs font-bold uppercase text-[var(--muted)]">{{ t('addByUrlHdr') }}</p>
+        <div class="mt-2 flex gap-2">
           <input
             v-model="newPackUrl"
             placeholder="https://.../pack.json"
@@ -4053,8 +4092,8 @@ onBeforeUnmount(() => {
           </button>
         </div>
         <p v-if="packMgrError" class="mt-2 text-sm font-semibold text-rose-600">{{ packMgrError }}</p>
-        <ul v-if="extraPacks.length" class="mt-3 max-h-56 space-y-1 overflow-y-auto">
-          <li v-for="url in extraPacks" :key="url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
+        <ul v-if="customAddedPacks.length" class="mt-2 max-h-40 space-y-1 overflow-y-auto">
+          <li v-for="url in customAddedPacks" :key="url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
             <div class="min-w-0 flex-1">
               <p class="truncate text-sm font-black">{{ extraPackNames[url] || '…' }}</p>
               <p class="truncate text-[10px] text-[var(--muted)]">{{ url }}</p>
@@ -4064,7 +4103,7 @@ onBeforeUnmount(() => {
             </button>
           </li>
         </ul>
-        <p v-else class="mt-3 text-sm text-[var(--muted)]">{{ t('noExtraPacks') }}</p>
+
         <button class="mt-4 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showPackManager = false">
           {{ t('btnClose') }}
         </button>
