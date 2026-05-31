@@ -4057,54 +4057,60 @@ onBeforeUnmount(() => {
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6"
       @click.self="showPackManager = false"
     >
-      <div class="w-full max-w-md rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5">
+      <div class="w-full max-w-2xl rounded-lg border border-[var(--line)] bg-[var(--panel)] p-5">
         <p class="text-lg font-black">{{ t('packMgrTitle') }}</p>
         <p class="mt-1 text-sm text-[var(--muted)]">{{ t('packMgrDesc') }}</p>
 
-        <!-- 추가 꾸러미 목록: 켜면 꾸러미 목록에 더해지고, 끄면 빠짐 -->
-        <p class="mt-4 text-xs font-bold uppercase text-[var(--muted)]">{{ t('extraCatalogHdr') }}</p>
-        <ul v-if="extraCatalog.length" class="mt-2 max-h-48 space-y-1 overflow-y-auto">
-          <li v-for="item in extraCatalog" :key="item.url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
-            <span class="min-w-0 flex-1 truncate text-sm font-black">{{ item.name }}</span>
-            <button
-              class="shrink-0 rounded-md px-3 py-1 text-xs font-black"
-              :class="isExtraAdded(item.url) ? 'border border-[var(--line)] text-[var(--muted)]' : 'bg-[var(--accent)] text-[var(--accent-ink)]'"
-              type="button"
-              @click="toggleExtra(item.url)"
-            >
-              {{ isExtraAdded(item.url) ? t('btnAdded') : t('btnAdd') }}
-            </button>
-          </li>
-        </ul>
-        <p v-else class="mt-2 text-sm text-[var(--muted)]">{{ t('extraCatalogEmpty') }}</p>
+        <div class="mt-4 grid gap-5 md:grid-cols-2">
+          <!-- 왼쪽: 추가 꾸러미 목록 — 켜면 꾸러미 목록에 더해지고, 끄면 빠짐 -->
+          <div class="min-w-0">
+            <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('extraCatalogHdr') }}</p>
+            <ul v-if="extraCatalog.length" class="mt-2 max-h-72 space-y-1 overflow-y-auto">
+              <li v-for="item in extraCatalog" :key="item.url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
+                <span class="min-w-0 flex-1 truncate text-sm font-black">{{ item.name }}</span>
+                <button
+                  class="shrink-0 rounded-md px-3 py-1 text-xs font-black"
+                  :class="isExtraAdded(item.url) ? 'border border-[var(--line)] text-[var(--muted)]' : 'bg-[var(--accent)] text-[var(--accent-ink)]'"
+                  type="button"
+                  @click="toggleExtra(item.url)"
+                >
+                  {{ isExtraAdded(item.url) ? t('btnAdded') : t('btnAdd') }}
+                </button>
+              </li>
+            </ul>
+            <p v-else class="mt-2 text-sm text-[var(--muted)]">{{ t('extraCatalogEmpty') }}</p>
+          </div>
 
-        <!-- URL로 직접 추가: 바로 꾸러미 목록에 더해짐 -->
-        <p class="mt-4 text-xs font-bold uppercase text-[var(--muted)]">{{ t('addByUrlHdr') }}</p>
-        <div class="mt-2 flex gap-2">
-          <input
-            v-model="newPackUrl"
-            placeholder="https://.../pack.json"
-            class="min-w-0 flex-1 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm"
-            @keydown.enter="addExtraPack"
-          />
-          <button class="h-11 rounded-md bg-[var(--accent)] px-4 text-sm font-black text-[var(--accent-ink)]" type="button" @click="addExtraPack">
-            {{ t('btnAdd') }}
-          </button>
-        </div>
-        <p v-if="packMgrError" class="mt-2 text-sm font-semibold text-rose-600">{{ packMgrError }}</p>
-        <ul v-if="customAddedPacks.length" class="mt-2 max-h-40 space-y-1 overflow-y-auto">
-          <li v-for="url in customAddedPacks" :key="url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
-            <div class="min-w-0 flex-1">
-              <p class="truncate text-sm font-black">{{ extraPackNames[url] || '…' }}</p>
-              <p class="truncate text-[10px] text-[var(--muted)]">{{ url }}</p>
+          <!-- 오른쪽: URL로 직접 추가 — 바로 꾸러미 목록에 더해짐 -->
+          <div class="min-w-0 md:border-l md:border-[var(--line)] md:pl-5">
+            <p class="text-xs font-bold uppercase text-[var(--muted)]">{{ t('addByUrlHdr') }}</p>
+            <div class="mt-2 flex gap-2">
+              <input
+                v-model="newPackUrl"
+                placeholder="https://.../pack.json"
+                class="min-w-0 flex-1 rounded-md border border-[var(--line)] bg-[var(--panel-strong)] px-3 text-sm"
+                @keydown.enter="addExtraPack"
+              />
+              <button class="h-11 shrink-0 rounded-md bg-[var(--accent)] px-4 text-sm font-black text-[var(--accent-ink)]" type="button" @click="addExtraPack">
+                {{ t('btnAdd') }}
+              </button>
             </div>
-            <button class="shrink-0 rounded px-2 text-sm font-black text-rose-500" type="button" :title="t('titleRemove')" @click="removeExtraPack(url)">
-              ✕
-            </button>
-          </li>
-        </ul>
+            <p v-if="packMgrError" class="mt-2 text-sm font-semibold text-rose-600">{{ packMgrError }}</p>
+            <ul v-if="customAddedPacks.length" class="mt-2 max-h-56 space-y-1 overflow-y-auto">
+              <li v-for="url in customAddedPacks" :key="url" class="flex items-center gap-2 rounded-md bg-[var(--panel-strong)] px-3 py-2">
+                <div class="min-w-0 flex-1">
+                  <p class="truncate text-sm font-black">{{ extraPackNames[url] || '…' }}</p>
+                  <p class="truncate text-[10px] text-[var(--muted)]">{{ url }}</p>
+                </div>
+                <button class="shrink-0 rounded px-2 text-sm font-black text-rose-500" type="button" :title="t('titleRemove')" @click="removeExtraPack(url)">
+                  ✕
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-        <button class="mt-4 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showPackManager = false">
+        <button class="mt-5 h-11 w-full rounded-md border border-[var(--line)] bg-[var(--panel-strong)] text-sm font-black" type="button" @click="showPackManager = false">
           {{ t('btnClose') }}
         </button>
       </div>
