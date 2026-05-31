@@ -74,6 +74,11 @@ select {
   image-rendering: pixelated;
 }
 
+/* 게임기 테마는 픽셀 폰트가 크게 보여, 그 테마일 때만 전체 글자 크기를 살짝 줄임 */
+html:has(.theme-pixel) {
+  font-size: 85%;
+}
+
 .block-face {
   position: relative;
   overflow: hidden;
