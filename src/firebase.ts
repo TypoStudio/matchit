@@ -6,7 +6,7 @@ import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-ch
 import {
   getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider,
   signInWithCredential, linkWithCredential, signInWithPopup, linkWithPopup,
-  signOut, type User,
+  signOut, type User, type AuthError,
 } from 'firebase/auth';
 import {
   getFirestore, doc, collection, collectionGroup, query, orderBy, limit, where,
@@ -137,8 +137,13 @@ export async function loginWithGooglePopup(): Promise<User> {
     } catch (e) {
       const code = (e as { code?: string }).code;
       if (code === 'auth/credential-already-in-use' || code === 'auth/email-already-in-use') {
-        // 이미 가입된 계정으로 전환: 익명 기록을 새 계정으로 이전해 중복 방지
-        return switchAndMigrate(cur, async () => (await signInWithPopup(auth, provider)).user);
+        // 이미 가입된 계정으로 전환. 두 번째 팝업을 띄우지 않고 에러에 담긴
+        // 자격증명으로 바로 로그인(없을 때만 팝업 폴백).
+        const cred = GoogleAuthProvider.credentialFromError(e as AuthError);
+        const signIn = cred
+          ? async () => (await signInWithCredential(auth, cred)).user
+          : async () => (await signInWithPopup(auth, provider)).user;
+        return switchAndMigrate(cur, signIn);
       }
       throw e;
     }

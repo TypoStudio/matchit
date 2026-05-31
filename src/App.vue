@@ -412,10 +412,17 @@ function handleAuthUser(user: User | null) {
     }
     void syncDown(user!.uid).then(() => { if (showLeaderboard.value) void loadLeaderboard(); });
   }
+  // 로그인 상태면 One Tap을 닫고, 비로그인 상태면 (아직 안 띄웠을 때만) 한 번 띄운다.
+  if (signedIn) cancelGoogleOneTap();
+  else if (!oneTapInited) { oneTapInited = true; initGoogleOneTap(); }
   prevSignedIn = signedIn;
 }
 
 // One Tap 자동 프롬프트(클라이언트 ID가 설정된 경우에만). 미설정 시 '구글로 로그인' 버튼으로 대체.
+let oneTapInited = false;
+function cancelGoogleOneTap() {
+  (window as unknown as { google?: any }).google?.accounts?.id?.cancel();
+}
 function initGoogleOneTap() {
   if (!GOOGLE_CLIENT_ID) return;
   const s = document.createElement('script');
@@ -431,7 +438,7 @@ function initGoogleOneTap() {
         if (resp.credential) void onGoogleCredential(resp.credential);
       },
     });
-    g.accounts.id.prompt(); // 비로그인 시 우측 상단 카드 자동 표시
+    if (!isSignedIn.value) g.accounts.id.prompt(); // 로그인 상태면 띄우지 않음
   };
   document.head.appendChild(s);
 }
@@ -3187,9 +3194,9 @@ onMounted(async () => {
     else stopGoalMarquee();
   }, { immediate: true });
 
-  // 인증 상태: 구글 로그인되면 닉네임을 계정 이름으로 채우고 클라우드 복원
+  // 인증 상태: 구글 로그인되면 닉네임을 계정 이름으로 채우고 클라우드 복원.
+  // One Tap은 handleAuthUser가 비로그인일 때만 띄운다(로그인 상태에서 반복 노출 방지).
   onAuth(handleAuthUser);
-  initGoogleOneTap();
 
   // 설정·진행기록이 바뀌면 클라우드로 디바운스 업로드(구글 로그인 시에만 동작)
   watch([score, best, theme, blockStyle, solveMode, mergeMode, gameKind, wordDirection,
