@@ -1,7 +1,7 @@
-name: Redirect GitHub Pages to Firebase Hosting
+name: Deploy to GitHub Pages
 
-# 앱 본체는 Firebase Hosting(match-it-typostudio.web.app)에 배포한다.
-# GitHub Pages(typostudio.github.io/matchit/)는 새 주소로 자동 이동시키는 리다이렉트 페이지만 게시한다.
+# 앱 본체를 GitHub Pages(typostudio.github.io/matchit/)에 빌드·배포한다.
+# 백엔드(Auth·Firestore·App Check)는 그대로 Firebase 프로젝트를 사용.
 
 on:
   push:
@@ -21,29 +21,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          mkdir -p out
-          cat > out/index.html <<'HTML'
-          <!doctype html>
-          <html lang="ko">
-          <head>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <meta name="google-site-verification" content="KDNq4waLc6J8OY4zjitT7h3_gDvw21oO0Ud8p4fwc4A" />
-            <title>이어맞추기</title>
-            <link rel="canonical" href="https://match-it-typostudio.web.app/" />
-            <meta http-equiv="refresh" content="0; url=https://match-it-typostudio.web.app/" />
-            <script>location.replace("https://match-it-typostudio.web.app/" + location.search + location.hash);</script>
-          </head>
-          <body style="font-family:system-ui,sans-serif;background:#14161c;color:#e7e3d8;display:grid;place-items:center;height:100vh;margin:0">
-            <p>이어맞추기가 새 주소로 이동했습니다 →
-              <a style="color:#ffd479" href="https://match-it-typostudio.web.app/">match-it-typostudio.web.app</a></p>
-          </body>
-          </html>
-          HTML
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: out
+          path: dist
 
   deploy:
     needs: build
