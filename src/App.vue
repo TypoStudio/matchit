@@ -2,6 +2,12 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { Block, BlockStyleName, GameKind, GameMode, LessonItem, LessonPack, PowerKind, SolveMode, ThemeName } from './types';
 import { messages, type Locale, type MessageKey } from './locales';
+import {
+  compareNumberDisplayValues,
+  formatNumberValue as formatValue,
+  numberDisplayValue,
+  sameNumberDisplayValue,
+} from './number-display';
 import { ensureUid, submitBest, fetchTop, fetchRank, boardId, type ScoreRow,
   onAuth, loginWithGoogleIdToken, loginWithGooglePopup, logout,
   saveUserStore, loadUserStore, GOOGLE_CLIENT_ID } from './firebase';
@@ -759,20 +765,9 @@ function makeBlock(item: LessonItem, token?: string): Block {
 }
 
 // ── 숫자 더하기 모드 ──
-function formatValue(value: number): string {
-  if (value >= 1_000_000) {
-    const m = value / 1_000_000;
-    return `${Number.isInteger(m) ? m : m.toFixed(1)}M`;
-  }
-  if (value >= 1000) {
-    const k = value / 1000;
-    return `${Number.isInteger(k) ? k : k.toFixed(1)}K`;
-  }
-  return String(value);
-}
-
 function colorForValue(value: number): string {
-  const tier = value > 0 ? Math.floor(Math.log2(value)) : 0;
+  const displayValue = numberDisplayValue(value);
+  const tier = displayValue > 0 ? Math.floor(Math.log2(displayValue)) : 0;
   return palette[tier % palette.length];
 }
 
@@ -2218,7 +2213,7 @@ function findCollectMatch(seeds: number[]) {
   return indexes ? { indexes, item } : null;
 }
 
-// 보드 전체에서 같은 값이 상하좌우로 3개 이상 연결된 덩어리(연결 성분)들을 모두 찾음
+// 보드 전체에서 화면에 같은 값으로 보이는 블럭이 상하좌우로 3개 이상 연결된 덩어리를 모두 찾음
 function findAllMergeClusters(brd: Block[]): number[][] {
   const total = rows.value * cols.value;
   const visited = new Array<boolean>(total).fill(false);
@@ -2234,7 +2229,8 @@ function findAllMergeClusters(brd: Block[]): number[][] {
       const cell = stack.pop()!;
       comp.push(cell);
       for (const next of cellNeighbors(cell)) {
-        if (!visited[next] && brd[next]?.value === value) {
+        const nextValue = brd[next]?.value;
+        if (!visited[next] && nextValue !== undefined && sameNumberDisplayValue(nextValue, value)) {
           visited[next] = true;
           stack.push(next);
         }
@@ -2271,8 +2267,7 @@ async function resolveNumberClusters(preferIndex: number): Promise<boolean> {
     const keepOf = new Map<number, number>(); // 사라지는 칸 -> 합체 칸
     const valueOf = new Map<number, number>(); // 사라지는 칸의 값(합체 칸에 더해질 양)
     for (const comp of clusters) {
-      const value = board.value[comp[0]]!.value!;
-      const mergedValue = value * comp.length;
+      const mergedValue = comp.reduce((sum, cell) => sum + board.value[cell]!.value!, 0);
       const keep = firstPass && comp.includes(preferIndex) ? preferIndex : Math.max(...comp);
       score.value += mergedValue * combo.value;
       recordNumMerge(mergedValue * combo.value, mergedValue);
@@ -2296,7 +2291,7 @@ async function resolveNumberClusters(preferIndex: number): Promise<boolean> {
         if (cell !== keep) {
           removedAll.push(cell);
           keepOf.set(cell, keep);
-          valueOf.set(cell, value);
+          valueOf.set(cell, board.value[cell]!.value!);
         }
       }
     }
@@ -2355,7 +2350,9 @@ function checkNumberGameOver() {
   // 자유 스왑이므로, 같은 값이 3개 이상인 숫자가 하나라도 있으면 아직 합칠 수 있다
   const counts = new Map<number, number>();
   for (const block of board.value) {
-    if (block?.value !== undefined) counts.set(block.value, (counts.get(block.value) || 0) + 1);
+    if (block?.value === undefined) continue;
+    const displayValue = numberDisplayValue(block.value);
+    counts.set(displayValue, (counts.get(displayValue) || 0) + 1);
   }
   const canStillMerge = [...counts.values()].some((count) => count >= 3);
   if (!canStillMerge) {
@@ -2392,8 +2389,8 @@ async function numberAdd(a: number, b: number) {
   const av = board.value[a]?.value;
   const bv = board.value[b]?.value;
   if (av === undefined || bv === undefined) return;
-  // 작은 수에 큰 수를 더하지 못하게: 끌어온 수가 대상 수보다 크면 막음
-  if (av > bv) {
+  // 블럭에 보이는 정밀도로 크기를 비교한다(같은 1.5K끼리는 어느 방향으로든 더할 수 있음).
+  if (compareNumberDisplayValues(av, bv) > 0) {
     message.value = t('cantAddBigger');
     swapFirstIndex.value = null;
     selectedIndexes.value = [];
@@ -2760,9 +2757,10 @@ function computeHintIndexes(): number[] {
     const byValue = new Map<number, number[]>();
     board.value.forEach((block, i) => {
       if (block?.value === undefined) return;
-      const list = byValue.get(block.value) ?? [];
+      const displayValue = numberDisplayValue(block.value);
+      const list = byValue.get(displayValue) ?? [];
       list.push(i);
-      byValue.set(block.value, list);
+      byValue.set(displayValue, list);
     });
     for (const list of byValue.values()) {
       if (list.length >= 3) return list.slice(0, 3);
