@@ -884,7 +884,8 @@ function canFormFromBoard(item: LessonItem) {
   return true;
 }
 
-// 보드가 이미 지원하는(만들 수 있고 아직 붙어있지 않은) 식 중에서 다음 목표를 고른다
+// 보드가 이미 지원하는(만들 수 있고 아직 붙어있지 않은) 식 중에서 다음 목표를 고른다.
+// (사용자가 '넘기기'로 문제를 직접 바꿀 때 사용 — 정답 후 자동 진행에는 쓰지 않는다)
 function chooseNextCollectTarget(): LessonItem | null {
   // 이미 푼 문제는 제외(스테이지 내 중복 출제 방지), 다 풀었으면 전체에서
   const unsolved = collectableItems.value.filter((it) => !solvedItems.value.includes(it.id));
@@ -897,11 +898,24 @@ function chooseNextCollectTarget(): LessonItem | null {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// 다음 모으기 목표를 표시용으로 즉시 선택(미해결 우선, 보드 지원 여부 무관)
-function pickCollectTargetForDisplay(): LessonItem | null {
+// 다음 모으기 목표를 표시용으로 즉시 선택(미해결 우선).
+// 낙하 후에도 목표가 유지되도록, 지우고 남는 블럭(removed 제외)만으로 만들 수 있는 문제를 우선 고른다.
+// (낙하는 빈 칸을 채우기만 하므로, 남는 블럭이 지원하면 낙하 후에도 지원됨 → 목표가 다시 바뀌지 않음)
+function pickCollectTargetForDisplay(removed?: Set<number>): LessonItem | null {
   const unsolved = collectableItems.value.filter((it) => !solvedItems.value.includes(it.id));
   const pool = unsolved.length ? unsolved : collectableItems.value;
-  return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+  if (!pool.length) return null;
+  const avail = new Map<string, number>();
+  board.value.forEach((b, i) => {
+    if (b && !(removed && removed.has(i))) avail.set(b.token, (avail.get(b.token) || 0) + 1);
+  });
+  const covered = (it: LessonItem) => {
+    for (const [tk, c] of tokenCounts(it.tokens)) if ((avail.get(tk) || 0) < c) return false;
+    return true;
+  };
+  const supportable = pool.filter(covered);
+  const from = supportable.length ? supportable : pool;
+  return from[Math.floor(Math.random() * from.length)];
 }
 function pickCollectItem() {
   const unsolved = collectableItems.value.filter((it) => !solvedItems.value.includes(it.id));
@@ -1955,7 +1969,7 @@ async function resolveCollect(indexes: number[], item: LessonItem, swapCandidate
   }
   if (mode.value === 'endless') advanceEndlessStageIfReady();
   else if (mode.value === 'single' && !stageDone.value) {
-    const disp = pickCollectTargetForDisplay();
+    const disp = pickCollectTargetForDisplay(new Set(removeIdx));
     if (disp) collectTargetItem.value = disp;
   }
   // 정답표시 OFF일 때만 제자리 번쩍임/페이드. ON이면 블럭이 팝업으로 이동만 하고 바로 제거.
@@ -1984,15 +1998,16 @@ function ensureCollectAfterClear() {
   if (continuous.value) {
     if (!collectableItems.value.some(canFormFromBoard)) board.value = buildCollectBoard();
   } else if (!stageDone.value) {
-    if (!collectTargetItem.value || !canFormFromBoard(collectTargetItem.value)) {
-      const next = chooseNextCollectTarget();
-      if (next) {
-        collectTargetItem.value = next;
-      } else {
-        message.value = t('msgNewBoard');
-        pickCollectItem();
-        board.value = buildCollectBoard();
-      }
+    // 이미 표시 중인 다음 목표(pickCollectTargetForDisplay)는 유지한다.
+    // 낙하 후 그 목표를 보드에서 못 만들거나 이미 붙어(선완성) 있으면, 목표는 바꾸지 말고
+    // 보드만 새로 깔아 그 목표를 만들 수 있게 보장한다(문제가 두 번 바뀌는 현상 방지).
+    const tgt = collectTargetItem.value;
+    if (!tgt) {
+      pickCollectItem();
+      board.value = buildCollectBoard();
+    } else if (!canFormFromBoard(tgt) || findTargetCluster(board.value, tgt.tokens)) {
+      message.value = t('msgNewBoard');
+      board.value = buildCollectBoard();
     }
   }
 }
