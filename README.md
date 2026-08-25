@@ -85,7 +85,7 @@ npm run build    # dist/ 정적 산출물
 
 학습팩은 게임 본체와 분리된 **[matchit-packs](https://github.com/TypoStudio/matchit-packs)** 저장소에서 서빙됩니다.
 
-- 기본 카탈로그 URL: 프로덕션은 `https://typostudio.github.io/matchit-packs/packs.json`, 로컬 개발은 같은 저장소의 `packs/packs.json`([src/App.vue](src/App.vue)의 `PACK_CATALOG_URL`).
+- 기본 카탈로그 URL: 프로덕션은 접속한 도메인 기준의 `/matchit-packs/packs.json`(예: `https://typostudio.dev/matchit-packs/packs.json`), 로컬 개발은 같은 저장소의 `packs/packs.json`([src/App.vue](src/App.vue)의 `PACK_CATALOG_URL`).
 - 화면의 **추가팩 관리**에서 다른 팩/카탈로그 JSON URL을 더할 수 있고, 그 목록은 `localStorage`(`matchit-extra-packs`)에만 저장됩니다.
 - 표시 순서: **추가팩 → 기본팩**, 각 그룹 이름 가나다순.
 

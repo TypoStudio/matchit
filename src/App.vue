@@ -23,18 +23,21 @@ const cols = ref(Number(localStorage.getItem('matchit-cols')) || 7);
 const rows = ref(Number(localStorage.getItem('matchit-rows')) || 7);
 const appVersion = `v${__APP_VERSION__}`;
 const baseUrl = import.meta.env.BASE_URL;
-// 기본 학습팩 카탈로그(항상 표시). 로컬 개발에선 같은 저장소의 packs/, 배포 후엔 matchit-packs(GitHub Pages).
+// 기본 학습팩 카탈로그(항상 표시). 로컬 개발에선 같은 저장소의 packs/, 배포 후엔 matchit-packs.
+// 절대 도메인을 박으면 커스텀 도메인(typostudio.dev)에서 CORS·리다이렉트로 막히므로,
+// 항상 '접속한 도메인' 기준의 경로만 쓴다.
 const PACK_CATALOG_URL = import.meta.env.PROD
-  ? 'https://typostudio.github.io/matchit-packs/packs.json'
+  ? '/matchit-packs/packs.json'
   : '/packs/packs.json';
 // 추가 꾸러미 목록(선택해서 꾸러미 목록에 넣는 후보). packs 레포의 두 번째 카탈로그.
 const EXTRA_CATALOG_URL = import.meta.env.PROD
-  ? 'https://typostudio.github.io/matchit-packs/extra.json'
+  ? '/matchit-packs/extra.json'
   : '/packs/extra.json';
 // 'URL로 추가' 사용 예시(샘플): 과일 모으기 — 버튼을 누르면 입력칸에 채워진다.
-const SAMPLE_PACK_URL = import.meta.env.PROD
-  ? 'https://typostudio.github.io/matchit-packs/arcade/fruit-emoji/pack.json'
-  : '/packs/arcade/fruit-emoji/pack.json';
+const SAMPLE_PACK_URL = new URL(
+  import.meta.env.PROD ? '/matchit-packs/arcade/fruit-emoji/pack.json' : '/packs/arcade/fruit-emoji/pack.json',
+  window.location.origin,
+).href;
 const palette = [
   '#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef', '#eab308',
   '#3b82f6', '#ef4444', '#10b981', '#a855f7', '#f43f5e', '#0ea5e9', '#65a30d', '#fb923c',
@@ -3094,7 +3097,7 @@ async function createShareImage() {
   // 푸터
   context.fillStyle = '#0f172a';
   context.font = '600 32px sans-serif';
-  context.fillText('typostudio.github.io/matchit', 84, 992);
+  context.fillText(`${window.location.host}${baseUrl}`.replace(/\/$/, ''), 84, 992);
   shareUrl.value = canvas.toDataURL('image/png');
   track('share', { method: 'image', content_type: 'score_card', score: score.value });
 }
@@ -3920,9 +3923,9 @@ onBeforeUnmount(() => {
         <span aria-hidden="true">·</span>
         <a :href="`${baseUrl}privacy.html`" target="_blank" rel="noopener">개인정보 처리방침</a>
         <span aria-hidden="true">·</span>
-        <a href="https://github.com/TypoStudio/matchit" target="_blank" rel="noopener" aria-label="GitHub">
-          <img src="https://img.shields.io/badge/GitHub-TypoStudio%2Fmatchit-181717?logo=github&logoColor=white" alt="GitHub" class="h-5" loading="lazy" />
-        </a>
+        <a href="https://github.com/TypoStudio/matchit" target="_blank" rel="noopener">TypoStudio/matchit</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://typostudio.dev/" target="_blank" rel="noopener">TypoStudio</a>
       </footer>
     </div>
 
