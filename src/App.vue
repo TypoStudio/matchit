@@ -23,10 +23,10 @@ const cols = ref(Number(localStorage.getItem('matchit-cols')) || 7);
 const rows = ref(Number(localStorage.getItem('matchit-rows')) || 7);
 const appVersion = `v${__APP_VERSION__}`;
 const baseUrl = import.meta.env.BASE_URL;
-// 학습팩은 별도 GitHub Pages에서 제공하며 교차 출처 요청(CORS)을 허용한다.
-// 앱의 커스텀 도메인과 분리해 팩·레벨 파일의 상대 URL도 같은 출처로 해석한다.
+// 원본 JSON은 CORS를 허용하며 GitHub Pages의 커스텀 도메인 리다이렉트를 거치지 않는다.
+// 팩·레벨 파일의 상대 URL도 같은 원본 저장소 기준으로 해석한다.
 const PACK_BASE_URL = new URL(
-  import.meta.env.PROD ? 'https://typostudio.github.io/matchit-packs/' : '/packs/',
+  import.meta.env.PROD ? 'https://raw.githubusercontent.com/TypoStudio/matchit-packs/main/' : '/packs/',
   window.location.origin,
 );
 const PACK_CATALOG_URL = new URL('packs.json', PACK_BASE_URL).href;
