@@ -1,7 +1,7 @@
 # 이어맞추기
 
 [![버전](https://img.shields.io/github/package-json/v/TypoStudio/matchit?color=2f8f74&label=version)](https://github.com/TypoStudio/matchit)
-[![배포](https://img.shields.io/github/actions/workflow/status/TypoStudio/matchit/deploy.yml?label=deploy&logo=githubpages&logoColor=white)](https://typostudio.github.io/matchit/)
+[![배포](https://img.shields.io/github/actions/workflow/status/TypoStudio/matchit/deploy.yml?label=deploy&logo=githubpages&logoColor=white)](https://matchit.typostudio.dev/)
 [![GitHub stars](https://img.shields.io/github/stars/TypoStudio/matchit?logo=github&label=stars)](https://github.com/TypoStudio/matchit/stargazers)
 [![last commit](https://img.shields.io/github/last-commit/TypoStudio/matchit)](https://github.com/TypoStudio/matchit/commits)  
 ![Vue](https://img.shields.io/badge/Vue-3-42b883?logo=vuedotjs&logoColor=white)
@@ -11,7 +11,7 @@
 
 배움거리를 조각 퍼즐로 바꿔 푸는 Vue 3 + TypeScript + Tailwind CSS 정적 게임입니다.
 
-- 🎮 **놀러가기**: https://typostudio.github.io/matchit/  
+- 🎮 **놀러가기**: https://matchit.typostudio.dev/
 - 📦 **배움꾸러미 저장소**: https://github.com/TypoStudio/matchit-packs/  
 - 꾸러미 목록: https://typostudio.github.io/matchit-packs/packs.json  
 
@@ -79,13 +79,21 @@ npm run dev      # 개발 서버 (http://localhost:5174)
 npm run build    # dist/ 정적 산출물
 ```
 
-`dist`를 GitHub Pages 등 정적 호스팅에 올립니다. 배포 시 base는 `/matchit/`(프로덕션), 개발 시 `/`.
+`dist`를 GitHub Pages에 올리며, 서비스 주소는 `https://matchit.typostudio.dev/`입니다. 프로덕션과 개발 모두 base는 `/`입니다.
+
+커스텀 도메인 설정:
+
+- 저장소 **Settings → Pages → Custom domain**: `matchit.typostudio.dev`
+- DNS: `matchit`의 `CNAME`을 `typostudio.github.io`로 지정
+- 인증서 발급 후 **Enforce HTTPS** 활성화
+- Firebase Authentication 승인 도메인과 Google OAuth 웹 클라이언트의 JavaScript 원본에 각각 `matchit.typostudio.dev`, `https://matchit.typostudio.dev` 등록
+- reCAPTCHA Enterprise 허용 도메인에 `typostudio.dev` 또는 `matchit.typostudio.dev` 포함
 
 ## 학습팩 로딩 구조
 
 학습팩은 게임 본체와 분리된 **[matchit-packs](https://github.com/TypoStudio/matchit-packs)** 저장소에서 서빙됩니다.
 
-- 기본 카탈로그 URL: 프로덕션은 접속한 도메인 기준의 `/matchit-packs/packs.json`(예: `https://typostudio.dev/matchit-packs/packs.json`), 로컬 개발은 같은 저장소의 `packs/packs.json`([src/App.vue](src/App.vue)의 `PACK_CATALOG_URL`).
+- 기본 카탈로그 URL: 프로덕션은 `https://typostudio.github.io/matchit-packs/packs.json`, 로컬 개발은 `/packs/packs.json`([src/App.vue](src/App.vue)의 `PACK_CATALOG_URL`). 별도 학습팩 사이트는 CORS를 허용하므로 앱 도메인에서 팩과 레벨 파일을 불러올 수 있습니다.
 - 화면의 **추가팩 관리**에서 다른 팩/카탈로그 JSON URL을 더할 수 있고, 그 목록은 `localStorage`(`matchit-extra-packs`)에만 저장됩니다.
 - 표시 순서: **추가팩 → 기본팩**, 각 그룹 이름 가나다순.
 

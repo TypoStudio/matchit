@@ -1,6 +1,6 @@
 name: Deploy to GitHub Pages
 
-# 앱 본체를 GitHub Pages(typostudio.github.io/matchit/)에 빌드·배포한다.
+# 앱 본체를 GitHub Pages(matchit.typostudio.dev)에 빌드·배포한다.
 # 백엔드(Auth·Firestore·App Check)는 그대로 Firebase 프로젝트를 사용.
 
 on:

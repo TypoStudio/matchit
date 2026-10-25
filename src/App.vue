@@ -23,21 +23,17 @@ const cols = ref(Number(localStorage.getItem('matchit-cols')) || 7);
 const rows = ref(Number(localStorage.getItem('matchit-rows')) || 7);
 const appVersion = `v${__APP_VERSION__}`;
 const baseUrl = import.meta.env.BASE_URL;
-// 기본 학습팩 카탈로그(항상 표시). 로컬 개발에선 같은 저장소의 packs/, 배포 후엔 matchit-packs.
-// 절대 도메인을 박으면 커스텀 도메인(typostudio.dev)에서 CORS·리다이렉트로 막히므로,
-// 항상 '접속한 도메인' 기준의 경로만 쓴다.
-const PACK_CATALOG_URL = import.meta.env.PROD
-  ? '/matchit-packs/packs.json'
-  : '/packs/packs.json';
-// 추가 꾸러미 목록(선택해서 꾸러미 목록에 넣는 후보). packs 레포의 두 번째 카탈로그.
-const EXTRA_CATALOG_URL = import.meta.env.PROD
-  ? '/matchit-packs/extra.json'
-  : '/packs/extra.json';
-// 'URL로 추가' 사용 예시(샘플): 과일 모으기 — 버튼을 누르면 입력칸에 채워진다.
-const SAMPLE_PACK_URL = new URL(
-  import.meta.env.PROD ? '/matchit-packs/arcade/fruit-emoji/pack.json' : '/packs/arcade/fruit-emoji/pack.json',
+// 학습팩은 별도 GitHub Pages에서 제공하며 교차 출처 요청(CORS)을 허용한다.
+// 앱의 커스텀 도메인과 분리해 팩·레벨 파일의 상대 URL도 같은 출처로 해석한다.
+const PACK_BASE_URL = new URL(
+  import.meta.env.PROD ? 'https://typostudio.github.io/matchit-packs/' : '/packs/',
   window.location.origin,
-).href;
+);
+const PACK_CATALOG_URL = new URL('packs.json', PACK_BASE_URL).href;
+// 추가 꾸러미 목록(선택해서 꾸러미 목록에 넣는 후보). packs 레포의 두 번째 카탈로그.
+const EXTRA_CATALOG_URL = new URL('extra.json', PACK_BASE_URL).href;
+// 'URL로 추가' 사용 예시(샘플): 과일 모으기 — 버튼을 누르면 입력칸에 채워진다.
+const SAMPLE_PACK_URL = new URL('arcade/fruit-emoji/pack.json', PACK_BASE_URL).href;
 const palette = [
   '#14b8a6', '#f97316', '#6366f1', '#e11d48', '#84cc16', '#0891b2', '#d946ef', '#eab308',
   '#3b82f6', '#ef4444', '#10b981', '#a855f7', '#f43f5e', '#0ea5e9', '#65a30d', '#fb923c',
